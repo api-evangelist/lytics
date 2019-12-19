@@ -1,0 +1,53 @@
+{
+    "name": "Lytics",
+    "description": "Understand who your customers are, how they engage with your content, and deliver unified experiences across channels, building trust in your brand.",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/1443-lytics.jpg",
+    "tags": [
+        "api provider",
+        "have api",
+        "recruiting"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/lytics\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "Lytics",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/1443-lytics.jpg",
+            "humanURL": "http:\/\/lytics.io\/",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/lytics-openapi.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Crunchbase",
+            "url": "https:\/\/crunchbase.com\/organization\/lytics"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "http:\/\/www.crunchbase.com\/company\/lytics"
+        },
+        {
+            "type": "Github",
+            "url": "https:\/\/github.com\/lytics"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/Lyticsio"
+        },
+        {
+            "type": "Website",
+            "url": "http:\/\/lytics.io\/"
+        }
+    ]
+}
