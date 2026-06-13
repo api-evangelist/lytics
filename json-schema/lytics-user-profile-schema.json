@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lytics/main/json-schema/lytics-user-profile-schema.json",
+  "title": "Lytics User Profile",
+  "description": "Schema for a unified Lytics user profile returned by the Entity API and segment scan operations.",
+  "type": "object",
+  "properties": {
+    "_uid": {
+      "type": "string",
+      "description": "Lytics unique user identifier (system-generated)"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "User's primary email address"
+    },
+    "first_name": {
+      "type": "string",
+      "description": "User's first name"
+    },
+    "last_name": {
+      "type": "string",
+      "description": "User's last name"
+    },
+    "phone": {
+      "type": "string",
+      "description": "User's phone number"
+    },
+    "segments": {
+      "type": "array",
+      "description": "List of segment slug names the user currently belongs to",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "scores": {
+      "type": "object",
+      "description": "Behavioral and content affinity scores for the user",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "topics": {
+      "type": "object",
+      "description": "Content topic affinity scores (0.0–1.0)",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the profile was first created"
+    },
+    "last_active_ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of the user's most recent activity"
+    },
+    "channel": {
+      "type": "string",
+      "description": "Primary channel through which this user was identified (web, email, mobile, etc.)"
+    }
+  },
+  "additionalProperties": true
+}

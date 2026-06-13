@@ -1,0 +1,142 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "lytics": "https://docs.lytics.com/reference/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "Account": "lytics:accounts",
+    "Segment": "lytics:segments",
+    "UserProfile": "lytics:entity",
+    "Datamodel": "lytics:datamodels",
+    "Connection": "lytics:connections",
+    "Job": "lytics:jobs",
+    "Work": "lytics:work",
+    "DataStream": "lytics:collect",
+
+    "aid": {
+      "@id": "lytics:aid",
+      "@type": "xsd:string"
+    },
+    "_uid": {
+      "@id": "lytics:uid",
+      "@type": "xsd:string"
+    },
+    "apikey": {
+      "@id": "lytics:apikey",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "schema:name",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "schema:email",
+      "@type": "xsd:string"
+    },
+    "first_name": {
+      "@id": "schema:givenName",
+      "@type": "xsd:string"
+    },
+    "last_name": {
+      "@id": "schema:familyName",
+      "@type": "xsd:string"
+    },
+    "phone": {
+      "@id": "schema:telephone",
+      "@type": "xsd:string"
+    },
+    "url": {
+      "@id": "schema:url",
+      "@type": "@id"
+    },
+    "created": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "modified": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "last_active_ts": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "slug_name": {
+      "@id": "lytics:slugName",
+      "@type": "xsd:string"
+    },
+    "filter_ql": {
+      "@id": "lytics:filterQL",
+      "@type": "xsd:string"
+    },
+    "size": {
+      "@id": "lytics:segmentSize",
+      "@type": "xsd:integer"
+    },
+    "kind": {
+      "@id": "lytics:segmentKind",
+      "@type": "xsd:string"
+    },
+    "segments": {
+      "@id": "lytics:segments",
+      "@container": "@set"
+    },
+    "scores": {
+      "@id": "lytics:behavioralScores"
+    },
+    "topics": {
+      "@id": "lytics:contentAffinityTopics"
+    },
+    "workflow_id": {
+      "@id": "lytics:workflowId",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "lytics:status",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "total": {
+      "@id": "lytics:totalCount",
+      "@type": "xsd:integer"
+    },
+    "data": {
+      "@id": "lytics:data"
+    },
+    "config": {
+      "@id": "lytics:config"
+    },
+    "connection_id": {
+      "@id": "lytics:connectionId",
+      "@type": "xsd:string"
+    },
+    "auth_id": {
+      "@id": "lytics:authId",
+      "@type": "xsd:string"
+    },
+    "type": {
+      "@id": "lytics:connectionType",
+      "@type": "xsd:string"
+    },
+    "channel": {
+      "@id": "lytics:identificationChannel",
+      "@type": "xsd:string"
+    },
+    "event": {
+      "@id": "schema:action",
+      "@type": "xsd:string"
+    },
+    "referrer": {
+      "@id": "schema:isBasedOn",
+      "@type": "@id"
+    }
+  }
+}

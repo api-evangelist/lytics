@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lytics/main/json-schema/lytics-segment-schema.json",
+  "title": "Lytics Segment",
+  "description": "Schema for a Lytics audience segment definition.",
+  "type": "object",
+  "required": ["id", "slug_name", "name"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique segment identifier (UUID)"
+    },
+    "slug_name": {
+      "type": "string",
+      "description": "URL-safe slug for the segment",
+      "pattern": "^[a-z0-9_]+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable display name for the segment"
+    },
+    "kind": {
+      "type": "string",
+      "description": "Segment type",
+      "enum": ["audience", "content", "behavioral"]
+    },
+    "filter_ql": {
+      "type": "string",
+      "description": "Lytics Query Language (LQL) expression that defines segment membership"
+    },
+    "size": {
+      "type": "integer",
+      "description": "Current count of users in this segment",
+      "minimum": 0
+    },
+    "created": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the segment was created"
+    },
+    "modified": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the segment was last modified"
+    },
+    "author_id": {
+      "type": "string",
+      "description": "User ID of the account member who created the segment"
+    },
+    "public": {
+      "type": "boolean",
+      "description": "Whether the segment is visible across accounts"
+    }
+  },
+  "additionalProperties": false
+}

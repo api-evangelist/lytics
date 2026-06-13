@@ -45,7 +45,7 @@ apis:
       - type: Documentation
         url: https://docs.lytics.com/reference
       - type: OpenAPI
-        url: https://docs.lytics.com/llms.txt
+        url: https://raw.githubusercontent.com/api-evangelist/lytics/refs/heads/main/openapi/lytics-rest-api-openapi.yml
     contact:
       - FN: Lytics Support
         url: https://support.lytics.com/hc/en-us

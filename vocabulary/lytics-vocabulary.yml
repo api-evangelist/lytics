@@ -1,0 +1,142 @@
+vocabulary:
+  name: Lytics API Vocabulary
+  description: Domain terms and concepts used across the Lytics Customer Data Platform REST API
+  url: https://docs.lytics.com/reference
+  terms:
+    - term: AID
+      label: Account ID
+      description: >-
+        A unique numeric identifier assigned to each Lytics account. Used as a
+        path parameter when managing account-level resources.
+      type: identifier
+
+    - term: API Key
+      label: API Key
+      description: >-
+        A secret string used to authenticate requests to the Lytics REST API.
+        Passed as a `key` query parameter or Authorization header. Obtained from
+        Lytics account settings.
+      type: authentication
+
+    - term: CDP
+      label: Customer Data Platform
+      description: >-
+        A software platform (like Lytics) that collects, unifies, and activates
+        first-party customer data from multiple sources into a single persistent
+        customer database.
+      type: concept
+
+    - term: Segment
+      label: Audience Segment
+      description: >-
+        A dynamically computed group of user profiles that match a given LQL
+        filter expression. Segments are used to define audiences for campaigns,
+        personalization, and activation.
+      type: resource
+
+    - term: LQL
+      label: Lytics Query Language
+      description: >-
+        The SQL-like query language used by Lytics to define segment membership
+        criteria and filter expressions (e.g., `in_segment("all_users") AND
+        scores.momentum > 50`).
+      type: language
+
+    - term: Entity
+      label: Entity (User Profile)
+      description: >-
+        A unified user profile record in Lytics that consolidates behavioral
+        and attribute data for a single individual across all connected data
+        sources. Identified by fields such as email or _uid.
+      type: resource
+
+    - term: _uid
+      label: Lytics User ID
+      description: >-
+        The system-generated unique identifier assigned by Lytics to each
+        unified user profile. Stable across identity stitching.
+      type: identifier
+
+    - term: Datamodel
+      label: Data Model / Stream Schema
+      description: >-
+        A schema definition that maps incoming event fields to unified profile
+        attributes. Data models are associated with data streams and define how
+        raw data is processed and stored.
+      type: resource
+
+    - term: Connection
+      label: Connection
+      description: >-
+        A configured integration linking Lytics to an external data source or
+        destination (e.g., BigQuery, Salesforce, Google Ads, Segment). Connections
+        store credentials and endpoint configuration.
+      type: resource
+
+    - term: Job
+      label: Job
+      description: >-
+        A background data import or export task that runs against a connection.
+        Jobs have lifecycle states: pending, running, complete, failed, cancelled.
+      type: resource
+
+    - term: Work
+      label: Work / Workflow
+      description: >-
+        A parameterized background workflow identified by a workflow_id. Common
+        workflows include segment evaluation, content enrichment, content
+        rescoring, and GDPR deletion.
+      type: resource
+
+    - term: Content Affinity
+      label: Content Affinity Score
+      description: >-
+        A computed score (0.0–1.0) representing how strongly a user profile is
+        associated with a particular topic or content category, derived from
+        behavioral analysis.
+      type: metric
+
+    - term: Behavioral Score
+      label: Behavioral Score
+      description: >-
+        A numeric score (typically 0–100) reflecting a user's level of
+        engagement, recency, frequency, or momentum on a platform.
+      type: metric
+
+    - term: Data Stream
+      label: Data Stream
+      description: >-
+        A named channel through which events are ingested into Lytics via the
+        Collect API. Each stream maps to one or more data models.
+      type: resource
+
+    - term: Activation
+      label: Audience Activation
+      description: >-
+        The process of exporting a Lytics segment to an advertising network,
+        email platform, data warehouse, or other destination for targeting
+        and personalization.
+      type: concept
+
+    - term: Cloud Connect
+      label: Cloud Connect
+      description: >-
+        Lytics' warehouse-native integration capability enabling direct import
+        and export of data between Lytics and cloud data warehouses like
+        BigQuery, Snowflake, and Redshift.
+      type: feature
+
+    - term: next
+      label: Pagination Cursor
+      description: >-
+        An opaque cursor token returned in scan responses as `_next`. Pass it
+        as the `next` query parameter in the subsequent request to retrieve the
+        next page of results.
+      type: pagination
+
+    - term: filter_ql
+      label: Filter Query (LQL)
+      description: >-
+        An LQL expression submitted in segment scan or work requests to filter
+        which user profiles are included in the operation.
+      type: parameter

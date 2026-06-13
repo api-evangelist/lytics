@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lytics/main/json-schema/lytics-collect-event-schema.json",
+  "title": "Lytics Collect Event",
+  "description": "Schema for an event payload submitted to the Lytics data collection endpoint.",
+  "type": "object",
+  "properties": {
+    "_uid": {
+      "type": "string",
+      "description": "Lytics unique user identifier to associate with this event"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "User email address (used as identity key)"
+    },
+    "event": {
+      "type": "string",
+      "description": "Event name or type (e.g., page_view, purchase, login)"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL associated with this event"
+    },
+    "title": {
+      "type": "string",
+      "description": "Page or content title associated with this event"
+    },
+    "referrer": {
+      "type": "string",
+      "format": "uri",
+      "description": "Referring URL"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event timestamp (ISO 8601). Defaults to server time if omitted."
+    }
+  },
+  "additionalProperties": true
+}
