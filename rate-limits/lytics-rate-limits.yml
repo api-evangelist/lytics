@@ -1,0 +1,212 @@
+name: Lytics Rate Limits
+description: >-
+  Lytics enforces platform limits to ensure optimum performance for all
+  accounts. Event ingress and egress rates, aggregate profile size, and
+  re-evaluation rates are quota-based and vary by pricing tier. Static limits
+  apply uniformly to all accounts regardless of plan. Contact your Lytics
+  Account Manager for quota increases.
+specificationVersion: '0.1'
+rateLimits:
+  events:
+    - name: Max input event size
+      description: Maximum size of a single inbound event record
+      limit: 4
+      unit: KB
+      scope: per record
+      tier: all
+    - name: Max batch event size
+      description: Maximum size of a single record within a batch request
+      limit: 16
+      unit: KB
+      scope: per record in batch
+      tier: all
+    - name: Max total batch size
+      description: Maximum total size of all records in a single batch
+      limit: 1
+      unit: GB
+      scope: per batch request
+      tier: all
+    - name: Max event ingress rate
+      description: Maximum rate of inbound events ingested per account
+      limit: quota-based
+      unit: events/second
+      scope: per account
+      tier: plan-dependent
+    - name: Max output event size
+      description: Maximum size of a single outbound trigger event
+      limit: 1
+      unit: MB
+      scope: per trigger event
+      tier: all
+    - name: Max egress rate
+      description: Maximum rate of outbound event delivery
+      limit: quota-based
+      unit: events/second
+      scope: per account
+      tier: plan-dependent
+  userProfiles:
+    - name: Max profile size
+      description: Maximum total size of a single user profile
+      limit: 1
+      unit: MB
+      scope: per profile
+      tier: all
+    - name: Max identifier size
+      description: Maximum size of a single profile identifier value
+      limit: 256
+      unit: bytes
+      scope: per identifier
+      tier: all
+    - name: Max attribute values
+      description: Maximum number of values stored per profile
+      limit: 1000
+      unit: values
+      scope: per profile
+      tier: all
+    - name: Max aggregate size
+      description: Maximum size of aggregate profile data across account
+      limit: quota-based
+      unit: varies
+      scope: per account
+      tier: plan-dependent
+    - name: Max custom fields
+      description: Maximum number of custom schema fields per account
+      limit: quota-based
+      unit: fields
+      scope: per account
+      tier: plan-dependent
+    - name: Max stitched identifiers
+      description: Maximum number of identity stitches per user profile
+      limit: 50
+      unit: identifiers
+      scope: per profile
+      tier: all
+  audiences:
+    - name: Max audiences
+      description: Maximum number of audience definitions per account
+      limit: 500
+      unit: audiences
+      scope: per account
+      tier: all
+    - name: Max conditions per audience
+      description: Maximum number of conditions including nested conditions per audience
+      limit: 1000
+      unit: conditions
+      scope: per audience
+      tier: all
+    - name: Max re-evaluation rate
+      description: Frequency at which audience membership is recalculated
+      limit: quota-based
+      unit: varies
+      scope: per account
+      tier: plan-dependent
+    - name: Max audience name length
+      description: Maximum character length for audience names in the UI
+      limit: 64
+      unit: characters
+      scope: per audience name
+      tier: all
+  dataModels:
+    - name: Max Cloud Connect models
+      description: Maximum number of Cloud Connect data models per account
+      limit: 100
+      unit: models
+      scope: per account
+      tier: all
+  browsersAndCookies:
+    - name: Max audience cookie storage
+      description: Maximum browser cookie storage for audience data (v2 only; v3 uses local storage)
+      limit: 5
+      unit: MB
+      scope: per browser (v2)
+      tier: all
+    - name: Max cookie size
+      description: Maximum size of a single cookie per domain
+      limit: 4096
+      unit: bytes
+      scope: per domain
+      tier: all
+    - name: Max collect payload via URL
+      description: Maximum size of data collection payload sent via URL parameter
+      limit: 2000
+      unit: bytes
+      scope: per request
+      tier: all
+  integrations:
+    - name: Max active imports
+      description: Maximum number of simultaneously active import jobs
+      limit: 100
+      unit: jobs
+      scope: per account
+      tier: all
+    - name: Max active exports
+      description: Maximum number of simultaneously active export jobs
+      limit: 200
+      unit: jobs
+      scope: per account
+      tier: all
+    - name: Max integration creations per hour
+      description: Maximum number of new integration jobs that can be created per hour
+      limit: 10
+      unit: jobs/hour
+      scope: per account
+      tier: all
+    - name: Job retention completed
+      description: Duration completed jobs are retained in the system
+      limit: 90
+      unit: days
+      scope: per job
+      tier: all
+    - name: Job retention paused or failed
+      description: Duration paused or failed jobs are retained in the system
+      limit: 90
+      unit: days
+      scope: per job
+      tier: all
+  content:
+    - name: Max URLs enriched
+      description: Maximum number of URLs processed by the content enrichment engine per month
+      limit: 20000
+      unit: URLs/month
+      scope: per account
+      tier: all
+    - name: Max topics displayed
+      description: Maximum number of content topics surfaced in the platform
+      limit: 500
+      unit: topics
+      scope: per account
+      tier: all
+    - name: Max topics per user
+      description: Maximum number of content affinity topics tracked per user profile
+      limit: 50
+      unit: topics
+      scope: per user
+      tier: all
+    - name: Max context layers
+      description: Maximum number of context layers for content classification
+      limit: 10
+      unit: layers
+      scope: per account
+      tier: all
+  customModeling:
+    - name: Max activated lookalike models
+      description: Maximum number of simultaneously activated lookalike models
+      limit: 20
+      unit: models
+      scope: per account
+      tier: all
+    - name: Max model audience size
+      description: Maximum number of users included in a lookalike model audience
+      limit: 20000000
+      unit: users
+      scope: per model
+      tier: all
+notes: >-
+  Quota-based limits vary by plan tier (Developer, Growth, Enterprise). Contact
+  your Lytics Account Manager for custom quota increases. Developer plan accounts
+  are throttled when monthly credit caps are reached; Growth plan accounts that
+  continually exceed allocation are automatically enrolled in a higher credit
+  model.
+contact:
+  url: https://support.lytics.com/hc/en-us
+  documentation: https://docs.lytics.com/docs/platform-limits

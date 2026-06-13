@@ -1,0 +1,81 @@
+aid: lytics
+name: Lytics
+description: >-
+  Lytics is a customer data platform (CDP) that provides a REST API for
+  managing unified user profiles, behavioral segments, content affinity
+  scoring, campaigns, and real-time personalization integrations. The platform
+  enables marketers to ingest data from 100+ sources, build predictive
+  audiences, and activate them across advertising networks, email providers,
+  data warehouses, and on-site personalization tools.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/lytics/refs/heads/main/apis.yml
+created: '2026-06-13'
+modified: '2026-06-13'
+specificationVersion: '0.19'
+tags:
+  - Customer Data Platform
+  - CDP
+  - Personalization
+  - Segmentation
+  - User Profiles
+  - Behavioral Analytics
+  - Content Affinity
+  - Real-Time Data
+  - Marketing Automation
+  - Audience Activation
+apis:
+  - name: Lytics REST API
+    description: >-
+      The Lytics REST API provides programmatic access to user profile
+      management, behavioral segment queries, content affinity scores, audience
+      activations, data stream ingestion, Cloud Connect warehouse integrations,
+      and job orchestration for the Lytics customer data platform.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://docs.lytics.com/reference
+    baseURL: https://api.lytics.io
+    tags:
+      - User Profiles
+      - Segments
+      - Content Affinity
+      - Data Ingestion
+      - Campaigns
+      - Personalization
+    properties:
+      - type: Documentation
+        url: https://docs.lytics.com/reference
+      - type: OpenAPI
+        url: https://docs.lytics.com/llms.txt
+    contact:
+      - FN: Lytics Support
+        url: https://support.lytics.com/hc/en-us
+common:
+  - type: Website
+    url: https://www.lytics.com/
+  - type: Documentation
+    url: https://docs.lytics.com/
+  - type: GitHubOrg
+    url: https://github.com/lytics
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/lytics
+  - type: Blog
+    url: https://www.lytics.com/blog/
+  - type: Pricing
+    url: https://www.lytics.com/pricing/
+  - type: StatusPage
+    url: https://lytics.statuspage.io/
+  - type: X
+    url: https://x.com/lyticsio
+  - type: ChangeLog
+    url: https://docs.lytics.com/changelog
+  - type: Support
+    url: https://support.lytics.com/hc/en-us
+  - type: Plans
+    url: plans/lytics-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/lytics-rate-limits.yml
+  - type: FinOps
+    url: finops/lytics-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,99 @@
+name: Lytics Plans and Pricing
+description: >-
+  Lytics offers three pricing tiers based on monthly profile update credits.
+  Credits represent profile update events: inbound data events consume 1 credit
+  each, Cloud Connect warehouse syncs consume 0.5 credits per row. Plans differ
+  in monthly credit allocation, data retention, domain limits, connector access,
+  and support level.
+specificationVersion: '0.1'
+plans:
+  - name: Developer
+    description: >-
+      Free tier designed for individual developers and small projects to explore
+      Lytics capabilities. Includes basic profile building, CSV imports,
+      Personalization SDK, and Google/Meta ad syncing. Throttled when monthly
+      event cap is reached.
+    url: https://www.lytics.com/pricing/
+    price: 0
+    priceCurrency: USD
+    billingCycle: monthly
+    features:
+      - 2M monthly profile update credits
+      - Up to 10 domains
+      - 6 months data retention
+      - Basic profile building
+      - CSV imports
+      - Personalization SDK
+      - Google Ads audience syncing
+      - Meta audience syncing
+      - Automated support
+      - 10M free credits bonus on upgrade to paid tier
+    limitations:
+      - Throttled upon reaching monthly event credit cap
+      - No server-side connectors
+      - No custom schema
+      - No lookalike modeling
+      - No real-time profiles
+  - name: Growth
+    description: >-
+      Mid-tier plan for growing marketing teams requiring server-side connectors,
+      extended data retention, custom schema, real-time profiles, computed
+      traits, and interest engine capabilities. Overages auto-enroll into higher
+      credit tier.
+    url: https://www.lytics.com/pricing/
+    price: 500
+    priceCurrency: USD
+    billingCycle: monthly
+    additionalCreditPrice: 500
+    additionalCreditUnit: 10M credits
+    features:
+      - 5M monthly profile update credits
+      - Unlimited domains
+      - 12 months data retention
+      - Everything in Developer tier
+      - Server-side connectors
+      - Extended data retention
+      - Custom schema
+      - Custom audience segmentation
+      - Lookalike modeling
+      - Real-time user profiles
+      - Computed traits
+      - Interest engine
+      - Email-based support
+    limitations:
+      - Continual overage auto-enrolls into higher credit model
+      - No SSO
+      - No dedicated support SLA
+      - No multi-account access
+      - No region control
+  - name: Enterprise
+    description: >-
+      Full-featured plan for large enterprises requiring custom credit volumes,
+      2-year data retention, SSO, dedicated support with SLA, region control,
+      multi-account access, and daily data sync capabilities. Pricing negotiated
+      directly with Lytics.
+    url: https://www.lytics.com/pricing/
+    price: 0
+    priceCurrency: USD
+    billingCycle: monthly
+    custom: true
+    features:
+      - 10M+ monthly profile update credits (custom)
+      - Unlimited domains
+      - 2 years data retention
+      - Full feature set
+      - SSO (Single Sign-On)
+      - Dedicated support with SLA
+      - Region control
+      - Multi-account access
+      - Daily data sync
+      - All Growth tier features
+    limitations: []
+creditModel:
+  description: >-
+    Credits represent profile update events within the Lytics platform.
+  rates:
+    - eventType: Inbound data event
+      creditsConsumed: 1
+    - eventType: Cloud Connect warehouse sync row
+      creditsConsumed: 0.5

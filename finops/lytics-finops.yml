@@ -1,0 +1,115 @@
+name: Lytics FinOps Framework
+description: >-
+  FinOps guidance for managing Lytics customer data platform costs using the
+  FOCUS (FinOps Open Cost and Usage Specification) framework. Lytics uses a
+  credit-based consumption model where profile update events drive costs.
+  Understanding credit consumption patterns is essential for cost optimization
+  across data ingestion, audience activation, and warehouse sync workflows.
+specificationVersion: '1.0'
+provider: Lytics
+providerURL: https://www.lytics.com/
+pricingURL: https://www.lytics.com/pricing/
+costModel:
+  type: credit-based consumption
+  description: >-
+    Lytics charges based on profile update credits consumed per billing period.
+    Credits are consumed by inbound data events and Cloud Connect warehouse sync
+    rows. Monthly credit allocations are defined by plan tier with overage
+    options available.
+  unit: profile update credits
+  billingCycle: monthly
+costDrivers:
+  - name: Inbound Data Events
+    description: >-
+      Every event ingested into Lytics that updates a user profile consumes one
+      credit. High-volume data collection pipelines are the primary cost driver.
+    creditRate: 1 credit per event
+    focusCategory: Usage
+    optimizationLevers:
+      - Filter noisy or low-value events at the collection layer before ingestion
+      - Batch events where real-time processing is not required
+      - Deduplicate events upstream to avoid redundant profile updates
+      - Use sampling for high-frequency behavioral signals with diminishing marginal value
+  - name: Cloud Connect Warehouse Syncs
+    description: >-
+      Each row synced from a connected data warehouse (Snowflake, BigQuery,
+      Databricks) consumes 0.5 credits. Large warehouse sync jobs can
+      accumulate significant credit costs.
+    creditRate: 0.5 credits per row
+    focusCategory: Usage
+    optimizationLevers:
+      - Limit Cloud Connect sync scope to fields actively used in segmentation
+      - Sync only delta/changed rows rather than full table refreshes where supported
+      - Schedule large syncs during off-peak periods to spread load
+      - Audit and disable Cloud Connect models that are no longer referenced by active audiences
+  - name: Real-Time Profile Enrichment
+    description: >-
+      Server-side API calls that enrich profiles in real time consume credits
+      equivalent to inbound events. Available on Growth and Enterprise plans.
+    creditRate: 1 credit per enrichment call
+    focusCategory: Usage
+    optimizationLevers:
+      - Cache enrichment results where profile update frequency permits
+      - Throttle enrichment API call rate to match actual personalization needs
+plans:
+  - tier: Developer
+    monthlyCredits: 2000000
+    monthlyCost: 0
+    currency: USD
+    overagePolicy: Throttled at cap — no overage charges, traffic paused
+    focusChargeCategory: Free Tier
+  - tier: Growth
+    monthlyCredits: 5000000
+    monthlyCost: 500
+    currency: USD
+    additionalCreditBlock: 10000000
+    additionalCreditCost: 500
+    overagePolicy: >-
+      Accounts continuously exceeding allocation are auto-enrolled in higher
+      credit tier at additional cost
+    focusChargeCategory: On-Demand
+  - tier: Enterprise
+    monthlyCredits: custom
+    monthlyCost: custom
+    currency: USD
+    overagePolicy: >-
+      Overages managed through account review and plan adjustment; no automatic
+      throttling
+    focusChargeCategory: Commitment-Based (contract)
+costVisibility:
+  - name: Credit Consumption Dashboard
+    description: Monitor real-time and historical credit consumption in the Lytics admin portal
+    url: https://app.lytics.io/
+  - name: Platform Limits Documentation
+    description: Published limits and quota thresholds for all platform resources
+    url: https://docs.lytics.com/docs/platform-limits
+  - name: Account Manager
+    description: Enterprise customers can review consumption and adjust plans with their Lytics Account Manager
+    url: https://support.lytics.com/hc/en-us
+focusAlignment:
+  - focusConcept: ChargeType
+    lyticsMapping: Credit consumption billed monthly; Developer tier is free; Growth is on-demand; Enterprise is contract
+  - focusConcept: ServiceCategory
+    lyticsMapping: Customer Data Platform / Marketing Technology / Data Analytics
+  - focusConcept: ResourceType
+    lyticsMapping: Profile Update Credits
+  - focusConcept: UsageUnit
+    lyticsMapping: Credits (profile update events or 0.5 per warehouse sync row)
+  - focusConcept: CommitmentDiscountType
+    lyticsMapping: Enterprise contracts provide committed credit volumes at negotiated rates
+optimizationRecommendations:
+  - priority: high
+    recommendation: Audit active Cloud Connect sync models and disable any not driving active audience segments
+    estimatedImpact: Can reduce warehouse sync credit consumption by 20-50% in mature accounts
+  - priority: high
+    recommendation: Implement event filtering at the data collection layer to drop low-value or redundant events before they reach Lytics
+    estimatedImpact: Reduces inbound event credit consumption proportional to filtered volume
+  - priority: medium
+    recommendation: Review audience re-evaluation frequency and align to actual campaign activation cadence
+    estimatedImpact: Reduces compute overhead on quota-based re-evaluation limits
+  - priority: medium
+    recommendation: Right-size plan tier against 90-day credit consumption baseline before committing to Growth or Enterprise
+    estimatedImpact: Avoids overpaying for unused credits or incurring auto-tier-upgrade costs
+  - priority: low
+    recommendation: Leverage the 10M free credit bonus offered when upgrading from Developer to Growth to offset early ramp costs
+    estimatedImpact: One-time credit offset equivalent to 2 months of Growth plan allocation
