@@ -8,7 +8,7 @@ description: >-
   audiences, and activate them across advertising networks, email providers,
   data warehouses, and on-site personalization tools.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://raw.githubusercontent.com/api-evangelist/lytics/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -31,7 +31,7 @@ apis:
       management, behavioral segment queries, content affinity scores, audience
       activations, data stream ingestion, Cloud Connect warehouse integrations,
       and job orchestration for the Lytics customer data platform.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://docs.lytics.com/reference
     baseURL: https://api.lytics.io
     tags:
