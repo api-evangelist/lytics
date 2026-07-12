@@ -1,0 +1,25 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/lytics-rest-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+  - query
+schemes:
+- name: ApiKeyQuery
+  type: apiKey
+  in: query
+  parameter: key
+  description: Lytics API key passed as a query parameter. Obtain your API key from the Lytics
+    account settings.
+  sources:
+  - openapi/lytics-rest-api-openapi.yml
+- name: ApiKeyHeader
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Lytics API key passed as an Authorization header value.
+  sources:
+  - openapi/lytics-rest-api-openapi.yml
