@@ -50,6 +50,8 @@ apis:
       - FN: Lytics Support
         url: https://support.lytics.com/hc/en-us
 common:
+  - type: AgenticAccess
+    url: agentic-access/lytics-agentic-access.yml
   - type: DomainSecurity
     url: security/lytics-domain-security.yml
   - type: Authentication
