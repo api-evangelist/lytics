@@ -1,0 +1,156 @@
+openapi: 3.0.3
+info:
+  title: Lytics REST Accounts Work API
+  description: The Lytics REST API provides programmatic access to user profile management, behavioral segment queries, content affinity scores, audience activations, data stream ingestion, Cloud Connect warehouse integrations, and job orchestration for the Lytics customer data platform (CDP).
+  version: 2.1.0
+  contact:
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  license:
+    name: Proprietary
+    url: https://www.lytics.com/
+servers:
+- url: https://api.lytics.io
+  description: Lytics Production API
+security:
+- ApiKeyQuery: []
+- ApiKeyHeader: []
+tags:
+- name: Work
+  description: Trigger background workflow operations
+paths:
+  /api/work:
+    post:
+      operationId: createWork
+      summary: Trigger a background workflow
+      description: Triggers a background workflow operation identified by a workflow ID. Common workflows include segment evaluation, content rescoring, content enrichment, and GDPR deletion.
+      tags:
+      - Work
+      parameters:
+      - $ref: '#/components/parameters/ApiKeyParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkRequest'
+            examples:
+              segment_scan:
+                summary: Evaluate a segment
+                value:
+                  workflow_id: e40a0ad5d0a845ca8549a7d23ede9eed
+                  config:
+                    filter_ql: in_segment("all_users")
+                    skip_emitting_sentinel: true
+                    segment_scanner_version: v2
+              content_enrich:
+                summary: Enrich content collection
+                value:
+                  workflow_id: 23be8d80749b106513e83547e2c8bff1
+                  verbose_logging: true
+                  config:
+                    collection_id: my_collection
+                    skip_sitemaps: true
+                    enrich_epoch:
+                      meta: '2026-01-01T00:00:00Z'
+                      google_nlp: '2026-01-01T00:00:00Z'
+      responses:
+        '200':
+          description: Work job created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  schemas:
+    WorkResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: ok
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The work job ID
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        message:
+          type: string
+          description: Human-readable error message
+          example: invalid API key
+    WorkRequest:
+      type: object
+      required:
+      - workflow_id
+      description: Request to trigger a background workflow
+      properties:
+        workflow_id:
+          type: string
+          description: The ID of the workflow to execute
+          example: e40a0ad5d0a845ca8549a7d23ede9eed
+        verbose_logging:
+          type: boolean
+          description: Enable verbose logging for this workflow run
+          default: false
+        config:
+          type: object
+          description: Workflow-specific configuration parameters
+          additionalProperties: true
+  responses:
+    Unauthorized:
+      description: Unauthorized — missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request — invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    ApiKeyParam:
+      name: key
+      in: query
+      required: false
+      description: Lytics API key (required unless passed via Authorization header)
+      schema:
+        type: string
+  securitySchemes:
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: key
+      description: Lytics API key passed as a query parameter. Obtain your API key from the Lytics account settings.
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Lytics API key passed as an Authorization header value.
+externalDocs:
+  description: Lytics API Reference Documentation
+  url: https://docs.lytics.com/reference

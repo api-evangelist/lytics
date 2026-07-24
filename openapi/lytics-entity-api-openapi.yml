@@ -1,0 +1,166 @@
+openapi: 3.0.3
+info:
+  title: Lytics REST Accounts Entity API
+  description: The Lytics REST API provides programmatic access to user profile management, behavioral segment queries, content affinity scores, audience activations, data stream ingestion, Cloud Connect warehouse integrations, and job orchestration for the Lytics customer data platform (CDP).
+  version: 2.1.0
+  contact:
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  license:
+    name: Proprietary
+    url: https://www.lytics.com/
+servers:
+- url: https://api.lytics.io
+  description: Lytics Production API
+security:
+- ApiKeyQuery: []
+- ApiKeyHeader: []
+tags:
+- name: Entity
+  description: Look up unified user profiles by field value
+paths:
+  /api/entity/{table}/{field}/{value}:
+    get:
+      operationId: getEntity
+      summary: Look up entity (user profile)
+      description: Returns the unified user profile for a specific entity identified by a field/value lookup against the specified data table.
+      tags:
+      - Entity
+      parameters:
+      - name: table
+        in: path
+        required: true
+        description: The data table to query (e.g., `user`)
+        schema:
+          type: string
+          example: user
+      - name: field
+        in: path
+        required: true
+        description: The field name to look up (e.g., `email`, `_uid`)
+        schema:
+          type: string
+          example: email
+      - name: value
+        in: path
+        required: true
+        description: The field value to match
+        schema:
+          type: string
+          example: user@example.com
+      - $ref: '#/components/parameters/ApiKeyParam'
+      - name: fields
+        in: query
+        description: Comma-separated list of profile fields to include in the response
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successful response with the user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized — missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    EntityResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: ok
+        data:
+          $ref: '#/components/schemas/UserProfile'
+    UserProfile:
+      type: object
+      description: A unified Lytics user profile
+      properties:
+        _uid:
+          type: string
+          description: Lytics unique user identifier
+        email:
+          type: string
+          format: email
+          description: User email address
+        first_name:
+          type: string
+        last_name:
+          type: string
+        segments:
+          type: array
+          description: List of segment slugs the user belongs to
+          items:
+            type: string
+        scores:
+          type: object
+          description: Behavioral and content affinity scores
+          additionalProperties:
+            type: number
+        created:
+          type: string
+          format: date-time
+        last_active_ts:
+          type: string
+          format: date-time
+      additionalProperties: true
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        message:
+          type: string
+          description: Human-readable error message
+          example: invalid API key
+  parameters:
+    ApiKeyParam:
+      name: key
+      in: query
+      required: false
+      description: Lytics API key (required unless passed via Authorization header)
+      schema:
+        type: string
+  securitySchemes:
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: key
+      description: Lytics API key passed as a query parameter. Obtain your API key from the Lytics account settings.
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Lytics API key passed as an Authorization header value.
+externalDocs:
+  description: Lytics API Reference Documentation
+  url: https://docs.lytics.com/reference

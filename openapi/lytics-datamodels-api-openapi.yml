@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: Lytics REST Accounts Datamodels API
+  description: The Lytics REST API provides programmatic access to user profile management, behavioral segment queries, content affinity scores, audience activations, data stream ingestion, Cloud Connect warehouse integrations, and job orchestration for the Lytics customer data platform (CDP).
+  version: 2.1.0
+  contact:
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  license:
+    name: Proprietary
+    url: https://www.lytics.com/
+servers:
+- url: https://api.lytics.io
+  description: Lytics Production API
+security:
+- ApiKeyQuery: []
+- ApiKeyHeader: []
+tags:
+- name: Datamodels
+  description: Manage data models and stream schemas
+paths:
+  /api/datamodel:
+    get:
+      operationId: listDatamodels
+      summary: List data models
+      description: Returns all data models (stream schemas) configured for the account.
+      tags:
+      - Datamodels
+      parameters:
+      - $ref: '#/components/parameters/ApiKeyParam'
+      responses:
+        '200':
+          description: Successful response with data model list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatamodelListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/datamodel/{name}:
+    get:
+      operationId: getDatamodel
+      summary: Get data model by name
+      description: Returns a specific data model (stream schema) by name.
+      tags:
+      - Datamodels
+      parameters:
+      - name: name
+        in: path
+        required: true
+        description: The data model name
+        schema:
+          type: string
+      - $ref: '#/components/parameters/ApiKeyParam'
+      responses:
+        '200':
+          description: Successful response with data model details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatamodelResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /api/collect:
+    post:
+      operationId: collectData
+      summary: Collect (ingest) event data
+      description: Ingests a stream of user behavior events or entity attributes into a Lytics data stream. Used for real-time data collection.
+      tags:
+      - Datamodels
+      parameters:
+      - $ref: '#/components/parameters/ApiKeyParam'
+      - name: stream
+        in: query
+        description: The target data stream name
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectRequest'
+      responses:
+        '200':
+          description: Data ingested successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Unauthorized — missing or invalid API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Bad request — invalid parameters or request body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    Datamodel:
+      type: object
+      description: A Lytics data model (stream schema)
+      properties:
+        id:
+          type: string
+          description: Unique data model identifier
+        name:
+          type: string
+          description: Stream/data model name
+        fields:
+          type: array
+          description: Field definitions for the data model
+          items:
+            $ref: '#/components/schemas/DatamodelField'
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+    DatamodelListResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: ok
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Datamodel'
+    DatamodelResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: ok
+        data:
+          $ref: '#/components/schemas/Datamodel'
+    DatamodelField:
+      type: object
+      description: A field definition within a data model
+      properties:
+        name:
+          type: string
+          description: Field name
+        as:
+          type: string
+          description: Alias for the field in the unified profile
+        type:
+          type: string
+          description: Field data type
+          enum:
+          - string
+          - int
+          - float
+          - bool
+          - date
+          - array
+          - object
+        is_by:
+          type: boolean
+          description: Whether this field is used as a profile identity key
+    CollectRequest:
+      type: object
+      description: An event or entity data payload to ingest into a Lytics data stream. The schema is flexible and maps to the target stream's data model.
+      additionalProperties: true
+      example:
+        email: user@example.com
+        name: Jane Doe
+        _uid: abc123
+        event: page_view
+        url: https://example.com/products
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        message:
+          type: string
+          description: Human-readable error message
+          example: invalid API key
+    SuccessResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: ok
+  parameters:
+    ApiKeyParam:
+      name: key
+      in: query
+      required: false
+      description: Lytics API key (required unless passed via Authorization header)
+      schema:
+        type: string
+  securitySchemes:
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: key
+      description: Lytics API key passed as a query parameter. Obtain your API key from the Lytics account settings.
+    ApiKeyHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Lytics API key passed as an Authorization header value.
+externalDocs:
+  description: Lytics API Reference Documentation
+  url: https://docs.lytics.com/reference
