@@ -8,7 +8,20 @@ description: >-
   audiences, and activate them across advertising networks, email providers,
   data warehouses, and on-site personalization tools.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/lytics.png
 url: https://raw.githubusercontent.com/api-evangelist/lytics/refs/heads/main/apis.yml
 created: '2026-06-13'
 modified: '2026-06-13'
@@ -25,30 +38,90 @@ tags:
   - Marketing Automation
   - Audience Activation
 apis:
-  - name: Lytics REST API
-    description: >-
-      The Lytics REST API provides programmatic access to user profile
-      management, behavioral segment queries, content affinity scores, audience
-      activations, data stream ingestion, Cloud Connect warehouse integrations,
-      and job orchestration for the Lytics customer data platform.
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    humanURL: https://docs.lytics.com/reference
-    baseURL: https://api.lytics.io
-    tags:
-      - User Profiles
-      - Segments
-      - Content Affinity
-      - Data Ingestion
-      - Campaigns
-      - Personalization
-    properties:
-      - type: Documentation
-        url: https://docs.lytics.com/reference
-      - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/lytics/refs/heads/main/openapi/lytics-rest-api-openapi.yml
-    contact:
-      - FN: Lytics Support
-        url: https://support.lytics.com/hc/en-us
+- aid: lytics:lytics-accounts-api
+  name: Lytics Accounts API
+  description: Manage Lytics accounts and retrieve account information
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io
+  tags:
+  - Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+- aid: lytics:lytics-connections-api
+  name: Lytics Connections API
+  description: Manage data source and destination connections
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io
+  tags:
+  - Connections
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-connections-api-openapi.yml
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+- aid: lytics:lytics-datamodels-api
+  name: Lytics Datamodels API
+  description: Manage data models and stream schemas
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io
+  tags:
+  - Datamodels
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-datamodels-api-openapi.yml
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+- aid: lytics:lytics-entity-api
+  name: Lytics Entity API
+  description: Look up unified user profiles by field value
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io
+  tags:
+  - Entity
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-entity-api-openapi.yml
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+- aid: lytics:lytics-jobs-api
+  name: Lytics Jobs API
+  description: Orchestrate and monitor background data jobs
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io
+  tags:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+- aid: lytics:lytics-segments-api
+  name: Lytics Segments API
+  description: Query and scan behavioral audience segments
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io
+  tags:
+  - Segments
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-segments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+- aid: lytics:lytics-work-api
+  name: Lytics Work API
+  description: Trigger background workflow operations
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io
+  tags:
+  - Work
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-work-api-openapi.yml
+  - type: Documentation
+    url: https://docs.lytics.com/reference
 common:
   - type: AgenticAccess
     url: agentic-access/lytics-agentic-access.yml
