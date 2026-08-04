@@ -1,0 +1,26 @@
+{
+  "provider": "lytics",
+  "sources": [
+    "lytics-accounts-api-openapi.yml",
+    "lytics-connections-api-openapi.yml",
+    "lytics-datamodels-api-openapi.yml",
+    "lytics-entity-api-openapi.yml",
+    "lytics-jobs-api-openapi.yml",
+    "lytics-segments-api-openapi.yml",
+    "lytics-work-api-openapi.yml"
+  ],
+  "outputs": [
+    "lytics-accounts-api-openapi.yml",
+    "lytics-connections-api-openapi.yml",
+    "lytics-datamodels-api-openapi.yml",
+    "lytics-entity-api-openapi.yml",
+    "lytics-jobs-api-openapi.yml",
+    "lytics-segments-api-openapi.yml",
+    "lytics-work-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
