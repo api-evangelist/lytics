@@ -1,12 +1,15 @@
 aid: lytics
 name: Lytics
 description: >-
-  Lytics is a customer data platform (CDP) that provides a REST API for
-  managing unified user profiles, behavioral segments, content affinity
-  scoring, campaigns, and real-time personalization integrations. The platform
-  enables marketers to ingest data from 100+ sources, build predictive
-  audiences, and activate them across advertising networks, email providers,
-  data warehouses, and on-site personalization tools.
+  Lytics is a customer data platform (CDP) that provides two concurrent REST APIs for
+  managing unified user profiles, behavioral audiences, content affinity scoring,
+  campaign flows, and real-time personalization. The v2 API (886 paths / 1,331
+  operations) covers accounts, authorizations, connections, schema and identity
+  configuration, data models, streams, jobs and ML models; the v1 API still owns data
+  collection, personalization, entity lookup and content classification. Lytics ingests
+  data from 100+ sources, builds predictive audiences, and activates them across
+  advertising networks, email providers, data warehouses and on-site personalization.
+  Lytics joined Contentstack in January 2025.
 type: Index
 accessModel:
   pricing: freemium
@@ -24,7 +27,7 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/lytics.png
 url: https://raw.githubusercontent.com/api-evangelist/lytics/refs/heads/main/apis.yml
 created: '2026-06-13'
-modified: '2026-06-13'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 tags:
   - Customer Data Platform
@@ -38,90 +41,76 @@ tags:
   - Marketing Automation
   - Audience Activation
 apis:
-- aid: lytics:lytics-accounts-api
-  name: Lytics Accounts API
-  description: Manage Lytics accounts and retrieve account information
+- aid: lytics:lytics-api-v2
+  name: Lytics API v2
+  description: >-
+    Version 2 of the Lytics API — the current REST surface for the Lytics
+    customer data platform. Covers accounts and users, authorizations and
+    connections, data models and Cloud Connect, schema and identity
+    configuration, streams, profiles and entities, audiences and segments,
+    flows and campaigns, jobs and workflow orchestration, webhook templates,
+    ML models, reports and metrics.
   humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io
+  baseURL: https://api.lytics.io/v2
   tags:
   - Accounts
-  properties:
-  - type: OpenAPI
-    url: openapi/lytics-accounts-api-openapi.yml
-  - type: Documentation
-    url: https://docs.lytics.com/reference
-- aid: lytics:lytics-connections-api
-  name: Lytics Connections API
-  description: Manage data source and destination connections
-  humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io
-  tags:
+  - Auths
   - Connections
-  properties:
-  - type: OpenAPI
-    url: openapi/lytics-connections-api-openapi.yml
-  - type: Documentation
-    url: https://docs.lytics.com/reference
-- aid: lytics:lytics-datamodels-api
-  name: Lytics Datamodels API
-  description: Manage data models and stream schemas
-  humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io
-  tags:
-  - Datamodels
-  properties:
-  - type: OpenAPI
-    url: openapi/lytics-datamodels-api-openapi.yml
-  - type: Documentation
-    url: https://docs.lytics.com/reference
-- aid: lytics:lytics-entity-api
-  name: Lytics Entity API
-  description: Look up unified user profiles by field value
-  humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io
-  tags:
-  - Entity
-  properties:
-  - type: OpenAPI
-    url: openapi/lytics-entity-api-openapi.yml
-  - type: Documentation
-    url: https://docs.lytics.com/reference
-- aid: lytics:lytics-jobs-api
-  name: Lytics Jobs API
-  description: Orchestrate and monitor background data jobs
-  humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io
-  tags:
+  - Content
+  - DataModels
+  - Flows
   - Jobs
-  properties:
-  - type: OpenAPI
-    url: openapi/lytics-jobs-api-openapi.yml
-  - type: Documentation
-    url: https://docs.lytics.com/reference
-- aid: lytics:lytics-segments-api
-  name: Lytics Segments API
-  description: Query and scan behavioral audience segments
-  humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io
-  tags:
+  - ML
+  - Profiles
+  - Reports
+  - Schema
   - Segments
+  - Streams
+  - Templates
   properties:
   - type: OpenAPI
-    url: openapi/lytics-segments-api-openapi.yml
+    url: openapi/lytics-api-v2-openapi.json
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
   - type: Documentation
     url: https://docs.lytics.com/reference
-- aid: lytics:lytics-work-api
-  name: Lytics Work API
-  description: Trigger background workflow operations
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: Overlay
+    url: overlays/lytics-api-v2-overlay.yaml
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+- aid: lytics:lytics-api-v1
+  name: V1 Lytics API
+  description: >-
+    Version 1 of the Lytics API — the data collection, personalization,
+    segmentation, content and catalog surface. Includes the /collect data
+    upload endpoints, the personalization and entity lookup APIs, segment
+    scan and segment ML, content classification and recommendation, the
+    schema catalog, and account management.
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io
   tags:
+  - DataUpload
+  - Segment
+  - Personalization
+  - Content
+  - Catalog
+  - Experience
+  - Stream
+  - Query
   - Work
   properties:
   - type: OpenAPI
-    url: openapi/lytics-work-api-openapi.yml
+    url: openapi/lytics-api-v1-openapi.json
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
   - type: Documentation
     url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: Overlay
+    url: overlays/lytics-api-v1-overlay.yaml
 common:
   - type: AgenticAccess
     url: agentic-access/lytics-agentic-access.yml
@@ -155,6 +144,86 @@ common:
     url: rate-limits/lytics-rate-limits.yml
   - type: FinOps
     url: finops/lytics-finops.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Packages
+    url: packages/lytics-packages.yml
+  - type: SDKs
+    url: packages/lytics-packages.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: LLMsTxt
+    url: llms/lytics-llms.txt
+  - type: Conventions
+    url: conventions/lytics-conventions.yml
+  - type: ErrorCatalog
+    url: errors/lytics-error-codes.yml
+  - type: Lifecycle
+    url: lifecycle/lytics-lifecycle.yml
+  - type: Conformance
+    url: conformance/lytics-conformance.yml
+  - type: DataModel
+    url: data-model/lytics-data-model.yml
+  - type: CLI
+    url: cli/lytics-cli.yml
+  - type: Components
+    url: components/lytics-components.yml
+  - type: Webhooks
+    url: asyncapi/lytics-webhooks.yml
+  - type: TrustCenter
+    url: security/lytics-trust-center.yml
+  - type: Vocabulary
+    url: vocabulary/lytics-vocabulary.yml
+  - type: SpectralRules
+    url: rules/lytics-jsonschema-spectral-rules.yml
+  - type: JSONLD
+    url: json-ld/lytics-context.jsonld
+  - type: JSONSchema
+    url: json-schema/lytics-user-profile-schema.json
+  - type: JSONSchema
+    url: json-schema/lytics-collect-event-schema.json
+  - type: JSONSchema
+    url: json-schema/lytics-segment-schema.json
+  - type: Examples
+    url: examples/lytics-user-profile-example.json
+  - type: Examples
+    url: examples/lytics-collect-event-example.json
+  - type: Examples
+    url: examples/lytics-segment-scan-request-example.json
+  - type: Examples
+    url: examples/lytics-segment-scan-response-example.json
+  - type: DeveloperPortal
+    url: https://docs.lytics.com/
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: GettingStarted
+    url: https://docs.lytics.com/reference/getting-started
+  - type: Quickstart
+    url: https://docs.lytics.com/docs/developer-quickstart
+  - type: SignUp
+    url: https://app.lytics.com/register
+  - type: Login
+    url: https://app.lytics.com/login
+  - type: TermsOfService
+    url: https://www.lytics.com/terms-of-service/
+  - type: PrivacyPolicy
+    url: https://www.lytics.com/privacy-policy/
+  - type: Postman
+    url: https://www.postman.com/lytics-cdp/lytics-s-public-workspace
+  - type: GitHubOrganization
+    url: https://github.com/lytics
+  - type: Community
+    url: https://docs.lytics.com/discuss
+  - type: Compliance
+    url: https://docs.lytics.com/docs/compliance
+
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v1
