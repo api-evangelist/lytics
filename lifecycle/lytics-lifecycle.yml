@@ -1,0 +1,56 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.lytics.com/reference, https://docs.lytics.com/changelog,
+  https://lytics.statuspage.io/, and derived from the two published OpenAPI documents
+versioning:
+  scheme: uri-path
+  current: v2
+  docs: https://docs.lytics.com/reference
+  versions:
+    - {version: '2.0', base: 'https://api.lytics.io/v2', spec: openapi/lytics-api-v2-openapi.json, status: current}
+    - {version: '1.0', base: 'https://api.lytics.io', prefixes: ['/api', '/collect'], spec: openapi/lytics-api-v1-openapi.json, status: supported}
+  note: >-
+    v1 and v2 are concurrent surfaces, not a migration path. The v2 spec (886 paths /
+    1,331 operations) covers management and orchestration; the v1 spec (88 paths / 136
+    operations) still exclusively owns data collection (/collect), personalization,
+    content classification and recommendation. Lytics' own agent skills call both in the
+    same workflow, and the docs publish both as current reference sections.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  published: false
+  note: >-
+    No deprecation or sunset policy is published. Neither OpenAPI marks a single
+    operation `deprecated: true`, no RFC 8594 Sunset/Deprecation header is documented,
+    and no end-of-life date has been announced for the v1 API despite v2 shipping. The
+    changelog announces replacements in the product UI (for example "Content Index
+    replaces the Classification page") without an API deprecation notice. Recorded as
+    ABSENT — no Deprecation pointer is emitted for this provider.
+deprecated_operations: []
+status_page:
+  url: https://lytics.statuspage.io/
+  provider: Atlassian Statuspage
+  note: >-
+    Public status page. Verified reachable 2026-08-13. Also referenced from
+    apis.yml common[] as a StatusPage pointer.
+sla:
+  url: null
+  uptime_target: null
+  note: >-
+    No public SLA document. The pricing page reserves "dedicated support with an SLA"
+    for the Enterprise tier only; the SLA text itself is not published.
+support:
+  url: https://support.lytics.com/hc/en-us
+  contact: support@lytics.com
+changelog:
+  url: https://docs.lytics.com/changelog
+  artifact: changelog/lytics-changelog.yml
+ownership:
+  parent: Contentstack
+  note: >-
+    Lytics joined Contentstack in January 2025 (blogs/2025-01-07-lytics-joins-contentstack-to-power-the-future-of-co.md).
+    The consequences are visible in the API estate: trust.lytics.com now redirects to
+    trust.contentstack.com, and @lytics/lio-client-contentstack ships as a first-party
+    npm plugin. The API itself remains on lytics.io / lytics.com hosts.

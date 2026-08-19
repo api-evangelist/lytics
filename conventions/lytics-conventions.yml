@@ -1,0 +1,128 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://github.com/lytics/agent-skills/blob/main/references/api-response-format.md,
+  https://github.com/lytics/agent-skills/blob/main/references/api-client.md,
+  https://docs.lytics.com/docs/access-tokens, https://docs.lytics.com/docs/platform-limits,
+  and derived from openapi/lytics-api-v2-openapi.json + openapi/lytics-api-v1-openapi.json
+note: >-
+  Cross-cutting request/response semantics for the Lytics REST API. The response
+  envelope and error contract are published by Lytics itself in its agent-skills
+  reference documents; everything else is derived from the two published OpenAPI
+  documents and the docs. Where Lytics has NO convention (idempotency, RFC 9457
+  problem details, rate-limit response headers) that absence is recorded rather
+  than filled in.
+authentication:
+  style: api-key
+  header: 'Authorization: <token>'
+  query_alternative: access_token (v1 API only, documented in the V1 OpenAPI description)
+  bearer_prefix: false
+  note: >-
+    The token is sent as the raw Authorization header value with no `Bearer` prefix.
+    Tokens are created under Account > Security > Access Tokens with per-token roles
+    and an expiry of 7/30/90 days or no expiration.
+  docs: https://docs.lytics.com/docs/access-tokens
+  token_types:
+    - name: Access Token
+      note: Role-scoped, created in the UI, shown once at creation.
+    - name: User Auth Token
+      note: User-specific, attributes actions to that user, expires (v1 docs).
+    - name: API User token
+      note: Less privileged role, does not expire, less action history retained (v1 docs).
+  ip_allowlisting:
+    supported: true
+    setting: api_ip_whitelist
+    note: CIDR range restricting both API and admin access; documented in the V1 OpenAPI description.
+response_envelope:
+  shape: |
+    {"data": <payload>, "status": <http status>, "message": "optional", "request_id": "..."}
+  fields:
+    - {name: data, note: The response payload — object for a single resource, array for a list, null for a delete.}
+    - {name: status, note: The HTTP status repeated inside the body.}
+    - {name: message, note: Optional human-readable status or error message.}
+    - {name: request_id, note: Per-request correlation id, returned on both success and error.}
+  source: https://github.com/lytics/agent-skills/blob/main/references/api-response-format.md
+request_tracing:
+  field: request_id
+  location: response body (not a header)
+  note: >-
+    Lytics returns request_id inside the JSON envelope rather than as an HTTP header.
+    There is no X-Request-Id / Traceparent convention in either published spec.
+error_envelope:
+  shape: |
+    {"status": 4xx|5xx, "message": "Human-readable error message", "request_id": "..."}
+  problem_details_rfc9457: false
+  content_type: application/json
+  code_catalog: errors/lytics-error-codes.yml
+  note: >-
+    The v2 OpenAPI additionally defines lioerrors.ApiV2ErrorOut with a closed enum of
+    27 machine-readable Lytics error codes (code/level/message/timestamp).
+    Lytics does NOT use application/problem+json.
+idempotency:
+  supported: false
+  note: >-
+    Neither published OpenAPI declares an Idempotency-Key parameter or header, and the
+    docs describe no idempotent-retry contract. Writes are last-write-wins; the
+    provider's own account-sync skill implements upsert-by-natural-key in the CLIENT
+    to get idempotence, which is evidence the API does not offer it. Recorded as
+    absent — no Idempotency pointer is emitted for this provider.
+pagination:
+  style: continuation-token
+  note: >-
+    Not uniform across the API. The segment scan endpoint pages with `start` (a
+    continuation token returned by the previous page) plus `limit`; most v2 list
+    endpoints return the full collection with no paging parameters at all.
+  parameters:
+    - {name: start, in: query, note: Continuation token from the previous page (segment scan).}
+    - {name: limit, in: query, note: Page size (segment scan, fieldinfo, a small number of v2 list endpoints).}
+    - {name: splits, in: query, note: Split a scan into N parallel streams (segment scan).}
+  response_fields: [data, total]
+  applies_to:
+    - /api/segment/{segId}/scan
+    - /api/segment/{segId}/fieldinfo
+field_selection:
+  supported: true
+  parameters:
+    - {name: fields, in: query, note: Restrict the returned profile fields.}
+    - {name: fieldBlocklist, in: query, note: Exclude named profile fields.}
+    - {name: include_fields, in: query, note: Additional fields to include.}
+    - {name: segments, in: query, note: Include segment membership on the returned profile.}
+    - {name: meta, in: query, note: Include field metadata alongside values.}
+  note: Applies to the entity/personalization and segment scan surfaces.
+multi_account:
+  parameter: account_id
+  in: query
+  note: >-
+    account_id is the single most common parameter in the v2 API (present on 1,321 of
+    1,467 operations). A token can reach several accounts; account_id selects one.
+versioning:
+  scheme: uri-path
+  current: v2
+  versions:
+    - {version: v2, base: 'https://api.lytics.io/v2', spec: openapi/lytics-api-v2-openapi.json, status: current}
+    - {version: v1, base: 'https://api.lytics.io', prefixes: ['/api', '/collect'], spec: openapi/lytics-api-v1-openapi.json, status: supported}
+  note: >-
+    v1 and v2 are concurrent, not successive — v2 covers management/orchestration while
+    the data collection (/collect), personalization and content surfaces still live only
+    on v1. Lytics' own agent skills call BOTH in the same workflow. No sunset has been
+    published for v1.
+rate_limit_signaling:
+  response_headers: []
+  status_on_exhaustion: 429
+  note: >-
+    Lytics publishes platform quotas (see rate-limits/lytics-rate-limits.yml) but no
+    RateLimit-* / X-RateLimit-* response headers and no Retry-After appear in either
+    published spec or in the docs. The provider's own api-client reference tells an
+    agent to "wait briefly and retry once" on 429 — i.e. there is no machine-readable
+    budget signal to read.
+  docs: https://docs.lytics.com/docs/platform-limits
+media_types:
+  request: [application/json, text/csv]
+  response: [application/json]
+  note: The data upload endpoints accept CSV as well as JSON.
+cross_links:
+  errors: errors/lytics-error-codes.yml
+  lifecycle: lifecycle/lytics-lifecycle.yml
+  authentication: authentication/lytics-authentication.yml
+  rate_limits: rate-limits/lytics-rate-limits.yml
+  data_model: data-model/lytics-data-model.yml

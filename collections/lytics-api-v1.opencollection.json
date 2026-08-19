@@ -1,0 +1,5102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "V1 Lytics API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "DataUpload",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "BulkCSVUpload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/collect/bulk/:stream",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "stream",
+                "value": "user_db",
+                "type": "path",
+                "description": "The DataType aka Table of type of data being uploaded.  See Data, Streams in web admin."
+              },
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "The Lytics DATA API key. Not the management key. Or use Authorization Header."
+              },
+              {
+                "name": "dryrun",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timestamp_field",
+                "value": "",
+                "type": "query",
+                "description": "The name of the column or field in file that contains event timestamp."
+              },
+              {
+                "name": "headers",
+                "value": "",
+                "type": "query",
+                "description": "CSV only, Comma delimited list of header columns for csv (if not first row)"
+              },
+              {
+                "name": "delimiter",
+                "value": "",
+                "type": "query",
+                "description": "CSV only, if not the default comma, either t=tab, or | may be accepted"
+              },
+              {
+                "name": "append",
+                "value": "",
+                "type": "query",
+                "description": "CSV only,  JSON encoded object of additional name-value pairs to append to each record."
+              },
+              {
+                "name": "droperrors",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filename",
+                "value": "\"myfile.csv\"",
+                "type": "query",
+                "description": "Just for record-keeping in our event - stream."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload CSV files (may be gzipped). They MUST contain headers: either\nin first row (by default) OR in **headers** querystring field.\nIf the file contains a timestamp field you want us to use\nsee **timestamp_field** querystring parameter for how we extract it.\n\n*Note Domain* this api is on a different domain *https://bulk.lytics.io* because the *api.lytics.io* domain\nis limited to 10MB file uploads.\n\n```sh\n# the \"user_regdata\" is the STREAM (ie Type) of data, if there\n# is multiple different types"
+        },
+        {
+          "info": {
+            "name": "BulkJSONUpload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/collect/bulk/:streamname",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "streamname",
+                "value": "user_db",
+                "type": "path",
+                "description": "The DataType, or \"Table\" of type of data being uploaded"
+              },
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "The Lytics DATA API key. Not the management key. Or use Authorization Header."
+              },
+              {
+                "name": "dryrun",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timestamp_field",
+                "value": "",
+                "type": "query",
+                "description": "The name of the column or field in file that contains event timestamp."
+              },
+              {
+                "name": "filename",
+                "value": "\"myfile.json\"",
+                "type": "query",
+                "description": "Just for record-keeping in our event - stream."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "JSON formatting info.\n\nThis JSON is ok:\n\n```json\n{\"order_ids\":[1,2,3]}\n```\n\nThis is not valid because it has objects nested inside arrays:\n\n```json\n{\"orders\":[{\"id\":1,\"price\":22},{\"id\":2,\"price\":23}]}\n```"
+        },
+        {
+          "info": {
+            "name": "Data JSON Upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/collect/json/:stream",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "stream",
+                "value": "user_db",
+                "type": "path",
+                "description": "The DataType, or \"Table\" of type of data being uploaded"
+              },
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "The Lytics DATA API key (not management key)"
+              },
+              {
+                "name": "dryrun",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timestamp_field",
+                "value": "",
+                "type": "query",
+                "description": "The name of the column or field in file that contains event timestamp."
+              },
+              {
+                "name": "filename",
+                "value": "\"myfile.json\"",
+                "type": "query",
+                "description": "Just for record-keeping in our event - stream."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Data JSON Upload"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Segment",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "SegmentList",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segment",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "table",
+                "value": "user",
+                "type": "query",
+                "description": "Table for segments to fetch, \"user\" by default, specify \"content\" for content collections (aka segments)."
+              },
+              {
+                "name": "valid",
+                "value": "all",
+                "type": "query",
+                "description": "True, False or \"all\".  Get all segments, only valid, or only invalid."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get list of **Segments** .   Segments can refer to any Table.\n\nThe two main tables you will be working with are *User* and *Content*.\n\n```\n# Grab all segments from \"user\" table\n\ncurl \"$LIOAPI/api/segment\" -s -H \"Authorization: $LIOKEY\" | jq '.'\n\n# Grab all \"Content Collections\" (ney, segments)\n\ncurl \"$LIOAPI/api/segment?table=content\" -s -H \"Authorization: $LIOKEY\" | jq '.'\n\n\n```"
+        },
+        {
+          "info": {
+            "name": "Segment Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/segment",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create A segment.  See **/api/segment/validate**\nmethod for testing out Segmentation rules.\n\nPass a **Segment QL** logic expression to create\na Segment.\n\n```\n# Plain Text api will extract the \"our_test_activelist\" as the \"slug\" and \"name\" of\n# the segment\ncurl -s -XPOST \"https://api.lytics.io/api/segment\" \\\n    -H \"Content-type: text/plain\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n\nFILTER AND (\n    visits > 5,\n    last_visit >= \"now-30d\",\n    scores.momentum >  10\n)\nALIAS our_test_activelist\n"
+        },
+        {
+          "info": {
+            "name": "Segment Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segment/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "my_segment_slug",
+                "type": "path",
+                "description": "id, or slug of a segment, part of url path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch a segment by **id** or **slug**"
+        },
+        {
+          "info": {
+            "name": "Segment Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.lytics.io/api/segment/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "my_segment_slug",
+                "type": "path",
+                "description": "id, or slug of a segment, part of url path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update A segment.\n\n```\n# You can upsert (insert if new, update if exists)\n# by POSTing to api and the ALIAS will be used to lookup\n# the existing one and update it.\ncurl -s -XPOST \"https://api.lytics.io/api/segment\" \\\n    -H \"Content-type: text/plain\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n\nFILTER AND (\n    visits > 5,\n    last_visit >= \"now-30d\",\n    scores.momentum >  10\n)\nALIAS our_test_activelist\n\n' | jq '.'\n\n\n# Json Api Allows a few more fields such as description\ncurl -s -XPUT \"https:"
+        },
+        {
+          "info": {
+            "name": "Segment Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/segment/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "my_segment_slug",
+                "type": "path",
+                "description": "id, or slug of a segment, part of url path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete A segment."
+        },
+        {
+          "info": {
+            "name": "SegmentSize",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/segment/size",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get size of a single Segment using SegmentQL, not saved.\n\nThis api is very rate throttled, 1/10 seconds.\n\n```\n# Post a SegmentQL query to size api to fetch size\ncurl -s -XPOST \"https://api.lytics.io/api/segment/size\" \\\n    -H \"Content-type: text/plain\" \\\n    -H \"Authorization: your_api_token\" \\\n    -d'\n\nFILTER AND (\n    visits > 5,\n    last_visit >= \"now-30d\",\n    scores.momentum >  10\n)\n\n' | jq '.'\n\n```"
+        },
+        {
+          "info": {
+            "name": "SegmentValidate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/segment/validate",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Validate single Segment Query Statement"
+        },
+        {
+          "info": {
+            "name": "SegmentSizes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segment/sizes",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "ids",
+                "value": "123,456",
+                "type": "query",
+                "description": "list of ids to get, format = ids[]=123&ids[]=234 OR ids=123,345  etc, see standard []string param doc"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get bunch of segment sizes."
+        },
+        {
+          "info": {
+            "name": "SegmentScan",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segment/:segId/scan",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "segId",
+                "value": "1234",
+                "type": "path",
+                "description": "segment Id in path"
+              },
+              {
+                "name": "id",
+                "value": "1234",
+                "type": "query",
+                "description": "segment Id in querystring instead of path then use `api/segment/scan`"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "num of rows to return per call, default = 10, max = 100"
+              },
+              {
+                "name": "splits",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "1,2,3   comma seperated list of ints 0-99 for a-b split testing (a=1,5,8  )"
+              },
+              {
+                "name": "start",
+                "value": "next_xyz",
+                "type": "query",
+                "description": "optional ID of a previous segment scan to resume, must be recent this is retrieved from the `next` parameter in JSON response"
+              },
+              {
+                "name": "meta",
+                "value": "true",
+                "type": "query",
+                "description": "optional boolean, whether to include schema in response"
+              },
+              {
+                "name": "sortfield",
+                "value": "last_visit_ts",
+                "type": "query",
+                "description": "field to sort on"
+              },
+              {
+                "name": "sortorder",
+                "value": "20",
+                "type": "query",
+                "description": "[desc,asc]"
+              },
+              {
+                "name": "recent",
+                "value": "true",
+                "type": "query",
+                "description": "short cut for last visit timestamp desc   [t,true,]"
+              },
+              {
+                "name": "segments",
+                "value": "{rules...}",
+                "type": "query",
+                "description": "JSON of ad-hoc segment, or pass this in http Body"
+              },
+              {
+                "name": "fields",
+                "value": "email,user_id,name",
+                "type": "query",
+                "description": "list of fields to include in response"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a paged list of **Users** for a **Segment**."
+        },
+        {
+          "info": {
+            "name": "Segment Batch Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/segment/:segId/scan",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "segId",
+                "value": "1234",
+                "type": "path",
+                "description": "segment Id in path"
+              },
+              {
+                "name": "id",
+                "value": "1234",
+                "type": "query",
+                "description": "segment Id in querystring instead of path then use `api/segment/scan`"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "num of rows to return per call, default = 10, max = 100"
+              },
+              {
+                "name": "splits",
+                "value": "1,2,3",
+                "type": "query",
+                "description": "1,2,3   comma seperated list of ints 0-99 for a-b split testing (a=1,5,8  )"
+              },
+              {
+                "name": "start",
+                "value": "next_xyz",
+                "type": "query",
+                "description": "optional ID of a previous segment scan to resume, must be recent this is retrieved from the `next` parameter in JSON response"
+              },
+              {
+                "name": "meta",
+                "value": "true",
+                "type": "query",
+                "description": "optional boolean, whether to include schema in response"
+              },
+              {
+                "name": "sortfield",
+                "value": "last_visit_ts",
+                "type": "query",
+                "description": "field to sort on"
+              },
+              {
+                "name": "sortorder",
+                "value": "20",
+                "type": "query",
+                "description": "[desc,asc]"
+              },
+              {
+                "name": "recent",
+                "value": "true",
+                "type": "query",
+                "description": "short cut for last visit timestamp desc   [t,true,]"
+              },
+              {
+                "name": "segments",
+                "value": "{rules...}",
+                "type": "query",
+                "description": "JSON of ad-hoc segment, or pass this in http Body"
+              },
+              {
+                "name": "fields",
+                "value": "email,user_id,name",
+                "type": "query",
+                "description": "list of fields to include in response"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a Batch of segments\n\n```\n\n#   ids=1234         convert this to []string{\"123\"}\n#   ids=[123,456]    convert this to []string{\"123\",\"456\"}\n#   ids=123,456      convert this to []string{\"123\",\"456\"}\n#   ids=123&ids=456  convert this to []string{\"123\",\"456\"}\n#   ids[]=123&ids[]=456  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids\n\n\ncurl -s -XDELETE -H \"Content-Type: application/json\" \\\n  - H \"Authorization: $LIOKEY\" \\\n  \"https://api.lytics.io/api/segment?ids=21decdea540"
+        },
+        {
+          "info": {
+            "name": "SegmentAttribution",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segment/:segId/attribution",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "segId",
+                "value": "123abc",
+                "type": "path",
+                "description": "segment id"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "refresh",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single attribution"
+        },
+        {
+          "info": {
+            "name": "SegmentAttributionList",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segment/attribution",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "refresh",
+                "value": "",
+                "type": "query",
+                "description": "SYSADMIN ONLY, refresh cache\n\n+ Default  `false`"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "number of historical data points to fetch\n\n+ Default `168`"
+              },
+              {
+                "name": "ids",
+                "value": "123,456",
+                "type": "query",
+                "description": "list of ids to get, format = ids[]=123&ids[]=234 OR ids=123,345  etc, see standard []string param doc"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get bunch of segment sizes"
+        },
+        {
+          "info": {
+            "name": "SegmentFieldInfo",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segment/:segId/fieldinfo",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "segId",
+                "value": "123,abc,def",
+                "type": "path",
+                "description": "the segment id"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fields",
+                "value": "name,email,segments",
+                "type": "query",
+                "description": "optional list, or comma separated list of string fields to include"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get field info by segment"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SegmentCollection",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "SegmentCollectionList",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segmentcollection",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "sideload",
+                "value": "true",
+                "type": "query",
+                "description": "should segments for collection should be sideloaded"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get list **Segment Collections**"
+        },
+        {
+          "info": {
+            "name": "SegmentCollection Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/segmentcollection",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "sideload",
+                "value": "true",
+                "type": "query",
+                "description": "should segments for collection should be sideloaded"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new SegmentCollection from existing segments."
+        },
+        {
+          "info": {
+            "name": "SegmentCollection Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segmentcollection/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "1234abcd",
+                "type": "path",
+                "description": "id of segment collection"
+              },
+              {
+                "name": "sideload",
+                "value": "true",
+                "type": "query",
+                "description": "should segments for collection should be sideloaded"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch a segment collection by **id** or **slug**"
+        },
+        {
+          "info": {
+            "name": "SegmentCollection Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.lytics.io/api/segmentcollection/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "1234abcd",
+                "type": "path",
+                "description": "id of segment collection"
+              },
+              {
+                "name": "sideload",
+                "value": "true",
+                "type": "query",
+                "description": "should segments for collection should be sideloaded"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a SegmentCollection"
+        },
+        {
+          "info": {
+            "name": "SegmentCollection Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/segmentcollection/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "source::target",
+                "type": "path",
+                "description": "ID of the SegmentCollection model to delete."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a SegmentCollection model."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Subscription",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "SubscriptionList",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/subscription",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "segment_id",
+                "value": "",
+                "type": "query",
+                "description": "Id of Segment Id OR Slug to filter on"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "query",
+                "description": "Table name."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get A list of all Subscriptions.\n\n```sh\n\n# find subscriptions that contain a specific segment.Id or segment.Slug\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: application/json\" \\\n  \"https://api.lytics.io/api/subscription?segment_id=seg_webhook1\" | jq \".\"\n\n# same but use id.\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: application/json\" \\\n  \"https://api.lytics.io/api/subscription?segment_id=f897270369f977294871f21cc0d826e7\" | jq \".\"\n\n```"
+        },
+        {
+          "info": {
+            "name": "Subscription Upsert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/subscription",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upsert a new Subscription.   Subscriptions allow you to listen and recieve\nnotification of events inside of Lytics, most common would be listen\nto users entering/leaving segments to serve as triggers.\n\nWhen creating subscriptions they have the following fields.\n\n| field         | DataType         | Description   |\n|---------------|------------------|---------------|\n| channel       | string           | Required: What Type of subscription.  [kinesis, webhook]\n| name          | string           | "
+        },
+        {
+          "info": {
+            "name": "Subscription Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/subscription/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "1234",
+                "type": "path",
+                "description": "subscription Id in path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a single Subscription Webhook."
+        },
+        {
+          "info": {
+            "name": "Subscription Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/subscription/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "1234",
+                "type": "path",
+                "description": "subscription Id in path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete A Subscription."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Personalization",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "User Me",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/me/:fieldname/:fieldval",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "fieldname",
+                "value": "email",
+                "type": "path",
+                "description": "Field name of identity to use as lookup"
+              },
+              {
+                "name": "fieldval",
+                "value": "bob@gmail.com",
+                "type": "path",
+                "description": "Field value of identity"
+              },
+              {
+                "name": "fields",
+                "value": "name,org,city",
+                "type": "query",
+                "description": "comma delimited field list to be returned"
+              },
+              {
+                "name": "fieldBlocklist",
+                "value": "name,org,city",
+                "type": "query",
+                "description": "comma delimited list of fields to exclude"
+              },
+              {
+                "name": "include_fields",
+                "value": "true",
+                "type": "query",
+                "description": "if true include all the whitelisted fields"
+              },
+              {
+                "name": "segments",
+                "value": "true",
+                "type": "query",
+                "description": "Should segments this user is member of be included?"
+              },
+              {
+                "name": "meta",
+                "value": "true",
+                "type": "query",
+                "description": "Should Meta Fields be included?"
+              },
+              {
+                "name": "download",
+                "value": "false",
+                "type": "query",
+                "description": "Should the content-disposition header set to attachment to download the user as a file?"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single User Entity.  This is an alias for `/api/entity/user`."
+        },
+        {
+          "info": {
+            "name": "Personalization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/entity/:table/:fieldname/:fieldval",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fieldname",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fieldval",
+                "value": "bob@gmail.com",
+                "type": "path",
+                "description": "Field value of identity"
+              },
+              {
+                "name": "fields",
+                "value": "name,org,city",
+                "type": "query",
+                "description": "comma delimited field list to be returned"
+              },
+              {
+                "name": "fieldBlocklist",
+                "value": "name,org,city",
+                "type": "query",
+                "description": "comma delimited list of fields to exclude"
+              },
+              {
+                "name": "include_fields",
+                "value": "true",
+                "type": "query",
+                "description": "if true include all the whitelisted fields"
+              },
+              {
+                "name": "segments",
+                "value": "true",
+                "type": "query",
+                "description": "Should segments this user is member of be included?"
+              },
+              {
+                "name": "meta",
+                "value": "true",
+                "type": "query",
+                "description": "Should Meta Fields be included?"
+              },
+              {
+                "name": "download",
+                "value": "false",
+                "type": "query",
+                "description": "Should the content-disposition header set to attachment to download the user as a file?"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single User Entity.\n\n```\n# get user whose user_id = user123\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/entity/user/user_id/user123\" | jq '.'\n\n# get user whose email = aaron@aaron.com\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/entity/user/email/aaron@aaron.com\" | jq '.'\n\n```"
+        },
+        {
+          "info": {
+            "name": "Profile Delete Request",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/entity/:table/:fieldname/:fieldval",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "fieldname",
+                "value": "_uid",
+                "type": "path",
+                "description": "Field name of identity to use as lookup (could be email, user_id, etc)"
+              },
+              {
+                "name": "fieldval",
+                "value": "bob@gmail.com",
+                "type": "path",
+                "description": "Field value of identity"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deletes a single Entity (normally a user).\n\nThis API persists a deletion event for the particular profile provided. This operation is asynchronous; it will take\nsome time for the profile to be removed from downstream databases and indexes. This request returns a \"request_id\"\nwhich may be used to determine the status of that deletion. While the profile may become unavailable quickly, it may\ntake a while for the full process to complete since it includes all archived historic data.\n\n```\n# Delete u"
+        },
+        {
+          "info": {
+            "name": "Web Personalization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/entity/:table/:fieldval",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "table",
+                "value": "user",
+                "type": "path",
+                "description": "Field value of data table"
+              },
+              {
+                "name": "fieldval",
+                "value": "bob@gmail.com",
+                "type": "path",
+                "description": "Field value of identity"
+              },
+              {
+                "name": "fields",
+                "value": "name,org,city",
+                "type": "query",
+                "description": "comma delimited field list to be returned"
+              },
+              {
+                "name": "fieldBlocklist",
+                "value": "name,org,city",
+                "type": "query",
+                "description": "comma delimited list of fields to exclude"
+              },
+              {
+                "name": "include_fields",
+                "value": "true",
+                "type": "query",
+                "description": "if true include all the whitelisted fields"
+              },
+              {
+                "name": "segments",
+                "value": "true",
+                "type": "query",
+                "description": "Should segments this user is member of be included?"
+              },
+              {
+                "name": "meta",
+                "value": "true",
+                "type": "query",
+                "description": "Should Meta Fields be included?"
+              },
+              {
+                "name": "download",
+                "value": "false",
+                "type": "query",
+                "description": "Should the content-disposition header set to attachment to download the user as a file?"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single User Entity using cookie id.  This is same as entity api\nbut you don't specify a `fieldname` (user_id, email, etc) and instead it only uses the cookie identifier."
+        },
+        {
+          "info": {
+            "name": "ProfileDeletion Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/entity/deletestatus/:request_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "request_id",
+                "value": "e9d5f2d3d2c7a7d0e801-1526083200",
+                "type": "path",
+                "description": "RequestID of previously submitted deletion event"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves the status of a submitted deletion event."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Content",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "ContentTopics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/topic",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "limit on number of topics to return, default = 500"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a list of topics in the content graph.\n\n```\n\ncurl -s -H \"Authorization: $LIOKEY\" \\\n -XGET \"https://api.lytics.io/api/content/topic?limit=10\" | jq '.'\n\n```"
+        },
+        {
+          "info": {
+            "name": "ContentTopicSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/topic/:topic",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "topic",
+                "value": "stuff",
+                "type": "path",
+                "description": "id or slug of topic"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ContentTopicSummary"
+        },
+        {
+          "info": {
+            "name": "ContentTopicRollupSummary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/rollup/:label",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "label",
+                "value": "123abc",
+                "type": "path",
+                "description": "label of topic-rollup"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ContentTopicRollupSummary"
+        },
+        {
+          "info": {
+            "name": "ContentTopicRollupList",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/topicrollup",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get list of topic-rollups.\n\n```\ncurl \"$LIOAPI/api/content/topicrollup\" -s -H \"Authorization: $LIOKEY\" | jq '.'\n```"
+        },
+        {
+          "info": {
+            "name": "Content Topic Blacklist Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/topicblocklist",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch the blacklisted topics"
+        },
+        {
+          "info": {
+            "name": "Content Topic Blacklist Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/content/topicblocklist",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Blacklist or un-blacklist topics to an account's topic-blacklist\n\n```\n# to blacklist certain topics\ncurl -s -XPOST \"https://api.lytics.io/api/content/topicblocklist\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n{\n  \"method\": \"add\",\n  \"ids\": [\"Data-First Marketing\", \"User Data Unification\"]\n}\n' | jq '.'\n\n# to unblacklist certain topics\ncurl -s -XPOST \"https://api.lytics.io/api/content/topicblocklist\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Auth"
+        },
+        {
+          "info": {
+            "name": "Content Topic Blacklist Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.lytics.io/api/content/topicblocklist",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Replace topics in an account's topic-blacklist\n\n```\ncurl -s -XPOST \"https://api.lytics.io/api/content/topicblocklist\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n{\n  \"ids\": [\"Data-First Marketing\", \"User Data Unification\"]\n}\n' | jq '.'\n\n```"
+        },
+        {
+          "info": {
+            "name": "ContentTopicRollup Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/topicrollup/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "123abc",
+                "type": "path",
+                "description": "id of topic-rollup"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch a topic-rollup by **id**"
+        },
+        {
+          "info": {
+            "name": "ContentTopicRollup Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/content/topicrollup/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "123abc",
+                "type": "path",
+                "description": "id of topic-rollup"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a topic-rollup.\n\n```\ncurl -s -XPOST \"https://api.lytics.io/api/content/topicrollup\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n{\n  \"label\": \"Baking rollup\",\n  \"acctid\": \"123456\",\n  \"topics\": [\n      {\"label\": \"Recipe\"},\n      {\"label\": \"baking\"}\n  ]\n}\n' | jq '.'\n```"
+        },
+        {
+          "info": {
+            "name": "ContentTopicRollup Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/content/topicrollup/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "123abc",
+                "type": "path",
+                "description": "id of topic-rollup"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a topic-rollup"
+        },
+        {
+          "info": {
+            "name": "ContentDocument",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/doc",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "urls",
+                "value": "http//www.getlytics.com/blog/post",
+                "type": "query",
+                "description": "url to look up"
+              },
+              {
+                "name": "ids",
+                "value": "123abc",
+                "type": "query",
+                "description": "hashed url or campaign id to look up"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "ContentDocument"
+        },
+        {
+          "info": {
+            "name": "Content Classify",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/doc/classify",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "url",
+                "value": "http://myurl",
+                "type": "query",
+                "description": "url to classify"
+              },
+              {
+                "name": "text",
+                "value": "my text",
+                "type": "query",
+                "description": "text to classify"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Classify a document without adding the document to the content table corpus. Used for debugging."
+        },
+        {
+          "info": {
+            "name": "Content Classify",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/content/doc/classify",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "url",
+                "value": "http://myurl",
+                "type": "query",
+                "description": "url to classify"
+              },
+              {
+                "name": "text",
+                "value": "my text",
+                "type": "query",
+                "description": "text to classify"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Classify a document and add the document to the content table corpus."
+        },
+        {
+          "info": {
+            "name": "Content Recommendation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/recommend/user/:fieldname/:fieldval",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "fieldname",
+                "value": "email",
+                "type": "path",
+                "description": "field to use to identify a user"
+              },
+              {
+                "name": "fieldval",
+                "value": "bob@bob.com",
+                "type": "path",
+                "description": "unique identity"
+              },
+              {
+                "name": "contentsegment",
+                "value": "blog_content",
+                "type": "query",
+                "description": "id, or slug of a content-collection to filter content"
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "limit on number of documents to suggest/return"
+              },
+              {
+                "name": "shuffle",
+                "value": "false",
+                "type": "query",
+                "description": "whether or not to shuffle the recommendation order"
+              },
+              {
+                "name": "visited",
+                "value": "false",
+                "type": "query",
+                "description": "whether to show recommendations for content the user has already viewed"
+              },
+              {
+                "name": "topics",
+                "value": "[\"Marketing\", \"Analytics\"]",
+                "type": "query",
+                "description": "if supplied, only allow recommendations on content with the specified topics"
+              },
+              {
+                "name": "rank",
+                "value": "affinity",
+                "type": "query",
+                "description": "Ranking method for order of recommendations.  Must be one of \"popular\", \"recent\", or \"affinity\""
+              },
+              {
+                "name": "wait",
+                "value": "true",
+                "type": "query",
+                "description": "Whether or not to wait for more complex user identities to resolve"
+              },
+              {
+                "name": "email",
+                "value": "bob@bob.com",
+                "type": "query",
+                "description": "if the fieldname and fieldval are omitted, an email can be provided. This can be helpful for templating use-cases"
+              },
+              {
+                "name": "url",
+                "value": "www.example.com",
+                "type": "query",
+                "description": "if url is provided, the recommendations will be based on the content topics associated with the provided URL"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Content Recommendation"
+        },
+        {
+          "info": {
+            "name": "Content Segment Recommendation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/recommend/segment/:segId",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "segId",
+                "value": "smt_power",
+                "type": "path",
+                "description": "id, or slug of the user segment to recommend content"
+              },
+              {
+                "name": "contentsegment",
+                "value": "blog_content",
+                "type": "query",
+                "description": "id, or slug of a content-collection segment to filter content"
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "limit on number of documents to suggest/return"
+              },
+              {
+                "name": "shuffle",
+                "value": "false",
+                "type": "query",
+                "description": "whether or not to shuffle the recommendation order"
+              },
+              {
+                "name": "rank",
+                "value": "affinity",
+                "type": "query",
+                "description": "Ranking method for order of recommendations.  Must be one of \"popular\", \"recent\", or \"affinity\""
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Content Segment Recommendation"
+        },
+        {
+          "info": {
+            "name": "Public Content Recommendation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/recommend/:account/user/:fieldname/:fieldval",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "account",
+                "value": "123",
+                "type": "path",
+                "description": "the account ID"
+              },
+              {
+                "name": "fieldname",
+                "value": "email",
+                "type": "path",
+                "description": "field to use to identify a user"
+              },
+              {
+                "name": "fieldval",
+                "value": "bob@bob.com",
+                "type": "path",
+                "description": "unique identity"
+              },
+              {
+                "name": "contentsegment",
+                "value": "blog_content",
+                "type": "query",
+                "description": "id, or slug of a content-collection to filter content"
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "limit on number of documents to suggest/return"
+              },
+              {
+                "name": "shuffle",
+                "value": "false",
+                "type": "query",
+                "description": "whether or not to shuffle the recommendation order"
+              },
+              {
+                "name": "visited",
+                "value": "false",
+                "type": "query",
+                "description": "whether to show recommendations for content the user has already viewed"
+              },
+              {
+                "name": "topics",
+                "value": "[\"Marketing\", \"Analytics\"]",
+                "type": "query",
+                "description": "if supplied, only allow recommendations on content with the specified topics"
+              },
+              {
+                "name": "rank",
+                "value": "affinity",
+                "type": "query",
+                "description": "Ranking method for order of recommendations.  Must be one of \"popular\", \"recent\", or \"affinity\""
+              },
+              {
+                "name": "wait",
+                "value": "true",
+                "type": "query",
+                "description": "Whether or not to wait for more complex user identities to resolve"
+              },
+              {
+                "name": "email",
+                "value": "bob@bob.com",
+                "type": "query",
+                "description": "if the fieldname and fieldval are omitted, an email can be provided. This can be helpful for templating use-cases"
+              },
+              {
+                "name": "url",
+                "value": "www.example.com",
+                "type": "query",
+                "description": "if url is provided, the recommendations will be based on the content topics associated with the provided URL"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Public Content Recommendation"
+        },
+        {
+          "info": {
+            "name": "Content Taxonomy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/taxonomy",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "limit",
+                "value": "150",
+                "type": "query",
+                "description": "number of topics to include in the topic graph, capped at 500 topics"
+              },
+              {
+                "name": "budget",
+                "value": "1.0",
+                "type": "query",
+                "description": "the depth at which any Monte Carlo simulation can traverse through the graph"
+              },
+              {
+                "name": "iter",
+                "value": "8",
+                "type": "query",
+                "description": "how many Monte Carlo simulations to run for each topic"
+              },
+              {
+                "name": "raw",
+                "value": "false",
+                "type": "query",
+                "description": "whether to generate the topic relationships from its Bayesian network"
+              },
+              {
+                "name": "rawThreshold",
+                "value": "0.7",
+                "type": "query",
+                "description": "when extracting relationships directly from the Bayesian network, the threshold at which to determine ties"
+              },
+              {
+                "name": "cliques",
+                "value": "false",
+                "type": "query",
+                "description": "whether to return a single graph or an array of disjoint subgraphs"
+              },
+              {
+                "name": "cliqueThreshold",
+                "value": "0.0",
+                "type": "query",
+                "description": "when returning cliques, the threshold at which to determine if two cliques should be connected"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Content Taxonomy"
+        },
+        {
+          "info": {
+            "name": "Content Corpus",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/content/corpus",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "url",
+                "value": "http://www.somedomain.com/blog/great-post",
+                "type": "query",
+                "description": "the URL for identifying and retrieving content"
+              },
+              {
+                "name": "text",
+                "value": "here is some body text",
+                "type": "query",
+                "description": "the body of the content to be added"
+              },
+              {
+                "name": "topics",
+                "value": "Data,Hockey",
+                "type": "query",
+                "description": "custom topics to append to the document, in addition to topics that will be added with enrichment"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Add a document to the content table corpus.  Either a URL or text must be provided.\nThis allows entry of documents/content that get added to content\ntable, content-graph and available for usage in recommendation, as\nwell as content-explorer.\n\n* **id** if you upload the document more than once, ensure it has common id so only one document is created\n\n* **Custom Attributes**  Any attributes you upload that are not reserved, will be added to content document.\n\n```sh\n\n# Upsert a document into conten"
+        },
+        {
+          "info": {
+            "name": "Content Plot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/filter/topic",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "segment_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "limit to the number of results supplied if a filter is supplied"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Content Plot"
+        },
+        {
+          "info": {
+            "name": "Topic Add",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/content/doc/:docField/:docId/topic/:topicLabel",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "docField",
+                "value": "hashedurl",
+                "type": "path",
+                "description": "name of field to look up content by"
+              },
+              {
+                "name": "docId",
+                "value": "123abc",
+                "type": "path",
+                "description": "value of field to look up content by"
+              },
+              {
+                "name": "topicLabel",
+                "value": "cats",
+                "type": "path",
+                "description": "name of topic to add"
+              },
+              {
+                "name": "relevance",
+                "value": "0.5",
+                "type": "query",
+                "description": "the relevance threshold to set for the new topic"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Add a topic to a Document."
+        },
+        {
+          "info": {
+            "name": "Topic Remove",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/content/doc/:docField/:docId/topic/:topicLabel",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "docField",
+                "value": "hashedurl",
+                "type": "path",
+                "description": "name of field to look up content by"
+              },
+              {
+                "name": "docId",
+                "value": "123abc",
+                "type": "path",
+                "description": "value of field to look up content by"
+              },
+              {
+                "name": "topicLabel",
+                "value": "cats",
+                "type": "path",
+                "description": "name of topic to add"
+              },
+              {
+                "name": "relevance",
+                "value": "0.5",
+                "type": "query",
+                "description": "the relevance threshold to set for the new topic"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Topic Remove"
+        },
+        {
+          "info": {
+            "name": "Content Crawl",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/content/crawl",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "domain",
+                "value": "lytics.com",
+                "type": "query",
+                "description": "the domain to use for the seed of the crawl"
+              },
+              {
+                "name": "domains",
+                "value": "[\"lytics.com\"]",
+                "type": "query",
+                "description": "the domains to use for the seed of the crawl"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new crawl for an account"
+        },
+        {
+          "info": {
+            "name": "Content Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/metrics",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch the Account content Metrics."
+        },
+        {
+          "info": {
+            "name": "Content Topic Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/topic/cluster",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "limit",
+                "value": "8",
+                "type": "query",
+                "description": "number of label rollups to produce"
+              },
+              {
+                "name": "direction",
+                "value": "out",
+                "type": "query",
+                "description": "direction to follow topic dependencies, either \"in\" or \"out\""
+              },
+              {
+                "name": "penalty",
+                "value": "0.9",
+                "type": "query",
+                "description": "penalty to apply as traversal depth increases, where a lower value introduces a higher penalty"
+              },
+              {
+                "name": "threshold",
+                "value": "0.4",
+                "type": "query",
+                "description": "threshold at which neighbor topics are determined, where a lower value introduces a more lenient rule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a collection of the most central topics in account's topic graph, with each topic's corresponding cluster.  This endpoint is meant\nto be used as a means to experiment with the `limit`, `direction`, `penalty`, and `threshold` parameters to create a set of clusters\nthat encompass meaningful topics and the coverage of topics that these clusters SUMMIZE in terms of relative centrality.  Once values\nfor those parameters yield a set of optimal clusters, they should be sent to the topic clusters PO"
+        },
+        {
+          "info": {
+            "name": "Create Content Topic Clusters",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/content/topic/cluster",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "limit",
+                "value": "8",
+                "type": "query",
+                "description": "number of label rollups to produce"
+              },
+              {
+                "name": "direction",
+                "value": "out",
+                "type": "query",
+                "description": "direction to follow topic dependencies, either \"in\" or \"out\""
+              },
+              {
+                "name": "penalty",
+                "value": "0.9",
+                "type": "query",
+                "description": "penalty to apply as traversal depth increases, where a lower value introduces a higher penalty"
+              },
+              {
+                "name": "threshold",
+                "value": "0.4",
+                "type": "query",
+                "description": "threshold at which neighbor topics are determined, where a lower value introduces a more lenient rule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a collection of the most central topics in an account's topic grah, with each topic's corresponding cluster."
+        },
+        {
+          "info": {
+            "name": "Content Topic Cluster",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/content/topic/cluster/:topicId",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "topicId",
+                "value": "Pets",
+                "type": "path",
+                "description": "public topic label in the taxonomy"
+              },
+              {
+                "name": "direction",
+                "value": "out",
+                "type": "query",
+                "description": "direction to follow topic dependencies, either \"in\" or \"out\""
+              },
+              {
+                "name": "penalty",
+                "value": "0.9",
+                "type": "query",
+                "description": "penalty to apply as traversal depth increases, where a lower value introduces a higher penalty"
+              },
+              {
+                "name": "threshold",
+                "value": "0.4",
+                "type": "query",
+                "description": "threshold at which neighbor topics are determined, where a lower value introduces a more lenient rule"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get topics that are related to an input topic.\nThis can be useful for creating topic rollups,\nand provide initial suggestions as to which topics\nmight best comprise a rollup.\n\nThe options for direction, penalty and threshold\nare currently adjustable.  As we determine which\nvalues produce the most useful clusters, we can set\nbetter defaults for them."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "System Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "System Events Query",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/event",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Start fetching items with dates older than:   \"now-3d\" (now-2h, now-1w, \"2016-03-03\").  Date math, or absolute date."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Start fetching items with dates after:   \"now-3d\" (now-2h, now-1w, \"2016-03-03\").  Date math, or absolute date."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Should segments this user is member of be included?"
+              },
+              {
+                "name": "verb",
+                "value": "",
+                "type": "query",
+                "description": "Verb (created, updated, deleted, status, clustered)"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Type of Object (entity, segment, work, account, user)"
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "query",
+                "description": "Id of Object (entity, segment, work, account, user)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get list of system events.\n\n```\n# get the dashboard news items\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/event?query=dashboard_news\" | jq '.'\n\n# get list of all segments created in last 2 weeks\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/event?type=segment&start=now-2w&limit=100&verb=created\" | jq '.'\n\n\n# get list of all events performed by user X\n\n# 1) first find a user id\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lyti"
+        },
+        {
+          "info": {
+            "name": "System Event Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/event/:id",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Single System Event"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Catalog",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Streams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/schema/_streams",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get list of streams, field info they contain."
+        },
+        {
+          "info": {
+            "name": "Stream Hide",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/schema/_streams/:stream,:hidden",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "stream",
+                "value": "my_temp_upload",
+                "type": "path",
+                "description": "Name of the stream To Delete"
+              },
+              {
+                "name": "hidden",
+                "value": "true",
+                "type": "path",
+                "description": "hide stream from Web UI"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The POST endpoint allows Stream to be hidden/un-hidden. A hidden stream is not visible from the Application\n*Data > Streams* Web UI.\n\n**CAVEAT's**\n\n* This does not delete the data, only hides it from ui.\n\n* If queries (LQL) still map this data into profiles it will still be added.\n\n```\n# Hide a temporary stream\ncurl -XPOST 'https://api.lytics.io/api/schema/_streams' \\\n    -H 'Content-type: application/json' \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d '{\n        \"stream\": \"my_temp_upload\",\n       "
+        },
+        {
+          "info": {
+            "name": "Field Hide",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/schema/_streams/:stream,:name,:hidden",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "stream",
+                "value": "default",
+                "type": "path",
+                "description": "Name of the stream containing the field to delete"
+              },
+              {
+                "name": "name",
+                "value": "first_name",
+                "type": "path",
+                "description": "Name of the field to delete"
+              },
+              {
+                "name": "hidden",
+                "value": "true",
+                "type": "path",
+                "description": "hide field from Web UI"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This POST endpoint allows specific fields belong to a stream to be hidden/un-hidden. A hidden field is not\nvisible from the Application *Data > Streams* Web UI.\n\n**CAVEAT'S**\n\n* This does not delete the data, only hides the field in the UI.\n\n* If queries (LQL) stil map this field into profiles, it will still be added\n\n```\n# Hide the 'first-name' field from the 'default' stream\ncurl -XPUT 'https://api.lytics.io/api/schema/_streams/default' \\\n    -H 'Content-type: application/json'\n    -H 'Authori"
+        },
+        {
+          "info": {
+            "name": "Schema Fields",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/schema/:table",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "table",
+                "value": "user",
+                "type": "path",
+                "description": "Name"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Field information about a **NodeType(user)**. Eventually, we will extend beyond user."
+        },
+        {
+          "info": {
+            "name": "FieldInfo For Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/schema/:table/fieldinfo",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "table",
+                "value": "user",
+                "type": "path",
+                "description": "Table name (generally \"user\")"
+              },
+              {
+                "name": "limit",
+                "value": "20",
+                "type": "query",
+                "description": "number of unique values to return per field"
+              },
+              {
+                "name": "fields",
+                "value": "name,email,id",
+                "type": "query",
+                "description": "list, or comma separated list of string fields to include"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get Field level info about a **NodeType(user)**. Contains the possible values contained in each field."
+        },
+        {
+          "info": {
+            "name": "FieldSuggest",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/schema/:table/fieldsuggest/:field",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "table",
+                "value": "user",
+                "type": "path",
+                "description": "Table name (generally `user`)"
+              },
+              {
+                "name": "field",
+                "value": "email",
+                "type": "path",
+                "description": "field name to do lookup on."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Suggest Values for a field for auto-complete in webui"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Metric",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Metric",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/metric/",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "name",
+                "value": "my-metric",
+                "type": "query",
+                "description": "Name of the metric to return"
+              },
+              {
+                "name": "dimension",
+                "value": "segment",
+                "type": "query",
+                "description": "Value of supported dimension (segment, experience, stream, etc)"
+              },
+              {
+                "name": "dimension_id",
+                "value": "abc123",
+                "type": "query",
+                "description": "ID for the specific item within dimension such as a segment ID. Tip: If the type is a segment you can use all_segments as the dimension id to get all segments for the account."
+              },
+              {
+                "name": "dimension_type",
+                "value": "size",
+                "type": "query",
+                "description": "Type of metric to be returned (size, converted, etc)"
+              },
+              {
+                "name": "aggregation",
+                "value": "sum",
+                "type": "query",
+                "description": "Aggregation to apply to metrics (sum, max, min)"
+              },
+              {
+                "name": "interval",
+                "value": "2h",
+                "type": "query",
+                "description": "Duration to roll-up metrics (2h for roll-up into two-hour buckets). Intervals smaller than two hours are not recommended."
+              },
+              {
+                "name": "include_empty_rows",
+                "value": "false",
+                "type": "query",
+                "description": "Passing true will include zero values in the response for every interval whether metrics were logged during that period or not."
+              },
+              {
+                "name": "smooth",
+                "value": "true",
+                "type": "query",
+                "description": "Smooth metrics using a moving-average function"
+              },
+              {
+                "name": "start_date",
+                "value": "now-5w",
+                "type": "query",
+                "description": "Fetch metrics after this date; both dates and relative-dates are supported"
+              },
+              {
+                "name": "end_date",
+                "value": "now-1w",
+                "type": "query",
+                "description": "Fetch metrics before this date; both dates and relative-dates are supported"
+              },
+              {
+                "name": "range",
+                "value": "2h",
+                "type": "query",
+                "description": "Time string used to calculate range from now (e.g \"2h\" will return the last 2 hours). This parameter cannot\nbe used in conjunction with `start_date` and/or `end_date)`\n"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch metrics by providing the arguments in the query-parameters\n\n```sh\ncurl \"$LIOAPI/api/metric?keyspace=segsize&metric=web&name=my-metric\" -s -H \"Authorization: $LIOKEY\" | jq '.'\n```"
+        },
+        {
+          "info": {
+            "name": "Metric",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/metric",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetch metrics by providing the arguments in the request body\n\n```sh\n# Example of segment-size metrics\ncurl -s -XPOST \"$LIOAPI/api/metric\" \\\n    -H 'Content-type: application/json' \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d '{\n            \"dimension\": \"segsize\",\n            \"dimension_id\": \"abc123\",\n            \"dimension_type\": \"size\",\n            \"interval\": \"2h\",\n            \"aggregation\": \"max\",\n            \"start_date\": \"now-5d\",\n            \"end_date\": \"now\",\n            \"smooth\": true\n    "
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Account",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a Single Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/account/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "1234abcd",
+                "type": "path",
+                "description": "id of account."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single account by id."
+        },
+        {
+          "info": {
+            "name": "Account Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.lytics.io/api/account/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "1234abcd",
+                "type": "path",
+                "description": "id of account."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Post update to account. See list of fields above."
+        },
+        {
+          "info": {
+            "name": "Accounts List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/account",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Accounts List"
+        },
+        {
+          "info": {
+            "name": "Account Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/account",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "To create a child Account of a parent account, just post:"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Account Settings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a Single Account Setting",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/account/setting/:setting",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "setting",
+                "value": "enforce_password_history",
+                "type": "path",
+                "description": "slug of account setting."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single Account Setting by slug."
+        },
+        {
+          "info": {
+            "name": "Account Setting Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.lytics.io/api/account/setting/:setting",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "setting",
+                "value": "enforce_password_history",
+                "type": "path",
+                "description": "slug of account setting."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Post update to Account Setting. See list of possible Settings from the List api.\n\n```sh\n\ncurl -XPUT \"https://api.lytics.io/api/account/setting/logon_session_days\" \\\n   -H 'Content-type: application/json' \\\n   -H 'Authorization: $LIOKEY' \\\n   -d '10'\n\n```"
+        },
+        {
+          "info": {
+            "name": "Account Setting Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/account/setting/:setting",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "setting",
+                "value": "enforce_password_history",
+                "type": "path",
+                "description": "slug of account setting."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a custom account setting.  Given a key for a setting, delete the custom-value.\n\nNote, since account-settings may have default values, this only deletes the entire value that currently exists.\n\n```sh\n\ncurl -XDELETE \"https://api.lytics.io/api/account/setting/logon_session_days\" \\\n   -H 'Authorization: $LIOKEY'\n\n```"
+        },
+        {
+          "info": {
+            "name": "Account Setting List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/account/setting",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Account Setting List"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "User",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "User Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/user/:userid",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "userid",
+                "value": "1234abc",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a single admin user"
+        },
+        {
+          "info": {
+            "name": "User Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.lytics.io/api/user/:userid",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "userid",
+                "value": "1234abc",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update An **Lytics Admin User**"
+        },
+        {
+          "info": {
+            "name": "User List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/user",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a list of all administrative users for an account and their roles."
+        },
+        {
+          "info": {
+            "name": "User Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/user",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "suppress",
+                "value": "",
+                "type": "query",
+                "description": "default = false, supress email invite"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create/Invite A **Lytics Admin User** this will either create\na new user if that email is new, or invite user to have access to\ncurrent account.\n\n```sh\n\n# Create/Invite new user for current LIOKEY account\n#  with suppression to not send welcome email\n\ncurl -v -XPOST \"https://api.lytics.io/api/user?suppress=true\"  \\\n  -H 'Content-type: application/json' \\\n  -H \"Authorization: $LIOKEY\" \\\n  -d '{\n    \"email\" : \"fakeuser2@lytics.io\"\n    , \"password\":\"aNotSoGoodPassword%^\"\n    , \"name\":\"aaron\"\n    , "
+        },
+        {
+          "info": {
+            "name": "User SetPassword",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/user/:userid/setpassword",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "userid",
+                "value": "aaron@lytics.io",
+                "type": "path",
+                "description": "userid, or email"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "User SetPassword"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Work",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Work List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/work",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "showhidden",
+                "value": "",
+                "type": "query",
+                "description": "True/False show all hidden work items"
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "True/False show all state"
+              },
+              {
+                "name": "showcompleted",
+                "value": "",
+                "type": "query",
+                "description": "True/False show all completed work items"
+              },
+              {
+                "name": "showdeleted",
+                "value": "",
+                "type": "query",
+                "description": "True/False show all deleted work items (works that was deleted using `work/{id}/delete` command)"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get list of all running integrations (work) for this account."
+        },
+        {
+          "info": {
+            "name": "Work Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/work",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "There are a list of available work-types in the workflow api.\n\nTo create a work unit, there is a *config* block with the work configuration\nsettings, with the fields listed in the workflow.\n\n```sh\n\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XPOST \"https://api.lytics.io/api/work\" -d '\n{\n    \"workflow_id\":\"eventscopy\"\n    , \"name\":\"Ecommerce Demo Copy\"\n    , \"config\":{\n        \"destination_aid\": \"2223\"\n    }\n}\n' | jq '.'\n\n```"
+        },
+        {
+          "info": {
+            "name": "Work Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/work/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id of work"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single work resource"
+        },
+        {
+          "info": {
+            "name": "Work Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/work/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id of work"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Work Delete"
+        },
+        {
+          "info": {
+            "name": "Retrieve Work Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/work/_status",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "one of runnable, errorwait, paused, killed"
+              },
+              {
+                "name": "workflow_id",
+                "value": "123abc",
+                "type": "query"
+              },
+              {
+                "name": "resume",
+                "value": "",
+                "type": "query",
+                "description": "True/False for resume this item as well"
+              },
+              {
+                "name": "acctid",
+                "value": "123abc",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve Work Status"
+        },
+        {
+          "info": {
+            "name": "Work Command Post",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/work/:id/:cmd",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "abc123",
+                "type": "path"
+              },
+              {
+                "name": "cmd",
+                "value": "'pause'",
+                "type": "path"
+              },
+              {
+                "name": "for",
+                "value": "1h",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Send a work command"
+        },
+        {
+          "info": {
+            "name": "Work Bounce",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/work/_bounceall",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "status",
+                "value": "runnable",
+                "type": "query"
+              },
+              {
+                "name": "all_accounts",
+                "value": "",
+                "type": "query",
+                "description": "All accounts?"
+              },
+              {
+                "name": "cmd",
+                "value": "'pause'",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Work Bounce"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Auth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a Single Auth",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/auth/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Gist in the form of a hash."
+              },
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "Lytics API access token."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API is fairly special, as only the public portions of the auth model are\nreturned, not all fields **config**, **oauth2token**, and **oathtoken** fields are\nnever exposed."
+        },
+        {
+          "info": {
+            "name": "Create Auth",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/auth/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Gist in the form of a hash."
+              },
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "Lytics API access token."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create an auth, would normally never be used via the api, the web admin\nIntegrations section manages these."
+        },
+        {
+          "info": {
+            "name": "Update Auth",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.lytics.io/api/auth/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Gist in the form of a hash."
+              },
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "Lytics API access token."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update Auth"
+        },
+        {
+          "info": {
+            "name": "Remove an Auth",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/auth/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the Gist in the form of a hash."
+              },
+              {
+                "name": "access_token",
+                "value": "",
+                "type": "query",
+                "description": "Lytics API access token."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Deleting an auth is a very special operation. If any work is running (imports, exports),\nit will remove the auth from those works and stop them."
+        },
+        {
+          "info": {
+            "name": "Auth Create Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/auth/createtoken",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create Lytics api tokens."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Provider",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Provider List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/provider",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Provider list api"
+        },
+        {
+          "info": {
+            "name": "Provider Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/provider/:provider_slug",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single **Provider**"
+        },
+        {
+          "info": {
+            "name": "Remove a Provider",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/provider/:provider_slug",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete by id/slug"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workflow",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve Workflow List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/workflow",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieve Workflow List"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Query",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/query",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List of all queries"
+        },
+        {
+          "info": {
+            "name": "Query Upsert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/query",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "version",
+                "value": "old",
+                "type": "query",
+                "description": "Use the \"new\" array based response or \"old\" object."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Uses ALIAS name inside parsed query for ID, and either creates/updates a query.\n\n**CHANGE NOTIFICATION**  This api in the past has returned a single object\nbut is changing to return an array of query objects (because posted QL text\nmay contain more than one statement).   To get the old behavior\nof single object pass  *version=old*.\n\n```sh\n# new version, will be default in Sept 2017.\ncurl -s -XPOST \"https://api.lytics.io/api/query?version=new\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   --data-binary @"
+        },
+        {
+          "info": {
+            "name": "Query Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/query/:idOrAlias",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "idOrAlias",
+                "value": "web",
+                "type": "path",
+                "description": "Alias of query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get single query by *ALIAS OR ID*"
+        },
+        {
+          "info": {
+            "name": "Query Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/query/:idOrAlias",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "idOrAlias",
+                "value": "web",
+                "type": "path",
+                "description": "Alias of query"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete A query by idOrAlias."
+        },
+        {
+          "info": {
+            "name": "Query Validation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/query/_validate",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "version",
+                "value": "old",
+                "type": "query",
+                "description": "Use the \"new\" array based response or \"old\" object."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload a query for syntax validation only.\n\nOptionally, a *segments=true* parameter can be passed that\nwill validate this query both for syntax, as well as checking\nthat it doesn't invalidate existing segments.  If a segment\nuses a field that this query is about to remove/alter such\nthat the segment is no longer valid, this will warn.\n\n```sh\n\n# validate query syntax\ncurl -s -XPOST \"https://api.lytics.io/api/query/_validate\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   -H \"Content-Type: text/plain\" \\\n  "
+        },
+        {
+          "info": {
+            "name": "Query Test Evaluation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/query/_test",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Upload a query AND data to see how it will be interpreted.\n\n```sh\n\n# add any name/value paris to query string param for data input\n# then upload query and get evaluation response\ncurl -s -XPOST \"https://api.lytics.io/api/query/_test?name=value\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   -H \"Content-Type: text/plain\" \\\n   --data-binary @your_file.lql\n\n```"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "SegmentML",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "SegmentML Model Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segmentml/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "source::target",
+                "type": "path",
+                "description": "ID of the SegmentML model to retrieve, of the form `SOURCE_SLUG::TARGET_SLUG`."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a SegmentML model.\n\nAdditional atttributes from a completed SegmentML model GET response:\n\n| field                 | DataType         | Description   |\n|-----------------------|------------------|---------------|\n| features: kind        | string           | The field is either a Lytics Segment feature (*segment*), a lql/user-field feature (*lql*), a Lytics Behavioral Score feature (*score*), or a Lytics Content Affinity feature (*content*)\n| features: fieldtype   | string           | Field t"
+        },
+        {
+          "info": {
+            "name": "SegmentML Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/segmentml/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "source::target",
+                "type": "path",
+                "description": "ID of the SegmentML model to delete, of the form `SOURCE_SLUG::TARGET_SLUG`."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a SegmentML model.\n\n```sh\n# Curl example of deleting a SegmentML model\ncurl -s -J -XDELETE \"https://api.lytics.io/api/segmentml/all::smt_power\" -H \"Authorization: $LIOKEY\"\n```"
+        },
+        {
+          "info": {
+            "name": "SegmentML Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/segmentml",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "source",
+                "value": "all",
+                "type": "query",
+                "description": "ID or slug of the source segment."
+              },
+              {
+                "name": "target",
+                "value": "smt_power",
+                "type": "query",
+                "description": "ID or slug of the target segment. **Required** if target field is not supplied."
+              },
+              {
+                "name": "use_scores",
+                "value": "true",
+                "type": "query",
+                "description": "Include raw behavioral scores as features in the model (usually very useful)."
+              },
+              {
+                "name": "target_field",
+                "value": "LTV",
+                "type": "query",
+                "description": "Slug of the target field. Cannot provide both a target and a target field, hence required if target segment is not indicated (see above)."
+              },
+              {
+                "name": "use_content",
+                "value": "false",
+                "type": "query",
+                "description": "If true, include content affinities as features in the model."
+              },
+              {
+                "name": "aspect_collections",
+                "value": "[\"web\", \"mobile\"]",
+                "type": "query",
+                "description": "List of Segment Collections to include in the model.  Possible values are \"email\", \"web\", \"support\", \"mobile\", \"commerce\", \"behaviors\", \"content\"."
+              },
+              {
+                "name": "additional_fields",
+                "value": "[\"age\", \"country\"]",
+                "type": "query",
+                "description": "List of additional user fields to include in the model."
+              },
+              {
+                "name": "model_only",
+                "value": "true",
+                "type": "query",
+                "description": "Build the model without scoring each user. This is useful during model building exercises when comparing efficiency and accuracy between models. Set true by default unless **evalonly** is selected."
+              },
+              {
+                "name": "eval_only",
+                "value": "false",
+                "type": "query",
+                "description": "If true, a previously built model is used to rescore users. Only the source and target parameters are needed in the API call to to identify which model to use."
+              },
+              {
+                "name": "auto_tune",
+                "value": "false",
+                "type": "query",
+                "description": "If true, enable auto-tune feature selection."
+              },
+              {
+                "name": "tune_model",
+                "value": "false",
+                "type": "query",
+                "description": "If true, model tuning parameters are optimized before any models are built. Experimental."
+              },
+              {
+                "name": "tags",
+                "value": "[\"increase momentum\", \"mobile users\"]",
+                "type": "query",
+                "description": "Includes tags to be associated with the model."
+              },
+              {
+                "name": "re_run",
+                "value": "false",
+                "type": "query",
+                "description": "If true, re-run the model every week."
+              },
+              {
+                "name": "save_segments",
+                "value": "false",
+                "type": "query",
+                "description": "If true, this saves three different segments:\n    1) Users from source and target segments who \"look like\" users from the target segment.\n    2) Users not in the target segment.\n    3) Users from the source segment who look like users from the target segment.\n"
+              },
+              {
+                "name": "as_is",
+                "value": "false",
+                "type": "query",
+                "description": "If true, do not remove any of the model features when creating the model."
+              },
+              {
+                "name": "num_to_train",
+                "value": "5000",
+                "type": "query",
+                "description": "The number of samples to collect from both the source and target segment for feature matrices.  Defaults to 5,000."
+              },
+              {
+                "name": "cor_threshold",
+                "value": "0.9",
+                "type": "query",
+                "description": "Threshold (0.0-1.0) at which to remove correlated features."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new SegmentML model.\n\nModel configuration can be specified either through sending the options\nas a flat JSON object POST body or through URL parameters on the request.\n\n```sh\n# Curl example of creating a SegmentML model\ncurl -s -J -XPOST \"https://api.lytics.io/api/segmentml\" -H \"Authorization: $LIOKEY\" -d '\n{\n    \"source\": \"all\",\n    \"target\": \"smt_power\",\n    \"use_scores\": true\n}\n'\n```"
+        },
+        {
+          "info": {
+            "name": "SegmentML Dependencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/segmentml/_dependencies/:modelname",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "modelname",
+                "value": "my_model",
+                "type": "path",
+                "description": "Name of the model to get dependencies for."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "SegmentML Dependencies"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Stream",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a Single Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/stream/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the stream in the form of a hash. You can also use the slug."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a stream according to its ID."
+        },
+        {
+          "info": {
+            "name": "Update a Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.lytics.io/api/stream/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the stream in the form of a hash. You can also use the slug."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update a stream with a given ID. The parameters listed below provided in the PUT request will overwrite the current parameters in the model.\n\nStream attributes that a user is able to update:\n\n* *slug* (string) ... raw value of the stream as it appears in both queries and collection\n\n* *channel* (string, optional) ...  method by which this stream collects data. Only allowable channel types: web, email, mobile, ad, sms, pos\n\n* *label* (string, optional) ... user assignable label, for display in th"
+        },
+        {
+          "info": {
+            "name": "Delete a Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/stream/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "ID of the stream in the form of a hash. You can also use the slug."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a stream with a given ID."
+        },
+        {
+          "info": {
+            "name": "Retrieve a List of Streams from Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/stream",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get a list of all the streams for an account"
+        },
+        {
+          "info": {
+            "name": "Create a Stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/stream",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "JSON Parameters:\n\n* *slug* (string) ... raw value of the stream as it appears in both queries and collection\n\n* *channel* (string) ...  method by which this stream collects data. Only allowable channel types: web, email, mobile, ad, sms, pos\n\n* *label* (string, optional) ... user assignable label, for display in the UI\n\n* *description* (string, optional) ... user assignable description\n\n* *tables* ([]string, optional) ... names of the tables to which this stream writes\n\n* *providers* ([]string, "
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Experience",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "limit the number of Experience records returned"
+              },
+              {
+                "name": "provider",
+                "value": "65b80b0a8e0544aa8144022b3c085da1",
+                "type": "query",
+                "description": "id of provider to filter results by"
+              },
+              {
+                "name": "deleted",
+                "value": "true",
+                "type": "query",
+                "description": "include soft deleted Experiences"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint fetches all Experience records available to provided authorization token as well as various side-loaded dependencies.\n\n__Sideloading__: A variety of dependent or associated data will be side-loaded as part of the primary request. The list of side-loaded data for this particular request is:\n\n- All available Experience templates.\n\n- All parent groups one branch up the tree for returned Experiences."
+        },
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/experience",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint creates a single Experience record.\n\n__Sideloading__\n\n- None\n\n__Required Fields__\n\n- label\n\n- vehicle.provider_id\n\n- vehicle.tactic"
+        },
+        {
+          "info": {
+            "name": "Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "deleted",
+                "value": "true",
+                "type": "query",
+                "description": "include soft deleted Experiences"
+              },
+              {
+                "name": "id",
+                "value": "76c7115c492e78cfd12f30a7389919bb",
+                "type": "path",
+                "description": "id of the experience. if `orphan` is passed as Experience it will list all Experiences with no parent."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint fetches a single Experience record by id as well as various side-loaded dependencies.\n\n__Sideloading__: A variety of dependent or associated data will be side-loaded as part of the primary request. The list of side-loaded data for this particular request is:\n\n- All parent groups all the way up the family tree for the Experience."
+        },
+        {
+          "info": {
+            "name": "Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.lytics.io/api/experience/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "76c7115c492e78cfd12f30a7389919bb",
+                "type": "path",
+                "description": "id of the experience. if `orphan` is passed as Experience it will list all Experiences with no parent."
+              },
+              {
+                "name": "update_state",
+                "value": "true",
+                "type": "query",
+                "description": "allow the state of the Experience to be altered, all other changes will be thrown out of this request when flag is `true`."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Endpoint updates a single Experience record.\n\n__Sideloading__: None"
+        },
+        {
+          "info": {
+            "name": "Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/experience/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "96d774bca4ac26c92aa323b246a148fd",
+                "type": "path",
+                "description": "id of the Experience"
+              },
+              {
+                "name": "method",
+                "value": "hard",
+                "type": "query",
+                "description": "method to be used for deletion. hard deletes permanently and is unrecoverable. soft is default and deletes with ability to be recovered."
+              },
+              {
+                "name": "recursive",
+                "value": "true",
+                "type": "query",
+                "description": "recursive delete will also delete all downstream dependencies."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes an Experience record."
+        },
+        {
+          "info": {
+            "name": "Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/import",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "provider_slug",
+                "value": "facebook",
+                "type": "query",
+                "description": "slug of provider to fetch Experiences from"
+              },
+              {
+                "name": "auth_id",
+                "value": "7391398335174372b3aecd83c5a5d292",
+                "type": "query",
+                "description": "id of the authorization for the requested provider"
+              },
+              {
+                "name": "include_existing",
+                "value": "true",
+                "type": "query",
+                "description": "should the response include Experiences already imported"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Request a list of importable Experiences from a third party provider such as Facebook or Iterable."
+        },
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/experience/import",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates Experiences in a batch based on valid Experience import records. This endpoint should be used exclusively with the results from the Experience import GET and not leveraged as a bulk Experience create.\n\n__Required Fields__\n\n- all"
+        },
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/template",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches all Experience templates available to provided authorization token."
+        },
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/experience/template",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates an Experience template.\n\n__Required Fields__\n\n- all\n\n- see `experience` or `group` for nested requirements"
+        },
+        {
+          "info": {
+            "name": "Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/template/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "864a26fd5d5148b0b7fa187828368b81",
+                "type": "path",
+                "description": "id of the template"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches an Experience template by id."
+        },
+        {
+          "info": {
+            "name": "Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.lytics.io/api/experience/template/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "864a26fd5d5148b0b7fa187828368b81",
+                "type": "path",
+                "description": "id of the template"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an Experience template."
+        },
+        {
+          "info": {
+            "name": "Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/experience/template/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "864a26fd5d5148b0b7fa187828368b81",
+                "type": "path",
+                "description": "id of the template"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes an Experience template."
+        },
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/candidate",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches all Experience candidate records available to token."
+        },
+        {
+          "info": {
+            "name": "Preview Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/preview/:accountid/:id/config.js",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "accountid",
+                "value": "864a26fd5d5148b0b7fa187828368b81",
+                "type": "path",
+                "description": "id of the account"
+              },
+              {
+                "name": "id",
+                "value": "864a26fd5d5148b0b7fa187828368b81",
+                "type": "path",
+                "description": "id of the experience"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Renders a JavaScript file containing a single Experiences Pathfora configuration for previewing a web personalize Experience."
+        },
+        {
+          "info": {
+            "name": "Production Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/candidate/:accountid/config.js",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "accountid",
+                "value": "864a26fd5d5148b0b7fa187828368b81",
+                "type": "path",
+                "description": "id of the account"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Renders a JavaScript file containing all published Experiences Candidate Pathfora configurations."
+        },
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/group",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "limit",
+                "value": "10",
+                "type": "query",
+                "description": "limit number of returned experience_group records"
+              },
+              {
+                "name": "deleted",
+                "value": "true",
+                "type": "query",
+                "description": "include soft deleted records"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches all Experience Group records available to the authorization token."
+        },
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/experience/group",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates an Experience Group record.\n\n__Required Fields__\n\n- label\n\n- class\n\n__Note__: When creating a new Experience group you have the option of including either a set of nested Experiences or groups, not both, that belong to the new group. As a result, a prioritization record will be created in addition to each individual group or Experience itself being updated with the proper `parent_group_id` value. Likewise, passing an empty array __WILL REMOVE__ the ownership from the existing children. W"
+        },
+        {
+          "info": {
+            "name": "Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/group/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "ef9154b3a5f982e1bd4ec0230664b57c",
+                "type": "path",
+                "description": "id of the group"
+              },
+              {
+                "name": "deleted",
+                "value": "true",
+                "type": "query",
+                "description": "include soft deleted records"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches an Experience Group record by id."
+        },
+        {
+          "info": {
+            "name": "Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.lytics.io/api/experience/group/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "ef9154b3a5f982e1bd4ec0230664b57c",
+                "type": "path",
+                "description": "id of the group"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an Experience Group record.\n\n__Note__: When updating an existing Experience group you have the option of including either a set of nested Experiences or groups, not both, that belong to the new group. As a result, a prioritization record will be created in addition to each individual group or Experience itself being updated with the proper `parent_group_id` value. Likewise, passing an empty array __WILL REMOVE__ the ownership from the existing children. When no change is intended for nes"
+        },
+        {
+          "info": {
+            "name": "Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/experience/group/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "ef9154b3a5f982e1bd4ec0230664b57c",
+                "type": "path",
+                "description": "id of the group"
+              },
+              {
+                "name": "method",
+                "value": "hard",
+                "type": "query",
+                "description": "method to be used for deletion. hard deletes permanently and is unrecoverable. soft is default and deletes with ability to be recovered."
+              },
+              {
+                "name": "recursive",
+                "value": "true",
+                "type": "query",
+                "description": "recursive delete will also delete all downstream dependencies."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes an Experience Group record."
+        },
+        {
+          "info": {
+            "name": "List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/prioritization",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches all prioritization records available to token."
+        },
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/experience/prioritization",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a prioritization record.\n\n__Required Fields__\n\n- all"
+        },
+        {
+          "info": {
+            "name": "Fetch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.lytics.io/api/experience/prioritization/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "87cb58050ad27cd539935d8e3838f239",
+                "type": "path",
+                "description": "id of the prioritization record"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Fetches a prioritization record by id."
+        },
+        {
+          "info": {
+            "name": "Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.lytics.io/api/experience/prioritization/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "87cb58050ad27cd539935d8e3838f239",
+                "type": "path",
+                "description": "id of the prioritization record"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates a prioritization record."
+        },
+        {
+          "info": {
+            "name": "Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.lytics.io/api/experience/prioritization/:id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "query",
+                "description": "Your Lytics account ID."
+              },
+              {
+                "name": "id",
+                "value": "87cb58050ad27cd539935d8e3838f239",
+                "type": "path",
+                "description": "id of the prioritization record"
+              },
+              {
+                "name": "method",
+                "value": "hard",
+                "type": "query",
+                "description": "method to be used for deletion. hard deletes permanently and is unrecoverable. soft is default and deletes with ability to be recovered."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Removes a prioritization record."
+        },
+        {
+          "info": {
+            "name": "Master Group Priority",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.lytics.io/api/experience/group/priority",
+            "auth": {
+              "type": "apikey",
+              "key": "Authorization",
+              "value": "{{Authorization}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Manages the unique top level Journey priority record for an account. Used only for managing hierarchy of Experience Groups classified as Journeys in the UI."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

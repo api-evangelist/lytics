@@ -1,3 +1,17 @@
+generated: '2026-08-13'
+method: searched
+source: https://docs.lytics.com/docs/platform-limits
+limit_count: 27
+response_headers: []
+status_on_exhaustion: 429
+headers_note: >-
+  Lytics publishes platform QUOTAS but returns NO rate-limit response headers. No
+  RateLimit-*, X-RateLimit-* or Retry-After header appears in either published OpenAPI
+  or anywhere in the documentation, so an agent has no runtime budget signal to read —
+  only the 429 itself. Lytics' own agent-skills api-client reference instructs agents to
+  "wait briefly and retry once" on 429, which is the guidance a provider gives when there
+  is no header to consult. The limits below are documented platform limits, not per-
+  request throttles.
 name: Lytics Rate Limits
 description: >-
   Lytics enforces platform limits to ensure optimum performance for all

@@ -1,0 +1,109 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/lytics-api-v2-openapi.json, openapi/lytics-api-v1-openapi.json,
+  https://docs.lytics.com/docs/compliance, https://docs.lytics.com/docs/consent,
+  https://docs.lytics.com/docs/webhooks
+note: >-
+  Standards conformance asserted from what the two published specs and the docs
+  actually show. Where a standard is not met that is recorded as conforms:false with
+  the evidence for the negative, because an absent convention is real information
+  for an agent. No Compliance pointer is emitted from this file — Lytics publishes a
+  trust center but its certifications are not machine-readable (see
+  security/lytics-trust-center.yml).
+standards:
+  - id: openapi-3.0
+    conforms: true
+    evidence: >-
+      Two published documents — openapi 3.0.3 (Lytics API v2, 886 paths, 1,331 operations)
+      and openapi 3.0.0 (V1 Lytics API, 88 paths, 136 operations), served from the
+      provider's own ReadMe API registry.
+  - id: openapi-operation-ids
+    conforms: false
+    evidence: >-
+      The v2 document declares operationId on ZERO of its 1,331 operations. The v1
+      document declares one on all 136. An agent binding tools to v2 must key on
+      method+path.
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      No oauth2 securityScheme in either spec. The only scheme is apiKey in the
+      Authorization header. (Lytics CONSUMES OAuth 2.0 client-credentials when calling
+      customer webhook destinations, but does not expose OAuth on its own API.)
+  - id: oidc
+    conforms: false
+    evidence: No openIdConnect scheme; no /.well-known/openid-configuration on any host (all 404/405).
+  - id: rfc6750-bearer
+    conforms: false
+    evidence: >-
+      The token is the raw Authorization header value with no `Bearer` prefix, so it is
+      an apiKey-in-header scheme rather than RFC 6750.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors are application/json with a {status, message, request_id} envelope plus a
+      vendor code enum (lioerrors.ApiV2ErrorOut). No application/problem+json anywhere
+      in either spec.
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: No Sunset or Deprecation header documented; no operation marked deprecated.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 (www.lytics.com, docs.lytics.com) and 405 (api.lytics.io).
+  - id: rfc8615-well-known
+    conforms: false
+    evidence: >-
+      No /.well-known/ document is served on any host. app.lytics.com answers 200 with
+      an SPA HTML shell for every path, which is not a document.
+  - id: llms-txt
+    conforms: true
+    evidence: >-
+      https://docs.lytics.com/llms.txt returns 200 with a real llms.txt (1,618 lines,
+      1,347 API reference entries). Saved verbatim to llms/lytics-llms.txt.
+  - id: agent-skills
+    conforms: true
+    evidence: >-
+      Provider-published Agent Skills package at github.com/lytics/agent-skills
+      (22 skills + 6 shared references), installable with `npx skills add lytics/agent-skills`.
+      Saved verbatim to skills/.
+  - id: mcp
+    conforms: false
+    evidence: >-
+      No MCP server for the API. https://docs.lytics.com/mcp answers JSON-RPC -32001
+      'Authorization required' and the docs project config records mcp.state = disabled.
+  - id: a2a-agent-card
+    conforms: false
+    evidence: /.well-known/agent-card.json and /.well-known/agent.json miss on every host.
+  - id: asyncapi
+    conforms: false
+    evidence: >-
+      No AsyncAPI document published. Lytics has a real event surface (audience
+      entrance/exit webhooks) documented in prose only — captured in
+      asyncapi/lytics-webhooks.yml.
+  - id: idempotency
+    conforms: false
+    evidence: No Idempotency-Key parameter or header in either spec; no idempotent-retry contract in the docs.
+  - id: gdpr
+    conforms: true
+    evidence: >-
+      Published data-subject-request workflow with API support — profile download,
+      DELETE /api/entity/{table}/{fieldname}/{fieldval}, bulk identity deletion, and
+      GET /api/entity/deletestatus/{request_id} to audit a deletion request.
+      https://docs.lytics.com/docs/compliance
+  - id: ccpa
+    conforms: true
+    evidence: >-
+      Same deletion/suppression workflow is documented for CCPA alongside GDPR, plus a
+      OneTrust integration guide for consumer data subject requests.
+      https://docs.lytics.com/docs/managing-consumer-data-subject-requests-with-onetrust
+  - id: fhir-r4
+    conforms: false
+  - id: fapi
+    conforms: false
+  - id: scim2
+    conforms: false
+  - id: odata
+    conforms: false
+  - id: json-api
+    conforms: false
+    evidence: Custom {data, status, message, request_id} envelope, not JSON:API.

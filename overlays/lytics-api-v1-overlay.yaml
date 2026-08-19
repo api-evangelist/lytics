@@ -1,0 +1,40 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for V1 Lytics API
+  version: 1.0.0
+extends: openapi/lytics-api-v1-openapi.json
+x-provenance:
+  generated: '2026-08-13'
+  method: generated
+  source: openapi/lytics-api-v1-openapi.json
+  note: >-
+    Non-destructive enhancement layer over the VERBATIM harvested V1 Lytics API document
+    (fetched from Lytics' own ReadMe API registry). The harvested spec is never mutated.
+    This overlay records only what API Evangelist added on top: cross-links to the
+    derived artifacts in this repo, and the observations a consumer needs before
+    calling. The spec declares an operationId on all 136 operations.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-repository: https://github.com/api-evangelist/lytics
+      x-apievangelist-artifacts:
+        authentication: authentication/lytics-authentication.yml
+        conventions: conventions/lytics-conventions.yml
+        errors: errors/lytics-error-codes.yml
+        lifecycle: lifecycle/lytics-lifecycle.yml
+        rate-limits: rate-limits/lytics-rate-limits.yml
+        data-model: data-model/lytics-data-model.yml
+        plans: plans/lytics-plans-pricing.yml
+        skills: skills/_index.yml
+        tool-crosswalk: mcp/lytics-tool-crosswalk.yml
+        webhooks: asyncapi/lytics-webhooks.yml
+      x-apievangelist-observations:
+        operation_ids: 136 operations
+        idempotency: not supported — no Idempotency-Key parameter or header in this document
+        error_format: 'vendor JSON envelope {status, message, request_id}; NOT RFC 9457 problem+json'
+        rate_limit_headers: none returned; 429 carries no RateLimit-* or Retry-After signal
+        multi_account: account_id query parameter selects the account for a multi-account token
+  - target: $.externalDocs
+    update:
+      description: Lytics API Reference
+      url: https://docs.lytics.com/reference

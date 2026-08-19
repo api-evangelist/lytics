@@ -1,0 +1,36 @@
+generated: '2026-08-13'
+method: searched
+probe: true
+url: https://trust.lytics.com/
+redirects_to: https://trust.contentstack.com/
+certifications: []
+note: >-
+  Lytics publishes a trust center and names it in its own documentation —
+  https://docs.lytics.com/docs/consent says "For more information on Lytics' security
+  and privacy program, please visit Lytics' trust center at https://trust.lytics.com/".
+  Probed 2026-08-13: trust.lytics.com returns HTTP 200 and 302-redirects to
+  trust.contentstack.com, which is legitimate — Lytics joined Contentstack in January
+  2025 and the group trust center now serves both brands. The page is a Next.js
+  application that renders entirely client-side: the served HTML is a 12KB shell with
+  no certification names in it, so NO certifications could be read anonymously.
+  certifications is therefore an empty list meaning "checked, nothing machine-readable
+  to record" — not "none held". Because no named certification could be verified, this
+  file deliberately does NOT emit a Compliance pointer.
+evidence:
+  - {source: 'https://trust.lytics.com/', http_status: 200, final_url: 'https://trust.contentstack.com/', bytes: 12718, rendered: client-side}
+  - {source: 'https://docs.lytics.com/docs/consent.md', http_status: 200, kind: docs-reference-to-trust-center}
+  - {source: 'https://www.lytics.com/security', http_status: 404}
+  - {source: 'https://www.lytics.com/.well-known/security.txt', http_status: 404}
+privacy_and_compliance_surface:
+  - {name: Privacy Policy, url: 'https://www.lytics.com/privacy-policy/', http_status: 200}
+  - {name: Terms of Service, url: 'https://www.lytics.com/terms-of-service/', http_status: 200}
+  - {name: Compliance (GDPR/CCPA data subject requests), url: 'https://docs.lytics.com/docs/compliance', http_status: 200}
+  - {name: Consent & Privacy guide, url: 'https://docs.lytics.com/docs/consent', http_status: 200}
+  - {name: Account security settings reference, url: 'https://docs.lytics.com/docs/security', http_status: 200}
+vulnerability_disclosure:
+  found: false
+  note: >-
+    No security.txt on any host, no /security or /responsible-disclosure page on
+    lytics.com, and no bug-bounty program (HackerOne/Bugcrowd/Intigriti) found for
+    Lytics. probe-security-programs.py returned vdp=none. No Security or
+    VulnerabilityDisclosure pointer is emitted.

@@ -1,0 +1,46 @@
+generated: '2026-08-13'
+method: searched
+source: https://github.com/lytics/lytics
+name: lytics
+description: >-
+  Lytics Command Line Tool & Developers Aid — CLI access to the Lytics API, and a
+  workbench for writing and testing LQL (Lytics Query Language).
+repository: https://github.com/lytics/lytics
+default_branch: develop
+official: true
+status: unmaintained
+last_commit: '2021-04-08'
+note: >-
+  First-party Go CLI, but the repository's last commit is 2021-04-08 — it predates the
+  v2 API entirely and targets the v1 (/api) surface. Recorded as unmaintained rather
+  than omitted, because an agent or operator will still find it and it is the only
+  first-party CLI Lytics ships. A second, older Python CLI exists on PyPI as `lytics`
+  (0.0.12, 2014) from github.com/lytics/lyticscli — see packages/lytics-packages.yml.
+install:
+  - method: binary
+    note: Download from the GitHub releases page and rename to `lytics`.
+    commands:
+      - 'curl -Lo lytics https://github.com/lytics/lytics/releases/download/latest/lytics_linux && chmod +x lytics && sudo mv lytics /usr/local/bin/'
+      - 'curl -Lo lytics https://github.com/lytics/lytics/releases/download/latest/lytics_mac && chmod +x lytics && sudo mv lytics /usr/local/bin/'
+  - method: source
+    commands: ['git clone https://github.com/lytics/lytics.git', 'go build', 'go install']
+  - method: go
+    commands: ['go get -u github.com/lytics/lytics']
+authentication:
+  env: LIOKEY
+  note: 'Export your Lytics API key: `export LIOKEY="your_api_key"`.'
+commands:
+  - group: segment
+    examples:
+      - 'lytics segment scan <segment_id>'
+      - 'lytics segment scan <segment_slug>'
+    note: Scan/export the members of an audience; commonly piped through jq or exported to CSV.
+  - group: '--help'
+    examples: ['lytics --help']
+capabilities:
+  - CLI access to the Lytics API
+  - Writing and testing LQL (Lytics Query Language) expressions
+  - Segment scan and CSV export
+related:
+  package: packages/lytics-packages.yml
+  api: openapi/lytics-api-v1-openapi.json

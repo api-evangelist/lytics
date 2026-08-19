@@ -1,0 +1,149 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  npm registry (registry.npmjs.org), PyPI, proxy.golang.org, the lytics GitHub
+  organization (https://github.com/lytics) and https://docs.lytics.com/docs/ SDK pages
+note: >-
+  Versions and publish dates read from each registry's unauthenticated metadata
+  endpoint on 2026-08-13. Lytics' actively maintained client library is
+  @lytics/lio-client; the mobile SDKs and the Go/Python CLIs are first-party but
+  have not shipped a release in years, which is recorded here rather than hidden.
+packages:
+  - language: javascript
+    registry: npm
+    name: "@lytics/lio-client"
+    url: https://www.npmjs.com/package/@lytics/lio-client
+    repository: https://github.com/lytics/lio-client
+    install: npm install @lytics/lio-client
+    official: true
+    version: 0.3.0
+    published: '2026-03-20'
+    note: Plugin-based TypeScript/JavaScript SDK for the Lytics API. Current first-party client.
+  - language: javascript
+    registry: npm
+    name: "@lytics/lio-client-contentstack"
+    url: https://www.npmjs.com/package/@lytics/lio-client-contentstack
+    repository: https://github.com/lytics/lio-client
+    install: npm install @lytics/lio-client-contentstack
+    official: true
+    version: 2.0.0
+    published: '2026-03-20'
+    note: Contentstack integration plugin for lio-client (Lytics is part of Contentstack).
+  - language: javascript
+    registry: npm
+    name: "@lytics/tag"
+    url: https://www.npmjs.com/package/@lytics/tag
+    install: npm install @lytics/tag
+    official: true
+    version: 3.0.35
+    published: '2023-10-23'
+    note: The Lytics JavaScript Tag (jstag) — the browser data-collection and personalization SDK.
+  - language: javascript
+    registry: npm
+    name: "@lytics/sdk"
+    url: https://www.npmjs.com/package/@lytics/sdk
+    install: npm install @lytics/sdk
+    official: true
+    version: 3.0.0
+    published: '2022-06-01'
+    note: >-
+      TypeScript client for the Lytics API published under the @lytics npm scope.
+      No repository field is set on the package; superseded in practice by
+      @lytics/lio-client.
+  - language: javascript
+    registry: npm
+    name: lytics-js
+    url: https://www.npmjs.com/package/lytics-js
+    repository: https://github.com/lytics/lytics-js
+    install: npm install lytics-js
+    official: true
+    version: 0.0.59
+    published: '2018-12-13'
+    note: Legacy JavaScript client for the Lytics REST API. Unmaintained.
+  - language: go
+    registry: go-modules
+    name: github.com/lytics/go-lytics
+    url: https://pkg.go.dev/github.com/lytics/go-lytics
+    repository: https://github.com/lytics/go-lytics
+    install: go get github.com/lytics/go-lytics
+    official: true
+    version: v0.0.0-20260429191827-ea477a016a20
+    published: '2026-04-29'
+    note: >-
+      Official Go SDK. Untagged module — proxy.golang.org resolves only a
+      pseudo-version from the latest commit, so consumers cannot pin a semver release.
+  - language: go
+    registry: go-modules
+    name: github.com/lytics/lytics
+    url: https://pkg.go.dev/github.com/lytics/lytics
+    repository: https://github.com/lytics/lytics
+    install: go get -u github.com/lytics/lytics
+    official: true
+    version: v0.0.0-20210403030518-df944c8149d7
+    published: '2021-04-03'
+    note: The `lytics` command line utility (see cli/lytics-cli.yml). Untagged; last commit 2021.
+  - language: python
+    registry: pypi
+    name: lytics
+    url: https://pypi.org/project/lytics/
+    repository: https://github.com/lytics/lyticscli
+    install: pip install lytics
+    official: true
+    version: 0.0.12
+    published: '2014-06-11'
+    note: >-
+      Python CLI for the Lytics API. Last released 2014 — predates the v2 API entirely
+      and should be treated as abandoned.
+  - language: swift
+    registry: null
+    name: lytics/ios-sdk
+    url: https://github.com/lytics/ios-sdk
+    repository: https://github.com/lytics/ios-sdk
+    docs: https://docs.lytics.com/docs/sdk-for-ios
+    official: true
+    version: null
+    published: null
+    note: >-
+      First-party iOS SDK distributed from the GitHub repository (Swift Package Manager).
+      version/published are null because no package-registry metadata endpoint serves it —
+      the CocoaPods trunk pod named "Lytics" is owned by an unrelated party (useblu.com.br)
+      and is deliberately NOT listed here. Last repository push 2024-03-04.
+  - language: kotlin
+    registry: null
+    name: lytics/android-sdk
+    url: https://github.com/lytics/android-sdk
+    repository: https://github.com/lytics/android-sdk
+    docs: https://docs.lytics.com/docs/sdk-for-android
+    official: true
+    version: null
+    published: null
+    note: >-
+      First-party Android SDK distributed from the GitHub repository. No Maven Central
+      coordinate found; version/published null (checked, nothing to record).
+      Last repository push 2023-05-19.
+  - language: javascript
+    registry: npm
+    name: react-native-lytics
+    url: https://www.npmjs.com/package/react-native-lytics
+    repository: https://github.com/lytics/react-native-sdk
+    install: npm install react-native-lytics
+    docs: https://docs.lytics.com/docs/react-native-sdk
+    official: true
+    version: 0.0.1
+    published: '2024-02-23'
+    note: React Native SDK. Single 0.0.1 release.
+  - language: javascript
+    registry: cdn
+    name: pathfora
+    url: https://github.com/lytics/pathforajs
+    repository: https://github.com/lytics/pathforajs
+    docs: https://docs.lytics.com/docs/pathfora
+    official: true
+    version: null
+    published: null
+    note: >-
+      Pathfora web personalization SDK. Distributed as a generated per-account
+      JavaScript bundle installed by the jstag `pathfora.install` plugin rather than
+      from a versioned registry entry, so a consumer cannot pin a version — recorded
+      as null deliberately. Not published to npm under the @lytics scope; jsDelivr
+      reports no tagged versions for the gh/lytics/pathforajs package.

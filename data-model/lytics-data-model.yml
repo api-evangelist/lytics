@@ -1,0 +1,411 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/lytics-api-v2-openapi.json (components.schemas, 506 schemas) + openapi/lytics-api-v1-openapi.json;
+  entity descriptions from https://docs.lytics.com/reference and vocabulary/lytics-vocabulary.yml
+note: 'Entity-relationship graph for the Lytics CDP. relationships[] are DERIVED mechanically from $ref links between
+  components.schemas in the v2 OpenAPI. id_reference_fields[] are derived from property-name frequency across all
+  506 schemas and show how the estate is wired: segment_id / segment_ids appear in 162 schema properties combined,
+  because virtually every integration job config in the API points back at an audience. Most of the remaining *_id
+  fields (advertiser_id, list_id, ad_account_id, adwords_account_id) are THIRD-PARTY identifiers carried inside
+  connector job configs, not Lytics entities — that distinction is recorded rather than flattened into the graph.'
+core_entities:
+- entity: Account
+  id: account_id (aid)
+  description: A Lytics account. account_id is the most common parameter in the v2 API (1,321 of 1,467 operations);
+    one token can reach several accounts.
+  paths:
+  - /account
+  - /account/{id}
+  schema: models.AccountResp
+- entity: User
+  id: id | email | "me"
+  description: A human user of the Lytics account, with roles and granular permissions.
+  paths:
+  - /user
+  - /user/{id}
+  - /user/{id}/roles
+  schema: models.UserResp
+- entity: Profile (Entity)
+  id: _uid + identity fields
+  description: The unified customer profile — the core object of the CDP. Looked up by any identity field/value
+    on a table (usually `user`).
+  paths:
+  - /api/entity/{table}/{fieldname}/{fieldval}
+  - /v2/identity/{table}/{field}/{value}
+  schema: models.IdentityResponse
+- entity: Segment (Audience)
+  id: id | slug_name
+  description: A behavioural audience defined in FilterQL. The hub of the model — segments are referenced by jobs,
+    flows, ML models and content recommendations.
+  paths:
+  - /segment
+  - /segment/{id}
+  - /api/segment/{segId}/scan
+  schema: models.Segment
+- entity: Schema / Field
+  id: table + field id
+  description: 'Profile schema for a table: fields, mappings, identity config (idconfig) and field ranks.'
+  paths:
+  - /schema
+  - /schema/{table}/field
+  - /schema/{table}/idconfig
+  - /schema/{table}/mapping
+  schema: models.SchemaResponse
+- entity: Stream
+  id: stream name
+  description: A named inbound data stream. Events are posted to /collect/json/{stream} or /collect/bulk/{stream}.
+  paths:
+  - /stream
+  - /stream/{id}/stats
+  - /collect/json/{stream}
+  schema: models.StreamMetadata
+- entity: Connection
+  id: id
+  description: A configured link to an external system, built on an Auth.
+  paths:
+  - /connection
+  - /connection/{id}
+  - /connection/{id}/schema
+  schema: models.ConnectionResp
+- entity: Auth
+  id: id
+  description: A stored credential for a provider. The v2 API exposes one path family PER auth type — 379 operations
+    across ~126 provider-specific auth types.
+  paths:
+  - /auth
+  - /auth/{type}
+  - /auth/{type}/{id}
+  schema: models.Auth
+- entity: Job / Work
+  id: id
+  description: 'An import or export workflow instance. The largest surface in the API: 831 operations, one path
+    family per integration workflow.'
+  paths:
+  - /job
+  - /job/{id}
+  - /job/{id}/pause
+  - /job/{id}/resume
+  - /job/{id}/kill
+  - /job/{id}/logs
+  schema: models.JobResponse
+- entity: DataModel (Cloud Connect)
+  id: id
+  description: A warehouse-backed model (BigQuery, Snowflake, Databricks) synced into profiles, with a schedule,
+    health and sync errors.
+  paths:
+  - /datamodel
+  - /datamodel/{id}
+  schema: models.DataModelResp
+- entity: Flow
+  id: id
+  description: A multi-step campaign/journey with delays, conditional splits, A/B probabilities and export steps.
+  paths:
+  - /flow/ui
+  - /flow/ui/{id}
+  - /flow/state
+  schema: models.Flow
+- entity: ML Model
+  id: id
+  description: A lookalike / predictive model built on a segment, with a feature-importance and confusion-matrix
+    summary.
+  paths:
+  - /ml
+  - /ml/{id}/summary
+  schema: models.MLModel
+- entity: Template
+  id: id
+  description: A webhook payload transform, authored in Jsonnet (`jsonnet`) or JavaScript (`js1`).
+  paths:
+  - /template
+  - /template/{id}
+  - /template/{id}/test
+  schema: models.TemplateTestRequest
+- entity: Content Topic / Document
+  id: topic label | doc id
+  description: 'Content classification and affinity: crawled documents, topics, rollups, taxonomy and recommendations.'
+  paths:
+  - /api/content/doc
+  - /api/content/topic
+  - /api/content/recommend/user/{fieldname}/{fieldval}
+  schema: null
+- entity: Report
+  id: id
+  description: A saved report composed of components.
+  paths:
+  - /report
+  - /report/{id}
+  schema: models.Report
+relationships:
+- from: models.AccountResp
+  to: models.EntitlementPlan
+  kind: has_many
+  via: entitlement_plans
+- from: models.AccountResp
+  to: models.RolePolicy
+  kind: has_many
+  via: roles_available
+- from: models.AdhocTemplateTestRequest
+  to: models.SampleSegmentsInput
+  kind: has_one
+  via: sample_segments
+- from: models.AnomalyRuleResp
+  to: models.RuleCheckConfigReq
+  kind: has_many
+  via: checks
+- from: models.ConnectionCreateReq
+  to: models.ConnectionConfig
+  kind: has_one
+  via: config
+- from: models.ConnectionResp
+  to: models.ConnectionConfig
+  kind: has_one
+  via: config
+- from: models.ConnectionScanResp
+  to: models.ResultSetColumn
+  kind: has_many
+  via: columns
+- from: models.ContentOpportunityResp
+  to: models.ContentOpportunityTopic
+  kind: has_many
+  via: topics
+- from: models.ContentOpportunityTopic
+  to: models.ContentOpportunityDimension
+  kind: has_many
+  via: dimensions
+- from: models.DataField
+  to: models.Column
+  kind: has_many
+  via: columns
+- from: models.DataModelCreateReq
+  to: models.DataModelJoin
+  kind: has_one
+  via: joined_to
+- from: models.DataModelResp
+  to: models.AnomalyRuleResp
+  kind: has_one
+  via: anomaly_rule
+- from: models.DataModelResp
+  to: models.DataModelHealth
+  kind: has_one
+  via: health
+- from: models.DataModelResp
+  to: models.DataModelJoin
+  kind: has_one
+  via: joined_to
+- from: models.DataModelResp
+  to: models.SyncSchedule
+  kind: has_one
+  via: schedule
+- from: models.DataModelResp
+  to: models.SyncError
+  kind: has_many
+  via: sync_errors
+- from: models.Feature
+  to: models.FieldPrevalence
+  kind: has_one
+  via: field_prevalence
+- from: models.Feature
+  to: models.Impact
+  kind: has_one
+  via: impact
+- from: models.Field
+  to: models.Assertions
+  kind: has_one
+  via: assertions
+- from: models.Field
+  to: models.IDConfig
+  kind: has_one
+  via: id_config
+- from: models.Flow
+  to: models.FlowStep
+  kind: has_many
+  via: steps
+- from: models.FlowStep
+  to: models.DelayUntil
+  kind: has_one
+  via: delay_until
+- from: models.FlowStep
+  to: models.SplitAffinityKV
+  kind: has_many
+  via: split_affinities
+- from: models.FlowStep
+  to: models.SplitConditionKV
+  kind: has_many
+  via: split_conditions
+- from: models.FlowStep
+  to: models.SplitProbKV
+  kind: has_many
+  via: split_probabilities
+- from: models.IdentityFragment
+  to: models.Kv
+  kind: has_many
+  via: keys
+- from: models.IdentityFragment
+  to: models.Kv
+  kind: has_many
+  via: neighbors
+- from: models.IdentityResponse
+  to: models.IdentityFragment
+  kind: has_many
+  via: fragments
+- from: models.IdentityResponse
+  to: models.Kv
+  kind: has_many
+  via: keys
+- from: models.JobResponse
+  to: models.AnomalyRuleResp
+  kind: has_one
+  via: anomaly_rule
+- from: models.LQLUploadResponse
+  to: models.Field
+  kind: has_many
+  via: fields
+- from: models.LQLUploadResponse
+  to: models.Mapping
+  kind: has_many
+  via: mappings
+- from: models.MLModel
+  to: models.ModelConfig
+  kind: has_one
+  via: config
+- from: models.MLSummary
+  to: models.ConfusionMatrix
+  kind: has_one
+  via: error_matrix
+- from: models.MLSummary
+  to: models.ModelMessage
+  kind: has_many
+  via: msgs
+- from: models.MLSummaryResponse
+  to: models.Feature
+  kind: has_many
+  via: features
+- from: models.MLSummaryResponse
+  to: models.MLSummary
+  kind: has_one
+  via: summary
+- from: models.MetricResult
+  to: models.MetricTimeSeriesEntry
+  kind: has_many
+  via: values
+- from: models.Ranks
+  to: models.IDConfig
+  kind: has_many
+  via: id_config
+- from: models.Ranks
+  to: models.RankList
+  kind: has_one
+  via: id_ranks
+- from: models.Report
+  to: models.Component
+  kind: has_many
+  via: components
+- from: models.SchemaResponse
+  to: models.Field
+  kind: has_many
+  via: fields
+- from: models.SchemaResponse
+  to: models.Mapping
+  kind: has_many
+  via: mappings
+- from: models.SchemaResponse
+  to: models.Ranks
+  kind: has_one
+  via: ranks
+- from: models.SchemaResponse
+  to: models.RetentionSettings
+  kind: has_one
+  via: retention_settings
+- from: models.Segment
+  to: models.Expr
+  kind: has_one
+  via: ast
+- from: models.SegmentDeleteResp
+  to: models.SegmentDeleteStatus
+  kind: has_many
+  via: segments
+- from: models.StreamMetadata
+  to: models.AnomalyRuleResp
+  kind: has_one
+  via: anomaly_rule
+- from: models.TemplateTestRequest
+  to: models.SampleSegmentsInput
+  kind: has_one
+  via: sample_segments
+- from: models.UserResp
+  to: models.UserAccount
+  kind: has_many
+  via: accounts
+- from: models.VersionDiff
+  to: models.SchemaResponse
+  kind: has_one
+  via: from
+- from: models.VersionDiff
+  to: models.SchemaResponse
+  kind: has_one
+  via: to
+id_reference_fields:
+- field: segment_id
+  schema_properties: 88
+- field: segment_ids
+  schema_properties: 74
+- field: id
+  schema_properties: 28
+- field: account_id
+  schema_properties: 15
+- field: advertiser_id
+  schema_properties: 11
+- field: list_id
+  schema_properties: 11
+- field: client_id
+  schema_properties: 10
+- field: app_id
+  schema_properties: 8
+- field: ad_account_id
+  schema_properties: 7
+- field: profile_id
+  schema_properties: 6
+- field: event_id
+  schema_properties: 6
+- field: user_id
+  schema_properties: 6
+- field: auth_ids
+  schema_properties: 6
+- field: organization_id
+  schema_properties: 5
+- field: provider_id
+  schema_properties: 5
+- field: adwords_account_id
+  schema_properties: 5
+- field: dimension_id
+  schema_properties: 5
+- field: author_id
+  schema_properties: 5
+- field: partner_id
+  schema_properties: 4
+- field: subject_id
+  schema_properties: 4
+- field: request_id
+  schema_properties: 4
+- field: site_id
+  schema_properties: 4
+- field: collection_id
+  schema_properties: 4
+- field: ads_account_id
+  schema_properties: 4
+- field: template_id
+  schema_properties: 4
+- field: parent_id
+  schema_properties: 3
+- field: adwords_customer_id
+  schema_properties: 3
+- field: adwords_list_id
+  schema_properties: 3
+- field: external_user_id
+  schema_properties: 3
+- field: braze_id
+  schema_properties: 3
+id_reference_note: segment_id/segment_ids dominate because nearly every export job config targets an audience. advertiser_id,
+  list_id, ad_account_id, adwords_account_id, app_id, client_id, organization_id and partner_id are EXTERNAL platform
+  identifiers held inside connector configs (Google Ads, Meta, Amazon DSP, Airship, etc.), not Lytics entity keys.
+render: null

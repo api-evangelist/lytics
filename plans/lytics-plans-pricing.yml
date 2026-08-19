@@ -1,3 +1,12 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.lytics.com/pricing/
+plan_count: 3
+note: >-
+  Read from the public Lytics pricing page (HTTP 200, verified 2026-08-13). Three published
+  tiers: Developer (free), Growth (listed at $500/month) and Enterprise (custom, contact
+  sales). Pricing is metered on monthly profile-update credits — 1 credit per inbound data
+  event, 0.5 credits per Cloud Connect warehouse sync row.
 name: Lytics Plans and Pricing
 description: >-
   Lytics offers three pricing tiers based on monthly profile update credits.

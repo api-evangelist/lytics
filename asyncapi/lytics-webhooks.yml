@@ -1,0 +1,63 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.lytics.com/docs/webhooks, https://docs.lytics.com/docs/webhook-templates,
+  https://github.com/lytics/agent-skills/blob/main/webhook-template-builder/SKILL.md
+spec_type: none
+asyncapi_published: false
+note: >-
+  Lytics has a real outbound event surface but publishes NO AsyncAPI document for it, so
+  none is recorded here and none was fabricated. The surface is Lytics-OUT: Lytics POSTs
+  to a customer-supplied endpoint when a profile enters or leaves an audience. There is
+  no inbound-webhook-to-Lytics surface and no signed-payload verification scheme
+  documented — outbound auth is whatever the customer's destination requires, configured
+  as a Lytics authorization. The payload shape is NOT fixed by Lytics: the customer
+  authors a template that produces it, which is why no event schema can be published.
+direction: outbound (Lytics calls the customer's endpoint)
+transport: HTTPS POST
+events:
+  - name: audience entrance
+    trigger: A user profile enters an audience.
+    workflow: webhook_triggers
+    docs: https://docs.lytics.com/docs/webhooks
+  - name: audience exit
+    trigger: A user profile leaves an audience.
+    workflow: webhook_triggers
+    docs: https://docs.lytics.com/docs/webhooks
+  - name: user enrichment
+    trigger: Profile enrichment call-out to an external service.
+    workflow: webhook_enrichment
+    docs: https://docs.lytics.com/docs/webhook-templates
+payload:
+  fixed_schema: false
+  authoring: >-
+    The request body is produced by a customer-authored Webhook Template applied to the
+    profile/entity data.
+  template_languages:
+    - {name: Jsonnet, api_value: jsonnet, note: 'Profile data accessed via event.get() from the lytemplates.libsonnet library.'}
+    - {name: JavaScript, api_value: js1, note: 'Must define `function template(data)` returning a JSON-serializable value; the return value becomes the request body.'}
+  test_endpoint: POST /v2/template/{id}/test
+  test_note: >-
+    Lytics' own agent-skills changelog records that /v2/template/{id}/test requires a
+    `desired_format` query parameter to succeed, that update is PUT (not POST), and that
+    the JS entry point is `template` (not `transformData`) — runtime details that differ
+    from the public docs.
+authorization:
+  note: Authorization for the outbound call is configured as a Lytics authorization on the Webhook provider.
+  methods:
+    - {method: none, description: 'Webhook endpoint does not require authorization.'}
+    - {method: header-or-parameter, description: 'Static request headers (key:value per line) and/or URL parameters attached to every POST.'}
+    - {method: oauth2-client-credentials, description: 'RFC 6749 §4.4 client credentials. Lytics retrieves and refreshes the token from the configured Token URL and sends `Authorization: Bearer <token>`; a custom header format with a {token} placeholder is supported, as is a Ping Federate Access Token Manager ID.'}
+  docs: https://docs.lytics.com/docs/keys-authorizations
+constraints:
+  - >-
+    Time-window audience triggers must use a window of at least 30 minutes; smaller
+    windows are unreliable because of the audience-membership evaluation pipeline.
+  - >-
+    Changing an audience definition that has an active webhook: Lytics recommends
+    stopping the webhook workflow and recreating it after the change.
+  - 'Max output event size: 1 MB per trigger event (see rate-limits/lytics-rate-limits.yml).'
+  - 'Egress rate is quota-based and varies by plan tier.'
+related:
+  rate_limits: rate-limits/lytics-rate-limits.yml
+  skill: skills/lytics-webhook-template-builder.md

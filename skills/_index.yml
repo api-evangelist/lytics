@@ -1,0 +1,328 @@
+generated: '2026-08-13'
+method: searched
+source: https://github.com/lytics/agent-skills (commit f946efa29e70, 2026-05-01)
+note: Provider-published Agent Skills, saved VERBATIM. Lytics publishes these itself at github.com/lytics/agent-skills
+  for install via `npx skills add lytics/agent-skills`; API Evangelist authored none of them. Filenames
+  are prefixed lytics- to match repo convention; each file is the unmodified SKILL.md from the corresponding
+  skill directory. skills/references/ holds the six shared reference documents the skills import (auth,
+  api-client, api-response-format, confirmation-gate, field-types, filterql-grammar).
+install: npx skills add lytics/agent-skills
+environment:
+- variable: LYTICS_API_TOKEN
+  required: true
+  docs: https://docs.lytics.com/docs/access-tokens
+- variable: LYTICS_API_URL
+  required: false
+  default: https://api.lytics.io
+skill_count: 23
+references:
+- api-client.md
+- api-response-format.md
+- auth.md
+- confirmation-gate.md
+- field-types.md
+- filterql-grammar.md
+skills:
+- file: lytics-account-sync.md
+  name: account-sync
+  description: Copy metadata (segments, schema, flows, jobs, connections, auth) and account-level configuration
+    (settings, per-table idconfig, field rankings) between Lytics accounts. Use when the user wants to
+    promote changes from a sandbox account to production, sync objects between accounts, or copy an object
+    from one account to another.
+  api: openapi/lytics-api-v1-openapi.json
+  endpoints: null
+- file: lytics-audience-advisor.md
+  name: audience-advisor
+  description: Strategic audience guidance -- helps users build the right audience for their business
+    goal or improve an existing segment. Use when the user needs help choosing the right audience strategy,
+    wants advice on segment design, or needs to improve an existing segment.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/content/affinity
+  - /api/content/recommend/segment/${SEGMENT_ID}
+  - /api/schema/user/fieldinfo
+  - /api/segment/${SEGMENT_ID}/fieldinfo
+  - /api/segment/${SEGMENT_ID}/summary
+  - /api/segment/size
+  - /api/segment/validate
+  - /v2/ml
+  - /v2/ml/${MODEL_ID}/summary
+  - /v2/segment
+- file: lytics-audience-builder.md
+  name: audience-builder
+  description: Create or update audience segments from natural language descriptions. Use when the user
+    wants to build, create, or define an audience or segment from a natural language description.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/schema/user/fieldsuggest/${FIELD}
+  - /api/segment/size
+  - /api/segment/validate
+  - /v2/schema/user/field
+  - /v2/segment
+- file: lytics-audience-snapshot.md
+  name: audience-snapshot
+  description: Analyze what an audience looks like -- demographic breakdowns, top field values, coverage
+    rates, and distributions. Use when the user wants to understand audience composition, view segment
+    demographics, or analyze field coverage for a segment.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/segment/${SEGMENT_ID}/fieldinfo
+  - /api/segment/fieldinfo
+  - /api/segment/fieldinfo
+  - /v2/segment
+- file: lytics-campaign-flow-builder.md
+  name: campaign-flow-builder
+  description: Guided flow/journey creation from business intent -- multi-step campaigns with delays,
+    conditionals, A/B tests, and exports. Use when the user wants to create a campaign, build a journey,
+    or design a multi-step marketing flow.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/flow/ui
+  - /v2/flow/ui/${FLOW_ID}
+  - /v2/flow/ui/${FLOW_ID}/step/${STEP_ID}/work
+  - /v2/flow/ui/${FLOW_ID}/step/${STEP_ID}/work/publish
+  - /v2/segment
+- file: lytics-connection-manager.md
+  name: connection-manager
+  description: Browse and manage connections, auth providers, and integration credentials. Use when the
+    user wants to list, view, create, or manage API connections, auth providers, or integration credentials.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/auth
+  - /v2/auth/${AUTH_ID}
+  - /v2/auth/${TYPE}
+  - /v2/auth/${TYPE}/${AUTH_ID}
+  - /v2/connection
+  - /v2/connection/${CONNECTION_ID}
+  - /v2/connection/${CONNECTION_ID}/scan
+  - /v2/connection/${CONNECTION_ID}/schema
+  - /v2/connection/${CONNECTION_ID}/schema/${TABLE}
+  - /v2/provider
+- file: lytics-data-health-monitor.md
+  name: data-health-monitor
+  description: Single-command data health check -- streams, jobs, schema, and quota status in one report.
+    Use when the user wants to check data health, view system status, or get an overview of streams, jobs,
+    and schema health.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/schema/user/fieldinfo
+  - /v2/control/eventquota/thresholds
+  - /v2/job
+  - /v2/job/${JOB_ID}/logs
+  - /v2/job
+  - /v2/metric
+  - /v2/metric
+  - /v2/metric
+  - /v2/schema/user/field
+  - /v2/stream
+  - /v2/stream/${STREAM_NAME}/stats
+- file: lytics-entity-lookup.md
+  name: entity-lookup
+  description: Look up user profiles by identity field and value. Use when the user wants to find or look
+    up a specific user profile by email, user ID, or other identity field.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/entity/${TABLE}/${FIELD}/${VALUE}
+  - /api/entity/${TABLE}/${VALUE}
+  - /api/entity/${TABLE}/segments/${FIELD}/${VALUE}
+  - /api/entity/softdelete/${TABLE}/${FIELD}/${VALUE}
+  - /v2/identity/${TABLE}/${FIELD}/${VALUE}
+  - /v2/identity/lookup
+- file: lytics-export-debugger.md
+  name: export-debugger
+  description: Trace why a specific user was or wasn't exported to an external platform. Use when the
+    user wants to debug an export, understand why a profile wasn't sent to a destination, or trace export
+    behavior.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/entity/user/${FIELD}/${VALUE}
+  - /v2/flow/ui/${FLOW_ID}
+  - /v2/job
+  - /v2/job/${JOB_ID}
+  - /v2/job/${JOB_ID}/logs
+- file: lytics-filterql-builder.md
+  name: filterql-builder
+  description: Translate structured conditions into valid FilterQL expressions. Use when the user wants
+    to write, build, or validate a FilterQL query or filter expression.
+  api: openapi/lytics-api-v1-openapi.json
+  endpoints: null
+- file: lytics-flow-manager.md
+  name: flow-manager
+  description: Flow/journey CRUD and step management for campaign orchestration. Use when the user wants
+    to list, view, create, update, or delete flows, journeys, or campaign steps.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/flow/state
+  - /v2/flow/ui
+  - /v2/flow/ui/${FLOW_ID}
+  - /v2/flow/ui/${FLOW_ID}/${VERSION}
+  - /v2/flow/ui/${FLOW_ID}/step/${STEP_ID}/work
+- file: lytics-integration-advisor.md
+  name: integration-advisor
+  description: Strategic guidance for setting up the right data integration -- workflow selection, field
+    mapping, and configuration. Use when the user needs help choosing the right integration approach,
+    wants advice on field mapping, or needs to plan a data integration.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/auth
+  - /v2/connection
+  - /v2/connection/${CONNECTION_ID}/scan
+  - /v2/connection/${CONNECTION_ID}/schema
+  - /v2/connection/${CONNECTION_ID}/schema/${TABLE}
+  - /v2/job/${JOB_ID}
+  - /v2/job/${JOB_ID}/logs
+  - /v2/job/${WORKFLOW}
+  - /v2/provider
+  - /v2/schema/user/field
+  - /v2/segment
+- file: lytics-integration-setup.md
+  name: integration-setup
+  description: Guided setup for data integrations -- connection, auth, and job creation. Use when the
+    user wants to set up, configure, or connect a new data integration end-to-end.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/auth
+  - /v2/connection
+  - /v2/provider
+- file: lytics-job-manager.md
+  name: job-manager
+  description: Job/work CRUD and lifecycle management -- create, pause, resume, bounce, kill. Use when
+    the user wants to list, view, create, pause, resume, restart, or manage data jobs and workflows.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/job
+  - /v2/job/${JOB_ID}
+  - /v2/job/${JOB_ID}/bounce
+  - /v2/job/${JOB_ID}/kill
+  - /v2/job/${JOB_ID}/logs
+  - /v2/job/${JOB_ID}/logs
+  - /v2/job/${JOB_ID}/pause
+  - /v2/job/${JOB_ID}/release
+  - /v2/job/${JOB_ID}/resume
+  - /v2/job/${WORKFLOW}
+  - /v2/job/${WORKFLOW}/${JOB_ID}
+  - /v2/job/${WORKFLOW}/${JOB_ID}/logs
+  - /v2/job/logs
+- file: lytics-lytics-agent.md
+  name: lytics-agent
+  description: Top-level Lytics CDP agent - routes user intent to the appropriate skill for audience management,
+    profile exploration, data integration, and schema browsing. Use when the user has a general Lytics
+    question or request that doesn't clearly map to a specific skill.
+  api: openapi/lytics-api-v1-openapi.json
+  endpoints: null
+- file: lytics-profile-explorer.md
+  name: profile-explorer
+  description: Interactive profile exploration combining lookup, segments, and event history. Use when
+    the user wants to explore a user profile, view segment memberships, or browse event history for an
+    identity.
+  api: openapi/lytics-api-v1-openapi.json
+  endpoints:
+  - /api/entity/user/${FIELD}/${VALUE}
+  - /api/entity/user/segments/${FIELD}/${VALUE}
+- file: lytics-profile-investigator.md
+  name: profile-investigator
+  description: Diagnose why a user is or isn't in a segment, and trace their data lineage. Use when the
+    user wants to understand segment membership, debug why a profile qualifies or doesn't qualify, or
+    trace data lineage.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/entity/user/${FIELD}/${VALUE}
+  - /api/entity/user/${FIELD}/${VALUE}
+  - /api/entity/user/${FIELD}/${VALUE}
+  - /v2/segment/${SEGMENT_ID}
+- file: lytics-schema-discovery.md
+  name: schema-discovery
+  description: Discover and interpret profile schema fields, types, and sample values for field mapping.
+    Use when the user wants to find schema fields, understand field types, or discover what data is available
+    in the profile schema.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/schema/${TABLE:-user}/fieldinfo
+  - /api/schema/${TABLE:-user}/fieldsuggest/${FIELD}
+  - /v2/schema/${TABLE:-user}/field
+  - /v2/schema/${TABLE:-user}/fieldnames
+  - /v2/schema/${TABLE:-user}/idconfig
+  - /v2/stream/names
+- file: lytics-schema-manager.md
+  name: schema-manager
+  description: Browse and modify schema fields, mappings, identity config, and field rankings. Use when
+    the user wants to list, view, create, or modify schema fields, mappings, identity configuration, or
+    field rankings.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/schema
+  - /v2/schema/${TABLE}
+  - /v2/schema/${TABLE}/field
+  - /v2/schema/${TABLE}/field/${FIELD_ID}
+  - /v2/schema/${TABLE}/fieldnames
+  - /v2/schema/${TABLE}/idconfig
+  - /v2/schema/${TABLE}/mapping
+  - /v2/schema/${TABLE}/mapping/${MAPPING_ID}
+  - /v2/schema/${TABLE}/publish
+  - /v2/schema/${TABLE}/rank
+  - /v2/schema/lql
+  - /v2/schema/patch/${TABLE}
+  - /v2/schema/patch/${TABLE}/${PATCH_ID}
+  - /v2/schema/patch/${TABLE}/${PATCH_ID}/apply
+  - /v2/schema/patch/${TABLE}/${PATCH_ID}/field
+  - /v2/schema/patch/${TABLE}/${PATCH_ID}/field/${FIELD_ID}
+  - /v2/schema/patch/${TABLE}/${PATCH_ID}/mapping
+  - /v2/schema/patch/${TABLE}/${PATCH_ID}/mapping/${MAPPING_ID}
+  - /v2/schema/patch/${TABLE}/${PATCH_ID}/rank
+  - /v2/schema/patch/user
+  - /v2/stream/names
+- file: lytics-schema-optimizer.md
+  name: schema-optimizer
+  description: Analyze schema field usage, coverage, mappings, and identity config to suggest improvements.
+    Use when the user wants to optimize their schema, find unused fields, improve coverage, or review
+    identity and merge configuration.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/schema/user/fieldinfo
+  - /v2/schema/user/field
+  - /v2/schema/user/idconfig
+  - /v2/schema/user/mapping
+  - /v2/schema/user/rank
+  - /v2/segment
+- file: lytics-segment-manager.md
+  name: segment-manager
+  description: Segment CRUD, validation, and sizing operations. Use when the user wants to list, view,
+    create, update, delete, validate, or size segments.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /api/segment/${SEGMENT_ID}/fieldinfo
+  - /api/segment/${SEGMENT_ID}/size
+  - /api/segment/size
+  - /api/segment/validate
+  - /v2/segment
+  - /v2/segment/${SEGMENT_ID}
+  - /v2/segment/${SEGMENT_ID}/ancestors
+  - /v2/segment/${SEGMENT_ID}
+  - /v2/segment/reevaluate
+  - /v2/segment
+- file: lytics-stream-inspector.md
+  name: stream-inspector
+  description: Inspect data streams, view stats, and browse recent events. Use when the user wants to
+    list streams, view stream statistics, or browse recent stream events.
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/stream
+  - /v2/stream/${STREAM_NAME}
+  - /v2/stream/${STREAM_NAME}/events
+  - /v2/stream/${STREAM_NAME}/stats
+  - /v2/stream/fields
+  - /v2/stream/names
+- file: lytics-webhook-template-builder.md
+  name: webhook-template-builder
+  description: Research-driven authoring of Lytics webhook templates -- fetches destination docs, drafts
+    and tests the transform, and emits a ready-to-go webhook job blueprint. Use when the user wants to
+    send Lytics audience triggers or enrichment requests to a custom webhook destination (e.g., Qualtrics,
+    Slack, custom CRM).
+  api: openapi/lytics-api-v2-openapi.json
+  endpoints:
+  - /v2/template
+  - /v2/template/${TEMPLATE_ID}
+  - /v2/template/${TEMPLATE_ID}/test
+  - /v2/template/${TEMPLATE_ID}
+  - /v2/template
+  - /v2/template

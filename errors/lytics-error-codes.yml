@@ -1,0 +1,158 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/lytics-api-v2-openapi.json (components.schemas.lioerrors.ApiV2ErrorOut) + https://github.com/lytics/agent-skills/blob/main/references/api-response-format.md
+format: vendor-codes
+rfc9457: false
+note: 'Lytics does NOT use RFC 9457 application/problem+json. It publishes two layers: the HTTP status
+  codes documented in its own agent-skills reference, and a closed enum of 27 machine-readable Lytics
+  error codes carried on the v2 error object (lioerrors.ApiV2ErrorOut: code, level, message, timestamp).
+  Error-code strings and the enum are verbatim from the published spec; the HTTP status mapped to each
+  code is DERIVED from the code family (NOTFOUND -> 404, BADREQ -> 400, UNAUTHORIZED-017 -> 401, FORBIDDEN-026
+  -> 403, INTERNAL/FAULT -> 500) and is marked as such.'
+envelope:
+  content_type: application/json
+  shape: '{"status": 4xx|5xx, "message": "Human-readable error message", "request_id": "..."}'
+  v2_error_object:
+    schema: lioerrors.ApiV2ErrorOut
+    fields:
+    - code
+    - level
+    - message
+    - timestamp
+http_statuses:
+- status: 400
+  title: Bad Request
+  causes: Invalid payload, malformed FilterQL, missing required fields.
+- status: 401
+  title: Unauthorized
+  causes: Invalid or missing API token.
+- status: 403
+  title: Forbidden
+  causes: Token lacks permission for this operation.
+- status: 404
+  title: Not Found
+  causes: Resource does not exist, or belongs to a different account.
+- status: 409
+  title: Conflict
+  causes: A resource with the same slug/name already exists.
+- status: 429
+  title: Too Many Requests
+  causes: 'Rate limited. Provider guidance: wait briefly and retry once.'
+- status: 500
+  title: Internal Server Error
+  causes: 'Server error. Provider guidance: retry once with backoff, then report.'
+source_operation_counts:
+  '404': 1313
+  '500': 1330
+  '400': 118
+  '403': 3
+  '401': 1
+problems:
+- code: UNKNOWN-000
+  title: Unclassified error.
+  http_status: 500
+  http_status_method: derived from code family
+- code: BADREQ-001
+  title: Malformed or invalid request.
+  http_status: 400
+  http_status_method: derived from code family
+- code: JOB-BADREQ-002
+  title: Invalid job request or job configuration.
+  http_status: 400
+  http_status_method: derived from code family
+- code: NOTFOUND-003
+  title: Requested resource does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: JOB-NOTFOUND-004
+  title: Job does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: WF-NOTFOUND-005
+  title: Workflow does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: AUTH-NOTFOUND-006
+  title: Authorization does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: AUTHTYPE-NOTFOUND-007
+  title: Authorization type does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: AUTH-BADREQ-008
+  title: Invalid authorization request or credentials payload.
+  http_status: 400
+  http_status_method: derived from code family
+- code: TABLE-NOTFOUND-009
+  title: Entity table does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: SCHEMA-NOTFOUND-010
+  title: Schema does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: SCHEMAVERSION-NOTFOUND-011
+  title: Schema version does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: ENTITY-NOTFOUND-012
+  title: Profile/entity does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: QUERY-NOTFOUND-013
+  title: Query (LQL) does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: STREAM-NOTFOUND-014
+  title: Data stream does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: PROVIDER-BADREQ-015
+  title: Invalid provider request.
+  http_status: 400
+  http_status_method: derived from code family
+- code: PROVIDER-NOTFOUND-016
+  title: Integration provider does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: UNAUTHORIZED-017
+  title: Missing or invalid access token.
+  http_status: 401
+  http_status_method: derived from code family
+- code: SCHEMA-INVALID-018
+  title: Schema definition failed validation.
+  http_status: 400
+  http_status_method: derived from code family
+- code: INTERNAL-019
+  title: Internal server error.
+  http_status: 500
+  http_status_method: derived from code family
+- code: ROUTERULE-NOTFOUND-020
+  title: Route rule does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: ACCOUNT-NOTFOUND-021
+  title: Account does not exist or the token cannot reach it.
+  http_status: 404
+  http_status_method: derived from code family
+- code: JOB-FAULT-022
+  title: Job entered a fault state.
+  http_status: 500
+  http_status_method: derived from code family
+- code: USER-NOTFOUND-023
+  title: User does not exist.
+  http_status: 404
+  http_status_method: derived from code family
+- code: USER-BADREQ-024
+  title: Invalid user request.
+  http_status: 400
+  http_status_method: derived from code family
+- code: JSON-BADREQ-025
+  title: Request body is not valid JSON.
+  http_status: 400
+  http_status_method: derived from code family
+- code: FORBIDDEN-026
+  title: Token is valid but lacks permission for this operation.
+  http_status: 403
+  http_status_method: derived from code family

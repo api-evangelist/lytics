@@ -1,0 +1,68 @@
+generated: '2026-08-13'
+method: probed
+source: live GET of /.well-known/* on every Lytics host in apis.yml and in the OpenAPI servers[]
+result: none
+note: >-
+  Lytics serves no /.well-known/ discovery document on any of its hosts. Every path
+  below is recorded with the status it actually returned on 2026-08-13.
+  IMPORTANT — app.lytics.com answers HTTP 200 with the single-page-app HTML shell for
+  EVERY /.well-known/* path, including paths that cannot exist. Those 200s are NOT
+  documents and are marked `spa_catchall: true`; they are the classic false positive on
+  this probe. api.lytics.io answers 405 Method Not Allowed for GET on any unrouted path,
+  and the apex lytics.com answers Cloudflare 526 (invalid origin certificate) — only
+  www.lytics.com is served. No WellKnown or SecurityTxt pointer is emitted from this file.
+hosts:
+  - host: www.lytics.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+  - host: lytics.com
+    note: Cloudflare error 526 (invalid SSL certificate at origin) on every path; apex is not served.
+    documents:
+      - {path: /.well-known/security.txt, status: 526}
+      - {path: /.well-known/openid-configuration, status: 526}
+      - {path: /.well-known/oauth-authorization-server, status: 526}
+      - {path: /.well-known/agent-card.json, status: 526}
+      - {path: /.well-known/agent.json, status: 526}
+  - host: api.lytics.io
+    note: API host returns 405 Method Not Allowed for GET on unrouted paths.
+    documents:
+      - {path: /.well-known/security.txt, status: 405}
+      - {path: /.well-known/openid-configuration, status: 405}
+      - {path: /.well-known/oauth-authorization-server, status: 405}
+      - {path: /.well-known/oauth-protected-resource, status: 405}
+      - {path: /.well-known/api-catalog, status: 405}
+      - {path: /.well-known/ai-plugin.json, status: 405}
+      - {path: /.well-known/agent-card.json, status: 405}
+      - {path: /.well-known/agent.json, status: 405}
+  - host: docs.lytics.com
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/oauth-protected-resource/mcp, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+      - {path: /.well-known/agent-card.json, status: 404}
+      - {path: /.well-known/agent.json, status: 404}
+  - host: app.lytics.com
+    spa_catchall: true
+    note: >-
+      Returns HTTP 200 with the app's HTML shell for every path probed. Treated as a
+      MISS on all paths — an HTML body is not a well-known document.
+    documents:
+      - {path: /.well-known/security.txt, status: 200, content_type: text/html, document: false}
+      - {path: /.well-known/openid-configuration, status: 200, content_type: text/html, document: false}
+      - {path: /.well-known/oauth-authorization-server, status: 200, content_type: text/html, document: false}
+      - {path: /.well-known/oauth-protected-resource, status: 200, content_type: text/html, document: false}
+      - {path: /.well-known/api-catalog, status: 200, content_type: text/html, document: false}
+      - {path: /.well-known/ai-plugin.json, status: 200, content_type: text/html, document: false}
+      - {path: /.well-known/agent-card.json, status: 200, content_type: text/html, document: false}
+      - {path: /.well-known/agent.json, status: 200, content_type: text/html, document: false}

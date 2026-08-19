@@ -1,0 +1,96 @@
+generated: '2026-08-13'
+method: searched
+source: https://docs.lytics.com/changelog
+observed: '2026-08-13'
+scheme: dated-product-updates
+current_api_version: '2.0'
+note: >-
+  Lytics publishes a dated product-update changelog on its docs host, categorized
+  Added / Improved / Fixed. It is a PRODUCT changelog, not an API version log — entries
+  describe integrations, UI and platform behaviour, and no entry announces an API
+  breaking change or a version bump. The changelog index renders relative dates
+  ("9 days ago") rather than absolute ones, so `published_relative` is recorded verbatim
+  as observed on 2026-08-13 and no absolute date is asserted. Recent window only; the
+  live page is the source of truth.
+entries:
+  - title: Content Index replaces the Classification page
+    type: improved
+    published_relative: 9 days ago
+    url: https://docs.lytics.com/changelog/content-index-replaces-the-classification-page
+    breaking: false
+    highlights: >-
+      Content Index becomes the home for classified content, replacing the Classification
+      page. Adds an Overview with URL-analysis trends and alert thresholds, a Content flow
+      diagram showing where URLs drop out (robots.txt, domain/path filters, fetch failures),
+      a searchable URLs tab, and a manual URL analysis tool.
+  - title: SFTP exports — split large exports into smaller files
+    type: added
+    published_relative: about 1 month ago
+    url: https://docs.lytics.com/changelog/sftp-exports-split-large-exports-into-smaller-files
+    breaking: false
+    highlights: >-
+      Max File Size on Export CSV/JSON via SFTP jobs; oversized exports are delivered as
+      numbered parts. The limit applies pre-compression.
+  - title: Eloqua — Export to Custom Data Object
+    type: added
+    published_relative: about 1 month ago
+    url: https://docs.lytics.com/changelog/eloqua-export-to-custom-data-object
+    breaking: false
+    highlights: >-
+      Oracle Eloqua integration can export profile data and audience membership to a
+      Custom Data Object instead of the contact list, keeping computed data off the
+      master contact record.
+  - title: Cloud Connect — import JSON columns into map fields
+    type: improved
+    published_relative: about 1 month ago
+    url: https://docs.lytics.com/changelog/cloud-connect-import-json-columns-into-map-fields
+    breaking: false
+    highlights: >-
+      A warehouse JSON/OBJECT column can be imported into a map-typed Lytics field
+      (map[string]string|int|number|bool|time) via Field Mappings.
+  - title: Convert predefined roles to granular permissions in one step
+    type: improved
+    published_relative: about 2 months ago
+    url: https://docs.lytics.com/changelog/convert-predefined-roles-to-granular-permissions-in-one-step
+    breaking: false
+    highlights: >-
+      Admins can convert non-Admin predefined roles to equivalent granular permissions.
+      Conversion never escalates access; anything not exactly expressible is dropped
+      with a warning.
+  - title: Optimizely Data Platform — power Real-Time Segments with Lytics audiences
+    type: added
+    published_relative: about 2 months ago
+    url: https://docs.lytics.com/changelog/optimizely-data-platform-power-real-time-segments-with-lytics-audiences
+    breaking: false
+  - title: Infobip — activate Lytics audiences across SMS, email, and WhatsApp
+    type: added
+    published_relative: about 2 months ago
+    url: https://docs.lytics.com/changelog/infobip-activate-lytics-audiences-across-sms-email-and-whatsapp
+    breaking: false
+  - title: Snapchat — server-side Conversions API export
+    type: added
+    published_relative: 2 months ago
+    url: https://docs.lytics.com/changelog/snapchat-server-side-conversions-api-export
+    breaking: false
+  - title: Cloud Connect V2 data models — Activated Fields and permission-aware Field Mappings
+    type: improved
+    published_relative: 2 months ago
+    url: https://docs.lytics.com/changelog/cloud-connect-v2-data-models-activated-fields-and-permission-aware-field-mappings
+    breaking: false
+  - title: Flows calendar-aligned waits — hold users until a specific time of day or weekday
+    type: improved
+    published_relative: 2 months ago
+    url: https://docs.lytics.com/changelog/flows-calendar-aligned-waits-hold-users-until-a-specific-time-of-day-or-weekday
+    breaking: false
+related_changelogs:
+  - name: Lytics Agent Skills changelog
+    url: https://github.com/lytics/agent-skills/blob/main/CHANGELOG.md
+    file: skills/lytics-agent-skills-CHANGELOG.md
+    scheme: semver + Keep a Changelog
+    latest: '0.2.0'
+    latest_date: '2026-04-27'
+    note: >-
+      The one Lytics changelog that IS versioned and absolutely dated. Notably records
+      runtime drift from the public docs discovered during end-to-end verification —
+      `template` (not `transformData`) as the webhook template entry point, PUT (not POST)
+      for update, and a required desired_format query parameter on /v2/template/{id}/test.

@@ -1,0 +1,107 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/lytics-api-v2-openapi.json + openapi/lytics-api-v1-openapi.json
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: probed
+note: 'Lytics publishes NO MCP server for its API. Probed 2026-08-13: https://docs.lytics.com/mcp answers
+  JSON-RPC error -32001 ''Authorization required'' and the ReadMe project config published in the docs
+  page itself records mcp.state = disabled — that is the documentation MCP, not an API MCP server, and
+  it is switched off, so no MCPServer pointer is emitted. Nothing named lytics was found in npm under
+  the @lytics scope, in @modelcontextprotocol, or in the public MCP registries. Lytics DOES ship an agent
+  surface, but as an Agent Skills package (see skills/_index.yml), not as MCP. The tools[] below are CANDIDATES
+  derived from the published OpenAPI so the mapping exists if a server is ever built; no endpoint URL
+  is asserted. Note the v2 OpenAPI declares no operationId anywhere, so source_operation is recorded as
+  method + path.'
+server:
+  name: lytics
+  transport: null
+  url: null
+auth:
+  scheme: apiKey
+  header: Authorization
+  docs: https://docs.lytics.com/docs/access-tokens
+tools:
+- name: list_segments
+  description: List audiences/segments for a table
+  source_operation: GET /v2/segment
+- name: get_segment
+  description: Get one audience by id or slug
+  source_operation: GET /v2/segment/{id}
+- name: create_segment
+  description: Create an audience from a FilterQL definition
+  source_operation: POST /v2/segment
+- name: validate_segment
+  description: Validate a FilterQL segment definition
+  source_operation: POST /api/segment/validate
+- name: size_segment
+  description: Estimate the size of a segment definition
+  source_operation: POST /api/segment/size
+- name: scan_segment
+  description: Page through the members of an audience
+  source_operation: GET /api/segment/{segId}/scan
+- name: lookup_entity
+  description: Look up a unified profile by identity field and value
+  source_operation: GET /api/entity/{table}/{fieldname}/{fieldval}
+- name: delete_entity
+  description: Submit a profile deletion request (GDPR/CCPA)
+  source_operation: DELETE /api/entity/{table}/{fieldname}/{fieldval}
+- name: deletion_status
+  description: Check the status of a profile deletion request
+  source_operation: GET /api/entity/deletestatus/{request_id}
+- name: collect_json
+  description: Send JSON events into a data stream
+  source_operation: POST /collect/json/{stream}
+- name: collect_bulk
+  description: Bulk upload records into a data stream
+  source_operation: POST /collect/bulk/{stream}
+- name: list_streams
+  description: List data streams
+  source_operation: GET /v2/stream
+- name: stream_stats
+  description: Get throughput and field stats for a stream
+  source_operation: GET /v2/stream/{id}/stats
+- name: list_schema_fields
+  description: List profile schema fields for a table
+  source_operation: GET /v2/schema/{id}/field
+- name: list_jobs
+  description: List import/export jobs
+  source_operation: GET /v2/job
+- name: job_logs
+  description: Read the logs for a job
+  source_operation: GET /v2/job/{id}/logs
+- name: pause_job
+  description: Pause a running job
+  source_operation: POST /v2/job/{id}/pause
+- name: resume_job
+  description: Resume a paused job
+  source_operation: POST /v2/job/{id}/resume
+- name: kill_job
+  description: Kill a job
+  source_operation: POST /v2/job/{id}/kill
+- name: list_connections
+  description: List configured connections
+  source_operation: GET /v2/connection
+- name: list_auths
+  description: List authorizations
+  source_operation: GET /v2/auth
+- name: list_flows
+  description: List campaign flows
+  source_operation: GET /v2/flow/ui
+- name: list_ml_models
+  description: List ML/lookalike models
+  source_operation: GET /v2/ml
+- name: get_metrics
+  description: Read account metrics by dimension
+  source_operation: GET /v2/metric
+- name: classify_content
+  description: Classify a document/URL for topics
+  source_operation: POST /api/content/doc/classify
+- name: recommend_content
+  description: Get content recommendations for a user
+  source_operation: GET /api/content/recommend/user/{fieldname}/{fieldval}

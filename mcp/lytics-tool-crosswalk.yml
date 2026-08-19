@@ -1,0 +1,667 @@
+generated: '2026-08-13'
+method: derived
+source: skills/ (verbatim from https://github.com/lytics/agent-skills) bound against openapi/lytics-api-v2-openapi.json
+  and openapi/lytics-api-v1-openapi.json
+note: 'Lytics ships no MCP server, so the agent-facing tool surface here is its own published Agent Skills
+  repo (github.com/lytics/agent-skills, 22 skills + 6 shared references). Each row binds a published skill
+  to the REST paths its own SKILL.md invokes, resolved against the two published OpenAPI documents. The
+  v2 OpenAPI declares no operationId on any operation, so rows bind to method+path rather than operationId
+  — that is a property of the provider''s spec, not an approximation on our side. skill_only[] is a REAL
+  surface divergence: the provider''s own skills call 38 endpoints that appear in neither published spec.'
+surfaces:
+  openapi:
+  - file: openapi/lytics-api-v2-openapi.json
+    base: https://api.lytics.io/v2
+    paths: 886
+    operations: 1331
+    operation_ids: 0
+    gated: false
+  - file: openapi/lytics-api-v1-openapi.json
+    base: https://api.lytics.io
+    paths: 88
+    operations: 136
+    operation_ids: 136
+    gated: false
+  graphql: null
+  mcp:
+    url: https://docs.lytics.com/mcp
+    status: disabled
+    note: The ReadMe SuperHub documentation MCP endpoint responds on the docs host but returns JSON-RPC
+      error -32001 'Authorization required'; the project's own published config records mcp.state = disabled.
+      It is NOT an API MCP server and no MCPServer pointer is emitted from it.
+  agent_skills:
+    repo: https://github.com/lytics/agent-skills
+    skills: 23
+    gated: false
+crosswalk:
+- tool: account-sync
+  file: skills/lytics-account-sync.md
+  category: admin
+  binding: rest
+  confidence: low
+  rest: []
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: audience-advisor
+  file: skills/lytics-audience-advisor.md
+  category: audiences
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /api/content/recommend/segment/${SEGMENT_ID}
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/content/recommend/segment/{segId}
+  - call: /api/schema/user/fieldinfo
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/schema/{table}/fieldinfo
+  - call: /api/segment/${SEGMENT_ID}/fieldinfo?limit=50
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/{segId}/fieldinfo
+  - call: /api/segment/size
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/size
+  - call: /api/segment/validate
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/validate
+  - call: /v2/ml
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/ml
+  - call: /v2/ml/${MODEL_ID}/summary
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/ml/{id}/summary
+  - call: /v2/segment?table=user&sizes=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: audience-builder
+  file: skills/lytics-audience-builder.md
+  category: audiences
+  binding: rest
+  confidence: high
+  rest:
+  - call: /api/schema/user/fieldsuggest/${FIELD}?q=${QUERY}
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/schema/{table}/fieldsuggest/{field}
+  - call: /api/segment/size
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/size
+  - call: /api/segment/validate
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/validate
+  - call: /v2/schema/user/field
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/field
+  - call: /v2/segment
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment
+  note: null
+- tool: audience-snapshot
+  file: skills/lytics-audience-snapshot.md
+  category: audiences
+  binding: rest
+  confidence: high
+  rest:
+  - call: /api/segment/${SEGMENT_ID}/fieldinfo?limit=20&table=user
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/{segId}/fieldinfo
+  - call: /api/segment/fieldinfo?ids=${ID1},${ID2}&limit=20
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/{id}
+  - call: /api/segment/fieldinfo?ids=${ID1},${ID2}&limit=20&table=user
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/{id}
+  - call: /v2/segment?table=user&sizes=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment
+  note: null
+- tool: campaign-flow-builder
+  file: skills/lytics-campaign-flow-builder.md
+  category: campaigns
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /v2/flow/ui
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/flow/{name}
+  - call: /v2/flow/ui/${FLOW_ID}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/flow/{name}/{version}
+  - call: /v2/segment?table=user&sizes=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: connection-manager
+  file: skills/lytics-connection-manager.md
+  category: integration
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /v2/auth
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/auth
+  - call: /v2/connection
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection
+  - call: /v2/connection/${CONNECTION_ID}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection/{id}
+  - call: /v2/connection/${CONNECTION_ID}/scan
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection/{id}/scan
+  - call: /v2/connection/${CONNECTION_ID}/schema
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection/{id}/schema
+  - call: /v2/connection/${CONNECTION_ID}/schema/${TABLE}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection/{id}/schema/{table}
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: data-health-monitor
+  file: skills/lytics-data-health-monitor.md
+  category: monitoring
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /api/schema/user/fieldinfo
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/schema/{table}/fieldinfo
+  - call: /v2/job
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job
+  - call: /v2/job/${JOB_ID}/logs
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/logs
+  - call: /v2/job?show_completed=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job
+  - call: /v2/metric?dimension=segment&range=now-24h
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/metric
+  - call: /v2/metric?dimension=stream&range=now-24h
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/metric
+  - call: /v2/metric?dimension=works&range=now-24h
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/metric
+  - call: /v2/schema/user/field
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/field
+  - call: /v2/stream
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream
+  - call: /v2/stream/${STREAM_NAME}/stats
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream/{name}/stats
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: entity-lookup
+  file: skills/lytics-entity-lookup.md
+  category: profiles
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /api/entity/${TABLE}/${FIELD}/${VALUE}
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/entity/{table}/{fieldname}/{fieldval}
+  - call: /api/entity/${TABLE}/${VALUE}
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/entity/{table}/{fieldval}
+  - call: /v2/identity/${TABLE}/${FIELD}/${VALUE}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/identity/{table}/{key}/{value}
+  - call: /v2/identity/lookup
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/identity/lookup
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: export-debugger
+  file: skills/lytics-export-debugger.md
+  category: integration
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /api/entity/user/${FIELD}/${VALUE}?segments=true&allsegments=true
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/entity/{table}/{fieldname}/{fieldval}
+  - call: /v2/flow/ui/${FLOW_ID}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/flow/{name}/{version}
+  - call: /v2/job
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job
+  - call: /v2/job/${JOB_ID}/logs?include_errors=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/logs
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: filterql-builder
+  file: skills/lytics-filterql-builder.md
+  category: audiences
+  binding: rest
+  confidence: low
+  rest: []
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: flow-manager
+  file: skills/lytics-flow-manager.md
+  category: campaigns
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /v2/flow/state
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/flow/state
+  - call: /v2/flow/ui
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/flow/{name}
+  - call: /v2/flow/ui/${FLOW_ID}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/flow/{name}/{version}
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: integration-advisor
+  file: skills/lytics-integration-advisor.md
+  category: integration
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /v2/auth
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/auth
+  - call: /v2/connection
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection
+  - call: /v2/connection/${CONNECTION_ID}/scan
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection/{id}/scan
+  - call: /v2/connection/${CONNECTION_ID}/schema
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection/{id}/schema
+  - call: /v2/connection/${CONNECTION_ID}/schema/${TABLE}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection/{id}/schema/{table}
+  - call: /v2/job/${JOB_ID}/logs
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/logs
+  - call: /v2/schema/user/field
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/field
+  - call: /v2/segment?table=user&sizes=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: integration-setup
+  file: skills/lytics-integration-setup.md
+  category: integration
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /v2/auth
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/auth
+  - call: /v2/connection
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/connection
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: job-manager
+  file: skills/lytics-job-manager.md
+  category: integration
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /v2/job
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job
+  - call: /v2/job/${JOB_ID}/bounce
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/bounce
+  - call: /v2/job/${JOB_ID}/kill
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/kill
+  - call: /v2/job/${JOB_ID}/logs
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/logs
+  - call: /v2/job/${JOB_ID}/logs?include_errors=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/logs
+  - call: /v2/job/${JOB_ID}/pause
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/pause
+  - call: /v2/job/${JOB_ID}/resume
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/job/{id}/resume
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: lytics-agent
+  file: skills/lytics-lytics-agent.md
+  category: router
+  binding: rest
+  confidence: low
+  rest: []
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: profile-explorer
+  file: skills/lytics-profile-explorer.md
+  category: profiles
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /api/entity/user/${FIELD}/${VALUE}
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/entity/{table}/{fieldname}/{fieldval}
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: profile-investigator
+  file: skills/lytics-profile-investigator.md
+  category: profiles
+  binding: rest
+  confidence: high
+  rest:
+  - call: /api/entity/user/${FIELD}/${VALUE}?explain=true
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/entity/{table}/{fieldname}/{fieldval}
+  - call: /api/entity/user/${FIELD}/${VALUE}?segments=true&allsegments=true
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/entity/{table}/{fieldname}/{fieldval}
+  - call: /api/entity/user/${FIELD}/${VALUE}?segments=true&allsegments=true&meta=true
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/entity/{table}/{fieldname}/{fieldval}
+  - call: /v2/segment/${SEGMENT_ID}?inline=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment/{ids}
+  note: null
+- tool: schema-discovery
+  file: skills/lytics-schema-discovery.md
+  category: schema
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /api/schema/${TABLE:-user}/fieldinfo
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/schema/{table}/fieldinfo
+  - call: /api/schema/${TABLE:-user}/fieldsuggest/${FIELD}?q=${QUERY}
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/schema/{table}/fieldsuggest/{field}
+  - call: /v2/schema/${TABLE:-user}/field
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/field
+  - call: /v2/schema/${TABLE:-user}/idconfig
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/idconfig
+  - call: /v2/stream/names
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream/{name}
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: schema-manager
+  file: skills/lytics-schema-manager.md
+  category: schema
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /v2/schema
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema
+  - call: /v2/schema/${TABLE}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}
+  - call: /v2/schema/${TABLE}/field
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/field
+  - call: /v2/schema/${TABLE}/field/${FIELD_ID}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/field/{field_id}
+  - call: /v2/schema/${TABLE}/idconfig
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/idconfig
+  - call: /v2/schema/${TABLE}/mapping
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/mapping
+  - call: /v2/schema/${TABLE}/mapping/${MAPPING_ID}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/mapping/{mapping_id}
+  - call: /v2/schema/${TABLE}/publish
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/publish
+  - call: /v2/schema/${TABLE}/rank
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/rank
+  - call: /v2/schema/lql
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/lql
+  - call: /v2/stream/names
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream/{name}
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: schema-optimizer
+  file: skills/lytics-schema-optimizer.md
+  category: schema
+  binding: rest
+  confidence: high
+  rest:
+  - call: /api/schema/user/fieldinfo
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/schema/{table}/fieldinfo
+  - call: /v2/schema/user/field
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/field
+  - call: /v2/schema/user/idconfig
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/idconfig
+  - call: /v2/schema/user/mapping
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/mapping
+  - call: /v2/schema/user/rank
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/schema/{table}/rank
+  - call: /v2/segment?table=user
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment
+  note: null
+- tool: segment-manager
+  file: skills/lytics-segment-manager.md
+  category: audiences
+  binding: rest
+  confidence: medium
+  rest:
+  - call: /api/segment/${SEGMENT_ID}/fieldinfo?limit=20&table=user
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/{segId}/fieldinfo
+  - call: /api/segment/size
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/size
+  - call: /api/segment/validate
+    spec: openapi/lytics-api-v1-openapi.json
+    path: /api/segment/validate
+  - call: /v2/segment
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment
+  - call: /v2/segment/${SEGMENT_ID}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment/{ids}
+  - call: /v2/segment/${SEGMENT_ID}?sizes=true&inline=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment/{ids}
+  - call: /v2/segment/reevaluate
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment/{ids}
+  - call: /v2/segment?table=user&kind=segment&sizes=true
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/segment
+  note: some calls in this skill have no matching path in the published OpenAPI (see skill_only[])
+- tool: stream-inspector
+  file: skills/lytics-stream-inspector.md
+  category: schema
+  binding: rest
+  confidence: high
+  rest:
+  - call: /v2/stream
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream
+  - call: /v2/stream/${STREAM_NAME}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream/{name}
+  - call: /v2/stream/${STREAM_NAME}/events
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream/{name}/events
+  - call: /v2/stream/${STREAM_NAME}/stats
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream/{name}/stats
+  - call: /v2/stream/fields
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream/{name}
+  - call: /v2/stream/names
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/stream/{name}
+  note: null
+- tool: webhook-template-builder
+  file: skills/lytics-webhook-template-builder.md
+  category: integration
+  binding: rest
+  confidence: high
+  rest:
+  - call: /v2/template
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/template
+  - call: /v2/template/${TEMPLATE_ID}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/template/{id}
+  - call: /v2/template/${TEMPLATE_ID}/test
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/template/{id}/test
+  - call: /v2/template/${TEMPLATE_ID}?name=${NAME}&type=${TYPE}&description=${DESCRIPTION}&desired_format=${DESIRED_FORMAT}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/template/{id}
+  - call: /v2/template?name=${DRAFT_NAME}&type=js1&description=Draft%20for%20${DESTINATION}&desired_format=${DESIRED_FORMAT}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/template
+  - call: /v2/template?name=${NAME}&type=${TYPE}&description=${DESCRIPTION}&desired_format=${DESIRED_FORMAT}
+    spec: openapi/lytics-api-v2-openapi.json
+    path: /v2/template
+  note: null
+skill_only:
+- skill: audience-advisor
+  call: /api/content/affinity
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: audience-advisor
+  call: /api/segment/${SEGMENT_ID}/summary
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: campaign-flow-builder
+  call: /v2/flow/ui/${FLOW_ID}/step/${STEP_ID}/work
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: campaign-flow-builder
+  call: /v2/flow/ui/${FLOW_ID}/step/${STEP_ID}/work/publish
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: connection-manager
+  call: /v2/auth/${AUTH_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: connection-manager
+  call: /v2/auth/${TYPE}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: connection-manager
+  call: /v2/auth/${TYPE}/${AUTH_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: connection-manager
+  call: /v2/provider
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: data-health-monitor
+  call: /v2/control/eventquota/thresholds
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: entity-lookup
+  call: /api/entity/${TABLE}/segments/${FIELD}/${VALUE}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: entity-lookup
+  call: /api/entity/softdelete/${TABLE}/${FIELD}/${VALUE}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: export-debugger
+  call: /v2/job/${JOB_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: flow-manager
+  call: /v2/flow/ui/${FLOW_ID}/${VERSION}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: flow-manager
+  call: /v2/flow/ui/${FLOW_ID}/step/${STEP_ID}/work
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: integration-advisor
+  call: /v2/job/${JOB_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: integration-advisor
+  call: /v2/job/${WORKFLOW}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: integration-advisor
+  call: /v2/provider
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: integration-setup
+  call: /v2/provider
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: job-manager
+  call: /v2/job/${JOB_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: job-manager
+  call: /v2/job/${JOB_ID}/release
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: job-manager
+  call: /v2/job/${WORKFLOW}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: job-manager
+  call: /v2/job/${WORKFLOW}/${JOB_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: job-manager
+  call: /v2/job/${WORKFLOW}/${JOB_ID}/logs
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: job-manager
+  call: /v2/job/logs
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: profile-explorer
+  call: /api/entity/user/segments/${FIELD}/${VALUE}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-discovery
+  call: /v2/schema/${TABLE:-user}/fieldnames
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/${TABLE}/fieldnames
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/${TABLE}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/${TABLE}/${PATCH_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/${TABLE}/${PATCH_ID}/apply
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/${TABLE}/${PATCH_ID}/field
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/${TABLE}/${PATCH_ID}/field/${FIELD_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/${TABLE}/${PATCH_ID}/mapping
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/${TABLE}/${PATCH_ID}/mapping/${MAPPING_ID}
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/${TABLE}/${PATCH_ID}/rank
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: schema-manager
+  call: /v2/schema/patch/user
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: segment-manager
+  call: /api/segment/${SEGMENT_ID}/size
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+- skill: segment-manager
+  call: /v2/segment/${SEGMENT_ID}/ancestors
+  reason: endpoint is exercised by the published skill but is not present in either published OpenAPI
+rest_only:
+  note: Neither the published skills nor any tool surface covers the bulk of the REST estate. The v2 spec
+    is dominated by per-provider job configuration (831 Jobs operations) and per-provider auth types (379
+    Auths operations) — one path family per integration partner — which no agent tool enumerates.
+  largest_uncovered_groups:
+  - tag: Jobs
+    operations: 831
+  - tag: Auths
+    operations: 379
+  - tag: Schema
+    operations: 28
+  - tag: DataModels
+    operations: 10
+  - tag: Streams
+    operations: 10
+coverage:
+  tools_named: 23
+  tool_calls_total: 149
+  tool_calls_bound_to_openapi: 111
+  tool_calls_unbound: 38
+  rest_operations_total: 1467
+  distinct_rest_paths_reached_by_a_tool: 48

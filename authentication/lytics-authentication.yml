@@ -1,25 +1,80 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/lytics-rest-api-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: openapi/lytics-api-v1-openapi.json, openapi/lytics-api-v2-openapi.json
+docs: https://docs.lytics.com/docs/access-tokens
+note: >-
+  Baseline derived mechanically from both published OpenAPI documents, then upgraded from
+  the provider's own token documentation and from the auth contract Lytics publishes in
+  its agent-skills repo (references/auth.md). Lytics is an API-key provider: there is no
+  OAuth, no OIDC and no scope surface on its own API, so scopes/ is deliberately absent.
+  Authorization is carried as the RAW header value with NO `Bearer` prefix — the single
+  most common integration mistake against this API.
 summary:
   types:
   - apiKey
   api_key_in:
   - header
   - query
+  oauth2_flows: []
 schemes:
-- name: ApiKeyQuery
-  type: apiKey
-  in: query
-  parameter: key
-  description: Lytics API key passed as a query parameter. Obtain your API key from the Lytics
-    account settings.
-  sources:
-  - openapi/lytics-rest-api-openapi.yml
-- name: ApiKeyHeader
+- name: ApiKeyAuth
   type: apiKey
   in: header
   parameter: Authorization
-  description: Lytics API key passed as an Authorization header value.
+  bearer_prefix: false
+  example: 'Authorization: <token>'
   sources:
-  - openapi/lytics-rest-api-openapi.yml
+  - openapi/lytics-api-v1-openapi.json
+  - openapi/lytics-api-v2-openapi.json
+- name: AccessTokenQuery
+  type: apiKey
+  in: query
+  parameter: access_token
+  description: >-
+    Query-string alternative documented in the V1 Lytics API description and accepted on
+    the v1 /api and /collect surfaces. Not declared as a securityScheme in the v2 spec.
+  sources:
+  - openapi/lytics-api-v1-openapi.json
+token_management:
+  ui_path: Account > Security > Access Tokens
+  docs: https://docs.lytics.com/docs/access-tokens
+  admin_only: true
+  shown_once: true
+  expiry_options: ['7 days', '30 days', '90 days', 'No expiration']
+  role_scoped: true
+  note: >-
+    Tokens are role-scoped at creation ("Each token can be tailored to have the precise
+    access needed and no more") and the secret is displayed exactly once. Roles can be
+    predefined or granular permissions; the changelog records a one-step conversion from
+    predefined roles to granular permissions.
+token_types:
+  - name: Access Token
+    note: Role-scoped token created in the UI. The current mechanism.
+  - name: User Auth Token
+    note: >-
+      User-specific, normally for the web admin but usable on the API; attributes actions
+      to that user and expires. Documented in the V1 OpenAPI description.
+  - name: API User
+    note: >-
+      Less privileged role, does not expire, but less action history is retained.
+      Documented in the V1 OpenAPI description.
+environment_variables:
+  - {name: LYTICS_API_TOKEN, required: true, note: 'Used by the provider-published Agent Skills and lio-client.'}
+  - {name: LYTICS_API_URL, required: false, default: 'https://api.lytics.io'}
+  - {name: LIOKEY, required: true, note: 'Used by the Go CLI (github.com/lytics/lytics).'}
+network_controls:
+  ip_allowlisting:
+    supported: true
+    setting: api_ip_whitelist
+    format: CIDR (v4 or v6)
+    note: >-
+      Restricts both API access and admin access to the account. Documented in the V1
+      OpenAPI description.
+  account_security_settings:
+    docs: https://docs.lytics.com/docs/security
+    options: [logon session days, logon session timeout minutes, enforce password complexity, enforce password history, SSO (Enterprise plan)]
+multi_account:
+  parameter: account_id
+  note: >-
+    A token may reach multiple accounts; account_id (query) selects the target and is
+    present on 1,321 of the 1,467 published operations.

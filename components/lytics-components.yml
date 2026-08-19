@@ -1,0 +1,75 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://docs.lytics.com/docs/pathfora, https://docs.lytics.com/docs/javascript-tag-config,
+  https://docs.lytics.com/docs/sdk-for-ios, https://docs.lytics.com/docs/sdk-for-android,
+  https://docs.lytics.com/docs/react-native-sdk, https://github.com/lytics/pathforajs
+note: >-
+  Client-side and embeddable surfaces Lytics ships, distinct from the server-side API
+  clients in packages/. Lytics is a personalization platform, so its component layer is
+  unusually large: a browser tag that both collects and activates, a web personalization
+  widget library, and native mobile SDKs.
+families:
+  - name: Pathfora Web Personalization SDK
+    kind: on-site experience widgets
+    docs: https://docs.lytics.com/docs/pathfora
+    repository: https://github.com/lytics/pathforajs
+    loader: jstag `pathfora.install` plugin (https://docs.lytics.com/docs/jstag-plugin-pathfora-install)
+    distribution: >-
+      Lytics generates a per-account JavaScript bundle containing that account's
+      published campaigns; the bundle is embedded on the site rather than pinned from
+      a package registry.
+    integrates_with:
+      - Orchestration API (https://docs.lytics.com/docs/orchestration)
+      - Decision Engine (https://docs.lytics.com/docs/decision-engine)
+    tactics:
+      - {tactic: present_message, widget: Message, use_case: Announcements, notifications, promotions}
+      - {tactic: target_url, widget: Message (clickable), use_case: Call-to-action directing to a URL}
+      - {tactic: capture_leads, widget: Form, use_case: Email capture, surveys, lead generation}
+      - {tactic: SiteGate, widget: Modal form, use_case: Gating content behind a form submission}
+      - {tactic: recommend_content, widget: Message, use_case: Personalized content recommendations}
+    layouts: [Modal, Slideout, Bar, Sticky Bar, Gate]
+    targeting:
+      - Audience segment membership evaluated client-side
+      - Conversion segments to exclude users who already converted
+      - Personalization keys as an alternative to segments
+      - Automatic A/B testing across variations, with per-variation metrics
+    widget_fields: [headline, msg, image, confirmAction, cancelAction]
+  - name: Lytics JavaScript Tag (jstag)
+    kind: browser collection + activation tag
+    docs: https://docs.lytics.com/docs/javascript-tag-config
+    package: "@lytics/tag"
+    registry: npm
+    version: 3.0.35
+    published: '2023-10-23'
+    note: >-
+      Core browser SDK. Collects behavioural events into a stream and syncs audience
+      membership to client-side partners. Configured from account settings rather than
+      only in code.
+    plugin_examples:
+      - {plugin: pathfora.install, docs: 'https://docs.lytics.com/docs/jstag-plugin-pathfora-install'}
+      - {plugin: google.tagManager, docs: 'https://docs.lytics.com/docs/jstag-plugin-google-tag-manager'}
+      - {plugin: audit.carp, docs: 'https://docs.lytics.com/docs/jstag-plugin-audit-carp'}
+    client_side_integrations_toggleable:
+      [Amazon DSP, Amazon DSP Confirmation Events, Criteo, Google Ads Partner API,
+       Google Analytics 4, Google DV360, Krux, Lotame, Taboola, The Trade Desk, Yahoo Ads]
+    client_side_integrations_automatic:
+      - {name: Adroll, slug: adroll}
+      - {name: AddThis, slug: add_this}
+      - {name: Amazon DSP, slug: amazon}
+      - {name: Facebook Ads, slug: facebook_ads}
+      - {name: Google Analytics, slug: google_analytics_dimensions}
+      - {name: Google DFP, slug: google_dfp}
+      - {name: Google Tag Manager, slug: gtm}
+  - name: Mobile SDKs
+    kind: native client SDKs
+    members:
+      - {platform: iOS, docs: 'https://docs.lytics.com/docs/sdk-for-ios', repository: 'https://github.com/lytics/ios-sdk', last_push: '2024-03-04'}
+      - {platform: Android, docs: 'https://docs.lytics.com/docs/sdk-for-android', repository: 'https://github.com/lytics/android-sdk', last_push: '2023-05-19'}
+      - {platform: React Native, docs: 'https://docs.lytics.com/docs/react-native-sdk', repository: 'https://github.com/lytics/react-native-sdk', package: react-native-lytics, version: '0.0.1', published: '2024-02-23'}
+  - name: CMS / platform modules
+    kind: first-party integrations shipped as installable modules
+    members:
+      - {platform: Drupal 10+, repository: 'https://github.com/lytics/drupal-core'}
+      - {platform: WordPress, repository: 'https://github.com/lytics/wordpress-core'}
+      - {platform: Sitecore, repository: 'https://github.com/lytics/sitecore-core'}
