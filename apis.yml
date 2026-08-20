@@ -53,6 +53,21 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Account
+  - Auths
+  - Connections
+  - Content
+  - Data Models
+  - Flows
+  - Job
+  - ML
+  - Profiles
+  - Reports
+  - Schema
+  - Segments
+  - Streams
+  - Templates
+  tags_raw:
   - Accounts
   - Auths
   - Connections
@@ -91,6 +106,16 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io
   tags:
+  - Data Upload
+  - Segment
+  - Personalization
+  - Content
+  - Catalog
+  - Experience
+  - Stream
+  - Query
+  - Work
+  tags_raw:
   - DataUpload
   - Segment
   - Personalization
