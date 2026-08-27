@@ -41,102 +41,1880 @@ tags:
   - Marketing Automation
   - Audience Activation
 apis:
-- aid: lytics:lytics-api-v2
-  name: Lytics API v2
+- aid: lytics:lytics-account-api
+  name: Lytics Account API
   description: >-
-    Version 2 of the Lytics API — the current REST surface for the Lytics
-    customer data platform. Covers accounts and users, authorizations and
-    connections, data models and Cloud Connect, schema and identity
-    configuration, streams, profiles and entities, audiences and segments,
-    flows and campaigns, jobs and workflow orchestration, webhook templates,
-    ML models, reports and metrics.
+    Account related resources of the *Lytics API*.
+
+
+    The Account resource describes an account. An account can be a *Master* account, which
+
+    means that it is a billing account. Master accounts have children accounts
+
+    which act more as separate projects, for same billing account. Each child
+
+    account can be used for Dev, Testing, etc., or for separate siloes of data
+
+    for sub-divisions, etc..
+
+
+    The Account resource has the following attributes:
+
+
+    | field       | DataType         | Description   |
+
+    |-------------|------------------|---------------|
+
+    | id          | string           | unique id
+
+    | created     | Date             | Created date
+
+    | updated     | Date             | Last Updated Date
+
+    | domain      | string           | customer-assigned unique id (auto assigned to domain name).  This
+    must be unique across lytics accounts
+
+    | email       | string           | primary email contact for account owner
+
+    | parent_id   | string           | parent account if this account is a child-account of master billing
+    account
+
+    | name        | string           | account name
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
   - Account
-  - Auths
-  - Connections
-  - Content
-  - Data Models
-  - Flows
-  - Job
-  - ML
-  - Profiles
-  - Reports
-  - Schema
-  - Segments
-  - Streams
-  - Templates
-  tags_raw:
-  - Accounts
-  - Auths
-  - Connections
-  - Content
-  - DataModels
-  - Flows
-  - Jobs
-  - ML
-  - Profiles
-  - Reports
-  - Schema
-  - Segments
-  - Streams
-  - Templates
   properties:
   - type: OpenAPI
-    url: openapi/lytics-api-v2-openapi.json
+    url: openapi/lytics-account-api-openapi.yml
   - type: OpenAPI Source
     url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
   - type: Documentation
     url: https://docs.lytics.com/reference
   - type: APIReference
     url: https://docs.lytics.com/reference
-  - type: Overlay
-    url: overlays/lytics-api-v2-overlay.yaml
   - type: ToolCrosswalk
     url: mcp/lytics-tool-crosswalk.yml
-- aid: lytics:lytics-api-v1
-  name: V1 Lytics API
-  description: >-
-    Version 1 of the Lytics API — the data collection, personalization,
-    segmentation, content and catalog surface. Includes the /collect data
-    upload endpoints, the personalization and entity lookup APIs, segment
-    scan and segment ML, content classification and recommendation, the
-    schema catalog, and account management.
-  humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io
-  tags:
-  - Data Upload
-  - Segment
-  - Personalization
-  - Content
-  - Catalog
-  - Experience
-  - Stream
-  - Query
-  - Work
-  tags_raw:
-  - DataUpload
-  - Segment
-  - Personalization
-  - Content
-  - Catalog
-  - Experience
-  - Stream
-  - Query
-  - Work
-  properties:
-  - type: OpenAPI
-    url: openapi/lytics-api-v1-openapi.json
   - type: OpenAPI Source
     url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-account-settings-api
+  name: Lytics Account Settings API
+  description: Account Settings describe features/settings for a Lytics account.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Account Settings
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-account-settings-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
   - type: Documentation
     url: https://docs.lytics.com/reference
   - type: APIReference
     url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-auth-api
+  name: Lytics Auth API
+  description: >-
+    API for creation or storage of auth tokens.  Most of these
+
+    tokens are created from the Integrations/Imports setup for Lytics integrations.
+
+
+    Additionally, api tokens can be created/managed from this endpoint.
+
+
+    The oauth, config information are write only attributes that
+
+    cannot be subsequently read from the api, and is stored encrypted.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-auth-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-auths-api
+  name: Lytics Auths API
+  description: Create and manage credentials and access to external systems.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Auths
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-auths-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-catalog-api
+  name: Lytics Catalog API
+  description: >-
+    Catalog exposes info about the schema of the data in Lytics.
+
+
+    * **Entities** are Object Types, the primary one being a *User*
+        although most accounts also have *Content* and *Campaign* as well.
+        Custom object types may be created.
+
+    * **Streams** Streams are data sources collected from api or *Integrations* (aka *Work*).
+
+
+    * **Schema** Per entity type is list of field-types.
+        Think of it as describing columns on the user table in a database.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Catalog
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-catalog-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-connections-api
+  name: Lytics Connections API
+  description: Create and manage connections to external data sources.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Connections
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-connections-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-content-api
+  name: Lytics Content API
+  description: >-
+    Content APIs for Lytics Content Affinity Engine, allow for
+
+    adding content into lytics, getting lists of content, and
+
+    understanding the content and content-topics.
+
+
+    **Content Classification**
+
+    Content classification refers to the Lytics automated
+
+    process of taking text, URL, image based content
+
+    and classifying it to attach topics to content documents.
+
+
+    * *Content* A list of content (URLs, Email Documents, Uploaded Documents, Campaigns) and
+      the topics, created dates, etc for each.
+
+    * *ContentTopics*  Categories/Topics are applied to each piece of content.
+
+
+    * *User Content Affinity* Based on user interacting with content, the topics
+       (derived from the content they interact with) is enriched into their
+       profile.
+
+    First, an overview of How this content gets here.
+
+
+    * *Observed URLs* Once the lytics tag is on a Website, as users
+      use the website any new URL they interact with is collected.
+
+    * *Crawling* we can proactively crawl a site.
+
+
+    * *Email Tools* We see URLs inside of email campaigns and proactively classify
+      those URLs, as well as the emails themselves.
+
+    * *Uploaded Content* You may upload content to the **Classify**.
+
+
+    **Use Cases**
+
+
+    *1)  User Content Recomendations*  Find content for a user
+      based on their content-affinity.
+
+    *2)  Get List of Content* Rich query api to get content.
+
+
+    **Examples**
+
+
+    ```
+
+
+    # ad-hoc segment scan from content table
+
+    # get a list of content documents that
+
+    #  - have aspects=article   (aspects = article,product, etc)
+
+    #  - has imageurl
+
+    curl -s -H "Authorization: $LIOKEY" \
+     -XGET "https://api.lytics.io/api/segment/scan?sortfield=created&limit=10" -d '
+    FILTER AND (
+     EXISTS imageurls
+     aspects = "article"
+    )
+
+    FROM content
+
+    ' | jq '.'
+
+
+    # Create a content-segment
+
+    # - uses "ALIAS" as id for create/update, must be unique
+
+    curl -s -H "Authorization: $LIOKEY" -H "Content-Type: text/plain" \
+      -XPOST "$LIOAPI/api/segment" -d '
+    FILTER AND (
+     EXISTS imageurls
+     aspects = "article"
+    )
+
+    FROM content
+
+    WITH name = "My Articles"
+
+    ALIAS my_articles
+
+    ' | jq '.'
+
+
+    # grab just those content-docs using named segment scan
+
+    curl -s -H "Authorization: $LIOKEY" \
+     -XGET "https://api.lytics.io/api/segment/my_articles/scan?sortfield=created&limit=10" \
+      | jq '.'
+
+
+    # grab recommended articles for single user
+
+
+    curl -s -H "Authorization: $LIODATAKEY" \
+     -XGET "https://api.lytics.io/api/content/recommend/:your_account_id/user/user_id/123456" \
+      | jq '.'
+
+    ```
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Content
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-content-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-datamodels-api
+  name: Lytics Data Models API
+  description: Create and manage data models and their record stores.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - DataModels
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-datamodels-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-dataupload-api
+  name: Lytics Data Upload API
+  description: >-
+    APIs for collecting or uploading data.  There are two main APIs, one for uploading
+
+    Large files (bulk, millions of records) and another for sending real-time, or slightly batched
+
+    events (Less than 10MB).
+
+
+    **stream**
+
+    A stream name is like a table in database, each stream is a differnt _Type_ of data.
+
+    You assign a name to your data uploads to identify each stream/type.
+
+    However, it should be consistent across uploads of same type of data.
+
+
+    **Timestamp Fields**
+
+    When uploading historical, or event data you may have a time/date at which
+
+    an event occured.  Normal event uploads get an event timestamp at the server time
+
+    but you can over-ride this behavior so the timestamp is defined in the event you upload.
+
+    This is a _timestamp_field_ parameter in api's below.   The formatting for this is very, very
+
+    lenient with over 50 format's supported.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - DataUpload
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-dataupload-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-experience-api
+  name: Lytics Experience API
+  description: >-
+    API for creating and managing Experiences as well as all related and/or dependent models such as but
+    not limited to Groups, Templates, Candidates, etc.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Experience
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-experience-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-flows-api
+  name: Lytics Flows API
+  description: Create and manage flows that orchestrate multi-step audience journeys.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Flows
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-flows-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-jobs-api
+  name: Lytics Jobs API
+  description: Create and manage data import and export jobs.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-jobs-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-metric-api
+  name: Lytics Metric API
+  description: >-
+    The Metric API provides access to a variety of metrics that are recorded
+
+    in the Lytics platform. With this API, you can access segment-size metrics,
+
+    events received per-hour, as well as many workflow specific metrics.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Metric
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-metric-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-metrics-api
+  name: Lytics Metrics API
+  description: >-
+    Query time series metrics for segments, streams, experiences, and other Lytics resources.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-metrics-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-ml-models-api
+  name: Lytics ML Models API
+  description: The ML Models API from Lytics — 3 operation(s) for ml models.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - ML Models
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-ml-models-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-personalization-api
+  name: Lytics Personalization API
+  description: >-
+    Entity API, ie Personalization or Profile API.
+
+
+    Retrieve attributes and segments an entity (most likely a user) is a member of.
+
+
+    The *Entity* is a *User* most likely, but since Lytics is organized as a Graph Database,
+
+    other types of entities may be modeled such as Accounts, or Company, Content, or custom.
+
+
+    ```
+
+    # read a single user
+
+    curl -s -H "Authorization: $LIOKEY" \
+      -XGET "https://api.lytics.io/api/entity/user/user_id/user123" | jq '.'
+
+    ```
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Personalization
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-personalization-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-profiles-api
+  name: Lytics Profiles API
+  description: Get and delete user profiles.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Profiles
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-profiles-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-provider-api
+  name: Lytics Provider API
+  description: >-
+    Provider is a 3rd party Lytics Integrates with (Mailchimp, Optimizely, Mixpanel, Facebook etc)
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Provider
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-provider-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-query-api
+  name: Lytics Query API
+  description: >-
+    Schema management api to add/edit queries and user-fields.
+
+
+    Lytics Query Language
+
+    =============================
+
+
+    The Lytics Query Language is used to define the transformation of uploaded
+
+    records, and event data into user Profiles.  It transforms row-level event data into Document-oriented
+    User info.
+
+    This Query langage is similar to the HIVE or SQL query langauges, however departs from these in
+
+    order to offer more of a *Rich Document* (json user profile) construction.
+
+
+    **Query example**
+
+
+    ```
+
+
+    # Build a user from web data
+
+    SELECT
+        name                       -- Simple field, by default = string
+        , age            KIND INT  -- cast field as int
+        , last_visit_ts  KIND DATE -- cast as date
+
+        -- Showing the aggregate counter function and aliasing name of output column AS
+        , count(_ref)         AS ref_ct
+
+        -- Valuect makes a map[string]int count of occurences of a key
+        , valuect(`my field`) AS myfield_mapct
+
+        -- showcase every optional syntax element in column
+        --     meregeop oldest we don't want to over-write this value, keep oldest
+        --     KIND INT   normally we don't have to cast as most functions have a specific type
+        , amt AS first_order_amount
+              IF  event == "cart checkout"
+              SHORTDESC "Amount of First Order"
+              LONGDESC "Amount of First Order"
+              KIND INT
+              MERGEOP OLDEST
+
+        -- lets keep around the date at which they signed up (mergeop oldest)
+        , now()               AS signedup_date                  IF event == "signed up"    KIND DATE  MERGEOP
+    oldest
+
+        -- maps:   map all fields that start with "user." into a fact map
+        , match("user.")        AS user_attributes     KIND map[string]string
+
+        -- list of strings
+        , set(event) AS all_events
+
+
+        -- Identified By Columns allow merging across streams
+        , email(EmailAddress) AS email
+        , _uid
+        , fbuid
+
+    FROM
+        default
+    INTO
+        user
+    BY
+        _uid OR email OR fbuid
+    WHERE
+        _bot = "f" OR NOT EXISTS _bot
+    ALIAS
+        web_user;
+
+    # validate the query
+
+    curl -s -XPOST "https://api.lytics.io/api/query/_validate" \
+       -H "Authorization: $LIOKEY" \
+       -H "Content-Type: text/plain" \
+       --data-binary @/tmp/tmp.lql | jq '.'
+
+    # upload the query
+
+    curl -s -XPOST "https://api.lytics.io/api/query" \
+       -H "Authorization: $LIOKEY" \
+       -H "Content-Type: text/plain" \
+       --data-binary @your_file.lql | jq '.'
+
+    # look at schema it output:
+
+    curl -s -H "Authorization: $LIOKEY" \
+     -XGET "https://api.lytics.io/api/schema/user" | jq '.'
+
+    ```
+
+
+    **Standard Syntax**
+
+
+    ```
+
+
+    Select = "SELECT" COLUMNS FROM INTO BY [WHERE] ALIAS
+
+
+    # required from, the stream to operate on for this query
+
+    FROM = "FROM" Identifier
+
+
+    # Required Identified By field, name of column "AS" from Column
+
+    BY = "BY" Identifier ["OR" Identifier]
+
+
+    # Required Alias for giving a query a unqique identifier
+
+    ALIAS = "ALIAS" Identifier
+
+
+    # Optional Where Filter, same as SQL where
+
+    WHERE = "WHERE" LogicalExpression
+
+
+    COLUMNS         = COLUMN [, COLUMN]
+
+
+    COLUMN     = Expression ["AS" Identifier]
+         ["IF" LogicalExpression] ["SHORTDESC" String]
+         ["LONGDESC" String] ["KIND" Kind] ["MERGEOP" MergeOp]
+
+    LogicalExpression = NOT
+               | Comparison
+               | EXISTS
+               | IN
+               | CONTAINS
+               | LIKE
+               | Function
+               | Expression
+               | "(" LogicalExpression ")"
+               | LogicalExpression OR LogicalExpression
+               | LogicalExpression AND LogicalExpression
+
+    Expression =
+        Identifier
+        | Function
+        | Literal
+
+    Function = Identifier "(" Expression [, Expression] ")"
+
+
+    NOT            = "NOT" LogicalExpression
+
+    Comparison     = Identifier ComparisonOp Literal
+
+    ComparisonOp   = ">" | ">=" | "<" | "<=" | "==" | "!="
+
+    EXISTS         = "EXISTS" Identifier
+
+    IN             = Identifier "IN" (Literal, Literal, ...)
+
+    CONTAINS       = Identifier "CONTAINS" Literal
+
+    LIKE           = Identifier "LIKE" String # uses * for wildcards
+
+
+
+    Literal = String | Int | Float | Bool | Timestamp
+
+
+    Identifier = [a-zA-Z][a-zA-Z0-9_]+ | "`" + String + "`"
+
+
+    Kind = "int" | "number" | "string" | "date" | "[]string" |
+        "ts[]string" | "map[string]int" | "map[string]number" | "map[string]string*
+
+    # MergeOp's are very seldom used and have to be used on the right Kind
+
+    #  ie string can use Latest, Oldest (but not min, max)
+
+    MergeOp =  "max" | "min" | "latest" | "oldest" | "mapmax"
+
+
+
+    ```
+
+
+    * **SELECT** Select data to be added to user profiles.   Including Maps, Counts, and other complex
+    data types.
+
+
+    * **FROM** The stream to select from
+
+
+    * **INTO** This is `USER` for all user profiles.   (technically you could create other types, such
+    as "account")
+
+
+    * **WHERE** Filters out entire records to not be included/analyzed.  Bots, Employees, Test data.
+
+
+    * **BY** What field are we going to identify this entity by
+
+
+    * **ALIAS** When a selection query has an alias, that is the profile-fragment(table) name to use
+
+
+    Functions
+
+    --------------------------------
+
+
+    There are a variety of functions for transformation and logic evaluation.
+
+
+    **Aggregate Functions**
+
+
+    There are a variety of expressions for building document type structures (maps, lists, sets).
+
+    These are functional expressions but can only be used in Columns.
+
+
+    - **cap**  Limit the items stored in a field by count or by date. `cap(field, int)` `cap(field, "number_of_days")`
+    (e.g. `cap(field, "30d")`). Returns an array containing the values within the capped count or length
+    of time.
+
+
+    - **count**   Count of this key.  For instance, count occurences of sessions that have started (ie,
+    visited web site).
+
+
+    - **set**  Create a unique list/array of each value we have seen from this field
+
+
+    - **min,max**  Minimum or Maxium value (for numerics)
+
+
+    - **sum** Sum values (keep track of total video play time, etc)
+
+
+    **Logical Functions**
+
+    Local Evaluation, return boolean true/false.
+
+
+    - **all** checks for existince of n keys `all(key1,key2,key3,...)` returns boolean.
+
+
+    - **any** accepts a list of values and returns True if any are the contents of a field  `any(fieldname,
+    value1,value2,value3) `
+
+
+    - **exists** Check for field (aka key) existence.
+        * `exists(purchase_total)` checks to see if `purchase_total` is defined for the current message
+        * `valuect(yymm())        AS visits_by_yymm    IF exists(_sesstart) ` Only fires `valuect(yymm())`
+    if `_sesstart` exists
+
+    - **in** Determines if a field value is in a set of values.
+        * `"t" AS is_student IF role_type IN ("student","other")`
+        * `dailyContact          AS dailyContact   IF dailyContact IN ("student","other")`
+
+    - **eq**  Equal to       `eq(domain,"google.com")`
+
+
+    - **ne**  Not Equal to    `ne(domain,"google.com")`
+
+
+    - **lt**  Less Than    `lt(seconds(video_time), 30)`
+
+
+    - **le**  Less Than or Equal to    `le(seconds(video_time), 30)`
+
+
+    - **gt**  Greater Than              `gt(seconds(video_time), 30)`
+
+
+    - **ge**  Greater Than or Equal to    `ge(seconds(video_time), 30)`
+
+
+    - **not** Not                         `not(exists(domain))`
+
+
+    - **or**  Or                          `or(exists(domain), contains(domain,"google.com")) AS from_google`
+
+
+    **String Functions**
+
+
+    - **join** Join together multiple values, coerce them into strings.  Last argument is which string
+    to use to join (may be empty string).
+        * `join("apples","oranges",",")   => "apples,oranges"`
+        * `join("apples","oranges","")   => "applesoranges"`
+
+    - **len**  Length (of array, string)
+
+
+    - **oneof** Choose value from the first field that has a non nil value.
+        * `oneof(fielda,fieldb,fieldc)`
+
+    - **replace** - Replace a matching part of a string with an empty string.  Converts to string first.
+        * `replace(url,"/search/apachesolr_search/")` - Removes `/search/apachesolr_search/` from URL
+    (in this case, leaving the search term
+
+    - **split** Breaks a variable into smaller fragments given a specific delimiter
+        * `split(cc,",")` - Splits the variable `cc` at each comma it contains
+
+    - **strip(field)** Strips leading and trailing whitespace (spaces, tabs, newline, carriage-return)
+    from string, or arrays of strings.
+
+
+    - **string.lowercase** Convert strings to lower case
+
+
+    - **string.uppercase** Convert strings to upper case
+
+
+    - **string.titlecase** Convert strings to title case
+
+
+    - **contains**  Does this value contain this string?  Is a sub-string match, not full match (eq)
+        * `IF contains(total_price, "$")` - Check to see if `total_price` has a `$` in it
+        * `IF not(contains(subscriber_key,"-")) AND not(contains(subscriber_key,"@"))` check to make sure
+    `-` or `@` is not in it.
+
+    - **hasprefix**  Does this value start with this string?
+        * `hasprefix(event, "created")` - Check to see if `event` starts with "created"
+
+    - **hassuffix**  Does this value start with this string?
+        * `hassuffix(subscriber_key, "user")` - Check to see if `subscriber_key` ends with "user"
+
+    **Hash & Encoding Functions**
+
+
+    - **hash.sip** `hash.sip(email)` Hash the given value using sip hash to integer output.
+
+
+    - **hash.md5** `hash.md5(email)` Hash the given value using md5
+
+
+    - **hash.sha1** `hash.sha1(email)` Hash the given value using sha1
+
+
+    - **hash.sha256** `hash.sha256(email)` Hash the given value using sha256
+
+
+    - **hash.sha512** `hash.sha512(email)` Hash the given value using sha512
+
+
+    - **encoding.b64encode(field)** base64 encode.
+
+
+    - **encoding.b64decode(field)** base64 decode.
+
+
+    **Cast & Convert**
+
+
+    - **toint** Converts strings to integers.  Useful for converting a string to a number before applying
+    a number-based expression.
+        * `toint(order_total)` - Converts `order_total` to an int
+        * `set(toint(split(cc,",")))` - Takes the field `cc` and splits it at commas, and converts the
+    results to integers.  Then adds them to a set.
+
+    - **tonumber** Convert to Number
+
+
+    - **todate** Converts strings to dates, see full doc in Date/Time section below.
+
+
+    - **tobool(field)** Cast to Boolean.
+
+
+    **Map & Set/Array Functions**
+
+
+    - **filter** Filter out Values that match specified list of match filter criteria
+        * `filter(split("apples,oranges",","),"ora*")  => ["apples"]`
+
+    - **len**  Length (of array, string)
+
+
+    - **map** Type: Map  `map(key1, todate(date_field))`
+        * `map(key1, todate(date_field))  KIND map[string]time `  By default the `map` is generic map,
+    cast to map[string]time with
+
+    - **match** Type:  Map (generic map, use KIND to cast) Match a key, and then keep a map of key/values
+    with the match value removed
+        * `, match("topic_")           AS global       KIND map[string]number`
+
+    - **mapkeys** Type:  Map input, []string{} output. Given a map, return a list of string of each of
+    the keys.
+
+
+    - **mapvalues** Type:  Map input, []string{} output. Given a map, return a list of string values of
+    each of the values.
+
+
+    - **mapinvert** Type:  Map input, MapString output. Given a map, return a map[string]string inverting
+    keys/values.
+
+
+    - **array.index**  Cherry pick a single item out of an array:
+        * `array.index(split("apples,oranges,peaches",","),1)  => ["oranges"]`
+
+    - **array.slice**  Slice an array of items selecting some sub-set of them.
+        * `array.slice(split("apples,oranges,peaches,pineapple",","),2)  => ["peaches","pineapple"]`
+        * `array.slice(split("apples,oranges,peaches,pineapple",","),1,3)  => ["oranges","peaches"]`
+
+    **Url/Http & Email Functions**
+
+
+    - **email** Extract email address from "`Bob <emailaddress@lytics.io>`" format
+
+
+    - **emailname** Extract *Bob* from "`Bob <emailaddress@gmail.com>`" or `email@gmail.com`
+
+
+    - **emaildomain** Extract *gmail.com* from "`Bob <emailaddress@gmail.com>`" or `email@gmail.com`
+
+
+    - **domain** Extract domain from url
+
+
+    - **host** Extract host from url
+
+
+    - **path** Extract the url path from url (no query string or domain), must be valid url parserable
+    string.
+
+
+    - **qs**  Extract the querystring parameter from url `qs(urlfield, "nameOfParam")`
+        * `qs(url, "mc_eid")` - Extracts the MailChimp user ID
+        * `set(qs(url, "video_id")` - Creates a set of `video_id`
+        * `qs(tolower(url), "riid")` - Converts the complete URL to lowercase before attempting to match
+        * `email(oneof(email, qs(url, "email")))` - Attempts to get the email address from the URL and
+    from the regular fields, chooses whichever is populated and treats it like an email field
+
+    - **urldecode** Perform URL decode on a field. `urldecode(field)`
+        * If `field` contains "my%20value", `urldecode(field)` will return "my value"
+
+    - **urlminusqs** The url minus the querystring portion
+
+
+    - **useragent** Extract info from user-agent string.   Below examples based on  `Mozilla/5.0 (X11;
+    Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11`
+        * `useragent(user_agent, "bot")` - Extracts True/False is this a bot?
+        * `useragent(user_agent, "mobile")` - Extracts True/False is this mobile?
+        * `useragent(user_agent, "mozilla")` - Extracts "5.0"
+        * `useragent(user_agent, "platform")` - Extracts "X11"
+        * `useragent(user_agent, "os")` - Extracts "Linux x86_64"
+        * `useragent(user_agent, "engine")` - Extracts "Linux x86_64"
+        * `useragent(user_agent, "engine_version")` - Extracts "AppleWebKit"
+        * `useragent(user_agent, "browser")` - Extracts "Chrome"
+        * `useragent(user_agent, "browser_version")` - Extracts "23.0.1271.97"
+
+    - **useragent.map(field)** Extract map of all of above.
+
+
+    **Date & Time Functions**
+
+
+    Our core date parser recognizes about 50 date formats, so in general these will operate on _any_ format.
+
+    If you are using EU dates, you will need to specify the parser format.
+
+
+    - **dayofweek** Type: Integer.  0-6 integer of day of week.
+        * Examples:  `dayofweek() => 4`  OR  `dayofweek(mydatefield)`
+
+    - **epochms** Type: Integer.  Unix MS of the date stamp on the current message being processed
+
+
+    - **extract**  Can be used to extract parts of date and time.  Example usage on the [strftime](http://strftime.org/)
+    site
+        * `extract(reg_date, "%B")` Returns name of month
+        * `extract(reg_date, "%d")` Returns day of month
+
+    - **hourofday** Type: Integer.  Hour of day (in 24 hour utc time).     `hourofday()`  OR `hourofday(field)`
+
+
+    - **hourofweek** 0-167 integer for hour of week
+
+
+    - **mm** Type:  Integer.  0-11 month  (alias for monthofyear)   `mm()` => current month, 6 for june,
+    `mm(my_date_field)`
+
+
+    - **monthofyear** Type:  Integer  Output the 0-11 month value
+
+
+    - **now** Type:  Date   The current message/event times.
+
+
+    - **seconds** Type: Integer.  Seconds, extracts things like `seconds("00:30") => 30` and `seconds("10:30")
+    => 630`
+
+
+    - **todate** Converts strings to dates.
+        * Datemath:   `todate("now-3m")`  Date math relative to message timestamp.
+        * Parser:  `todate("02/01/2006")` More than 30 formats supported. [Date Parser](https://github.com/araddon/dateparse)
+        * Examples with 2 arguments:  `todate("02/01/2006","07/04/2014")` use [golang's time package](http://golang.org/pkg/time/)
+    formatting
+            * `todate("02/01/2006","07/04/2014")` Reformats the date `07/04/2014` from US formatting to
+    UK formatting, with the resulting output being `04/07/2014`
+            * `todate("02/01/2006",date_field_name)` Outputs `date_field_name` as European format (where
+    `01` is a placeholder for month, `02` is a placeholder for day, and `2006` is a placeholder for year)
+
+    - **todatein** Converts strings to dates, if no location info is provided in date string such as "2017-09-30
+    17:00:00" this will allow you to apply a timezone.  We still convert back to UTC for storage.
+
+
+    - **totimeset** Type time slice/array. Takes in times and converts strings to times similar to todate
+    without the formatting parameter.
+
+
+    - **totimestamp** Convert to Integer Unix Seconds (UTC).
+
+
+    - **yy** Type: int   Date conversion to YY format, so May 1 2014 is expressed as 14.   yy(dob), or
+    yy() for record time stamp
+
+
+    - **yymm**  String The YYMM date format, so May 1 2014 is expressed as 1405.     yy(dob), or yy()
+    for record time stamp
+
+
+    - **timebucket** Creates a tabulation of timestamps which can be used to segment based on timewindows.
+    See [Segments Examples](#segment) for more information.  `timebucket(now())` for collect time, or
+    `timebucket(todate(field))` to bucket on the value of a field
+
+
+    KINDS (aka Data Types)
+
+    -----------------------------------
+
+
+    Allows explicitly setting data type.  Often this os optional
+
+    as it is inferred from functional expression.
+
+
+    - *int*  64 bit signed integer
+
+
+    - *number*  64 bit signed Float value
+
+
+    - *bool*  Boolean
+
+
+    - *date*  Date-Time
+
+
+    - *string* string
+
+
+    - *[]time* Array of times
+
+
+    - *[]string* Array of strings
+
+
+    - *ts[]string* Time ordered Unique set of strings (useful for keeping track of order in which they
+    performed set of unique events)
+
+
+    - *map[string]int* Map of key/integers
+
+
+    - *map[string]number*
+
+
+    - *map[string]string*
+
+
+    - *map[string]time*
+
+
+    Merge Operations
+
+    ---------------------
+
+
+    *MERGEOP* Allow Merge behavior's to determine if given new data we want the new field, or keep the
+    previous.
+
+
+    * `, my_date                   KIND DATE     MERGEOP oldest` -- Holds the first value seen for my_date
+
+
+    * `, old_score                   KIND INT     MERGEOP oldest` -- Holds the oldest value passed in
+    to the field
+
+
+    * `set(lists) AS lists KIND []string MERGEOP latest` -- only store latest set (all previous values
+    of set discarded)
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Query
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-query-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-reports-api
+  name: Lytics Reports API
+  description: Create and manage reports.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-reports-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-schema-api
+  name: Lytics Schema API
+  description: Manage how data sources populate profile fields.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Schema
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-schema-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-segment-api
+  name: Lytics Segment API
+  description: >-
+    Segments are named, logical expressions
+
+    of users.  These segments may logically be built
+
+    using other segments as well.  The segment api
+
+    provides a list of segments built by both the admin, pre-defined
+
+    segments automatically added to each account as well as custom ones
+
+    created through the UI.
+
+
+    Segments represent a number of concepts:
+
+
+    * *Segment* A list of users, users are members (or not) of a segment
+
+
+    * *Trigger* As a user enters, or leaves a segment, this is a trigger.
+       Triggers do not have a Size, only a history of events.
+
+    * *Goal*  A segment that also implies conversion.  In Lytics
+      App, there are *Goals* that show more prominently in a funnel
+      type interface.
+
+    * *Dynamic Attribute* A user belonging to a segment describes an attribute
+       about that user.  For instance *IsPurchaser* is both an attribute
+       that can help personaliation, as well as a segment.  We call these
+       special segments *Aspects* at Lytics.
+
+    * *Metric* A segment when used exclusively for the purposes of
+       tracking conversions/metric.
+
+    The Segment resource has the following attributes:
+
+
+    | field       | DataType         | Description   |
+
+    |-------------|------------------|---------------|
+
+    | id          | string           | unique id, Lytics assigned
+
+    | created     | Date             | Created date
+
+    | updated     | Date             | Last Updated Date
+
+    | kind        | string           | What Type of segment from list above ["aspect","goal"] or leave
+    empty for "segment".
+
+    | slug        | string           | customer-assigned unique id (We auto assigned by slugifying `Name`
+    if not provided).
+
+    | name        | string           | Name of this segment
+
+    | description | string           | Long text description (optional)
+
+    | is_public   | bool             | Is this segment available as part of user profile api (entity api)
+
+    | segment_ql  | string           | Segment QL Logical Expression
+
+    | tags        | []string         | List of tags, for organization purposes
+
+
+    To see a list of available fields available for segmentation rules see **catalog** api.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Segment
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-segment-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-segmentcollection-api
+  name: Lytics Segment Collection API
+  description: >-
+    Segment Collections are grouped/named lists of segments.
+
+    Segments that participate in a collection such as **Goals**
+
+    are related.  The Lytics App ui has one predefined collection
+
+    called **Goals** which defines the main funnel of user
+
+    conversions for your company.  Definining this helps our
+
+    Machine Learning understand goals.
+
+
+    In addition, the Lytics App has a variety of collections for
+
+    *Aspects* on the home page/reporting which are collections of segments
+
+    on related themes.
+
+
+    * *Email* Collection of aspects related to email behavior.
+
+
+    * *Web* A variety of aspects of web users.
+
+
+    * *Ecommerce*
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - SegmentCollection
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-segmentcollection-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-segmentml-api
+  name: Lytics Segment ML API
+  description: >-
+    SegmentML provides a framework for building custom machine learning
+
+    models directly in Lytics.  Lytics SegmentML models are self-training,
+
+    continuously-updating and real-time.
+
+
+    SegmentML models are built by identifying:
+
+
+    1. A segment of users, called the **Target Segment** who exhibit behavior for *prediction*,
+
+
+    2. A segment of users, called the **Source Segment** to be candidates for model *evaluation*, or scoring.
+
+
+    Models are built with a variety of pre-selected candidate features, which include behavioral scores
+    and content affinities, and can additionally support any custom field available in Lytics user profiles.
+
+
+    Attributes concerning the SegmentML model's setup configuration are detailed in **SegmentML Create**.
+    Attributes concerning the model's results are defined in **SegmentML Model Fetch**.
+
+
+    Generic attributes from SegmentML model GET and POST:
+
+
+    | field          | DataType         | Description   |
+
+    |--------------  |------------------|---------------|
+
+    | name           | string           | The model's name
+
+    | state          | string           | The state of the model: Either *building*, *invalid*, or *complete*
+
+    | reason         | string           | If the state is *invalid* the reason will denote the error
+
+    | created        | string           | Date and time the model was created
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - SegmentML
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-segmentml-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-segments-api
+  name: Lytics Segments API
+  description: Create and manage audience segments.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Segments
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-segments-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-stream-api
+  name: Lytics Stream API
+  description: >-
+    API for creating stream models. A stream is the same as a [data stream](https://learn.lytics.com/product-docs/data-management/using-data-streams#what-are-data-streams?
+
+    ) and is consumed for ingestion into a given entity table. It is described by its slug, which is the
+    value used to identify the stream in collection as well as in the FROM statement on a given query.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Stream
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-stream-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-streams-api
+  name: Lytics Streams API
+  description: Get metrics and events for data streams in your Lytics account.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Streams
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-streams-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-subscription-api
+  name: Lytics Subscription API
+  description: >-
+    **BETA API**
+
+
+    Subscriptions are queries into real-time events in Lytics, most
+
+    commonly listening to a list of users entering/leaving segments
+
+    ie _triggers_.
+
+
+    **Common Use Cases**
+
+
+    * Upon Entering/Leaving you want to send a notification callback with that user data so you can email
+    them, save it, etc.
+
+
+    * Upon Entering Segment, get notified, save an update to a local user-profile so next time they log
+    in, used in your app.
+
+
+    * Upon Entering Segments, get updated with many segments user is member of, and update list of messages
+    user will see next time they logon to app.
+
+
+    **Channels**
+
+    Types of streams the event can be delivered.
+
+
+    * *Webhooks*
+
+
+    * *AWS Kinesis*
+
+
+    * *Azure Event-Hub*
+
+
+    * *??? Ask us* Google PubSub.
+
+
+    Some features:
+
+
+    * *withbackfill* this true/false flag to indicate whether to backfill webhook events
+      for users currently a member of a segment.  Default is false, so only new users
+      entering/exiting a segment would cause a webhook.  If you enter withbackfill=true
+      then all users currently a member of the segment at time of submission would have
+      a webhook fired for them as well, then changes going forward would start firing.
+      If backfill is used, only a single segment can be specified.
+
+    **Example**
+
+
+    ```
+
+    export LIOKEY="your_api_key"
+
+    export LIODATAKEY="your_data_key"
+
+
+    # UPSERT Segment uses "ALIAS" as id for create/update
+
+    curl -s -H "Authorization: $LIOKEY" -H "Content-Type: text/plain" \
+      -XPOST "https://api.lytics.io/api/segment" -d '
+
+    -- Paying Users Segment
+
+    FILTER AND (
+        paying_user = "t"
+    )
+
+    FROM user
+
+    ALIAS demo_segment
+
+
+    ' | jq '.'
+
+
+    # get that Segment ID
+
+    SEGID=`curl -s "https://api.lytics.io/api/segment?key=$LIOKEY" | jq -r '.data[] | select(.name ==
+    "demo_segment") | .id'`
+
+    echo "Created Segment id=$SEGID"
+
+
+    # Create Webhook Subscription to send entry/exits events to your url
+
+    # - entry/exits will be sent to the ngrok url below (create your own)
+
+    # - we use app-engine for this
+
+    echo '
+
+    {
+        "webhook_url": "http://123456abc.ngrok.com/"
+        , "segment_ids": ["1234abcd"]
+        , "withbackfill": false
+        , "channel" : "webhook"
+        , "name" : "webhooktest1"
+        , "description": "What is this subscription for?"
+    }
+
+    ' |  \
+
+    curl -v -XPOST "https://api.lytics.io/api/subscription" \
+       -H "Authorization: $LIOKEY" \
+       -H "Content-Type: application/json" -d @- | jq '.'
+
+    # for kinesis
+
+
+    curl -s -H "Authorization: $LIOKEY" -H "Content-Type: application/json" \
+      -XPOST "https://api.lytics.io/api/subscription" -d '
+    {
+        "channel":"kinesis",
+        "segment_ids": ["1234abcd","abc345"],
+        "name":"test2",
+        "description":"hello world",
+        "stream":"lytics_triggers_stream",
+        "region": "us-east-1",
+        "identifier_field":"user_id",
+        "role_arn":"arn:aws:iam::4444444444444:role/LyticsWriteToKinesis"
+    }
+
+    ' | jq "."
+
+
+    # send test data ...
+
+
+    # toggling these next two should move user in/out of segment causing trigger
+
+    curl -s -XPOST "https://api.lytics.io/collect/json/demo" -H "Authorization: $LIODATAKEY"  -H 'Content-type:
+    application/json' \
+      -d '{ "paying_user":"f", "user_id":"user123"}' | jq '.'
+
+    curl -s -XPOST "https://api.lytics.io/collect/json/demo" -H "Authorization: $LIODATAKEY"  -H 'Content-type:
+    application/json' \
+      -d '{ "paying_user":"t", "user_id":"user123"}' | jq '.'
+
+    ```
+
+
+    **Webhook Post Example**
+
+    This will send a json document like below to your subscription channel.
+
+    But, this is a **BETA API** and this will change.  We
+
+    received feedback that the more logical set of data
+
+    is all segment changes (not just one per subscription) so we
+
+    are modifying the response to be an array of segment entry/exits.
+
+
+    ## Example Message
+
+
+    There are still message format from v1 of this api to
+
+    maintain backwards compatibility.
+
+
+    ```
+
+    {
+      "data": {
+        "_created": "2016-06-29T18:50:16.902758229Z",
+        "_modified": "2017-03-18T06:12:36.829070108Z",
+        "email": "testwebhook@lytics.io",
+        "user_id": "user123",
+        "segment_events":[
+            {
+                "id": "d3d8f15855b6b067709577342fe72db9",
+                "event": "exit",
+                "enter": "2017-03-02T06:12:36.829070108Z",
+                "exit": "2017-03-18T06:12:36.829070108Z",
+                "slug": "demo_segment"
+            },
+            {
+                "id": "abc678asdf",
+                "event": "enter",
+                "enter": "2017-03-02T06:12:36.829070108Z",
+                "exit": "2099-03-18T06:12:36.829070108Z",
+                "slug": "another_segment"
+            }
+        ]
+      },
+      "meta":{
+         "object":"user",
+         "source":"subscription",
+         "subscription_id": "7e2b8804bbe162cd3f9c0c5991bf3078"
+      }
+    }
+
+    ```
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Subscription
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-subscription-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-system-api
+  name: Lytics System API
+  description: Manage Lytics system users and their access to data and resources.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - System
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-system-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-system-events-api
+  name: Lytics System Events API
+  description: >-
+    Get internal Lytics system events. These events
+
+    are generally related to internal changes to state of
+
+    an account.   Common changes are CRUD Operations (Create,
+
+    Update, Delete) of *Account*, *Admin User*, etc.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - System Events
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-system-events-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-templates-api
+  name: Lytics Templates API
+  description: Create, manage, and test templates.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-templates-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-user-api
+  name: Lytics User API
+  description: >-
+    Info about Administrative Lytics account users
+
+
+    * Lytics users are unique across accounts
+
+
+    * They get *invited* to have access to your account
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-user-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-work-api
+  name: Lytics Work API
+  description: >-
+    Work is an *integration* unit, typically for imports and exports.
+
+    Most run continually, while some run to completion.
+
+    You generally would only use it through the Webadmin Integrations.
+
+
+    * *Workflow* A specific type of integration is a Workflow, must belong to a *Provider*
+
+
+    * *Provider* A company that provides api's.   Facebook, Google Analytics, Marketo, etc.
+
+
+    * *Auth* An authentication/authorization for a provider to allow *work* to run.
+
+
+    * *Work* A single running instance of a workflow for an account.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Work
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-work-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-workflow-api
+  name: Lytics Workflow API
+  description: Workflow is a specification for a work unit
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Workflow
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-workflow-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+common:
+  - type: Overlay
+    url: overlays/lytics-api-v2-overlay.yaml
   - type: Overlay
     url: overlays/lytics-api-v1-overlay.yaml
-common:
   - type: AgenticAccess
     url: agentic-access/lytics-agentic-access.yml
   - type: DomainSecurity
