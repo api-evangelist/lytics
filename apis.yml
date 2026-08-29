@@ -11,6 +11,17 @@ description: >-
   advertising networks, email providers, data warehouses and on-site personalization.
   Lytics joined Contentstack in January 2025.
 type: Index
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -1911,6 +1922,9 @@ apis:
   - type: OpenAPI Source
     url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
 common:
+  - type: CapabilityMap
+    url: capabilities/lytics-capability-edges.yml
+    name: Lytics Business Capability Map
   - type: Overlay
     url: overlays/lytics-api-v2-overlay.yaml
   - type: Overlay
