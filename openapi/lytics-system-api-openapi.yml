@@ -1,0 +1,297 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@lytics.com
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  description: Version 2 of the Lytics API
+  termsOfService: https://www.lytics.com/terms-of-service/
+  title: Lytics System API
+  version: '2.0'
+servers:
+- url: https://api.lytics.io/v2
+tags:
+- description: Manage Lytics system users and their access to data and resources.
+  name: System
+paths:
+  /event:
+    get:
+      description: Query system events in the account
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: Subject Type for the system event
+        in: query
+        name: type
+        schema:
+          enum:
+          - '"work"'
+          - '"auth"'
+          - '"segment"'
+          - '"entity"'
+          - '"account"'
+          - '"user"'
+          - '"report"'
+          type: string
+      - description: Subjetc ID of the source type
+        in: query
+        name: id
+        schema:
+          type: string
+      - description: System Event verb
+        in: query
+        name: verb
+        schema:
+          enum:
+          - '"created"'
+          - '"updated"'
+          - '"deleted"'
+          - '"status"'
+          type: string
+      - description: System Event priority
+        in: query
+        name: priority
+        schema:
+          maximum: 6
+          minimum: 0
+          type: integer
+      - description: System Events before
+        in: query
+        name: before
+        schema:
+          format: date-time
+          type: string
+      - description: System Events after
+        in: query
+        name: after
+        schema:
+          format: date-time
+          type: string
+      - description: Offset to start from
+        in: query
+        name: start
+        schema:
+          type: integer
+      - description: Maximum number of results
+        in: query
+        name: limit
+        schema:
+          default: 20
+          maximum: 100
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.SystemEvent'
+                      type: array
+                  type: object
+          description: System Events Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Query system events
+      tags:
+      - System
+  /event/{id}:
+    get:
+      description: Get a System Event by ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The system event ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.SystemEvent'
+                  type: object
+          description: System Event Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get system event
+      tags:
+      - System
+components:
+  schemas:
+    models.SystemEvent:
+      properties:
+        account_id:
+          type: string
+        aid:
+          type: integer
+        context:
+          additionalProperties: true
+          type: object
+        id:
+          type: string
+        notes:
+          type: string
+        related:
+          items:
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+            type: object
+          type: array
+        subject_id:
+          type: string
+        subject_type:
+          enum:
+          - work
+          - auth
+          - segment
+          - entity
+          - account
+          - user
+          - report
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        user_id:
+          type: string
+        verb:
+          enum:
+          - created
+          - updated
+          - deleted
+          - status
+          type: string
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey

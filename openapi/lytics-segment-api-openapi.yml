@@ -1,0 +1,905 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Segment API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Segment
+  description: "Segments are named, logical expressions\nof users.  These segments may logically be built\nusing other segments as well.  The segment api\nprovides a list of segments built by both the admin, pre-defined\nsegments automatically added to each account as well as custom ones\ncreated through the UI.\n\nSegments represent a number of concepts:\n\n* *Segment* A list of users, users are members (or not) of a segment\n\n* *Trigger* As a user enters, or leaves a segment, this is a trigger.\n   Triggers do not have a Size, only a history of events.\n\n* *Goal*  A segment that also implies conversion.  In Lytics\n  App, there are *Goals* that show more prominently in a funnel\n  type interface.\n\n* *Dynamic Attribute* A user belonging to a segment describes an attribute\n   about that user.  For instance *IsPurchaser* is both an attribute\n   that can help personaliation, as well as a segment.  We call these\n   special segments *Aspects* at Lytics.\n\n* *Metric* A segment when used exclusively for the purposes of\n   tracking conversions/metric.\n\nThe Segment resource has the following attributes:\n\n| field       | DataType         | Description   |\n|-------------|------------------|---------------|\n| id          | string           | unique id, Lytics assigned\n| created     | Date             | Created date\n| updated     | Date             | Last Updated Date\n| kind        | string           | What Type of segment from list above [\"aspect\",\"goal\"] or leave empty for \"segment\".\n| slug        | string           | customer-assigned unique id (We auto assigned by slugifying `Name` if not provided).\n| name        | string           | Name of this segment\n| description | string           | Long text description (optional)\n| is_public   | bool             | Is this segment available as part of user profile api (entity api)\n| segment_ql  | string           | Segment QL Logical Expression\n| tags        | []string         | List of tags, for organization purposes\n\nTo see a list of available fields available for segmentation rules see **catalog** api."
+paths:
+  /api/segment:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentListModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: 7a7f76ff97ad0e3e96c162f74aee8f8f
+                      account_id: 4f7b525bdba058fc096757a6
+                      author_id: user_12345
+                      kind: segment
+                      segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
+                      is_public: true
+                      name: Recent Visits
+                      slug_name: recent_visits
+                      tags:
+                      - email_trigger
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentList
+      operationId: SegmentList
+      description: 'Get list of **Segments** .   Segments can refer to any Table.
+
+
+        The two main tables you will be working with are *User* and *Content*.
+
+
+        ```
+
+        # Grab all segments from "user" table
+
+
+        curl "$LIOAPI/api/segment" -s -H "Authorization: $LIOKEY" | jq ''.''
+
+
+        # Grab all "Content Collections" (ney, segments)
+
+
+        curl "$LIOAPI/api/segment?table=content" -s -H "Authorization: $LIOKEY" | jq ''.''
+
+
+
+        ```'
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: table
+        in: query
+        description: Table for segments to fetch, "user" by default, specify "content" for content collections (aka segments).
+        required: false
+        example: user
+        schema:
+          type: string
+      - name: valid
+        in: query
+        description: True, False or "all".  Get all segments, only valid, or only invalid.
+        required: false
+        example: all
+        schema:
+          type: string
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 7a7f76ff97ad0e3e96c162f74aee8f8f
+                      account_id: 4f7b525bdba058fc096757a6
+                      author_id: 4f7b525bdba058fc096757a6
+                      kind: segment
+                      segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
+                      name: Recent Visits
+                      slug_name: recent_visits
+                      tags:
+                      - email_trigger
+      security:
+      - ApiKeyAuth: []
+      summary: Segment Create
+      operationId: Segment Create
+      description: "Create A segment.  See **/api/segment/validate**\nmethod for testing out Segmentation rules.\n\nPass a **Segment QL** logic expression to create\na Segment.\n\n```\n# Plain Text api will extract the \"our_test_activelist\" as the \"slug\" and \"name\" of\n# the segment\ncurl -s -XPOST \"https://api.lytics.io/api/segment\" \\\n    -H \"Content-type: text/plain\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n\nFILTER AND (\n    visits > 5,\n    last_visit >= \"now-30d\",\n    scores.momentum >  10\n)\nALIAS our_test_activelist\n\n' | jq '.'\n\n# or try managing segments in files so you can check them in\n# to Bitbucket or Github.   Also addresses field-\ncurl -s -XPOST 'https://api.lytics.io/api/segment' \\\n    -H 'Content-type: text/plain' \\\n    -H \"Authorization: your_api_token\" \\\n    -d @my_segment.json | jq '.'\n\n\n# Json Api Allows a few more fields such as description\ncurl -s -XPOST \"https://api.lytics.io/api/segment\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -H \"Content-type: application/json\" \\\n    -d'\n{\n    \"name\":\"Most Active Users\",\n    \"segment_ql\": \"FILTER AND (visits > 5,last_visit >= \\\"now-30d\\\", scores.momentum >  10)\",\n    \"slug_name\":\"our_test_activelist\",\n    \"is_public\": true,\n    \"description\":\"a description of what this is for\",\n    \"tags\":[\"email_personalization\",\"product\"]\n}\n' | jq '.'\n\n# create a json file of a segment\ncurl -s -XPOST \"$LIOAPI/api/segment\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -H \"Content-type: application/json\" \\\n    -d @segment.json | jq '.'\n\n\n\n# Content Collection (ney, \"Segment\")\ncurl -s -XPOST \"https://api.lytics.io/api/segment\" \\\n    -H \"Content-type: text/plain\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n\nFILTER AND (\n   EXISTS imageurls     -- Make sure they have images\n   aspects = \"article\"  -- Ensure they are of type article\n   PATH = \"blog\"        -- only show those from the /blog  part of site\n   created > \"now-30d\"  -- only those authored in last 30 days\n)\nFROM content\nWITH\n   name = \"Recent Blog Articles With Images\"\nALIAS recent_blog_articles\n\n' | jq '.'\n\n\n\n```\n\nSegmentQL\n=============================\n\nThe query language for segments\n\n```\nFilter     = \"FILTER\" Phrase [FROM] [ALIAS]\nPhrase     = AND | OR | Expression\nAND        = \"AND\" (Phrase, Phrase, ...)\nOR         = \"OR\" (Phrase, Phrase, ...)\nExpression = NOT\n           | Comparison\n           | EXISTS\n           | IN\n           | CONTAINS\n           | LIKE\n           | IncludeSegment\nNOT            = \"NOT\" Phrase\nComparison     = Identifier ComparisonOp Literal\nComparisonOp   = \">\" | \">=\" | \"<\" | \"<=\" | \"==\" | \"!=\"\nEXISTS         = \"EXISTS\" Identifier\nIN             = Identifier \"IN\" (Literal, Literal, ...)\nCONTAINS       = Identifier \"CONTAINS\" Literal\nLIKE           = Identifier \"LIKE\" String # uses * for wildcards\nIncludeSegment = \"INCLUDE\" Identifier\n\n# Optional From, not needed for segmentation on users\nFROM          = \"FROM\" Identifier\n\n# Alias for giving a segment a \"name\" which is how\n#  it will be included from other filters\nALIAS         = \"ALIAS\" Identifier\n\nLiteral = String | Int | Float | Bool | Timestamp\n\n# note, identifiers may not contain spaces, or periods, etc\nIdentifier = [a-zA-Z][a-zA-Z0-9_]+\n```\n\n**Examples**\n\n```\n# Simple single expression filter\nFILTER \"abc\" IN some_identifier\n\nFILTER NOT foo\n\n# Filters have an optional \"Alias\" used for\n# referencing\n\nFILTER AND ( channelsct > 1 AND scores.quantity > 20 ) ALIAS multi_channel_active\n\n\n# Filters can references to other Filters\nFILTER AND (\n   EXISTS email,\n   NOT INCLUDE multi_channel_active\n)\n\n\nFILTER AND (\n    visits > 5,\n    NOT INCLUDE someotherfilter,\n)\n\n# negation\nFILTER NOT AND ( ... )\n\n# Compound filter\nFILTER AND (\n    visits > 5,\n    last_visit >= \"2015-04-01 00:00:00Z\",\n    last_visit <  \"2015-04-02 00:00:00Z\",\n)\n\n# Like\nFILTER url LIKE \"/blog/\"\n\n# date math\n# Operator is either + or -. Units supported are y (year), M (month),\n#   w (week), d (date), h (hour), m (minute), and s (second)\n\nFILTER last_visit > \"now-24h\"\n\n# IN\ncity IN (\"Portland, OR\", \"Seattle, WA\", \"Newark, NJ\")\n\n# Complex\nAND (\n    OR (\n        foo == true\n        bar != 5\n    )\n    EXISTS signup_date\n    OR (\n        NOT bar IN (1, 2, 4, 5)\n        INCLUDE SomeOtherFilter\n    )\n)\n\n# Time Windows\n# Can only be used on timebucket fields\n# Answers the question \"at least X in Y days\", where X can be one of (1, 5, 10, 25, 50, 100)\n# and Y can be one of (7, 30) days.\n#\n# timewindow(fieldname, X, Y)\nFILTER timewindow(bucketfield, 5, 7)\n\n\n# Between\nFILTER AND (\n    _modified BETWEEN \"2015-07-01\" AND \"2016-08-01\"\n)\n\n\n```"
+      tags:
+      - Segment
+  /api/segment/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 7a7f76ff97ad0e3e96c162f74aee8f8f
+                      account_id: 4f7b525bdba058fc096757a6
+                      author_id: 4f7b525bdba058fc096757a6
+                      kind: segment
+                      segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
+                      name: Recent Visits
+                      slug_name: recent_visits
+                      tags:
+                      - email_trigger
+      security:
+      - ApiKeyAuth: []
+      summary: Segment Fetch
+      operationId: Segment Fetch
+      description: Fetch a segment by **id** or **slug**
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id, or slug of a segment, part of url path
+        required: true
+        example: my_segment_slug
+        schema:
+          type: string
+    put:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 7a7f76ff97ad0e3e96c162f74aee8f8f
+                      account_id: 4f7b525bdba058fc096757a6
+                      author_id: 4f7b525bdba058fc096757a6
+                      kind: segment
+                      segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
+                      name: Recent Visits
+                      slug_name: recent_visits
+                      tags:
+                      - email_trigger
+      security:
+      - ApiKeyAuth: []
+      summary: Segment Update
+      operationId: Segment Update
+      description: "Update A segment.\n\n```\n# You can upsert (insert if new, update if exists)\n# by POSTing to api and the ALIAS will be used to lookup\n# the existing one and update it.\ncurl -s -XPOST \"https://api.lytics.io/api/segment\" \\\n    -H \"Content-type: text/plain\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n\nFILTER AND (\n    visits > 5,\n    last_visit >= \"now-30d\",\n    scores.momentum >  10\n)\nALIAS our_test_activelist\n\n' | jq '.'\n\n\n# Json Api Allows a few more fields such as description\ncurl -s -XPUT \"https://api.lytics.io/api/segment/123456id\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -H \"Content-type: application/json\" \\\n    -d'\n{\n    \"name\":\"Most Active Users\",\n    \"segment_ql\": \"FILTER AND (visits > 5,last_visit >= \\\"now-30d\\\", scores.momentum >  10)\",\n    \"slug_name\":\"our_test_activelist\",\n    \"is_public\": true,\n    \"description\":\"a description of what this is for\"\n}\n' | jq '.'\n\n```"
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id, or slug of a segment, part of url path
+        required: true
+        example: my_segment_slug
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Segment Delete
+      operationId: Segment Delete
+      description: Delete A segment.
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id, or slug of a segment, part of url path
+        required: true
+        example: my_segment_slug
+        schema:
+          type: string
+  /api/segment/size:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentSizeModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: ''
+                      name: active
+                      slug_name: active
+                      size: 10402
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentSize
+      operationId: SegmentSize
+      description: "Get size of a single Segment using SegmentQL, not saved.\n\nThis api is very rate throttled, 1/10 seconds.\n\n```\n# Post a SegmentQL query to size api to fetch size\ncurl -s -XPOST \"https://api.lytics.io/api/segment/size\" \\\n    -H \"Content-type: text/plain\" \\\n    -H \"Authorization: your_api_token\" \\\n    -d'\n\nFILTER AND (\n    visits > 5,\n    last_visit >= \"now-30d\",\n    scores.momentum >  10\n)\n\n' | jq '.'\n\n```"
+      tags:
+      - Segment
+  /api/segment/validate:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentValidateModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data: null
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentValidate
+      operationId: SegmentValidate
+      description: Validate single Segment Query Statement
+      tags:
+      - Segment
+  /api/segment/sizes:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentSizesModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: 456dert
+                      name: Active
+                      slug_name: active
+                      size: 10402
+                    - id: 1234abcd
+                      type: custom
+                      slug_name: active
+                      size: 45236
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentSizes
+      operationId: SegmentSizes
+      description: Get bunch of segment sizes.
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: ids
+        in: query
+        description: list of ids to get, format = ids[]=123&ids[]=234 OR ids=123,345  etc, see standard []string param doc
+        required: true
+        example: 123,456
+        schema:
+          type: string
+  /api/segment/{segId}/scan:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SegmentScanModel'
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentScan
+      operationId: SegmentScan
+      description: Get a paged list of **Users** for a **Segment**.
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: segId
+        in: path
+        description: segment Id in path
+        required: true
+        example: '1234'
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: segment Id in querystring instead of path then use `api/segment/scan`
+        required: false
+        example: '1234'
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: num of rows to return per call, default = 10, max = 100
+        required: false
+        example: '10'
+        schema:
+          type: integer
+      - name: splits
+        in: query
+        description: 1,2,3   comma seperated list of ints 0-99 for a-b split testing (a=1,5,8  )
+        required: false
+        example: 1,2,3
+        schema:
+          type: string
+      - name: start
+        in: query
+        description: optional ID of a previous segment scan to resume, must be recent this is retrieved from the `next` parameter in JSON response
+        required: false
+        example: next_xyz
+        schema:
+          type: integer
+      - name: meta
+        in: query
+        description: optional boolean, whether to include schema in response
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: sortfield
+        in: query
+        description: field to sort on
+        required: false
+        example: last_visit_ts
+        schema:
+          type: string
+      - name: sortorder
+        in: query
+        description: '[desc,asc]'
+        required: false
+        example: '20'
+        schema:
+          type: string
+      - name: recent
+        in: query
+        description: short cut for last visit timestamp desc   [t,true,]
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: segments
+        in: query
+        description: JSON of ad-hoc segment, or pass this in http Body
+        required: false
+        example: '{rules...}'
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: list of fields to include in response
+        required: false
+        example: email,user_id,name
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Segment Batch Delete
+      operationId: Segment Batch Delete
+      description: "Delete a Batch of segments\n\n```\n\n#   ids=1234         convert this to []string{\"123\"}\n#   ids=[123,456]    convert this to []string{\"123\",\"456\"}\n#   ids=123,456      convert this to []string{\"123\",\"456\"}\n#   ids=123&ids=456  convert this to []string{\"123\",\"456\"}\n#   ids[]=123&ids[]=456  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids\n\n\ncurl -s -XDELETE -H \"Content-Type: application/json\" \\\n  - H \"Authorization: $LIOKEY\" \\\n  \"https://api.lytics.io/api/segment?ids=21decdea54052ea1285478ecac53d1ed,59e39389fbf738d75246749a6146d280\" \\\n   | jq '.'\n\n\n```"
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: segId
+        in: path
+        description: segment Id in path
+        required: true
+        example: '1234'
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: segment Id in querystring instead of path then use `api/segment/scan`
+        required: false
+        example: '1234'
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: num of rows to return per call, default = 10, max = 100
+        required: false
+        example: '10'
+        schema:
+          type: integer
+      - name: splits
+        in: query
+        description: 1,2,3   comma seperated list of ints 0-99 for a-b split testing (a=1,5,8  )
+        required: false
+        example: 1,2,3
+        schema:
+          type: string
+      - name: start
+        in: query
+        description: optional ID of a previous segment scan to resume, must be recent this is retrieved from the `next` parameter in JSON response
+        required: false
+        example: next_xyz
+        schema:
+          type: integer
+      - name: meta
+        in: query
+        description: optional boolean, whether to include schema in response
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: sortfield
+        in: query
+        description: field to sort on
+        required: false
+        example: last_visit_ts
+        schema:
+          type: string
+      - name: sortorder
+        in: query
+        description: '[desc,asc]'
+        required: false
+        example: '20'
+        schema:
+          type: string
+      - name: recent
+        in: query
+        description: short cut for last visit timestamp desc   [t,true,]
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: segments
+        in: query
+        description: JSON of ad-hoc segment, or pass this in http Body
+        required: false
+        example: '{rules...}'
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: list of fields to include in response
+        required: false
+        example: email,user_id,name
+        schema:
+          type: string
+  /api/segment/{segId}/attribution:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentAttributionListModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: '1234'
+                      metrics:
+                      - ts: '1413149713466'
+                        value: 1002
+                      - ts: '1413149713455'
+                        value: 1005
+                    - id: '1111'
+                      metrics:
+                      - ts: '1413149713466'
+                        value: 1002
+                      - ts: '1413149713455'
+                        value: 1005
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentAttribution
+      operationId: SegmentAttribution
+      description: Get single attribution
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: segId
+        in: path
+        description: segment id
+        required: true
+        example: 123abc
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: integer
+          default: 168
+      - name: refresh
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: boolean
+          default: 'true'
+  /api/segment/attribution:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentAttributionListModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: '1234'
+                      metrics:
+                      - ts: '1413149713466'
+                        value: 1002
+                      - ts: '1413149713455'
+                        value: 1005
+                    - id: '1111'
+                      metrics:
+                      - ts: '1413149713466'
+                        value: 1002
+                      - ts: '1413149713455'
+                        value: 1005
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentAttributionList
+      operationId: SegmentAttributionList
+      description: Get bunch of segment sizes
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: refresh
+        in: query
+        description: 'SYSADMIN ONLY, refresh cache
+
+
+          + Default  `false`'
+        required: false
+        schema:
+          type: boolean
+      - name: limit
+        in: query
+        description: 'number of historical data points to fetch
+
+
+          + Default `168`'
+        required: false
+        schema:
+          type: integer
+      - name: ids
+        in: query
+        description: list of ids to get, format = ids[]=123&ids[]=234 OR ids=123,345  etc, see standard []string param doc
+        required: true
+        example: 123,456
+        schema:
+          type: string
+  /api/segment/{segId}/fieldinfo:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SegmentFieldInfoModel'
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentFieldInfo
+      operationId: SegmentFieldInfo
+      description: Get field info by segment
+      tags:
+      - Segment
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: segId
+        in: path
+        description: the segment id
+        required: true
+        example: 123,abc,def
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: fields
+        in: query
+        description: optional list, or comma separated list of string fields to include
+        required: false
+        example: name,email,segments
+        schema:
+          type: string
+components:
+  schemas:
+    SegmentScanModel: {}
+    SegmentValidateModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data: {}
+      example:
+        status: 200
+        message: success
+        data: null
+    SegmentFieldInfoModel: {}
+    SegmentSizeModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            slug_name:
+              type: string
+            size:
+              type: number
+      example:
+        data:
+          id: ''
+          name: active
+          slug_name: active
+          size: 10402
+    SegmentListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              account_id:
+                type: string
+              author_id:
+                type: string
+              kind:
+                type: string
+              segment_ql:
+                type: string
+              created:
+                type: string
+              updated:
+                type: string
+              description:
+                type: string
+              is_public:
+                type: boolean
+              name:
+                type: string
+              slug_name:
+                type: string
+              tags:
+                type: array
+                items:
+                  type: string
+      example:
+        data:
+        - id: 7a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          author_id: user_12345
+          kind: segment
+          segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
+          is_public: true
+          name: Recent Visits
+          slug_name: recent_visits
+          tags:
+          - email_trigger
+    SegmentSizesModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              slug_name:
+                type: string
+              size:
+                type: number
+              type:
+                type: string
+            required:
+            - id
+            - slug_name
+            - size
+      example:
+        data:
+        - id: 456dert
+          name: Active
+          slug_name: active
+          size: 10402
+        - id: 1234abcd
+          type: custom
+          slug_name: active
+          size: 45236
+    SegmentAttributionListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              metrics:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ts:
+                      type: string
+                    value:
+                      type: number
+                  required:
+                  - ts
+                  - value
+            required:
+            - id
+            - metrics
+      example:
+        data:
+        - id: '1234'
+          metrics:
+          - ts: '1413149713466'
+            value: 1002
+          - ts: '1413149713455'
+            value: 1005
+        - id: '1111'
+          metrics:
+          - ts: '1413149713466'
+            value: 1002
+          - ts: '1413149713455'
+            value: 1005
+    SegmentModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            account_id:
+              type: string
+            author_id:
+              type: string
+            kind:
+              type: string
+            segment_ql:
+              type: string
+            created:
+              type: string
+            updated:
+              type: string
+            description:
+              type: string
+            name:
+              type: string
+            slug_name:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+      example:
+        data:
+          id: 7a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          author_id: 4f7b525bdba058fc096757a6
+          kind: segment
+          segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
+          name: Recent Visits
+          slug_name: recent_visits
+          tags:
+          - email_trigger
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

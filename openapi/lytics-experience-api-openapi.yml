@@ -1,0 +1,756 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Experience API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Experience
+  description: API for creating and managing Experiences as well as all related and/or dependent models such as but not limited to Groups, Templates, Candidates, etc.
+paths:
+  /api/experience:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: List
+      operationId: ListExperience
+      description: 'Endpoint fetches all Experience records available to provided authorization token as well as various side-loaded dependencies.
+
+
+        __Sideloading__: A variety of dependent or associated data will be side-loaded as part of the primary request. The list of side-loaded data for this particular request is:
+
+
+        - All available Experience templates.
+
+
+        - All parent groups one branch up the tree for returned Experiences.'
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit the number of Experience records returned
+        required: false
+        example: '10'
+        schema:
+          type: string
+      - name: provider
+        in: query
+        description: id of provider to filter results by
+        required: false
+        example: 65b80b0a8e0544aa8144022b3c085da1
+        schema:
+          type: string
+      - name: deleted
+        in: query
+        description: include soft deleted Experiences
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      operationId: CreateExperience
+      description: 'Endpoint creates a single Experience record.
+
+
+        __Sideloading__
+
+
+        - None
+
+
+        __Required Fields__
+
+
+        - label
+
+
+        - vehicle.provider_id
+
+
+        - vehicle.tactic'
+      tags:
+      - Experience
+  /api/experience/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch
+      operationId: FetchExperience
+      description: 'Endpoint fetches a single Experience record by id as well as various side-loaded dependencies.
+
+
+        __Sideloading__: A variety of dependent or associated data will be side-loaded as part of the primary request. The list of side-loaded data for this particular request is:
+
+
+        - All parent groups all the way up the family tree for the Experience.'
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: deleted
+        in: query
+        description: include soft deleted Experiences
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: id
+        in: path
+        description: id of the experience. if `orphan` is passed as Experience it will list all Experiences with no parent.
+        required: true
+        example: 76c7115c492e78cfd12f30a7389919bb
+        schema:
+          type: string
+    patch:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update
+      operationId: UpdateExperience
+      description: 'Endpoint updates a single Experience record.
+
+
+        __Sideloading__: None'
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the experience. if `orphan` is passed as Experience it will list all Experiences with no parent.
+        required: true
+        example: 76c7115c492e78cfd12f30a7389919bb
+        schema:
+          type: string
+      - name: update_state
+        in: query
+        description: allow the state of the Experience to be altered, all other changes will be thrown out of this request when flag is `true`.
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Delete
+      operationId: DeleteExperience
+      description: Removes an Experience record.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the Experience
+        required: true
+        example: 96d774bca4ac26c92aa323b246a148fd
+        schema:
+          type: string
+      - name: method
+        in: query
+        description: method to be used for deletion. hard deletes permanently and is unrecoverable. soft is default and deletes with ability to be recovered.
+        required: false
+        example: hard
+        schema:
+          type: string
+      - name: recursive
+        in: query
+        description: recursive delete will also delete all downstream dependencies.
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+  /api/experience/import:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch
+      operationId: FetchImport
+      description: Request a list of importable Experiences from a third party provider such as Facebook or Iterable.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: provider_slug
+        in: query
+        description: slug of provider to fetch Experiences from
+        required: true
+        example: facebook
+        schema:
+          type: string
+      - name: auth_id
+        in: query
+        description: id of the authorization for the requested provider
+        required: true
+        example: 7391398335174372b3aecd83c5a5d292
+        schema:
+          type: string
+      - name: include_existing
+        in: query
+        description: should the response include Experiences already imported
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+        '207':
+          description: Multi-Status
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      operationId: CreateImport
+      description: 'Creates Experiences in a batch based on valid Experience import records. This endpoint should be used exclusively with the results from the Experience import GET and not leveraged as a bulk Experience create.
+
+
+        __Required Fields__
+
+
+        - all'
+      tags:
+      - Experience
+  /api/experience/template:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: List
+      operationId: ListTemplate
+      description: Fetches all Experience templates available to provided authorization token.
+      tags:
+      - Experience
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      operationId: CreateTemplate
+      description: 'Creates an Experience template.
+
+
+        __Required Fields__
+
+
+        - all
+
+
+        - see `experience` or `group` for nested requirements'
+      tags:
+      - Experience
+  /api/experience/template/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch
+      operationId: FetchTemplate
+      description: Fetches an Experience template by id.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the template
+        required: true
+        example: 864a26fd5d5148b0b7fa187828368b81
+        schema:
+          type: string
+    patch:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update
+      operationId: UpdateTemplate
+      description: Updates an Experience template.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the template
+        required: true
+        example: 864a26fd5d5148b0b7fa187828368b81
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Delete
+      operationId: DeleteTemplate
+      description: Removes an Experience template.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the template
+        required: true
+        example: 864a26fd5d5148b0b7fa187828368b81
+        schema:
+          type: string
+  /api/experience/candidate:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: List
+      operationId: ListCandidate
+      description: Fetches all Experience candidate records available to token.
+      tags:
+      - Experience
+  /api/experience/preview/{accountid}/{id}/config.js:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Preview Config
+      operationId: Preview Config
+      description: Renders a JavaScript file containing a single Experiences Pathfora configuration for previewing a web personalize Experience.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: accountid
+        in: path
+        description: id of the account
+        required: true
+        example: 864a26fd5d5148b0b7fa187828368b81
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the experience
+        required: true
+        example: 864a26fd5d5148b0b7fa187828368b81
+        schema:
+          type: string
+  /api/experience/candidate/{accountid}/config.js:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Production Config
+      operationId: Production Config
+      description: Renders a JavaScript file containing all published Experiences Candidate Pathfora configurations.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: accountid
+        in: path
+        description: id of the account
+        required: true
+        example: 864a26fd5d5148b0b7fa187828368b81
+        schema:
+          type: string
+  /api/experience/group:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: List
+      operationId: ListGroup
+      description: Fetches all Experience Group records available to the authorization token.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit number of returned experience_group records
+        required: false
+        example: '10'
+        schema:
+          type: string
+      - name: deleted
+        in: query
+        description: include soft deleted records
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      operationId: CreateGroup
+      description: 'Creates an Experience Group record.
+
+
+        __Required Fields__
+
+
+        - label
+
+
+        - class
+
+
+        __Note__: When creating a new Experience group you have the option of including either a set of nested Experiences or groups, not both, that belong to the new group. As a result, a prioritization record will be created in addition to each individual group or Experience itself being updated with the proper `parent_group_id` value. Likewise, passing an empty array __WILL REMOVE__ the ownership from the existing children. When no change is intended for nested Experiences or groups you should pass no value or null for both `experiences` and `child_groups`.'
+      tags:
+      - Experience
+  /api/experience/group/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch
+      operationId: FetchGroup
+      description: Fetches an Experience Group record by id.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the group
+        required: true
+        example: ef9154b3a5f982e1bd4ec0230664b57c
+        schema:
+          type: string
+      - name: deleted
+        in: query
+        description: include soft deleted records
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+    patch:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update
+      operationId: UpdateGroup
+      description: 'Updates an Experience Group record.
+
+
+        __Note__: When updating an existing Experience group you have the option of including either a set of nested Experiences or groups, not both, that belong to the new group. As a result, a prioritization record will be created in addition to each individual group or Experience itself being updated with the proper `parent_group_id` value. Likewise, passing an empty array __WILL REMOVE__ the ownership from the existing children. When no change is intended for nested Experiences or groups you should pass no value or null for both `experiences` and `child_groups`.'
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the group
+        required: true
+        example: ef9154b3a5f982e1bd4ec0230664b57c
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Delete
+      operationId: DeleteGroup
+      description: Removes an Experience Group record.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the group
+        required: true
+        example: ef9154b3a5f982e1bd4ec0230664b57c
+        schema:
+          type: string
+      - name: method
+        in: query
+        description: method to be used for deletion. hard deletes permanently and is unrecoverable. soft is default and deletes with ability to be recovered.
+        required: false
+        example: hard
+        schema:
+          type: string
+      - name: recursive
+        in: query
+        description: recursive delete will also delete all downstream dependencies.
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+  /api/experience/prioritization:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: List
+      operationId: ListPrioritization
+      description: Fetches all prioritization records available to token.
+      tags:
+      - Experience
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Create
+      operationId: CreatePrioritization
+      description: 'Creates a prioritization record.
+
+
+        __Required Fields__
+
+
+        - all'
+      tags:
+      - Experience
+  /api/experience/prioritization/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch
+      operationId: FetchPrioritization
+      description: Fetches a prioritization record by id.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the prioritization record
+        required: true
+        example: 87cb58050ad27cd539935d8e3838f239
+        schema:
+          type: string
+    patch:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Update
+      operationId: UpdatePrioritization
+      description: Updates a prioritization record.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the prioritization record
+        required: true
+        example: 87cb58050ad27cd539935d8e3838f239
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Delete
+      operationId: DeletePrioritization
+      description: Removes a prioritization record.
+      tags:
+      - Experience
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of the prioritization record
+        required: true
+        example: 87cb58050ad27cd539935d8e3838f239
+        schema:
+          type: string
+      - name: method
+        in: query
+        description: method to be used for deletion. hard deletes permanently and is unrecoverable. soft is default and deletes with ability to be recovered.
+        required: false
+        example: hard
+        schema:
+          type: string
+  /api/experience/group/priority:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Master Group Priority
+      operationId: Master Group Priority
+      description: Manages the unique top level Journey priority record for an account. Used only for managing hierarchy of Experience Groups classified as Journeys in the UI.
+      tags:
+      - Experience
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

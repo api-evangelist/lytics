@@ -1,0 +1,243 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Segment Collection API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: SegmentCollection
+  description: 'Segment Collections are grouped/named lists of segments.
+
+    Segments that participate in a collection such as **Goals**
+
+    are related.  The Lytics App ui has one predefined collection
+
+    called **Goals** which defines the main funnel of user
+
+    conversions for your company.  Definining this helps our
+
+    Machine Learning understand goals.
+
+
+    In addition, the Lytics App has a variety of collections for
+
+    *Aspects* on the home page/reporting which are collections of segments
+
+    on related themes.
+
+
+    * *Email* Collection of aspects related to email behavior.
+
+
+    * *Web* A variety of aspects of web users.
+
+
+    * *Ecommerce*'
+paths:
+  /api/segmentcollection:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SegmentCollectionListModel'
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentCollectionList
+      operationId: SegmentCollectionList
+      description: Get list **Segment Collections**
+      tags:
+      - SegmentCollection
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: sideload
+        in: query
+        description: should segments for collection should be sideloaded
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SegmentCollectionModel'
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentCollection Create
+      operationId: SegmentCollection Create
+      description: Create a new SegmentCollection from existing segments.
+      tags:
+      - SegmentCollection
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: sideload
+        in: query
+        description: should segments for collection should be sideloaded
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      requestBody:
+        $ref: '#/components/requestBodies/SegmentCollection_CreateBody'
+  /api/segmentcollection/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SegmentCollectionModel'
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentCollection Fetch
+      operationId: SegmentCollection Fetch
+      description: Fetch a segment collection by **id** or **slug**
+      tags:
+      - SegmentCollection
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of segment collection
+        required: true
+        example: 1234abcd
+        schema:
+          type: string
+      - name: sideload
+        in: query
+        description: should segments for collection should be sideloaded
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+    put:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SegmentCollectionModel'
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentCollection Update
+      operationId: SegmentCollection Update
+      description: Update a SegmentCollection
+      tags:
+      - SegmentCollection
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of segment collection
+        required: true
+        example: 1234abcd
+        schema:
+          type: string
+      - name: sideload
+        in: query
+        description: should segments for collection should be sideloaded
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      requestBody:
+        $ref: '#/components/requestBodies/SegmentCollection_CreateBody'
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentCollection Delete
+      operationId: SegmentCollection Delete
+      description: Delete a SegmentCollection model.
+      tags:
+      - SegmentCollection
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of the SegmentCollection model to delete.
+        required: true
+        example: source::target
+        schema:
+          type: string
+components:
+  schemas:
+    SegmentCollectionModel: {}
+    SegmentCollectionListModel: {}
+  requestBodies:
+    SegmentCollection_CreateBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              collection:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    order:
+                      type: number
+                  required:
+                  - id
+                  - order
+            example:
+              name: Collection Name
+              collection:
+              - id: 1234abcd
+                order: 0
+              - id: 3456abcd
+                order: 1
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

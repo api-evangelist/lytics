@@ -1,0 +1,1984 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@lytics.com
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  description: Version 2 of the Lytics API
+  termsOfService: https://www.lytics.com/terms-of-service/
+  title: Lytics Schema API
+  version: '2.0'
+servers:
+- url: https://api.lytics.io/v2
+tags:
+- description: Manage how data sources populate profile fields.
+  name: Schema
+paths:
+  /schema:
+    get:
+      description: List tables with schema.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.Table'
+                      type: array
+                  type: object
+          description: Tables List
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: List tables
+      tags:
+      - Schema
+  /schema/bulk:
+    post:
+      description: Schema bulk upsert creates/updates multiple schema objects. It does not delete any existing schema objects.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.SchemaResponse'
+        description: Schema
+        required: true
+        x-originalParamName: Schema
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.VersionDiff'
+                  type: object
+          description: Schema Version Diff
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Schema Bulk Upsert
+      tags:
+      - Schema
+    put:
+      description: Schema bulk upsert creates/updates multiple schema objects. It does not delete any existing schema objects.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.SchemaResponse'
+        description: Schema
+        required: true
+        x-originalParamName: Schema
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.VersionDiff'
+                  type: object
+          description: Schema Version Diff
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Schema Bulk Upsert
+      tags:
+      - Schema
+  /schema/expression/evaluate:
+    post:
+      description: Evaluate an adhoc mapping expression against a single event
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.ExpressionEvalRequest'
+        description: Expression
+        required: true
+        x-originalParamName: expression
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      type: string
+                  type: object
+          description: Expression Evaluation Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Evaluate Expression
+      tags:
+      - Schema
+  /schema/lql:
+    post:
+      description: Upload LQL query to update schema with corresponding fields and mappings.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/text:
+            schema:
+              type: string
+        description: LQL Query
+        required: true
+        x-originalParamName: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.LQLUploadResponse'
+                  type: object
+          description: Upserted fields and mappings
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Update schema with LQL query
+      tags:
+      - Schema
+  /schema/{table}:
+    get:
+      description: Retrieve current schema fields, mappings and ranks
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.SchemaResponse'
+                  type: object
+          description: Schema Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get schema
+      tags:
+      - Schema
+  /schema/{table}/compare:
+    get:
+      description: Get a diff of two schema versions
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      - description: Comparison Schema Version (defaults to previous)
+        in: query
+        name: compare_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.VersionDiff'
+                  type: object
+          description: Schema Version Diff
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get schema comparison
+      tags:
+      - Schema
+  /schema/{table}/evaluate:
+    post:
+      description: Evaluate the current published schema against test events
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.SchemaEvalRequest'
+        description: Events to evaluate by stream
+        required: true
+        x-originalParamName: data
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        additionalProperties: true
+                        type: object
+                      type: array
+                  type: object
+          description: Expression Evaluation Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Evaluate Schema
+      tags:
+      - Schema
+  /schema/{table}/field:
+    get:
+      description: Retrieve current fields
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: baccount_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      - description: Types of field to return
+        in: query
+        name: filter
+        schema:
+          enum:
+          - scalar
+          - nonscalar
+          - all
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.Field'
+                      type: array
+                  type: object
+          description: Field List
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get fields
+      tags:
+      - Schema
+    post:
+      description: Upsert a field in draft schema.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.Field'
+        description: Field
+        required: true
+        x-originalParamName: field
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Field'
+                  type: object
+          description: Field
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Field'
+                  type: object
+          description: Field
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Post field
+      tags:
+      - Schema
+  /schema/{table}/field/{field_id}:
+    delete:
+      description: Soft-delete a schema field from this draft, or hard-delete it if new.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: The field ID
+        in: path
+        name: field_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete field
+      tags:
+      - Schema
+    get:
+      description: Retrieve a field by its ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: ID of the Field
+        in: path
+        name: field_id
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Field'
+                  type: object
+          description: Field
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get a field
+      tags:
+      - Schema
+  /schema/{table}/idconfig:
+    get:
+      description: List graph compaction and many-to-one merging configuration for all identity fields.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.IDConfig'
+                      type: array
+                  type: object
+          description: Identity Field Configuration List
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: List all identity config
+      tags:
+      - Schema
+    post:
+      description: Create or update configuration for a single identity field.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.IDConfig'
+                  type: object
+          description: ID config
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.IDConfig'
+                  type: object
+          description: ID config
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Post ID config
+      tags:
+      - Schema
+  /schema/{table}/idconfig/{field_id}:
+    delete:
+      description: Soft-delete graph compaction and many-to-one merging config from a single schema field, or hard-delete them if new.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: The field ID
+        in: path
+        name: field_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete ID Settings
+      tags:
+      - Schema
+    get:
+      description: Get graph compaction and many-to-one merging configuration for a single identity field.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      - description: ID of the Identity Field
+        in: path
+        name: field_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.IDConfig'
+                  type: object
+          description: Identity Field Configuration
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get identity field config
+      tags:
+      - Schema
+  /schema/{table}/mapping:
+    get:
+      description: Retrive current mappings
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.Mapping'
+                      type: array
+                  type: object
+          description: Mapping List
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get mappings
+      tags:
+      - Schema
+    post:
+      description: Upsert a mapping in draft schema.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.Mapping'
+        description: Mapping
+        required: true
+        x-originalParamName: field
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Mapping'
+                  type: object
+          description: Mapping
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Mapping'
+                  type: object
+          description: Mapping
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Post mapping
+      tags:
+      - Schema
+  /schema/{table}/mapping/{mapping_id}:
+    delete:
+      description: Soft-delete a data mapping from this draft, or hard-delete it if new.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: The mapping ID
+        in: path
+        name: mapping_id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete mapping
+      tags:
+      - Schema
+    get:
+      description: Retrieve a mapping by ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: ID of the Mapping
+        in: path
+        name: mapping_id
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Mapping'
+                  type: object
+          description: Mapping
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get a mapping
+      tags:
+      - Schema
+  /schema/{table}/publish:
+    post:
+      description: Publish changes to your schema
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.VersionCommit'
+        description: Publish Message
+        required: true
+        x-originalParamName: message
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.SchemaResponse'
+                  type: object
+          description: Schema Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Publish schema
+      tags:
+      - Schema
+  /schema/{table}/rank:
+    get:
+      description: Retrieve current identifier rank list.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.RankList'
+                  type: object
+          description: Identity Field Ranks
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get rank
+      tags:
+      - Schema
+    post:
+      description: Create or update identifier rank list.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.RankList'
+        description: Rank List
+        required: true
+        x-originalParamName: ranklist
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.RankList'
+                  type: object
+          description: Rank list
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Post ID rank list
+      tags:
+      - Schema
+  /schema/{table}/retentionsettings:
+    get:
+      description: Retrieve current retention settings.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.RetentionSettings'
+                  type: object
+          description: Retention Settings
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get retention settings
+      tags:
+      - Schema
+    post:
+      description: Create or update retention settings.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.RetentionSettings'
+        description: Retention Settings
+        required: true
+        x-originalParamName: retentionsettings
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.RetentionSettings'
+                  type: object
+          description: Retention settings
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.RetentionSettings'
+                  type: object
+          description: Retention settings
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Post retention settings
+      tags:
+      - Schema
+  /schema/{table}/revert:
+    post:
+      description: Restore an entire schema version to the state of the current live schema.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version to revert to. Defaults to the live version.
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.SchemaResponse'
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Revert schema changes
+      tags:
+      - Schema
+  /schema/{table}/validate:
+    get:
+      description: Run validation for schema
+      parameters:
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Schema Version (defaults to latest)
+        in: query
+        name: version_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.SchemaValidateResponse'
+                      type: array
+                  type: object
+          description: Schema Validate Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Validate schema
+      tags:
+      - Schema
+  /schema/{table}/version:
+    get:
+      description: Get a list of all schema versions in its history
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.SchemaResponse'
+                      type: array
+                  type: object
+          description: Schema Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get schema history
+      tags:
+      - Schema
+components:
+  schemas:
+    models.Mapping:
+      properties:
+        created:
+          format: date-time
+          type: string
+        edit_status:
+          type: string
+        expr:
+          description: The LQL expression for the mapping
+          type: string
+        field:
+          description: The target field of the mapping
+          type: string
+        guard_expr:
+          description: The LQL Guard expression for the mapping
+          type: string
+        id:
+          description: The ID of the mapping
+          type: string
+        managed_by:
+          type: string
+        modified:
+          format: date-time
+          type: string
+        stream:
+          description: The stream associated with the mapping
+          type: string
+      required:
+      - field
+      type: object
+    v2schemadiff.Diff:
+      properties:
+        from_val: {}
+        property:
+          description: Property can be field type, mapping expression, etc.
+          type: string
+        to_val: {}
+      type: object
+    models.Field:
+      properties:
+        assertions:
+          $ref: '#/components/schemas/models.Assertions'
+        capacity:
+          description: Specifies the capacity for fields of type set or map
+          type: integer
+        created:
+          format: date-time
+          type: string
+        disable_indexing:
+          type: boolean
+        edit_status:
+          type: string
+        id:
+          description: ID, or name of field
+          type: string
+        id_config:
+          $ref: '#/components/schemas/models.IDConfig'
+        is_identifier:
+          type: boolean
+        is_pii:
+          type: boolean
+        keep_days:
+          description: TTL for fields of type set or map, in days
+          type: integer
+        keep_duration:
+          description: 'TTL for field of type set or map, must match keep_days if both are defined ie: 7d'
+          type: string
+        longdesc:
+          type: string
+        managed_by:
+          type: string
+        mergeop:
+          type: string
+        modified:
+          type: string
+        shortdesc:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        type:
+          type: string
+      type: object
+    models.Ranks:
+      properties:
+        id_config:
+          items:
+            $ref: '#/components/schemas/models.IDConfig'
+          type: array
+        id_ranks:
+          $ref: '#/components/schemas/models.RankList'
+      type: object
+    models.RankList:
+      properties:
+        changes:
+          $ref: '#/components/schemas/v2schemadiff.SchemaChange'
+        created:
+          type: string
+        edit_status:
+          type: string
+        fields:
+          items:
+            type: string
+          type: array
+        modified:
+          type: string
+      type: object
+    models.SchemaValidateResponse:
+      properties:
+        has_unpublished_changes:
+          type: boolean
+        id:
+          description: UUID for this schema version
+          type: string
+        parent_id:
+          type: string
+        table:
+          type: string
+        validation_errors:
+          items:
+            type: string
+          type: array
+        version_number:
+          type: integer
+      type: object
+    models.SchemaResponse:
+      properties:
+        created:
+          format: date-time
+          type: string
+        created_by:
+          type: string
+        description:
+          type: string
+        draft_status:
+          type: string
+        fields:
+          items:
+            $ref: '#/components/schemas/models.Field'
+          type: array
+        id:
+          description: UUID for this schema version
+          type: string
+        is_patch:
+          type: boolean
+        mappings:
+          items:
+            $ref: '#/components/schemas/models.Mapping'
+          type: array
+        modified:
+          format: date-time
+          type: string
+        parent_id:
+          type: string
+        published_by:
+          type: string
+        ranks:
+          $ref: '#/components/schemas/models.Ranks'
+        retention_settings:
+          $ref: '#/components/schemas/models.RetentionSettings'
+        status:
+          enum:
+          - live
+          - draft
+          - archived
+          type: string
+        table:
+          type: string
+        tag:
+          type: string
+        version_number:
+          type: integer
+      type: object
+    models.Table:
+      properties:
+        draft_id:
+          type: string
+        draft_version:
+          type: integer
+        live_id:
+          type: string
+        table:
+          type: string
+      type: object
+    models.SchemaEvalRequest:
+      additionalProperties:
+        items:
+          additionalProperties: true
+          type: object
+        type: array
+      type: object
+    models.LQLUploadResponse:
+      properties:
+        fields:
+          items:
+            $ref: '#/components/schemas/models.Field'
+          type: array
+        mappings:
+          items:
+            $ref: '#/components/schemas/models.Mapping'
+          type: array
+      type: object
+    models.Assertions:
+      properties:
+        email:
+          description: Asserts that the field is an email address
+          type: boolean
+        filter:
+          description: '[]string is the type of v2schema.Filter'
+          items:
+            type: string
+          type: array
+        format:
+          description: Asserts the format of string fields. If this is set to any value other than "any", the incoming data will be validated against the specified format for all mappings to this field. If the format does not match, the mapping will ignore the input.
+          enum:
+          - alpha
+          - alphanumeric
+          - uuid
+          - base64
+          - hex
+          - int
+          - any
+          type: string
+        length:
+          properties:
+            max:
+              description: Maximum length of the field
+              type: integer
+            min:
+              description: Minimum length of the field
+              type: integer
+          type: object
+      type: object
+    models.VersionDiff:
+      properties:
+        diff:
+          items:
+            $ref: '#/components/schemas/v2schemadiff.SchemaChange'
+          type: array
+        from:
+          $ref: '#/components/schemas/models.SchemaResponse'
+        to:
+          $ref: '#/components/schemas/models.SchemaResponse'
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.VersionCommit:
+      properties:
+        description:
+          description: Longer description of changes
+          type: string
+        tag:
+          description: Tag for short-hand reference
+          type: string
+      type: object
+    v2schemadiff.SchemaChange:
+      properties:
+        diff:
+          description: Diff will be empty if verb is "created" or "removed".
+          items:
+            $ref: '#/components/schemas/v2schemadiff.Diff'
+          type: array
+        id:
+          description: "ID will be field name, mapping ID, rank setting\n field, or empty for \"rank\" source type."
+          type: string
+        subject:
+          enum:
+          - mapping
+          - field
+          - rank
+          - rank_setting
+          type: string
+        verb:
+          enum:
+          - created
+          - removed
+          - modified
+          type: string
+      type: object
+    models.ExpressionEvalRequest:
+      properties:
+        data:
+          additionalProperties: true
+          type: object
+        expression:
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.IDConfig:
+      properties:
+        compact_after_days:
+          type: integer
+        compact_over:
+          type: integer
+        created:
+          type: string
+        edit_status:
+          type: string
+        field:
+          type: string
+        many_to:
+          items:
+            type: string
+          type: array
+        modified:
+          type: string
+      type: object
+    models.RetentionSettings:
+      properties:
+        capacity:
+          type: integer
+        created:
+          type: string
+        edit_status:
+          type: string
+        keep_days:
+          type: integer
+        modified:
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey

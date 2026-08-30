@@ -1,0 +1,382 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@lytics.com
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  description: Version 2 of the Lytics API
+  termsOfService: https://www.lytics.com/terms-of-service/
+  title: Lytics Metrics API
+  version: '2.0'
+servers:
+- url: https://api.lytics.io/v2
+tags:
+- description: Query time series metrics for segments, streams, experiences, and other Lytics resources.
+  name: Metrics
+paths:
+  /metric:
+    get:
+      description: Query one or more metrics via query parameters. The Metric API provides access to time series data for segments, streams, experiences, and other Lytics resources.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: Friendly name to identify this metric request
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: The dimension to query
+        in: query
+        name: dimension
+        required: true
+        schema:
+          enum:
+          - '"segment"'
+          - '"experience"'
+          - '"experiencegroup"'
+          - '"stream"'
+          - '"flow"'
+          - '"inflight"'
+          - '"works"'
+          - '"auths"'
+          - '"bandit"'
+          - '"attribution"'
+          - '"contentenrich"'
+          - '"acct_quotas"'
+          - '"segmovement"'
+          - '"cooccurrent_counts"'
+          - '"cloudconnect_connections"'
+          - '"cloudconnect_tablesync"'
+          - '"cloudconnect_segmentsync"'
+          - '"e2e_profile_latency"'
+          - '"e2e_trigger_latency"'
+          - '"segmentmodel_summaries_ts"'
+          - '"accountgoalcount"'
+          - '"accountgoalvalue"'
+          type: string
+      - description: The ID of the specific resource within the dimension (e.g. segment ID)
+        in: query
+        name: dimension_id
+        required: true
+        schema:
+          type: string
+      - description: The metric type to retrieve (e.g. size, converted, conversionrate)
+        in: query
+        name: dimension_type
+        required: true
+        schema:
+          type: string
+      - description: Comma-separated aggregation methods to apply
+        in: query
+        name: aggregation
+        required: true
+        schema:
+          enum:
+          - '"sum"'
+          - '"max"'
+          - '"min"'
+          - '"diff"'
+          - '"first"'
+          - '"smooth"'
+          type: string
+      - description: Start of the query range. Supports friendly times (e.g. now-7d). Required if end_date is set; cannot be used with range.
+        in: query
+        name: start_date
+        schema:
+          type: string
+      - description: End of the query range. Supports friendly times (e.g. now). Required if start_date is set.
+        in: query
+        name: end_date
+        schema:
+          type: string
+      - description: Time range from now (e.g. 7d for last 7 days). Cannot be used with start_date or end_date.
+        in: query
+        name: range
+        schema:
+          type: string
+      - description: Bucket size for time series grouping (e.g. 1d, 2h). Defaults to 2h.
+        in: query
+        name: interval
+        schema:
+          type: string
+      - description: Apply smoothing to the resulting metrics
+        in: query
+        name: smooth
+        schema:
+          type: boolean
+      - description: Round start and end dates down to the nearest day
+        in: query
+        name: round_dates
+        schema:
+          type: boolean
+      - description: Include zero-value buckets in the response
+        in: query
+        name: include_empty_rows
+        schema:
+          type: boolean
+      - description: Include a sum of all bucket values in the response
+        in: query
+        name: include_sum_of_buckets
+        schema:
+          type: boolean
+      - description: Bypass the cache and read fresh from the time-series store
+        in: query
+        name: refresh_cache
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.MetricResult'
+                      type: array
+                  type: object
+          description: Metrics Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Query metrics (GET)
+      tags:
+      - Metrics
+    post:
+      description: Query one or more metrics by posting a JSON array of metric requests. The Metric API provides access to time series data for segments, streams, experiences, and other Lytics resources.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              items:
+                $ref: '#/components/schemas/models.MetricRequest'
+              type: array
+        description: Array of metric requests
+        required: true
+        x-originalParamName: requests
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.MetricResult'
+                      type: array
+                  type: object
+          description: Metrics Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Query metrics (POST)
+      tags:
+      - Metrics
+components:
+  schemas:
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.MetricRequest:
+      properties:
+        aggregation:
+          example: sum
+          type: string
+        dimension:
+          example: segment
+          type: string
+        dimension_id:
+          example: abc123
+          type: string
+        dimension_type:
+          example: size
+          type: string
+        end_date:
+          example: now
+          type: string
+        include_empty_rows:
+          type: boolean
+        include_sum_of_buckets:
+          type: boolean
+        interval:
+          example: 1d
+          type: string
+        name:
+          type: string
+        range:
+          example: 7d
+          type: string
+        refresh_cache:
+          type: boolean
+        round_dates:
+          type: boolean
+        smooth:
+          type: boolean
+        start_date:
+          example: now-7d
+          type: string
+      type: object
+    models.MetricResult:
+      properties:
+        aggregation:
+          type: string
+        create_time:
+          format: date-time
+          type: string
+        dimension:
+          type: string
+        dimension_id:
+          type: string
+        dimension_type:
+          type: string
+        end_date:
+          type: string
+        errors:
+          items:
+            type: string
+          type: array
+        include_empty_rows:
+          type: boolean
+        include_sum_of_buckets:
+          type: boolean
+        interval:
+          type: string
+        is_cached:
+          type: boolean
+        name:
+          type: string
+        range:
+          type: string
+        refresh_cache:
+          type: boolean
+        round_dates:
+          type: boolean
+        smooth:
+          type: boolean
+        start_date:
+          type: string
+        sum:
+          type: number
+        values:
+          items:
+            $ref: '#/components/schemas/models.MetricTimeSeriesEntry'
+          type: array
+      type: object
+    models.MetricTimeSeriesEntry:
+      properties:
+        ts:
+          description: Ts is the bucket timestamp as a string of Unix-epoch milliseconds.
+          example: '1285891200000'
+          type: string
+        value:
+          type: number
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey

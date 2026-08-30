@@ -1,0 +1,931 @@
+openapi: 3.2.0
+info:
+  title: Lytics User API
+  version: '1.0'
+  description: 'Operations tagged User across 2 of this provider''s published API definitions: lytics-api-v1-openapi.json, lytics-api-v2-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.lytics.io
+- url: https://api.lytics.io/v2
+tags:
+- name: User
+  description: 'Info about Administrative Lytics account users
+
+
+    * Lytics users are unique across accounts
+
+
+    * They get *invited* to have access to your account'
+paths:
+  /api/user/{userid}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b175bdba058fc092357a6
+                      aid: 122
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      email: bill.jenkins@lytics.io
+                      id: 120642b03a2d54551e637f56cbf61b73
+                      name: Bill Jenkins
+                      accounts:
+                      - aid: 122
+                        account_id: 4f7b175bdba058fc092357a6
+                        granted_by: '500418690088145'
+                        roles:
+                        - api
+                        - segments
+                        - admin
+                        created: '2014-08-04T21:18:20.124Z'
+                        updated: '2014-08-04T21:18:20.124Z'
+      security:
+      - ApiKeyAuth: []
+      summary: User Fetch
+      operationId: User Fetch
+      description: Get a single admin user
+      tags:
+      - User
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: userid
+        in: path
+        description: ''
+        required: true
+        example: 1234abc
+        schema:
+          type: string
+    put:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b175bdba058fc092357a6
+                      aid: 122
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      email: bill.jenkins@lytics.io
+                      id: 120642b03a2d54551e637f56cbf61b73
+                      name: Bill Jenkins
+                      accounts:
+                      - aid: 122
+                        account_id: 4f7b175bdba058fc092357a6
+                        granted_by: '500418690088145'
+                        roles:
+                        - api
+                        - segments
+                        - admin
+                        created: '2014-08-04T21:18:20.124Z'
+                        updated: '2014-08-04T21:18:20.124Z'
+      security:
+      - ApiKeyAuth: []
+      summary: User Update
+      operationId: User Update
+      description: Update An **Lytics Admin User**
+      tags:
+      - User
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: userid
+        in: path
+        description: ''
+        required: true
+        example: 1234abc
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/user:
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b175bdba058fc092357a6
+                      aid: 122
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      email: bill.jenkins@lytics.io
+                      id: 120642b03a2d54551e637f56cbf61b73
+                      name: Bill Jenkins
+                      accounts:
+                      - aid: 122
+                        account_id: 4f7b175bdba058fc092357a6
+                        granted_by: '500418690088145'
+                        roles:
+                        - api
+                        - segments
+                        - admin
+                        created: '2014-08-04T21:18:20.124Z'
+                        updated: '2014-08-04T21:18:20.124Z'
+      security:
+      - ApiKeyAuth: []
+      summary: User Create
+      operationId: User Create
+      description: "Create/Invite A **Lytics Admin User** this will either create\na new user if that email is new, or invite user to have access to\ncurrent account.\n\n```sh\n\n# Create/Invite new user for current LIOKEY account\n#  with suppression to not send welcome email\n\ncurl -v -XPOST \"https://api.lytics.io/api/user?suppress=true\"  \\\n  -H 'Content-type: application/json' \\\n  -H \"Authorization: $LIOKEY\" \\\n  -d '{\n    \"email\" : \"fakeuser2@lytics.io\"\n    , \"password\":\"aNotSoGoodPassword%^\"\n    , \"name\":\"aaron\"\n    , \"roles\": [\"api\",\"admin\"]\n}'\n\n\n```"
+      tags:
+      - User
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: suppress
+        in: query
+        description: default = false, supress email invite
+        required: false
+        schema:
+          type: boolean
+          default: 'true'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+              example:
+                name: Bob
+                email: bob@bob.com
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserListModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - account_id: 4f7b175bdba058fc092357a6
+                      aid: 122
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      email: bill.jenkins@lytics.io
+                      id: 120642b03a2d54551e637f56cbf61b73
+                      name: Bill Jenkins
+                      accounts:
+                      - aid: 122
+                        account_id: 4f7b175bdba058fc092357a6
+                        granted_by: '500418690088145'
+                        roles:
+                        - api
+                        - segments
+                        - admin
+                        created: '2014-08-04T21:18:20.124Z'
+                        updated: '2014-08-04T21:18:20.124Z'
+      security:
+      - ApiKeyAuth: []
+      summary: User List
+      operationId: User List
+      description: Get a list of all administrative users for an account and their roles.
+      tags:
+      - User
+    servers:
+    - url: https://api.lytics.io
+  /api/user/{userid}/setpassword:
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b175bdba058fc092357a6
+                      aid: 122
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      email: bill.jenkins@lytics.io
+                      id: 120642b03a2d54551e637f56cbf61b73
+                      name: Bill Jenkins
+                      accounts:
+                      - aid: 122
+                        account_id: 4f7b175bdba058fc092357a6
+                        granted_by: '500418690088145'
+                        roles:
+                        - api
+                        - segments
+                        - admin
+                        created: '2014-08-04T21:18:20.124Z'
+                        updated: '2014-08-04T21:18:20.124Z'
+      security:
+      - ApiKeyAuth: []
+      summary: User SetPassword
+      operationId: User SetPassword
+      description: ''
+      tags:
+      - User
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: userid
+        in: path
+        description: userid, or email
+        required: true
+        example: aaron@lytics.io
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+              example:
+                password: abc
+    servers:
+    - url: https://api.lytics.io
+  /user:
+    get:
+      description: Get a list of all users for the account
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.UserResp'
+                      type: array
+                  type: object
+          description: User List Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get users
+      tags:
+      - User
+    servers:
+    - url: https://api.lytics.io/v2
+  /user/me/passwordreset:
+    post:
+      description: Update a user's password
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.PasswordResetReq'
+        description: Password Reset Request
+        required: true
+        x-originalParamName: password_update
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.User'
+                  type: object
+          description: User Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Reset password
+      tags:
+      - User
+    servers:
+    - url: https://api.lytics.io/v2
+  /user/{id}:
+    delete:
+      description: Remove a user's access to the account. If the user has no remaining account roles after removal, the user record is deleted entirely.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: User ID or email address
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: Api Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete user
+      tags:
+      - User
+    get:
+      description: Get a user by ID, email address, or the special value `me` (returns the authenticated user).
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: User ID, email address, or 'me'
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.UserResp'
+                  type: object
+          description: User Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Unauthorized
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get user
+      tags:
+      - User
+    servers:
+    - url: https://api.lytics.io/v2
+  /user/{id}/roles:
+    post:
+      description: Replace all account roles for a user with the provided list.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: User ID or email address
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.RoleReq'
+        description: The roles to assign to the user (replaces all existing roles)
+        required: true
+        x-originalParamName: roles
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.UserResp'
+                  type: object
+          description: User Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Forbidden
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Update user roles
+      tags:
+      - User
+    servers:
+    - url: https://api.lytics.io/v2
+components:
+  schemas:
+    UserModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            account_id:
+              type: string
+            aid:
+              type: number
+            created:
+              type: string
+            updated:
+              type: string
+            email:
+              type: string
+            id:
+              type: string
+            name:
+              type: string
+            accounts:
+              type: array
+              items:
+                type: object
+                properties:
+                  aid:
+                    type: number
+                  account_id:
+                    type: string
+                  granted_by:
+                    type: string
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+      example:
+        data:
+          account_id: 4f7b175bdba058fc092357a6
+          aid: 122
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          email: bill.jenkins@lytics.io
+          id: 120642b03a2d54551e637f56cbf61b73
+          name: Bill Jenkins
+          accounts:
+          - aid: 122
+            account_id: 4f7b175bdba058fc092357a6
+            granted_by: '500418690088145'
+            roles:
+            - api
+            - segments
+            - admin
+            created: '2014-08-04T21:18:20.124Z'
+            updated: '2014-08-04T21:18:20.124Z'
+    UserListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              account_id:
+                type: string
+              aid:
+                type: number
+              created:
+                type: string
+              updated:
+                type: string
+              email:
+                type: string
+              id:
+                type: string
+              name:
+                type: string
+              accounts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    aid:
+                      type: number
+                    account_id:
+                      type: string
+                    granted_by:
+                      type: string
+                    roles:
+                      type: array
+                      items:
+                        type: string
+                    created:
+                      type: string
+                    updated:
+                      type: string
+      example:
+        data:
+        - account_id: 4f7b175bdba058fc092357a6
+          aid: 122
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          email: bill.jenkins@lytics.io
+          id: 120642b03a2d54551e637f56cbf61b73
+          name: Bill Jenkins
+          accounts:
+          - aid: 122
+            account_id: 4f7b175bdba058fc092357a6
+            granted_by: '500418690088145'
+            roles:
+            - api
+            - segments
+            - admin
+            created: '2014-08-04T21:18:20.124Z'
+            updated: '2014-08-04T21:18:20.124Z'
+    models.PasswordResetReq:
+      properties:
+        oldpassword:
+          type: string
+        password:
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.RoleReq:
+      properties:
+        roles:
+          items:
+            enum:
+            - admin
+            - authed2
+            - content_manager
+            - segment_manager
+            - marketer
+            - data_manager
+            - campaign_manager
+            - observer
+            - data_write
+            - user_search
+            - report_viewer
+            - report_manager
+            - orchestrate
+            - experience_manager
+            - developer_free
+            type: string
+          type: array
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.UserAccount:
+      properties:
+        account_id:
+          description: The Account ID
+          type: string
+        aid:
+          description: The account AID
+          type: integer
+        auth0_connections:
+          items:
+            type: string
+          type: array
+        created:
+          format: date-time
+          type: string
+        expiration:
+          format: date-time
+          type: string
+        granted_by:
+          description: The User ID who granted the account access
+          type: string
+        reason:
+          type: string
+        roles:
+          description: Which roles does the user have for this account
+          items:
+            type: string
+          type: array
+        updated:
+          format: date-time
+          type: string
+      type: object
+    models.User:
+      properties:
+        auth_type:
+          enum:
+          - password
+          - google
+          - github
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        roles:
+          items:
+            enum:
+            - admin
+            - authed2
+            - content_manager
+            - segment_manager
+            - marketer
+            - data_manager
+            - campaign_manager
+            - observer
+            - data_write
+            - user_search
+            - report_viewer
+            - report_manager
+            - orchestrate
+            - experience_manager
+            - developer_free
+            type: string
+          type: array
+      type: object
+    models.UserResp:
+      properties:
+        accounts:
+          description: Accounts the user has access to
+          items:
+            $ref: '#/components/schemas/models.UserAccount'
+          type: array
+        aid:
+          description: Default AID for the user
+          type: integer
+        auth_type:
+          enum:
+          - password
+          - google
+          - github
+          type: string
+        authtoken:
+          type: string
+        authy_id:
+          description: Authy User ID for 2fa
+          type: string
+        cellphone:
+          type: string
+        cookie:
+          type: string
+        country_code:
+          description: Authy Country Code for 2fa
+          type: string
+        created:
+          format: date-time
+          type: string
+        email:
+          type: string
+        email_verified:
+          description: Date of user email verification
+          format: date-time
+          type: string
+        has_2fa_session:
+          description: The user has an active 2fa session
+          type: boolean
+        id:
+          type: string
+        last_logon:
+          format: date-time
+          type: string
+        last_pwd_change:
+          description: Date the user's password was last changed
+          format: date-time
+          type: string
+        name:
+          type: string
+        needs_2fa:
+          description: The user needs a 2fa session
+          type: boolean
+        organization_id:
+          type: string
+        updated:
+          format: date-time
+          type: string
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-refined-from:
+- lytics-api-v1-openapi.json
+- lytics-api-v2-openapi.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

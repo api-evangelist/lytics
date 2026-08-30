@@ -1,0 +1,660 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Work API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Work
+  description: 'Work is an *integration* unit, typically for imports and exports.
+
+    Most run continually, while some run to completion.
+
+    You generally would only use it through the Webadmin Integrations.
+
+
+    * *Workflow* A specific type of integration is a Workflow, must belong to a *Provider*
+
+
+    * *Provider* A company that provides api''s.   Facebook, Google Analytics, Marketo, etc.
+
+
+    * *Auth* An authentication/authorization for a provider to allow *work* to run.
+
+
+    * *Work* A single running instance of a workflow for an account.'
+paths:
+  /api/work:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkListModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - account_id: 4f7b525bdba058fc096757a6
+                      aid: 12
+                      config:
+                        delimiter: null
+                        email_to: fake@gmail.com
+                        fields: []
+                        limit: null
+                        segment_id: d5975ab901f7f660845c95ee6aa3cadd
+                        table: user
+                        write_headers: true
+                      hidden: false
+                      id: ca756c13469228b723652f1e5168650f
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      runtime: ''
+                      statuscode: completed
+                      deleted: false
+                      tag: ''
+                      user_id: 50f4c7c6e327a73ae8000004
+                      work_state_version: 0
+                      workflow: lytics_simple_csv_export
+                      workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+      security:
+      - ApiKeyAuth: []
+      summary: Work List
+      operationId: Work List
+      description: Get list of all running integrations (work) for this account.
+      tags:
+      - Work
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: showhidden
+        in: query
+        description: True/False show all hidden work items
+        required: false
+        schema:
+          type: boolean
+          default: 'true'
+      - name: state
+        in: query
+        description: True/False show all state
+        required: false
+        schema:
+          type: boolean
+          default: 'true'
+      - name: showcompleted
+        in: query
+        description: True/False show all completed work items
+        required: false
+        schema:
+          type: boolean
+          default: 'false'
+      - name: showdeleted
+        in: query
+        description: True/False show all deleted work items (works that was deleted using `work/{id}/delete` command)
+        required: false
+        schema:
+          type: boolean
+          default: 'false'
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b525bdba058fc096757a6
+                      aid: 12
+                      config:
+                        delimiter: null
+                        email_to: fake@gmail.com
+                        fields: []
+                        limit: null
+                        segment_id: d5975ab901f7f660845c95ee6aa3cadd
+                        table: user
+                        write_headers: true
+                      state: {}
+                      statuscode: completed
+                      hidden: false
+                      id: ca756c13469228b723652f1e5168650f
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      runtime: ''
+                      deleted: false
+                      tag: ''
+                      user_id: 50f4c7c6e327a73ae8000004
+                      work_state_version: 0
+                      workflow: lytics_simple_csv_export
+                      workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+      security:
+      - ApiKeyAuth: []
+      summary: Work Create
+      operationId: Work Create
+      description: "There are a list of available work-types in the workflow api.\n\nTo create a work unit, there is a *config* block with the work configuration\nsettings, with the fields listed in the workflow.\n\n```sh\n\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XPOST \"https://api.lytics.io/api/work\" -d '\n{\n    \"workflow_id\":\"eventscopy\"\n    , \"name\":\"Ecommerce Demo Copy\"\n    , \"config\":{\n        \"destination_aid\": \"2223\"\n    }\n}\n' | jq '.'\n\n```"
+      tags:
+      - Work
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                config:
+                  type: object
+                  properties:
+                    delimiter: {}
+                    email_to:
+                      type: string
+                    fields:
+                      type: array
+                      items: {}
+                    limit: {}
+                    segment_id:
+                      type: string
+                    table:
+                      type: string
+                    write_headers:
+                      type: boolean
+                workflow_id:
+                  type: string
+              example:
+                config:
+                  delimiter: null
+                  email_to: fake@gmail.com
+                  fields: []
+                  limit: null
+                  segment_id: d5975ab901f7f660845c95ee6aa3cadd
+                  table: user
+                  write_headers: true
+                workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+  /api/work/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b525bdba058fc096757a6
+                      aid: 12
+                      config:
+                        delimiter: null
+                        email_to: fake@gmail.com
+                        fields: []
+                        limit: null
+                        segment_id: d5975ab901f7f660845c95ee6aa3cadd
+                        table: user
+                        write_headers: true
+                      state: {}
+                      statuscode: completed
+                      hidden: false
+                      id: ca756c13469228b723652f1e5168650f
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      runtime: ''
+                      deleted: false
+                      tag: ''
+                      user_id: 50f4c7c6e327a73ae8000004
+                      work_state_version: 0
+                      workflow: lytics_simple_csv_export
+                      workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+      security:
+      - ApiKeyAuth: []
+      summary: Work Fetch
+      operationId: Work Fetch
+      description: Get single work resource
+      tags:
+      - Work
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of work
+        required: true
+        schema:
+          type: string
+          default: mycoolwork
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Work Delete
+      operationId: Work Delete
+      description: ''
+      tags:
+      - Work
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of work
+        required: true
+        schema:
+          type: string
+          default: mycoolwork
+  /api/work/_status:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b525bdba058fc096757a6
+                      aid: 12
+                      config:
+                        delimiter: null
+                        email_to: fake@gmail.com
+                        fields: []
+                        limit: null
+                        segment_id: d5975ab901f7f660845c95ee6aa3cadd
+                        table: user
+                        write_headers: true
+                      state: {}
+                      statuscode: completed
+                      hidden: false
+                      id: ca756c13469228b723652f1e5168650f
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      runtime: ''
+                      deleted: false
+                      tag: ''
+                      user_id: 50f4c7c6e327a73ae8000004
+                      work_state_version: 0
+                      workflow: lytics_simple_csv_export
+                      workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve Work Status
+      operationId: Retrieve Work Status
+      description: ''
+      tags:
+      - Work
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: one of runnable, errorwait, paused, killed
+        required: false
+        schema:
+          type: string
+          default: runnable
+      - name: workflow_id
+        in: query
+        description: ''
+        required: false
+        example: 123abc
+        schema:
+          type: string
+      - name: resume
+        in: query
+        description: True/False for resume this item as well
+        required: false
+        schema:
+          type: boolean
+          default: 'true'
+      - name: acctid
+        in: query
+        description: ''
+        required: false
+        example: 123abc
+        schema:
+          type: string
+  /api/work/{id}/{cmd}:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b525bdba058fc096757a6
+                      aid: 12
+                      config:
+                        delimiter: null
+                        email_to: fake@gmail.com
+                        fields: []
+                        limit: null
+                        segment_id: d5975ab901f7f660845c95ee6aa3cadd
+                        table: user
+                        write_headers: true
+                      state: {}
+                      statuscode: completed
+                      hidden: false
+                      id: ca756c13469228b723652f1e5168650f
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      runtime: ''
+                      deleted: false
+                      tag: ''
+                      user_id: 50f4c7c6e327a73ae8000004
+                      work_state_version: 0
+                      workflow: lytics_simple_csv_export
+                      workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+      security:
+      - ApiKeyAuth: []
+      summary: Work Command Post
+      operationId: Work Command Post
+      description: Send a work command
+      tags:
+      - Work
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ''
+        required: true
+        example: abc123
+        schema:
+          type: string
+      - name: cmd
+        in: path
+        description: ''
+        required: true
+        example: '''pause'''
+        schema:
+          type: string
+      - name: for
+        in: query
+        description: ''
+        required: false
+        example: 1h
+        schema:
+          type: string
+  /api/work/_bounceall:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      account_id: 4f7b525bdba058fc096757a6
+                      aid: 12
+                      config:
+                        delimiter: null
+                        email_to: fake@gmail.com
+                        fields: []
+                        limit: null
+                        segment_id: d5975ab901f7f660845c95ee6aa3cadd
+                        table: user
+                        write_headers: true
+                      state: {}
+                      statuscode: completed
+                      hidden: false
+                      id: ca756c13469228b723652f1e5168650f
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      runtime: ''
+                      deleted: false
+                      tag: ''
+                      user_id: 50f4c7c6e327a73ae8000004
+                      work_state_version: 0
+                      workflow: lytics_simple_csv_export
+                      workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+      security:
+      - ApiKeyAuth: []
+      summary: Work Bounce
+      operationId: Work Bounce
+      description: ''
+      tags:
+      - Work
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: ''
+        required: false
+        example: runnable
+        schema:
+          type: string
+      - name: all_accounts
+        in: query
+        description: All accounts?
+        required: false
+        schema:
+          type: boolean
+          default: 'true'
+      - name: cmd
+        in: query
+        description: ''
+        required: false
+        example: '''pause'''
+        schema:
+          type: string
+components:
+  schemas:
+    WorkModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            account_id:
+              type: string
+            aid:
+              type: number
+            config:
+              type: object
+              properties:
+                delimiter: {}
+                email_to:
+                  type: string
+                fields:
+                  type: array
+                  items: {}
+                limit: {}
+                segment_id:
+                  type: string
+                table:
+                  type: string
+                write_headers:
+                  type: boolean
+            state:
+              type: object
+              properties: {}
+            statuscode:
+              type: string
+            hidden:
+              type: boolean
+            id:
+              type: string
+            created:
+              type: string
+            updated:
+              type: string
+            runtime:
+              type: string
+            deleted:
+              type: boolean
+            tag:
+              type: string
+            user_id:
+              type: string
+            work_state_version:
+              type: number
+            workflow:
+              type: string
+            workflow_id:
+              type: string
+      example:
+        data:
+          account_id: 4f7b525bdba058fc096757a6
+          aid: 12
+          config:
+            delimiter: null
+            email_to: fake@gmail.com
+            fields: []
+            limit: null
+            segment_id: d5975ab901f7f660845c95ee6aa3cadd
+            table: user
+            write_headers: true
+          state: {}
+          statuscode: completed
+          hidden: false
+          id: ca756c13469228b723652f1e5168650f
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          runtime: ''
+          deleted: false
+          tag: ''
+          user_id: 50f4c7c6e327a73ae8000004
+          work_state_version: 0
+          workflow: lytics_simple_csv_export
+          workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+    WorkListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              account_id:
+                type: string
+              aid:
+                type: number
+              config:
+                type: object
+                properties:
+                  delimiter: {}
+                  email_to:
+                    type: string
+                  fields:
+                    type: array
+                    items: {}
+                  limit: {}
+                  segment_id:
+                    type: string
+                  table:
+                    type: string
+                  write_headers:
+                    type: boolean
+              hidden:
+                type: boolean
+              id:
+                type: string
+              created:
+                type: string
+              updated:
+                type: string
+              runtime:
+                type: string
+              statuscode:
+                type: string
+              deleted:
+                type: boolean
+              tag:
+                type: string
+              user_id:
+                type: string
+              work_state_version:
+                type: number
+              workflow:
+                type: string
+              workflow_id:
+                type: string
+      example:
+        data:
+        - account_id: 4f7b525bdba058fc096757a6
+          aid: 12
+          config:
+            delimiter: null
+            email_to: fake@gmail.com
+            fields: []
+            limit: null
+            segment_id: d5975ab901f7f660845c95ee6aa3cadd
+            table: user
+            write_headers: true
+          hidden: false
+          id: ca756c13469228b723652f1e5168650f
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          runtime: ''
+          statuscode: completed
+          deleted: false
+          tag: ''
+          user_id: 50f4c7c6e327a73ae8000004
+          work_state_version: 0
+          workflow: lytics_simple_csv_export
+          workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

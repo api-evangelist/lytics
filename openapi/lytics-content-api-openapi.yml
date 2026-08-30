@@ -1,0 +1,3306 @@
+openapi: 3.2.0
+info:
+  title: Lytics Content API
+  version: '1.0'
+  description: 'Operations tagged Content across 2 of this provider''s published API definitions: lytics-api-v1-openapi.json, lytics-api-v2-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.lytics.io
+- url: https://api.lytics.io/v2
+tags:
+- name: Content
+  description: "Content APIs for Lytics Content Affinity Engine, allow for\nadding content into lytics, getting lists of content, and\nunderstanding the content and content-topics.\n\n**Content Classification**\nContent classification refers to the Lytics automated\nprocess of taking text, URL, image based content\nand classifying it to attach topics to content documents.\n\n* *Content* A list of content (URLs, Email Documents, Uploaded Documents, Campaigns) and\n  the topics, created dates, etc for each.\n\n* *ContentTopics*  Categories/Topics are applied to each piece of content.\n\n* *User Content Affinity* Based on user interacting with content, the topics\n   (derived from the content they interact with) is enriched into their\n   profile.\n\nFirst, an overview of How this content gets here.\n\n* *Observed URLs* Once the lytics tag is on a Website, as users\n  use the website any new URL they interact with is collected.\n\n* *Crawling* we can proactively crawl a site.\n\n* *Email Tools* We see URLs inside of email campaigns and proactively classify\n  those URLs, as well as the emails themselves.\n\n* *Uploaded Content* You may upload content to the **Classify**.\n\n**Use Cases**\n\n*1)  User Content Recomendations*  Find content for a user\n  based on their content-affinity.\n\n*2)  Get List of Content* Rich query api to get content.\n\n**Examples**\n\n```\n\n# ad-hoc segment scan from content table\n# get a list of content documents that\n#  - have aspects=article   (aspects = article,product, etc)\n#  - has imageurl\ncurl -s -H \"Authorization: $LIOKEY\" \\\n -XGET \"https://api.lytics.io/api/segment/scan?sortfield=created&limit=10\" -d '\nFILTER AND (\n EXISTS imageurls\n aspects = \"article\"\n)\nFROM content\n' | jq '.'\n\n# Create a content-segment\n# - uses \"ALIAS\" as id for create/update, must be unique\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: text/plain\" \\\n  -XPOST \"$LIOAPI/api/segment\" -d '\nFILTER AND (\n EXISTS imageurls\n aspects = \"article\"\n)\nFROM content\nWITH name = \"My Articles\"\nALIAS my_articles\n' | jq '.'\n\n# grab just those content-docs using named segment scan\ncurl -s -H \"Authorization: $LIOKEY\" \\\n -XGET \"https://api.lytics.io/api/segment/my_articles/scan?sortfield=created&limit=10\" \\\n  | jq '.'\n\n\n# grab recommended articles for single user\n\ncurl -s -H \"Authorization: $LIODATAKEY\" \\\n -XGET \"https://api.lytics.io/api/content/recommend/:your_account_id/user/user_id/123456\" \\\n  | jq '.'\n\n```"
+paths:
+  /api/content/topic:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicsModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                    - label: Data-First Marketing
+                      doc_count: 275
+                      total: 380636
+                      missing: 216048
+                      present: 143710
+                      avg: 0.5983867964798089
+                      tags:
+                      - custom
+                    - label: User Data Unification
+                      doc_count: 273
+                      total: 380636
+                      missing: 216048
+                      present: 154068
+                      avg: 0.6036863622558337
+                      tags:
+                      - custom
+                    - label: Customer Data Platform
+                      doc_count: 313
+                      total: 380260
+                      missing: 216043
+                      present: 159628
+                      avg: 0.9704200631406573
+                      tags:
+                      - custom
+      security:
+      - ApiKeyAuth: []
+      summary: ContentTopics
+      operationId: ContentTopics
+      description: "Get a list of topics in the content graph.\n\n```\n\ncurl -s -H \"Authorization: $LIOKEY\" \\\n -XGET \"https://api.lytics.io/api/content/topic?limit=10\" | jq '.'\n\n```"
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit on number of topics to return, default = 500
+        required: false
+        example: '20'
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/topic/{topic}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicSummaryModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                      topics:
+                        total: 3232717
+                        missing: 2985477
+                        present: 239239
+                        bucket_none: 8001
+                        bucket_low: 26279
+                        bucket_mid: 11742
+                        bucket_high: 201218
+                        avg: 0.90787879293533
+                      docs:
+                        total: 373
+                        urls:
+                        - url: www.our-site.com/product/new-product-xyz
+                          title: Blue Running Shoes that make you faster
+                          topics:
+                          - our-site (company)
+                          - running
+                          - shoes
+                          id: '3395466611293777389'
+      security:
+      - ApiKeyAuth: []
+      summary: ContentTopicSummary
+      operationId: ContentTopicSummary
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: topic
+        in: path
+        description: id or slug of topic
+        required: true
+        example: stuff
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/rollup/{label}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicRollupSummaryModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      docs:
+                        total: 2
+                        urls:
+                        - author: Cookie Monster
+                          created: '2016-01-14T08:39:01.354824186-07:00'
+                          description: you should definitely make these cookies
+                          fetched: '2016-07-19T13:39:20.158747984-04:00'
+                          id: '4525087172572165639'
+                          meta:
+                          - og:locale/en_US
+                          primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
+                          stream: default
+                          title: how to make some cookies
+                          topic_relevances:
+                            Recipe: 0.64
+                            baking: 0.75
+                          topic_rollups:
+                            Things: 0.75
+                          topics:
+                          - baking
+                          - Recipe
+                          updated: '2016-07-19T13:34:18-04:00'
+                          url: www.recipes.com/chocolate-chip-cookies
+                        - author: The Swedish Chef
+                          created: '2016-07-19T13:39:20.158747984-04:00'
+                          description: a delicious cake
+                          id: '-2119104978705508335'
+                          primary_image: http://www.vanillacake.com/cake.jpg
+                          stream: default
+                          title: Basic Vanilla Cake Recipe
+                          topic_relevances:
+                            Recipe: 0.64
+                            baking: 0.85
+                          topic_rollups:
+                            Desserts: 0.85
+                          topics:
+                          - Recipe
+                          - baking
+                          updated: '2016-07-19T13:29:18-04:00'
+                          url: www.recipes.com/cake
+                      rollups: null
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: ContentTopicRollupSummary
+      operationId: ContentTopicRollupSummary
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: label
+        in: path
+        description: label of topic-rollup
+        required: true
+        example: 123abc
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/topicrollup:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicRollupListModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: 6a7f76ff97ad0e3e96c162f74aee8f8f
+                      account_id: 4f7b525bdba058fc096757a6
+                      label: Baking rollup
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      topics:
+                      - label: Recipe
+                        value: 0.66
+                      - label: baking
+                        value: 0.55
+      security:
+      - ApiKeyAuth: []
+      summary: ContentTopicRollupList
+      operationId: ContentTopicRollupList
+      description: 'Get list of topic-rollups.
+
+
+        ```
+
+        curl "$LIOAPI/api/content/topicrollup" -s -H "Authorization: $LIOKEY" | jq ''.''
+
+        ```'
+      tags:
+      - Content
+    servers:
+    - url: https://api.lytics.io
+  /api/content/topicblocklist:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicBlocklistModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                    - label: Data-First Marketing
+                      doc_count: 275
+                      total: 380636
+                      missing: 216048
+                      present: 143710
+                      avg: 0.5983867964798089
+                      tags:
+                      - blacklisted
+                    - label: User Data Unification
+                      doc_count: 273
+                      total: 380636
+                      missing: 216048
+                      present: 154068
+                      avg: 0.6036863622558337
+                      tags:
+                      - blacklisted
+      security:
+      - ApiKeyAuth: []
+      summary: Content Topic Blacklist Fetch
+      operationId: Content Topic Blacklist Fetch
+      description: Fetch the blacklisted topics
+      tags:
+      - Content
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicBlocklistModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                    - label: Data-First Marketing
+                      doc_count: 275
+                      total: 380636
+                      missing: 216048
+                      present: 143710
+                      avg: 0.5983867964798089
+                      tags:
+                      - blacklisted
+                    - label: User Data Unification
+                      doc_count: 273
+                      total: 380636
+                      missing: 216048
+                      present: 154068
+                      avg: 0.6036863622558337
+                      tags:
+                      - blacklisted
+      security:
+      - ApiKeyAuth: []
+      summary: Content Topic Blacklist Create
+      operationId: Content Topic Blacklist Create
+      description: "Blacklist or un-blacklist topics to an account's topic-blacklist\n\n```\n# to blacklist certain topics\ncurl -s -XPOST \"https://api.lytics.io/api/content/topicblocklist\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n{\n  \"method\": \"add\",\n  \"ids\": [\"Data-First Marketing\", \"User Data Unification\"]\n}\n' | jq '.'\n\n# to unblacklist certain topics\ncurl -s -XPOST \"https://api.lytics.io/api/content/topicblocklist\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n{\n  \"method\": \"delete\",\n  \"ids\": [\"Data-First Marketing\", \"User Data Unification\"]\n}\n' | jq '.'\n\n```"
+      tags:
+      - Content
+    put:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicBlocklistModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                    - label: Data-First Marketing
+                      doc_count: 275
+                      total: 380636
+                      missing: 216048
+                      present: 143710
+                      avg: 0.5983867964798089
+                      tags:
+                      - blacklisted
+                    - label: User Data Unification
+                      doc_count: 273
+                      total: 380636
+                      missing: 216048
+                      present: 154068
+                      avg: 0.6036863622558337
+                      tags:
+                      - blacklisted
+      security:
+      - ApiKeyAuth: []
+      summary: Content Topic Blacklist Update
+      operationId: Content Topic Blacklist Update
+      description: "Replace topics in an account's topic-blacklist\n\n```\ncurl -s -XPOST \"https://api.lytics.io/api/content/topicblocklist\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n{\n  \"ids\": [\"Data-First Marketing\", \"User Data Unification\"]\n}\n' | jq '.'\n\n```"
+      tags:
+      - Content
+    servers:
+    - url: https://api.lytics.io
+  /api/content/topicrollup/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicRollupModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 6a7f76ff97ad0e3e96c162f74aee8f8f
+                      account_id: 4f7b525bdba058fc096757a6
+                      label: Baking rollup
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      topics:
+                      - label: Recipe
+                        value: 0.66
+                      - label: baking
+                        value: 0.55
+      security:
+      - ApiKeyAuth: []
+      summary: ContentTopicRollup Fetch
+      operationId: ContentTopicRollup Fetch
+      description: Fetch a topic-rollup by **id**
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of topic-rollup
+        required: true
+        example: 123abc
+        schema:
+          type: string
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicRollupModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 6a7f76ff97ad0e3e96c162f74aee8f8f
+                      account_id: 4f7b525bdba058fc096757a6
+                      label: Baking rollup
+                      created: '2014-08-04T21:18:20.124Z'
+                      updated: '2014-08-04T21:18:20.124Z'
+                      topics:
+                      - label: Recipe
+                        value: 0.66
+                      - label: baking
+                        value: 0.55
+      security:
+      - ApiKeyAuth: []
+      summary: ContentTopicRollup Create
+      operationId: ContentTopicRollup Create
+      description: "Create a topic-rollup.\n\n```\ncurl -s -XPOST \"https://api.lytics.io/api/content/topicrollup\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d'\n{\n  \"label\": \"Baking rollup\",\n  \"acctid\": \"123456\",\n  \"topics\": [\n      {\"label\": \"Recipe\"},\n      {\"label\": \"baking\"}\n  ]\n}\n' | jq '.'\n```"
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of topic-rollup
+        required: true
+        example: 123abc
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: ContentTopicRollup Delete
+      operationId: ContentTopicRollup Delete
+      description: Delete a topic-rollup
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of topic-rollup
+        required: true
+        example: 123abc
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/doc:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentDocumentModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                      total: 1
+                      urls:
+                      - url: www.our-site.com/product/new-product-xyz
+                        title: Blue Running Shoes that make you faster
+                        topics:
+                        - our-site (company)
+                        - running
+                        - shoes
+                        id: '3395466611293777389'
+      security:
+      - ApiKeyAuth: []
+      summary: ContentDocument
+      operationId: ContentDocument
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: urls
+        in: query
+        description: url to look up
+        required: false
+        example: http//www.getlytics.com/blog/post
+        schema:
+          type: string
+      - name: ids
+        in: query
+        description: hashed url or campaign id to look up
+        required: false
+        example: 123abc
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/doc/classify:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentClassifyModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: https://www.getlytics.com/blog/post/improving_google_analytics?utm_source=linkedin
+                      url:
+                        Params: {}
+                        Utm:
+                          utm_campaign: null
+                          utm_content: null
+                          utm_medium: null
+                          utm_source: linkedin
+                          utm_term: null
+                        UserInfo: null
+                      url_redirected_from: ''
+                      description: 'Stop Pretending Your Insights Are Actionable: Part 1, Google Analytics'
+                      long_description: Most analytics tools are used purely for insight discovery rather than empowering action. We explore how the Lytics analytics integrations focus on action and filling the some massive gaps traditional analytics tools miss.
+                      type: web
+                      stream: ''
+                      httpstatus: 0
+                      humanLanguage: en
+                      tags:
+                      - type: meta
+                        id: og:title
+                        value: 'stop pretending your insights are actionable: part 1, google analytics'
+                        source: meta
+                        vocab: lytics
+                        relevance: 1
+                      - type: concept
+                        id: Google_Analytics
+                        tax:
+                        - http://dbpedia.org/ontology/Company
+                        - http://dbpedia.org/ontology/Website
+                        - http://dbpedia.org/ontology/Work
+                        - http://www.w3.org/2002/07/owl#Thing
+                        value: Google Analytics
+                        source: diffbot
+                        vocab: dbpedia
+                        relevance: 0.95
+                      flags: null
+                      images:
+                      - url: https://www.getlytics.com/img/blog/defaults/developers.gif
+                      primary_image: https://www.getlytics.com/img/blog/defaults/developers.gif
+                      videos: null
+                      primary_video: ''
+                      published: '2015-10-23T00:00:00Z'
+                      author: Mark Hayden
+                      numpages: 0
+                      sitename: Lytics
+                      productDescription: ''
+                      brand: ''
+                      price: ''
+                      saveAmount: ''
+                      productId: ''
+                      created: '2016-06-24T21:20:43.421892991Z'
+                      fetched: '2016-06-24T21:20:45.751844316Z'
+                      updated: '2016-06-24T21:20:52.367247963Z'
+                      enriched:
+                        diffbot: '2016-06-24T21:20:52.367248438Z'
+                        google: '1970-01-01T00:00:00Z'
+                        meta: '2016-06-24T21:20:45.751852586Z'
+                        textrazor: '1970-01-01T00:00:00Z'
+                      version: 4
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Content Classify
+      operationId: Content Classify Debug
+      description: Classify a document without adding the document to the content table corpus. Used for debugging.
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: url
+        in: query
+        description: url to classify
+        required: false
+        example: http://myurl
+        schema:
+          type: string
+      - name: text
+        in: query
+        description: text to classify
+        required: false
+        example: my text
+        schema:
+          type: string
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentClassifyModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: https://www.getlytics.com/blog/post/improving_google_analytics?utm_source=linkedin
+                      url:
+                        Params: {}
+                        Utm:
+                          utm_campaign: null
+                          utm_content: null
+                          utm_medium: null
+                          utm_source: linkedin
+                          utm_term: null
+                        UserInfo: null
+                      url_redirected_from: ''
+                      description: 'Stop Pretending Your Insights Are Actionable: Part 1, Google Analytics'
+                      long_description: Most analytics tools are used purely for insight discovery rather than empowering action. We explore how the Lytics analytics integrations focus on action and filling the some massive gaps traditional analytics tools miss.
+                      type: web
+                      stream: ''
+                      httpstatus: 0
+                      humanLanguage: en
+                      tags:
+                      - type: meta
+                        id: og:title
+                        value: 'stop pretending your insights are actionable: part 1, google analytics'
+                        source: meta
+                        vocab: lytics
+                        relevance: 1
+                      - type: concept
+                        id: Google_Analytics
+                        tax:
+                        - http://dbpedia.org/ontology/Company
+                        - http://dbpedia.org/ontology/Website
+                        - http://dbpedia.org/ontology/Work
+                        - http://www.w3.org/2002/07/owl#Thing
+                        value: Google Analytics
+                        source: diffbot
+                        vocab: dbpedia
+                        relevance: 0.95
+                      flags: null
+                      images:
+                      - url: https://www.getlytics.com/img/blog/defaults/developers.gif
+                      primary_image: https://www.getlytics.com/img/blog/defaults/developers.gif
+                      videos: null
+                      primary_video: ''
+                      published: '2015-10-23T00:00:00Z'
+                      author: Mark Hayden
+                      numpages: 0
+                      sitename: Lytics
+                      productDescription: ''
+                      brand: ''
+                      price: ''
+                      saveAmount: ''
+                      productId: ''
+                      created: '2016-06-24T21:20:43.421892991Z'
+                      fetched: '2016-06-24T21:20:45.751844316Z'
+                      updated: '2016-06-24T21:20:52.367247963Z'
+                      enriched:
+                        diffbot: '2016-06-24T21:20:52.367248438Z'
+                        google: '1970-01-01T00:00:00Z'
+                        meta: '2016-06-24T21:20:45.751852586Z'
+                        textrazor: '1970-01-01T00:00:00Z'
+                      version: 4
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Content Classify
+      operationId: Content Classify
+      description: Classify a document and add the document to the content table corpus.
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: url
+        in: query
+        description: url to classify
+        required: false
+        example: http://myurl
+        schema:
+          type: string
+      - name: text
+        in: query
+        description: text to classify
+        required: false
+        example: my text
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/recommend/user/{fieldname}/{fieldval}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentRecommendationModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - url: www.getlytics.com/blog/post/intent_through_content
+                      title: Understanding User Intent Through Content
+                      description: Customer Intent comes from understanding the connection between engagement and its contexts. Content modeling and affinity graphs makes interpretation of intent a lot easier. Learn how marketers can benefit from this.
+                      topics:
+                      - customer data platform
+                      - data science
+                      - content marketing
+                      - personalization
+                      topic_relevances:
+                        content marketing: 1
+                        customer data platform: 1
+                        data science: 1
+                        personalization: 1
+                      primary_image: https://www.getlytics.com/img/blog/posts/intent_through_content/intent_through_content-bg.gif
+                      author: ''
+                      created: '2016-06-08T16:11:45.599594093Z'
+                      id: '-3435113786560588929'
+                      sitename: Lytics
+                      stream: default
+                      path:
+                      - blog
+                      - blog/post
+                      - blog/post/intent_through_content
+                      aspects:
+                      - article
+                      language: unknown
+                      updated: '2016-06-09T12:49:36.870359765Z'
+                      fetched: '2016-06-09T12:49:35.812654441Z'
+                      meta:
+                      - og:locale/en_us
+                      - og:site_name/lytics
+                      - og:title/understanding user intent through content
+                      - og:type/article
+                      - og:url/https://www.getlytics.com/blog/post/intent_through_content
+                      confidence: 0.5916079783099615
+                      visited: true
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Content Recommendation
+      operationId: Content Recommendation
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: fieldname
+        in: path
+        description: field to use to identify a user
+        required: true
+        example: email
+        schema:
+          type: string
+      - name: fieldval
+        in: path
+        description: unique identity
+        required: true
+        example: bob@bob.com
+        schema:
+          type: string
+      - name: contentsegment
+        in: query
+        description: id, or slug of a content-collection to filter content
+        required: true
+        example: blog_content
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit on number of documents to suggest/return
+        required: false
+        example: '20'
+        schema:
+          type: string
+      - name: shuffle
+        in: query
+        description: whether or not to shuffle the recommendation order
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: visited
+        in: query
+        description: whether to show recommendations for content the user has already viewed
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: topics
+        in: query
+        description: if supplied, only allow recommendations on content with the specified topics
+        required: false
+        example: '["Marketing", "Analytics"]'
+        schema:
+          type: string
+      - name: rank
+        in: query
+        description: Ranking method for order of recommendations.  Must be one of "popular", "recent", or "affinity"
+        required: false
+        example: affinity
+        schema:
+          type: string
+      - name: wait
+        in: query
+        description: Whether or not to wait for more complex user identities to resolve
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: email
+        in: query
+        description: if the fieldname and fieldval are omitted, an email can be provided. This can be helpful for templating use-cases
+        required: false
+        example: bob@bob.com
+        schema:
+          type: string
+      - name: url
+        in: query
+        description: if url is provided, the recommendations will be based on the content topics associated with the provided URL
+        required: false
+        example: www.example.com
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/recommend/segment/{segId}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentSegmentRecommendationModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - url: www.getlytics.com/blog/post/intent_through_content
+                      title: Understanding User Intent Through Content
+                      description: Customer Intent comes from understanding the connection between engagement and its contexts. Content modeling and affinity graphs makes interpretation of intent a lot easier. Learn how marketers can benefit from this.
+                      topics:
+                      - customer data platform
+                      - data science
+                      - content marketing
+                      - personalization
+                      topic_relevances:
+                        content marketing: 1
+                        customer data platform: 1
+                        data science: 1
+                        personalization: 1
+                      primary_image: https://www.getlytics.com/img/blog/posts/intent_through_content/intent_through_content-bg.gif
+                      author: ''
+                      created: '2016-06-08T16:11:45.599594093Z'
+                      id: '-3435113786560588929'
+                      sitename: Lytics
+                      stream: default
+                      path:
+                      - blog
+                      - blog/post
+                      - blog/post/intent_through_content
+                      aspects:
+                      - article
+                      language: unknown
+                      updated: '2016-06-09T12:49:36.870359765Z'
+                      fetched: '2016-06-09T12:49:35.812654441Z'
+                      meta:
+                      - og:locale/en_us
+                      - og:site_name/lytics
+                      - og:title/understanding user intent through content
+                      - og:type/article
+                      - og:url/https://www.getlytics.com/blog/post/intent_through_content
+                      confidence: 0.5916079783099615
+                      visited: true
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Content Segment Recommendation
+      operationId: Content Segment Recommendation
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: segId
+        in: path
+        description: id, or slug of the user segment to recommend content
+        required: true
+        example: smt_power
+        schema:
+          type: string
+      - name: contentsegment
+        in: query
+        description: id, or slug of a content-collection segment to filter content
+        required: false
+        example: blog_content
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit on number of documents to suggest/return
+        required: false
+        example: '20'
+        schema:
+          type: string
+      - name: shuffle
+        in: query
+        description: whether or not to shuffle the recommendation order
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: rank
+        in: query
+        description: Ranking method for order of recommendations.  Must be one of "popular", "recent", or "affinity"
+        required: false
+        example: affinity
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/recommend/{account}/user/{fieldname}/{fieldval}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentRecommendationModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - url: www.getlytics.com/blog/post/intent_through_content
+                      title: Understanding User Intent Through Content
+                      description: Customer Intent comes from understanding the connection between engagement and its contexts. Content modeling and affinity graphs makes interpretation of intent a lot easier. Learn how marketers can benefit from this.
+                      topics:
+                      - customer data platform
+                      - data science
+                      - content marketing
+                      - personalization
+                      topic_relevances:
+                        content marketing: 1
+                        customer data platform: 1
+                        data science: 1
+                        personalization: 1
+                      primary_image: https://www.getlytics.com/img/blog/posts/intent_through_content/intent_through_content-bg.gif
+                      author: ''
+                      created: '2016-06-08T16:11:45.599594093Z'
+                      id: '-3435113786560588929'
+                      sitename: Lytics
+                      stream: default
+                      path:
+                      - blog
+                      - blog/post
+                      - blog/post/intent_through_content
+                      aspects:
+                      - article
+                      language: unknown
+                      updated: '2016-06-09T12:49:36.870359765Z'
+                      fetched: '2016-06-09T12:49:35.812654441Z'
+                      meta:
+                      - og:locale/en_us
+                      - og:site_name/lytics
+                      - og:title/understanding user intent through content
+                      - og:type/article
+                      - og:url/https://www.getlytics.com/blog/post/intent_through_content
+                      confidence: 0.5916079783099615
+                      visited: true
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Public Content Recommendation
+      operationId: Public Content Recommendation
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: account
+        in: path
+        description: the account ID
+        required: true
+        example: '123'
+        schema:
+          type: string
+      - name: fieldname
+        in: path
+        description: field to use to identify a user
+        required: true
+        example: email
+        schema:
+          type: string
+      - name: fieldval
+        in: path
+        description: unique identity
+        required: true
+        example: bob@bob.com
+        schema:
+          type: string
+      - name: contentsegment
+        in: query
+        description: id, or slug of a content-collection to filter content
+        required: true
+        example: blog_content
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: limit on number of documents to suggest/return
+        required: false
+        example: '20'
+        schema:
+          type: string
+      - name: shuffle
+        in: query
+        description: whether or not to shuffle the recommendation order
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: visited
+        in: query
+        description: whether to show recommendations for content the user has already viewed
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: topics
+        in: query
+        description: if supplied, only allow recommendations on content with the specified topics
+        required: false
+        example: '["Marketing", "Analytics"]'
+        schema:
+          type: string
+      - name: rank
+        in: query
+        description: Ranking method for order of recommendations.  Must be one of "popular", "recent", or "affinity"
+        required: false
+        example: affinity
+        schema:
+          type: string
+      - name: wait
+        in: query
+        description: Whether or not to wait for more complex user identities to resolve
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: email
+        in: query
+        description: if the fieldname and fieldval are omitted, an email can be provided. This can be helpful for templating use-cases
+        required: false
+        example: bob@bob.com
+        schema:
+          type: string
+      - name: url
+        in: query
+        description: if url is provided, the recommendations will be based on the content topics associated with the provided URL
+        required: false
+        example: www.example.com
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/taxonomy:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTaxonomyModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      n: 438
+                      nodes:
+                      - name: marketing technology
+                        doc_count: 2
+                      - name: AdWords
+                        doc_count: 1
+                      - name: ad retargeting
+                        doc_count: 4
+                      - name: analytics
+                        doc_count: 2
+                      - name: customer service
+                        doc_count: 1
+                      - name: data visualization
+                        doc_count: 2
+                      - name: data-first marketing
+                        doc_count: 157
+                      - name: personalization
+                        doc_count: 15
+                      links:
+                      - source: 66
+                        target: 54
+                        value: 0.375
+                      - source: 66
+                        target: 75
+                        value: 0.25
+                      - source: 66
+                        target: 37
+                        value: 0.25
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Content Taxonomy
+      operationId: Content Taxonomy
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: number of topics to include in the topic graph, capped at 500 topics
+        required: false
+        example: '150'
+        schema:
+          type: integer
+      - name: budget
+        in: query
+        description: the depth at which any Monte Carlo simulation can traverse through the graph
+        required: false
+        example: '1.0'
+        schema:
+          type: string
+      - name: iter
+        in: query
+        description: how many Monte Carlo simulations to run for each topic
+        required: false
+        example: '8'
+        schema:
+          type: integer
+      - name: raw
+        in: query
+        description: whether to generate the topic relationships from its Bayesian network
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: rawThreshold
+        in: query
+        description: when extracting relationships directly from the Bayesian network, the threshold at which to determine ties
+        required: false
+        example: '0.7'
+        schema:
+          type: string
+      - name: cliques
+        in: query
+        description: whether to return a single graph or an array of disjoint subgraphs
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: cliqueThreshold
+        in: query
+        description: when returning cliques, the threshold at which to determine if two cliques should be connected
+        required: false
+        example: '0.0'
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/corpus:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentCorpusModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                      body:
+                      - here is some body text
+                      source:
+                      - upload
+                      updated:
+                      - 2016-09-13 21:59:38.551972802 -0400 EDT
+                      url:
+                      - http://www.google.com/
+                      version:
+                      - '4'
+      security:
+      - ApiKeyAuth: []
+      summary: Content Corpus
+      operationId: Content Corpus
+      description: "Add a document to the content table corpus.  Either a URL or text must be provided.\nThis allows entry of documents/content that get added to content\ntable, content-graph and available for usage in recommendation, as\nwell as content-explorer.\n\n* **id** if you upload the document more than once, ensure it has common id so only one document is created\n\n* **Custom Attributes**  Any attributes you upload that are not reserved, will be added to content document.\n\n```sh\n\n# Upsert a document into content table and classify it\ncurl -s -XPOST \"https://api.lytics.io/api/content/corpus\" \\\n  -H \"Authorization: $LIOKEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"id\":\"doc_id_123\",\n    \"text\":\"big-long-body-of text for classification\",\n    \"custom_attribute_name\":\"custom attribute\"\n}' | jq '.'\n\n\n# upsert a url into db\n#  url is used as document id\ncurl -s -XPOST \"https://api.lytics.io/api/content/corpus\" \\\n  -H \"Authorization: $LIOKEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"url\":\"http://www.validdomain/validurl.html\",\n    \"custom_attribute_name\":\"custom attribute\"\n}' | jq '.'\n\n```"
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: url
+        in: query
+        description: the URL for identifying and retrieving content
+        required: false
+        example: http://www.somedomain.com/blog/great-post
+        schema:
+          type: string
+      - name: text
+        in: query
+        description: the body of the content to be added
+        required: false
+        example: here is some body text
+        schema:
+          type: string
+      - name: topics
+        in: query
+        description: custom topics to append to the document, in addition to topics that will be added with enrichment
+        required: false
+        example: Data,Hockey
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/filter/topic:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentPlotModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                      segment_id: 34a492e518b117228954e0bd8a7cfda7
+                      collections:
+                      - field: int_score_momentum
+                        name: do_more
+                        points:
+                        - topic: guerrilla marketing
+                          value: 41.411764705882
+                          avg_affinity: 0.58597826180251
+                          doc_ct: 27
+      security:
+      - ApiKeyAuth: []
+      summary: Content Plot
+      operationId: Content Plot
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: segment_id
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
+          default: 123abc
+      - name: fields
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
+          default: all
+      - name: filters
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: string
+          default: none
+      - name: limit
+        in: query
+        description: limit to the number of results supplied if a filter is supplied
+        required: false
+        example: '10'
+        schema:
+          type: integer
+          default: 10
+    servers:
+    - url: https://api.lytics.io
+  /api/content/doc/{docField}/{docId}/topic/{topicLabel}:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopicCurationModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                      author: Cookie Monster
+                      created: '2016-01-14T08:39:01.354824186-07:00'
+                      description: you should definitely make these cookies
+                      fetched: '2016-07-19T13:39:20.158747984-04:00'
+                      id: '4525087172572165639'
+                      meta:
+                      - og:locale/en_US
+                      primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
+                      stream: default
+                      title: how to make some cookies
+                      topic_relevances:
+                        Recipe: 0.64
+                        baking: 0.75
+                      topic_rollups:
+                        Things: 0.75
+                      topics:
+                      - baking
+                      - Recipe
+                      updated: '2016-07-19T13:34:18-04:00'
+                      url: www.recipes.com/chocolate-chip-cookies
+      security:
+      - ApiKeyAuth: []
+      summary: Topic Add
+      operationId: Topic Add
+      description: Add a topic to a Document.
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: docField
+        in: path
+        description: name of field to look up content by
+        required: true
+        example: hashedurl
+        schema:
+          type: string
+      - name: docId
+        in: path
+        description: value of field to look up content by
+        required: true
+        example: 123abc
+        schema:
+          type: string
+      - name: topicLabel
+        in: path
+        description: name of topic to add
+        required: true
+        example: cats
+        schema:
+          type: string
+      - name: relevance
+        in: query
+        description: the relevance threshold to set for the new topic
+        required: false
+        example: '0.5'
+        schema:
+          type: string
+          default: '0.5'
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Topic Remove
+      operationId: Topic Remove
+      description: ''
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: docField
+        in: path
+        description: name of field to look up content by
+        required: true
+        example: hashedurl
+        schema:
+          type: string
+      - name: docId
+        in: path
+        description: value of field to look up content by
+        required: true
+        example: 123abc
+        schema:
+          type: string
+      - name: topicLabel
+        in: path
+        description: name of topic to add
+        required: true
+        example: cats
+        schema:
+          type: string
+      - name: relevance
+        in: query
+        description: the relevance threshold to set for the new topic
+        required: false
+        example: '0.5'
+        schema:
+          type: string
+          default: '0.5'
+    servers:
+    - url: https://api.lytics.io
+  /api/content/crawl:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ContentCrawlModel'
+      security:
+      - ApiKeyAuth: []
+      summary: Content Crawl
+      operationId: Content Crawl
+      description: Create a new crawl for an account
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: domain
+        in: query
+        description: the domain to use for the seed of the crawl
+        required: false
+        example: lytics.com
+        schema:
+          type: string
+      - name: domains
+        in: query
+        description: the domains to use for the seed of the crawl
+        required: false
+        example: '["lytics.com"]'
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/metrics:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentMetricsModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      total: 215590
+                      nokeys: 0
+                      nocontent: 144430
+                      noclassifiedcontent: 53537
+                      noaffinities: 0
+                      errors: 0
+                      success: 17623
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Content Metrics
+      operationId: Content Metrics
+      description: Fetch the Account content Metrics.
+      tags:
+      - Content
+    servers:
+    - url: https://api.lytics.io
+  /api/content/topic/cluster:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicClustersModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      clusters:
+                      - - Baking
+                        - Cakes
+                        - Cupakes
+                        - Cookies
+                      - - Grilling
+                        - Beef
+                        - Chicken
+                        - Steak
+                      coverage: 0.2062
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Content Topic Clusters
+      operationId: Content Topic Clusters
+      description: 'Get a collection of the most central topics in account''s topic graph, with each topic''s corresponding cluster.  This endpoint is meant
+
+        to be used as a means to experiment with the `limit`, `direction`, `penalty`, and `threshold` parameters to create a set of clusters
+
+        that encompass meaningful topics and the coverage of topics that these clusters SUMMIZE in terms of relative centrality.  Once values
+
+        for those parameters yield a set of optimal clusters, they should be sent to the topic clusters POST endpoint to create topic rollups.'
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: number of label rollups to produce
+        required: false
+        example: '8'
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: direction to follow topic dependencies, either "in" or "out"
+        required: false
+        example: out
+        schema:
+          type: string
+      - name: penalty
+        in: query
+        description: penalty to apply as traversal depth increases, where a lower value introduces a higher penalty
+        required: false
+        example: '0.9'
+        schema:
+          type: string
+      - name: threshold
+        in: query
+        description: threshold at which neighbor topics are determined, where a lower value introduces a more lenient rule
+        required: false
+        example: '0.4'
+        schema:
+          type: string
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicClustersModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      clusters:
+                      - - Baking
+                        - Cakes
+                        - Cupakes
+                        - Cookies
+                      - - Grilling
+                        - Beef
+                        - Chicken
+                        - Steak
+                      coverage: 0.2062
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Create Content Topic Clusters
+      operationId: Create Content Topic Clusters
+      description: Create a collection of the most central topics in an account's topic grah, with each topic's corresponding cluster.
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: number of label rollups to produce
+        required: false
+        example: '8'
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: direction to follow topic dependencies, either "in" or "out"
+        required: false
+        example: out
+        schema:
+          type: string
+      - name: penalty
+        in: query
+        description: penalty to apply as traversal depth increases, where a lower value introduces a higher penalty
+        required: false
+        example: '0.9'
+        schema:
+          type: string
+      - name: threshold
+        in: query
+        description: threshold at which neighbor topics are determined, where a lower value introduces a more lenient rule
+        required: false
+        example: '0.4'
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /api/content/topic/cluster/{topicId}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentTopicClustersModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      clusters:
+                      - - Baking
+                        - Cakes
+                        - Cupakes
+                        - Cookies
+                      - - Grilling
+                        - Beef
+                        - Chicken
+                        - Steak
+                      coverage: 0.2062
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Content Topic Cluster
+      operationId: Content Topic Cluster
+      description: 'Get topics that are related to an input topic.
+
+        This can be useful for creating topic rollups,
+
+        and provide initial suggestions as to which topics
+
+        might best comprise a rollup.
+
+
+        The options for direction, penalty and threshold
+
+        are currently adjustable.  As we determine which
+
+        values produce the most useful clusters, we can set
+
+        better defaults for them.'
+      tags:
+      - Content
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: topicId
+        in: path
+        description: public topic label in the taxonomy
+        required: true
+        example: Pets
+        schema:
+          type: string
+      - name: direction
+        in: query
+        description: direction to follow topic dependencies, either "in" or "out"
+        required: false
+        example: out
+        schema:
+          type: string
+      - name: penalty
+        in: query
+        description: penalty to apply as traversal depth increases, where a lower value introduces a higher penalty
+        required: false
+        example: '0.9'
+        schema:
+          type: string
+      - name: threshold
+        in: query
+        description: threshold at which neighbor topics are determined, where a lower value introduces a more lenient rule
+        required: false
+        example: '0.4'
+        schema:
+          type: string
+    servers:
+    - url: https://api.lytics.io
+  /content/align:
+    post:
+      description: Get content alignment with a set of topics
+      parameters:
+      - description: Method for similarity calculation
+        in: query
+        name: method
+        schema:
+          default: jaccard
+          type: string
+      - description: Affinity Config ID. Defaults to accounts default
+        in: query
+        name: config
+        schema:
+          type: string
+      - description: Limits response size to this number
+        in: query
+        name: limit
+        schema:
+          default: 10
+          type: integer
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.ContentAlignReq'
+        description: Content Alignment Request
+        required: true
+        x-originalParamName: request
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.ContentAlignResp'
+                  type: object
+          description: Content Alignment Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get content alignment with a set of topics
+      tags:
+      - Content
+    servers:
+    - url: https://api.lytics.io/v2
+  /content/classify:
+    post:
+      description: The Classification API classifies a URL and returns all the extracted content and steps taken to classify the content.
+      parameters:
+      - description: URL to classify
+        in: query
+        name: url
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.ContentClassifyResp'
+                  type: object
+          description: Content Classification Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Classify a URL
+      tags:
+      - Content
+    servers:
+    - url: https://api.lytics.io/v2
+  /content/enrich:
+    post:
+      description: Enrich a URL or text with Topics and Inferred Topics
+      parameters:
+      - description: URL to enrich
+        in: query
+        name: url
+        schema:
+          type: string
+      - description: Text to enrich
+        in: query
+        name: text
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.ContentEnrichResp'
+                  type: object
+          description: Content Enrichment Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Enrich a URL or text with Topics
+      tags:
+      - Content
+    servers:
+    - url: https://api.lytics.io/v2
+  /content/opportunity:
+    get:
+      description: Get the saved content opportunity metrics for the current account. Optionally provide a date to fetch the snapshot for that UTC day.
+      parameters:
+      - description: Opportunity snapshot date in YYYY-MM-DD format
+        in: query
+        name: date
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.ContentOpportunityResp'
+                  type: object
+          description: Content Opportunity Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get content opportunities
+      tags:
+      - Content
+    servers:
+    - url: https://api.lytics.io/v2
+components:
+  schemas:
+    ContentClassifyModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            url:
+              type: object
+              properties:
+                Params:
+                  type: object
+                  properties: {}
+                Utm:
+                  type: object
+                  properties:
+                    utm_campaign: {}
+                    utm_content: {}
+                    utm_medium: {}
+                    utm_source:
+                      type: string
+                    utm_term: {}
+                UserInfo: {}
+            url_redirected_from:
+              type: string
+            description:
+              type: string
+            long_description:
+              type: string
+            type:
+              type: string
+            stream:
+              type: string
+            httpstatus:
+              type: number
+            humanLanguage:
+              type: string
+            tags:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  id:
+                    type: string
+                  value:
+                    type: string
+                  source:
+                    type: string
+                  vocab:
+                    type: string
+                  relevance:
+                    type: number
+                  tax:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - type
+                - id
+                - value
+                - source
+                - vocab
+                - relevance
+            flags: {}
+            images:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+            primary_image:
+              type: string
+            videos: {}
+            primary_video:
+              type: string
+            published:
+              type: string
+            author:
+              type: string
+            numpages:
+              type: number
+            sitename:
+              type: string
+            productDescription:
+              type: string
+            brand:
+              type: string
+            price:
+              type: string
+            saveAmount:
+              type: string
+            productId:
+              type: string
+            created:
+              type: string
+            fetched:
+              type: string
+            updated:
+              type: string
+            enriched:
+              type: object
+              properties:
+                diffbot:
+                  type: string
+                google:
+                  type: string
+                meta:
+                  type: string
+                textrazor:
+                  type: string
+            version:
+              type: number
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          id: https://www.getlytics.com/blog/post/improving_google_analytics?utm_source=linkedin
+          url:
+            Params: {}
+            Utm:
+              utm_campaign: null
+              utm_content: null
+              utm_medium: null
+              utm_source: linkedin
+              utm_term: null
+            UserInfo: null
+          url_redirected_from: ''
+          description: 'Stop Pretending Your Insights Are Actionable: Part 1, Google Analytics'
+          long_description: Most analytics tools are used purely for insight discovery rather than empowering action. We explore how the Lytics analytics integrations focus on action and filling the some massive gaps traditional analytics tools miss.
+          type: web
+          stream: ''
+          httpstatus: 0
+          humanLanguage: en
+          tags:
+          - type: meta
+            id: og:title
+            value: 'stop pretending your insights are actionable: part 1, google analytics'
+            source: meta
+            vocab: lytics
+            relevance: 1
+          - type: concept
+            id: Google_Analytics
+            tax:
+            - http://dbpedia.org/ontology/Company
+            - http://dbpedia.org/ontology/Website
+            - http://dbpedia.org/ontology/Work
+            - http://www.w3.org/2002/07/owl#Thing
+            value: Google Analytics
+            source: diffbot
+            vocab: dbpedia
+            relevance: 0.95
+          flags: null
+          images:
+          - url: https://www.getlytics.com/img/blog/defaults/developers.gif
+          primary_image: https://www.getlytics.com/img/blog/defaults/developers.gif
+          videos: null
+          primary_video: ''
+          published: '2015-10-23T00:00:00Z'
+          author: Mark Hayden
+          numpages: 0
+          sitename: Lytics
+          productDescription: ''
+          brand: ''
+          price: ''
+          saveAmount: ''
+          productId: ''
+          created: '2016-06-24T21:20:43.421892991Z'
+          fetched: '2016-06-24T21:20:45.751844316Z'
+          updated: '2016-06-24T21:20:52.367247963Z'
+          enriched:
+            diffbot: '2016-06-24T21:20:52.367248438Z'
+            google: '1970-01-01T00:00:00Z'
+            meta: '2016-06-24T21:20:45.751852586Z'
+            textrazor: '1970-01-01T00:00:00Z'
+          version: 4
+        message: success
+        status: 200
+    ContentTopicsModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              doc_count:
+                type: number
+              total:
+                type: number
+              missing:
+                type: number
+              present:
+                type: number
+              avg:
+                type: number
+              tags:
+                type: array
+                items:
+                  type: string
+            required:
+            - label
+            - doc_count
+            - total
+            - missing
+            - present
+            - avg
+            - tags
+      example:
+        status: 200
+        message: success
+        data:
+        - label: Data-First Marketing
+          doc_count: 275
+          total: 380636
+          missing: 216048
+          present: 143710
+          avg: 0.5983867964798089
+          tags:
+          - custom
+        - label: User Data Unification
+          doc_count: 273
+          total: 380636
+          missing: 216048
+          present: 154068
+          avg: 0.6036863622558337
+          tags:
+          - custom
+        - label: Customer Data Platform
+          doc_count: 313
+          total: 380260
+          missing: 216043
+          present: 159628
+          avg: 0.9704200631406573
+          tags:
+          - custom
+    ContentDocumentModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            total:
+              type: number
+            urls:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  title:
+                    type: string
+                  topics:
+                    type: array
+                    items:
+                      type: string
+                  id:
+                    type: string
+      example:
+        status: 200
+        message: success
+        data:
+          total: 1
+          urls:
+          - url: www.our-site.com/product/new-product-xyz
+            title: Blue Running Shoes that make you faster
+            topics:
+            - our-site (company)
+            - running
+            - shoes
+            id: '3395466611293777389'
+    ContentTopicBlocklistModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              doc_count:
+                type: number
+              total:
+                type: number
+              missing:
+                type: number
+              present:
+                type: number
+              avg:
+                type: number
+              tags:
+                type: array
+                items:
+                  type: string
+            required:
+            - label
+            - doc_count
+            - total
+            - missing
+            - present
+            - avg
+            - tags
+      example:
+        status: 200
+        message: success
+        data:
+        - label: Data-First Marketing
+          doc_count: 275
+          total: 380636
+          missing: 216048
+          present: 143710
+          avg: 0.5983867964798089
+          tags:
+          - blacklisted
+        - label: User Data Unification
+          doc_count: 273
+          total: 380636
+          missing: 216048
+          present: 154068
+          avg: 0.6036863622558337
+          tags:
+          - blacklisted
+    ContentSegmentRecommendationModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              topics:
+                type: array
+                items:
+                  type: string
+              topic_relevances:
+                type: object
+                properties:
+                  content marketing:
+                    type: number
+                  customer data platform:
+                    type: number
+                  data science:
+                    type: number
+                  personalization:
+                    type: number
+              primary_image:
+                type: string
+              author:
+                type: string
+              created:
+                type: string
+              id:
+                type: string
+              sitename:
+                type: string
+              stream:
+                type: string
+              path:
+                type: array
+                items:
+                  type: string
+              aspects:
+                type: array
+                items:
+                  type: string
+              language:
+                type: string
+              updated:
+                type: string
+              fetched:
+                type: string
+              meta:
+                type: array
+                items:
+                  type: string
+              confidence:
+                type: number
+              visited:
+                type: boolean
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+        - url: www.getlytics.com/blog/post/intent_through_content
+          title: Understanding User Intent Through Content
+          description: Customer Intent comes from understanding the connection between engagement and its contexts. Content modeling and affinity graphs makes interpretation of intent a lot easier. Learn how marketers can benefit from this.
+          topics:
+          - customer data platform
+          - data science
+          - content marketing
+          - personalization
+          topic_relevances:
+            content marketing: 1
+            customer data platform: 1
+            data science: 1
+            personalization: 1
+          primary_image: https://www.getlytics.com/img/blog/posts/intent_through_content/intent_through_content-bg.gif
+          author: ''
+          created: '2016-06-08T16:11:45.599594093Z'
+          id: '-3435113786560588929'
+          sitename: Lytics
+          stream: default
+          path:
+          - blog
+          - blog/post
+          - blog/post/intent_through_content
+          aspects:
+          - article
+          language: unknown
+          updated: '2016-06-09T12:49:36.870359765Z'
+          fetched: '2016-06-09T12:49:35.812654441Z'
+          meta:
+          - og:locale/en_us
+          - og:site_name/lytics
+          - og:title/understanding user intent through content
+          - og:type/article
+          - og:url/https://www.getlytics.com/blog/post/intent_through_content
+          confidence: 0.5916079783099615
+          visited: true
+        message: success
+        status: 200
+    ContentCorpusModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            body:
+              type: array
+              items:
+                type: string
+            source:
+              type: array
+              items:
+                type: string
+            updated:
+              type: array
+              items:
+                type: string
+            url:
+              type: array
+              items:
+                type: string
+            version:
+              type: array
+              items:
+                type: string
+      example:
+        status: 200
+        message: success
+        data:
+          body:
+          - here is some body text
+          source:
+          - upload
+          updated:
+          - 2016-09-13 21:59:38.551972802 -0400 EDT
+          url:
+          - http://www.google.com/
+          version:
+          - '4'
+    ContentTaxonomyModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            n:
+              type: number
+            nodes:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  doc_count:
+                    type: number
+                required:
+                - name
+                - doc_count
+            links:
+              type: array
+              items:
+                type: object
+                properties:
+                  source:
+                    type: number
+                  target:
+                    type: number
+                  value:
+                    type: number
+                required:
+                - source
+                - target
+                - value
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          n: 438
+          nodes:
+          - name: marketing technology
+            doc_count: 2
+          - name: AdWords
+            doc_count: 1
+          - name: ad retargeting
+            doc_count: 4
+          - name: analytics
+            doc_count: 2
+          - name: customer service
+            doc_count: 1
+          - name: data visualization
+            doc_count: 2
+          - name: data-first marketing
+            doc_count: 157
+          - name: personalization
+            doc_count: 15
+          links:
+          - source: 66
+            target: 54
+            value: 0.375
+          - source: 66
+            target: 75
+            value: 0.25
+          - source: 66
+            target: 37
+            value: 0.25
+        message: success
+        status: 200
+    ContentTopicSummaryModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            topics:
+              type: object
+              properties:
+                total:
+                  type: number
+                missing:
+                  type: number
+                present:
+                  type: number
+                bucket_none:
+                  type: number
+                bucket_low:
+                  type: number
+                bucket_mid:
+                  type: number
+                bucket_high:
+                  type: number
+                avg:
+                  type: number
+            docs:
+              type: object
+              properties:
+                total:
+                  type: number
+                urls:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                      title:
+                        type: string
+                      topics:
+                        type: array
+                        items:
+                          type: string
+                      id:
+                        type: string
+      example:
+        status: 200
+        message: success
+        data:
+          topics:
+            total: 3232717
+            missing: 2985477
+            present: 239239
+            bucket_none: 8001
+            bucket_low: 26279
+            bucket_mid: 11742
+            bucket_high: 201218
+            avg: 0.90787879293533
+          docs:
+            total: 373
+            urls:
+            - url: www.our-site.com/product/new-product-xyz
+              title: Blue Running Shoes that make you faster
+              topics:
+              - our-site (company)
+              - running
+              - shoes
+              id: '3395466611293777389'
+    ContentTopicClustersModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            clusters:
+              type: array
+              items:
+                type: array
+                items: {}
+            coverage:
+              type: number
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          clusters:
+          - - Baking
+            - Cakes
+            - Cupakes
+            - Cookies
+          - - Grilling
+            - Beef
+            - Chicken
+            - Steak
+          coverage: 0.2062
+        message: success
+        status: 200
+    ContentCrawlModel: {}
+    ContentRecommendationModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              topics:
+                type: array
+                items:
+                  type: string
+              topic_relevances:
+                type: object
+                properties:
+                  content marketing:
+                    type: number
+                  customer data platform:
+                    type: number
+                  data science:
+                    type: number
+                  personalization:
+                    type: number
+              primary_image:
+                type: string
+              author:
+                type: string
+              created:
+                type: string
+              id:
+                type: string
+              sitename:
+                type: string
+              stream:
+                type: string
+              path:
+                type: array
+                items:
+                  type: string
+              aspects:
+                type: array
+                items:
+                  type: string
+              language:
+                type: string
+              updated:
+                type: string
+              fetched:
+                type: string
+              meta:
+                type: array
+                items:
+                  type: string
+              confidence:
+                type: number
+              visited:
+                type: boolean
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+        - url: www.getlytics.com/blog/post/intent_through_content
+          title: Understanding User Intent Through Content
+          description: Customer Intent comes from understanding the connection between engagement and its contexts. Content modeling and affinity graphs makes interpretation of intent a lot easier. Learn how marketers can benefit from this.
+          topics:
+          - customer data platform
+          - data science
+          - content marketing
+          - personalization
+          topic_relevances:
+            content marketing: 1
+            customer data platform: 1
+            data science: 1
+            personalization: 1
+          primary_image: https://www.getlytics.com/img/blog/posts/intent_through_content/intent_through_content-bg.gif
+          author: ''
+          created: '2016-06-08T16:11:45.599594093Z'
+          id: '-3435113786560588929'
+          sitename: Lytics
+          stream: default
+          path:
+          - blog
+          - blog/post
+          - blog/post/intent_through_content
+          aspects:
+          - article
+          language: unknown
+          updated: '2016-06-09T12:49:36.870359765Z'
+          fetched: '2016-06-09T12:49:35.812654441Z'
+          meta:
+          - og:locale/en_us
+          - og:site_name/lytics
+          - og:title/understanding user intent through content
+          - og:type/article
+          - og:url/https://www.getlytics.com/blog/post/intent_through_content
+          confidence: 0.5916079783099615
+          visited: true
+        message: success
+        status: 200
+    ContentTopicRollupModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            account_id:
+              type: string
+            label:
+              type: string
+            created:
+              type: string
+            updated:
+              type: string
+            topics:
+              type: array
+              items:
+                type: object
+                properties:
+                  label:
+                    type: string
+                  value:
+                    type: number
+                required:
+                - label
+                - value
+      example:
+        data:
+          id: 6a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          label: Baking rollup
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          topics:
+          - label: Recipe
+            value: 0.66
+          - label: baking
+            value: 0.55
+    ContentTopicRollupListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              account_id:
+                type: string
+              label:
+                type: string
+              created:
+                type: string
+              updated:
+                type: string
+              topics:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    value:
+                      type: number
+                  required:
+                  - label
+                  - value
+      example:
+        data:
+        - id: 6a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          label: Baking rollup
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          topics:
+          - label: Recipe
+            value: 0.66
+          - label: baking
+            value: 0.55
+    ContentMetricsModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            total:
+              type: number
+            nokeys:
+              type: number
+            nocontent:
+              type: number
+            noclassifiedcontent:
+              type: number
+            noaffinities:
+              type: number
+            errors:
+              type: number
+            success:
+              type: number
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          total: 215590
+          nokeys: 0
+          nocontent: 144430
+          noclassifiedcontent: 53537
+          noaffinities: 0
+          errors: 0
+          success: 17623
+        message: success
+        status: 200
+    TopicCurationModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            author:
+              type: string
+            created:
+              type: string
+            description:
+              type: string
+            fetched:
+              type: string
+            id:
+              type: string
+            meta:
+              type: array
+              items:
+                type: string
+            primary_image:
+              type: string
+            stream:
+              type: string
+            title:
+              type: string
+            topic_relevances:
+              type: object
+              properties:
+                Recipe:
+                  type: number
+                baking:
+                  type: number
+            topic_rollups:
+              type: object
+              properties:
+                Things:
+                  type: number
+            topics:
+              type: array
+              items:
+                type: string
+            updated:
+              type: string
+            url:
+              type: string
+      example:
+        status: 200
+        message: success
+        data:
+          author: Cookie Monster
+          created: '2016-01-14T08:39:01.354824186-07:00'
+          description: you should definitely make these cookies
+          fetched: '2016-07-19T13:39:20.158747984-04:00'
+          id: '4525087172572165639'
+          meta:
+          - og:locale/en_US
+          primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
+          stream: default
+          title: how to make some cookies
+          topic_relevances:
+            Recipe: 0.64
+            baking: 0.75
+          topic_rollups:
+            Things: 0.75
+          topics:
+          - baking
+          - Recipe
+          updated: '2016-07-19T13:34:18-04:00'
+          url: www.recipes.com/chocolate-chip-cookies
+    ContentPlotModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            segment_id:
+              type: string
+            collections:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                  name:
+                    type: string
+                  points:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        topic:
+                          type: string
+                        value:
+                          type: number
+                        avg_affinity:
+                          type: number
+                        doc_ct:
+                          type: number
+      example:
+        status: 200
+        message: success
+        data:
+          segment_id: 34a492e518b117228954e0bd8a7cfda7
+          collections:
+          - field: int_score_momentum
+            name: do_more
+            points:
+            - topic: guerrilla marketing
+              value: 41.411764705882
+              avg_affinity: 0.58597826180251
+              doc_ct: 27
+    ContentTopicRollupSummaryModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            docs:
+              type: object
+              properties:
+                total:
+                  type: number
+                urls:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      author:
+                        type: string
+                      created:
+                        type: string
+                      description:
+                        type: string
+                      fetched:
+                        type: string
+                      id:
+                        type: string
+                      meta:
+                        type: array
+                        items:
+                          type: string
+                      primary_image:
+                        type: string
+                      stream:
+                        type: string
+                      title:
+                        type: string
+                      topic_relevances:
+                        type: object
+                        properties:
+                          Recipe:
+                            type: number
+                          baking:
+                            type: number
+                      topic_rollups:
+                        type: object
+                        properties:
+                          Things:
+                            type: number
+                          Desserts:
+                            type: number
+                      topics:
+                        type: array
+                        items:
+                          type: string
+                      updated:
+                        type: string
+                      url:
+                        type: string
+                    required:
+                    - author
+                    - created
+                    - description
+                    - id
+                    - primary_image
+                    - stream
+                    - title
+                    - topic_relevances
+                    - topic_rollups
+                    - topics
+                    - updated
+                    - url
+            rollups: {}
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          docs:
+            total: 2
+            urls:
+            - author: Cookie Monster
+              created: '2016-01-14T08:39:01.354824186-07:00'
+              description: you should definitely make these cookies
+              fetched: '2016-07-19T13:39:20.158747984-04:00'
+              id: '4525087172572165639'
+              meta:
+              - og:locale/en_US
+              primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
+              stream: default
+              title: how to make some cookies
+              topic_relevances:
+                Recipe: 0.64
+                baking: 0.75
+              topic_rollups:
+                Things: 0.75
+              topics:
+              - baking
+              - Recipe
+              updated: '2016-07-19T13:34:18-04:00'
+              url: www.recipes.com/chocolate-chip-cookies
+            - author: The Swedish Chef
+              created: '2016-07-19T13:39:20.158747984-04:00'
+              description: a delicious cake
+              id: '-2119104978705508335'
+              primary_image: http://www.vanillacake.com/cake.jpg
+              stream: default
+              title: Basic Vanilla Cake Recipe
+              topic_relevances:
+                Recipe: 0.64
+                baking: 0.85
+              topic_rollups:
+                Desserts: 0.85
+              topics:
+              - Recipe
+              - baking
+              updated: '2016-07-19T13:29:18-04:00'
+              url: www.recipes.com/cake
+          rollups: null
+        message: success
+        status: 200
+    models.ContentClassifyResp:
+      properties:
+        content:
+          additionalProperties: true
+          description: The content that was classified
+          type: object
+        steps:
+          description: The steps that were taken to classify the content
+          items: {}
+          type: array
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ContentAlignResp:
+      properties:
+        alignment:
+          additionalProperties:
+            type: number
+          type: object
+      type: object
+    models.ContentOpportunityResp:
+      properties:
+        topics:
+          description: The opportunity topics and their associated dimensions
+          items:
+            $ref: '#/components/schemas/models.ContentOpportunityTopic'
+          type: array
+      type: object
+    models.ContentOpportunityTopic:
+      properties:
+        context_layer:
+          description: The context layer that produced the opportunity metrics
+          type: string
+        dimensions:
+          description: The dimensions and scores associated with the topic
+          items:
+            $ref: '#/components/schemas/models.ContentOpportunityDimension'
+          type: array
+        segments:
+          description: The segments related to the topic
+          items:
+            type: string
+          type: array
+        topic:
+          description: The topic name
+          type: string
+      type: object
+    models.ContentEnrichResp:
+      properties:
+        inferred_topics:
+          additionalProperties:
+            type: number
+          description: The inferred topics that were captured from the input
+          type: object
+        input:
+          description: The input text or URL that was enriched
+          type: string
+        topics:
+          additionalProperties:
+            type: number
+          description: The topics that were inferred from the input
+          type: object
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ContentOpportunityDimension:
+      properties:
+        label:
+          description: The dimension label
+          type: string
+        subject:
+          description: The entity type the dimension applies to
+          type: string
+        value:
+          description: The aggregated opportunity score for this dimension
+          type: number
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ContentAlignReq:
+      properties:
+        topics:
+          additionalProperties:
+            type: number
+          type: object
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-refined-from:
+- lytics-api-v1-openapi.json
+- lytics-api-v2-openapi.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

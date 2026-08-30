@@ -1,0 +1,162 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Provider API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Provider
+  description: Provider is a 3rd party Lytics Integrates with (Mailchimp, Optimizely, Mixpanel, Facebook etc)
+paths:
+  /api/provider:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProviderListModel'
+      security:
+      - ApiKeyAuth: []
+      summary: Provider List
+      operationId: Provider List
+      description: Provider list api
+      tags:
+      - Provider
+  /api/provider/:provider_slug:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProviderModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      auth_description: ''
+                      categories:
+                      - source
+                      - social
+                      - export
+                      description: ''
+                      hidden: false
+                      id: 26cae7718c32180a7a0f8e19d6d40a59
+                      name: Facebook
+                      namespace: fb
+                      no_auth: false
+                      oauth2:
+                        auth_endpoint: https://www.facebook.com/dialog/oauth
+                        auth_params:
+                          response_type:
+                          - code
+                        client_id: '500418690088145'
+                        redirect_uri: https://api.lytics.io/api/oauth/receive
+                        scope: email,read_insights,manage_pages,ads_management
+                        token_endpoint: https://graph.facebook.com/oauth/access_token
+                      slug: facebook
+      security:
+      - ApiKeyAuth: []
+      summary: Provider Fetch
+      operationId: Provider Fetch
+      description: Get single **Provider**
+      tags:
+      - Provider
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Remove a Provider
+      operationId: Remove a Provider
+      description: Delete by id/slug
+      tags:
+      - Provider
+components:
+  schemas:
+    ProviderModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            auth_description:
+              type: string
+            categories:
+              type: array
+              items:
+                type: string
+            description:
+              type: string
+            hidden:
+              type: boolean
+            id:
+              type: string
+            name:
+              type: string
+            namespace:
+              type: string
+            no_auth:
+              type: boolean
+            oauth2:
+              type: object
+              properties:
+                auth_endpoint:
+                  type: string
+                auth_params:
+                  type: object
+                  properties:
+                    response_type:
+                      type: array
+                      items:
+                        type: string
+                client_id:
+                  type: string
+                redirect_uri:
+                  type: string
+                scope:
+                  type: string
+                token_endpoint:
+                  type: string
+            slug:
+              type: string
+      example:
+        data:
+          auth_description: ''
+          categories:
+          - source
+          - social
+          - export
+          description: ''
+          hidden: false
+          id: 26cae7718c32180a7a0f8e19d6d40a59
+          name: Facebook
+          namespace: fb
+          no_auth: false
+          oauth2:
+            auth_endpoint: https://www.facebook.com/dialog/oauth
+            auth_params:
+              response_type:
+              - code
+            client_id: '500418690088145'
+            redirect_uri: https://api.lytics.io/api/oauth/receive
+            scope: email,read_insights,manage_pages,ads_management
+            token_endpoint: https://graph.facebook.com/oauth/access_token
+          slug: facebook
+    ProviderListModel: {}
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

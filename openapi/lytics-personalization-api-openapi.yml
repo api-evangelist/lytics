@@ -1,0 +1,485 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Personalization API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Personalization
+  description: "Entity API, ie Personalization or Profile API.\n\nRetrieve attributes and segments an entity (most likely a user) is a member of.\n\nThe *Entity* is a *User* most likely, but since Lytics is organized as a Graph Database,\nother types of entities may be modeled such as Accounts, or Company, Content, or custom.\n\n```\n# read a single user\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/entity/user/user_id/user123\" | jq '.'\n\n```"
+paths:
+  /api/me/{fieldname}/{fieldval}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonalizationModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      segments:
+                      - email_us_based
+                      - web_users
+                      - all
+                    message: success
+                    meta:
+                      by_fields:
+                      - user_id
+                      - email
+                      - fbuid
+                      - _uids
+                      format: json
+                      name: user
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: User Me
+      operationId: User Me
+      description: Get single User Entity.  This is an alias for `/api/entity/user`.
+      tags:
+      - Personalization
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: fieldname
+        in: path
+        description: Field name of identity to use as lookup
+        required: true
+        example: email
+        schema:
+          type: string
+      - name: fieldval
+        in: path
+        description: Field value of identity
+        required: true
+        example: bob@gmail.com
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: comma delimited field list to be returned
+        required: false
+        example: name,org,city
+        schema:
+          type: string
+      - name: fieldBlocklist
+        in: query
+        description: comma delimited list of fields to exclude
+        required: false
+        example: name,org,city
+        schema:
+          type: string
+      - name: include_fields
+        in: query
+        description: if true include all the whitelisted fields
+        required: false
+        example: true
+        schema:
+          type: boolean
+      - name: segments
+        in: query
+        description: Should segments this user is member of be included?
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+          default: 'true'
+      - name: meta
+        in: query
+        description: Should Meta Fields be included?
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+          default: 'true'
+      - name: download
+        in: query
+        description: Should the content-disposition header set to attachment to download the user as a file?
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+          default: 'false'
+  /api/entity/{table}/{fieldname}/{fieldval}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonalizationModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      segments:
+                      - email_us_based
+                      - web_users
+                      - all
+                    message: success
+                    meta:
+                      by_fields:
+                      - user_id
+                      - email
+                      - fbuid
+                      - _uids
+                      format: json
+                      name: user
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Personalization
+      operationId: Personalization
+      description: "Get single User Entity.\n\n```\n# get user whose user_id = user123\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/entity/user/user_id/user123\" | jq '.'\n\n# get user whose email = aaron@aaron.com\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/entity/user/email/aaron@aaron.com\" | jq '.'\n\n```"
+      tags:
+      - Personalization
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: table
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+          default: user
+      - name: fieldname
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+          default: _uid
+      - name: fieldval
+        in: path
+        description: Field value of identity
+        required: true
+        example: bob@gmail.com
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: comma delimited field list to be returned
+        required: false
+        example: name,org,city
+        schema:
+          type: string
+      - name: fieldBlocklist
+        in: query
+        description: comma delimited list of fields to exclude
+        required: false
+        example: name,org,city
+        schema:
+          type: string
+      - name: include_fields
+        in: query
+        description: if true include all the whitelisted fields
+        required: false
+        example: true
+        schema:
+          type: boolean
+      - name: segments
+        in: query
+        description: Should segments this user is member of be included?
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+          default: 'true'
+      - name: meta
+        in: query
+        description: Should Meta Fields be included?
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+          default: 'true'
+      - name: download
+        in: query
+        description: Should the content-disposition header set to attachment to download the user as a file?
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+          default: 'false'
+    delete:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileDeletionModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: delete request received
+                    data:
+                      request_id: e9d5f2d3d2c7a7d0e801-1526083200
+                      complete: false
+      security:
+      - ApiKeyAuth: []
+      summary: Profile Delete Request
+      operationId: Profile Delete Request
+      description: "Deletes a single Entity (normally a user).\n\nThis API persists a deletion event for the particular profile provided. This operation is asynchronous; it will take\nsome time for the profile to be removed from downstream databases and indexes. This request returns a \"request_id\"\nwhich may be used to determine the status of that deletion. While the profile may become unavailable quickly, it may\ntake a while for the full process to complete since it includes all archived historic data.\n\n```\n# Delete user whose \"user_id\" = \"userdeleteme12\"\n# user_id can be any by-field\n\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XDELETE \"https://api.lytics.io/api/entity/user/user_id/userdeleteme12\" | jq '.'\n\n\n```\n\n**Use Cases**\n\n* *GDPR* right to be forgotten, a user asks for profile to be deleted."
+      tags:
+      - Personalization
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: table
+        in: path
+        description: ''
+        required: true
+        schema:
+          type: string
+          default: user
+      - name: fieldname
+        in: path
+        description: Field name of identity to use as lookup (could be email, user_id, etc)
+        required: true
+        example: _uid
+        schema:
+          type: string
+      - name: fieldval
+        in: path
+        description: Field value of identity
+        required: true
+        example: bob@gmail.com
+        schema:
+          type: string
+  /api/entity/{table}/{fieldval}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonalizationModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      segments:
+                      - email_us_based
+                      - web_users
+                      - all
+                    message: success
+                    meta:
+                      by_fields:
+                      - user_id
+                      - email
+                      - fbuid
+                      - _uids
+                      format: json
+                      name: user
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Web Personalization
+      operationId: Web Personalization
+      description: 'Get single User Entity using cookie id.  This is same as entity api
+
+        but you don''t specify a `fieldname` (user_id, email, etc) and instead it only uses the cookie identifier.'
+      tags:
+      - Personalization
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: table
+        in: path
+        description: Field value of data table
+        required: true
+        example: user
+        schema:
+          type: string
+      - name: fieldval
+        in: path
+        description: Field value of identity
+        required: true
+        example: bob@gmail.com
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: comma delimited field list to be returned
+        required: false
+        example: name,org,city
+        schema:
+          type: string
+      - name: fieldBlocklist
+        in: query
+        description: comma delimited list of fields to exclude
+        required: false
+        example: name,org,city
+        schema:
+          type: string
+      - name: include_fields
+        in: query
+        description: if true include all the whitelisted fields
+        required: false
+        example: true
+        schema:
+          type: boolean
+      - name: segments
+        in: query
+        description: Should segments this user is member of be included?
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+          default: 'true'
+      - name: meta
+        in: query
+        description: Should Meta Fields be included?
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+          default: 'true'
+      - name: download
+        in: query
+        description: Should the content-disposition header set to attachment to download the user as a file?
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+          default: 'false'
+  /api/entity/deletestatus/{request_id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileDeletionModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: delete request received
+                    data:
+                      request_id: e9d5f2d3d2c7a7d0e801-1526083200
+                      complete: false
+      security:
+      - ApiKeyAuth: []
+      summary: ProfileDeletion Status
+      operationId: ProfileDeletion Status
+      description: Retrieves the status of a submitted deletion event.
+      tags:
+      - Personalization
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: request_id
+        in: path
+        description: RequestID of previously submitted deletion event
+        required: true
+        example: e9d5f2d3d2c7a7d0e801-1526083200
+        schema:
+          type: string
+components:
+  schemas:
+    ProfileDeletionModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            request_id:
+              type: string
+            complete:
+              type: boolean
+      example:
+        status: 200
+        message: delete request received
+        data:
+          request_id: e9d5f2d3d2c7a7d0e801-1526083200
+          complete: false
+    PersonalizationModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            segments:
+              type: array
+              items:
+                type: string
+        message:
+          type: string
+        meta:
+          type: object
+          properties:
+            by_fields:
+              type: array
+              items:
+                type: string
+            format:
+              type: string
+            name:
+              type: string
+        status:
+          type: number
+      example:
+        data:
+          segments:
+          - email_us_based
+          - web_users
+          - all
+        message: success
+        meta:
+          by_fields:
+          - user_id
+          - email
+          - fbuid
+          - _uids
+          format: json
+          name: user
+        status: 200
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

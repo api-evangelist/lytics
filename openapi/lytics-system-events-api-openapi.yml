@@ -1,0 +1,278 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics System Events API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: System Events
+  description: 'Get internal Lytics system events. These events
+
+    are generally related to internal changes to state of
+
+    an account.   Common changes are CRUD Operations (Create,
+
+    Update, Delete) of *Account*, *Admin User*, etc.'
+paths:
+  /api/event:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemEventsModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: 13564999017e8b0e9994ff16411fd19b
+                      ts: '1465584982676'
+                      priority: 2
+                      subject_type: topic-document
+                      subject_id: '-1894399319812759219'
+                      verb: created
+                      account_id: 1234abcdefgh
+                    - id: c57172d7d22e1c7ac4c80ce713e6e7cb
+                      ts: '1465844458666'
+                      priority: 2
+                      subject_type: entity
+                      subject_id: user/email/a.user@gmail.com
+                      verb: clustered
+                      related:
+                      - type: segment
+                        id: 791734b084019d99c82a475264464304
+                      account_id: 1234abcdefgh
+                      context:
+                        in: '2016-06-13T18:58:29Z'
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: System Events Query
+      operationId: System Events Query
+      description: "Get list of system events.\n\n```\n# get the dashboard news items\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/event?query=dashboard_news\" | jq '.'\n\n# get list of all segments created in last 2 weeks\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/event?type=segment&start=now-2w&limit=100&verb=created\" | jq '.'\n\n\n# get list of all events performed by user X\n\n# 1) first find a user id\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/user/user.email@yourdomain.com\" | jq '.'\n\n# 2) get the id for that user\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/event?type=user&id=USER_ID_FROM_PREVIOUS\" | jq '.'\n\n\n```"
+      tags:
+      - System Events
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: before
+        in: query
+        description: 'Start fetching items with dates older than:   "now-3d" (now-2h, now-1w, "2016-03-03").  Date math, or absolute date.'
+        required: false
+        schema:
+          type: string
+          default: now-3d
+      - name: after
+        in: query
+        description: 'Start fetching items with dates after:   "now-3d" (now-2h, now-1w, "2016-03-03").  Date math, or absolute date.'
+        required: false
+        schema:
+          type: string
+          default: now-3d
+      - name: limit
+        in: query
+        description: Should segments this user is member of be included?
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: verb
+        in: query
+        description: Verb (created, updated, deleted, status, clustered)
+        required: false
+        schema:
+          type: string
+          default: '``'
+      - name: type
+        in: query
+        description: Type of Object (entity, segment, work, account, user)
+        required: false
+        schema:
+          type: string
+          default: '``'
+      - name: id
+        in: query
+        description: Id of Object (entity, segment, work, account, user)
+        required: false
+        schema:
+          type: string
+          default: '``'
+  /api/event/:id:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemEventModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: c57172d7d22e1c7ac4c80ce713e6e7cb
+                      ts: '1465844458666'
+                      priority: 2
+                      subject_type: entity
+                      subject_id: user/email/a.user@gmail.com
+                      verb: clustered
+                      related:
+                      - type: segment
+                        id: 791734b084019d99c82a475264464304
+                      account_id: 1234abcdefgh
+                      context:
+                        in: '2016-06-13T18:58:29Z'
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: System Event Fetch
+      operationId: System Event Fetch
+      description: Get Single System Event
+      tags:
+      - System Events
+components:
+  schemas:
+    SystemEventModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            ts:
+              type: string
+            priority:
+              type: number
+            subject_type:
+              type: string
+            subject_id:
+              type: string
+            verb:
+              type: string
+            related:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  id:
+                    type: string
+            account_id:
+              type: string
+            context:
+              type: object
+              properties:
+                in:
+                  type: string
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          id: c57172d7d22e1c7ac4c80ce713e6e7cb
+          ts: '1465844458666'
+          priority: 2
+          subject_type: entity
+          subject_id: user/email/a.user@gmail.com
+          verb: clustered
+          related:
+          - type: segment
+            id: 791734b084019d99c82a475264464304
+          account_id: 1234abcdefgh
+          context:
+            in: '2016-06-13T18:58:29Z'
+        message: success
+        status: 200
+    SystemEventsModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              ts:
+                type: string
+              priority:
+                type: number
+              subject_type:
+                type: string
+              subject_id:
+                type: string
+              verb:
+                type: string
+              account_id:
+                type: string
+              related:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                    id:
+                      type: string
+              context:
+                type: object
+                properties:
+                  in:
+                    type: string
+            required:
+            - id
+            - ts
+            - priority
+            - subject_type
+            - subject_id
+            - verb
+            - account_id
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+        - id: 13564999017e8b0e9994ff16411fd19b
+          ts: '1465584982676'
+          priority: 2
+          subject_type: topic-document
+          subject_id: '-1894399319812759219'
+          verb: created
+          account_id: 1234abcdefgh
+        - id: c57172d7d22e1c7ac4c80ce713e6e7cb
+          ts: '1465844458666'
+          priority: 2
+          subject_type: entity
+          subject_id: user/email/a.user@gmail.com
+          verb: clustered
+          related:
+          - type: segment
+            id: 791734b084019d99c82a475264464304
+          account_id: 1234abcdefgh
+          context:
+            in: '2016-06-13T18:58:29Z'
+        message: success
+        status: 200
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

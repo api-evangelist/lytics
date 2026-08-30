@@ -1,0 +1,345 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Metric API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Metric
+  description: 'The Metric API provides access to a variety of metrics that are recorded
+
+    in the Lytics platform. With this API, you can access segment-size metrics,
+
+    events received per-hour, as well as many workflow specific metrics.'
+paths:
+  /api/metric/:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - name: sample-request
+                      dimension: segsize
+                      dimension_id: abc123
+                      dimension_type: size
+                      range: 2d
+                      aggregation: max
+                      interval: 2h
+                      is_cached: true
+                      values:
+                      - value: 0
+                        ts: '1525231674371'
+                      - value: 100
+                        ts: '1525238874371'
+                      - value: 200
+                        ts: '1525246074371'
+                      - value: 300
+                        ts: '1525253274371'
+                      - value: 400
+                        ts: '1525260474371'
+                      - value: 500
+                        ts: '1525267674371'
+                      - value: 600
+                        ts: '1525274874371'
+                      - value: 700
+                        ts: '1525282074371'
+                      - value: 800
+                        ts: '1525289274371'
+                      - value: 900
+                        ts: '1525296474371'
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Metric
+      operationId: Metric
+      description: 'Fetch metrics by providing the arguments in the query-parameters
+
+
+        ```sh
+
+        curl "$LIOAPI/api/metric?keyspace=segsize&metric=web&name=my-metric" -s -H "Authorization: $LIOKEY" | jq ''.''
+
+        ```'
+      tags:
+      - Metric
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: Name of the metric to return
+        required: false
+        example: my-metric
+        schema:
+          type: string
+      - name: dimension
+        in: query
+        description: Value of supported dimension (segment, experience, stream, etc)
+        required: true
+        example: segment
+        schema:
+          type: string
+      - name: dimension_id
+        in: query
+        description: 'ID for the specific item within dimension such as a segment ID. Tip: If the type is a segment you can use all_segments as the dimension id to get all segments for the account.'
+        required: true
+        example: abc123
+        schema:
+          type: string
+      - name: dimension_type
+        in: query
+        description: Type of metric to be returned (size, converted, etc)
+        required: true
+        example: size
+        schema:
+          type: string
+      - name: aggregation
+        in: query
+        description: Aggregation to apply to metrics (sum, max, min)
+        required: false
+        example: sum
+        schema:
+          type: string
+      - name: interval
+        in: query
+        description: Duration to roll-up metrics (2h for roll-up into two-hour buckets). Intervals smaller than two hours are not recommended.
+        required: false
+        example: 2h
+        schema:
+          type: string
+      - name: include_empty_rows
+        in: query
+        description: Passing true will include zero values in the response for every interval whether metrics were logged during that period or not.
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: smooth
+        in: query
+        description: Smooth metrics using a moving-average function
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: start_date
+        in: query
+        description: Fetch metrics after this date; both dates and relative-dates are supported
+        required: false
+        example: now-5w
+        schema:
+          type: string
+      - name: end_date
+        in: query
+        description: Fetch metrics before this date; both dates and relative-dates are supported
+        required: false
+        example: now-1w
+        schema:
+          type: string
+      - name: range
+        in: query
+        description: 'Time string used to calculate range from now (e.g "2h" will return the last 2 hours). This parameter cannot
+
+          be used in conjunction with `start_date` and/or `end_date)`
+
+          '
+        required: false
+        example: 2h
+        schema:
+          type: string
+  /api/metric:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - name: sample-request
+                      dimension: segsize
+                      dimension_id: abc123
+                      dimension_type: size
+                      range: 2d
+                      aggregation: max
+                      interval: 2h
+                      is_cached: true
+                      values:
+                      - value: 0
+                        ts: '1525231674371'
+                      - value: 100
+                        ts: '1525238874371'
+                      - value: 200
+                        ts: '1525246074371'
+                      - value: 300
+                        ts: '1525253274371'
+                      - value: 400
+                        ts: '1525260474371'
+                      - value: 500
+                        ts: '1525267674371'
+                      - value: 600
+                        ts: '1525274874371'
+                      - value: 700
+                        ts: '1525282074371'
+                      - value: 800
+                        ts: '1525289274371'
+                      - value: 900
+                        ts: '1525296474371'
+                    message: success
+                    status: 200
+      security:
+      - ApiKeyAuth: []
+      summary: Metric
+      operationId: Metrics
+      description: "Fetch metrics by providing the arguments in the request body\n\n```sh\n# Example of segment-size metrics\ncurl -s -XPOST \"$LIOAPI/api/metric\" \\\n    -H 'Content-type: application/json' \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d '{\n            \"dimension\": \"segsize\",\n            \"dimension_id\": \"abc123\",\n            \"dimension_type\": \"size\",\n            \"interval\": \"2h\",\n            \"aggregation\": \"max\",\n            \"start_date\": \"now-5d\",\n            \"end_date\": \"now\",\n            \"smooth\": true\n    }' | jq '.'\n\n\n# Example request of data collected from the default and email stream\ncurl -s -XPOST \"$LIOAPI/api/metric\" \\\n    -H \"Content-type: application/json\" \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d '[{\n            \"dimension\": \"stream\",\n            \"dimension_id\": \"default\",\n            \"dimension_type\": \"size\",\n            \"interval\": \"1h\",\n            \"aggregation\": \"sum\",\n            \"start_date\": \"now-1w\",\n            \"end_date\": \"now\"\n        },\n        {\n            \"dimension\": \"stream\",\n            \"dimension_id\": \"email\",\n            \"dimension_type\": \"size\",\n            \"interval\": \"1h\",\n            \"aggregation\": \"sum\",\n            \"start_date\": \"now-2w\",\n            \"end_date\": \"now\"\n        }]' | jq '.'\n\n```"
+      tags:
+      - Metric
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dimension:
+                  description: Value of supported dimension (segment, experience, stream, etc)
+                  type: string
+                dimension_id:
+                  description: 'ID for the specific item within dimension such as a segment ID. Tip: If the type is a segment you can use all_segments as the dimension id to get all segments for the account.'
+                  type: string
+                dimension_type:
+                  description: Type of metric to be returned (size, converted, etc)
+                  type: string
+                interval:
+                  description: Duration to roll-up metrics (2h for roll-up into two-hour buckets). Intervals smaller than two hours are not recommended.
+                  type: string
+                aggregation:
+                  description: Aggregation to apply to metrics (sum, max, min)
+                  type: string
+                smooth:
+                  description: Smooth metrics using a moving-average function
+                  type: boolean
+                include_empty_rows:
+                  description: Passing true will include zero values in the response for every interval whether metrics were logged during that period or not.
+                  type: boolean
+                start_date:
+                  description: Fetch metrics after this date; both dates and relative-dates are supported
+                  type: string
+                end_date:
+                  description: Fetch metrics before this date; both dates and relative-dates are supported
+                  type: string
+              example:
+                dimension: segsize
+                dimension_id: default
+                dimension_type: size
+                interval: 2h
+                aggregation: max
+                startdate: now-5d
+                enddate: now
+components:
+  schemas:
+    MetricModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              dimension:
+                type: string
+              dimension_id:
+                type: string
+              dimension_type:
+                type: string
+              range:
+                type: string
+              aggregation:
+                type: string
+              interval:
+                type: string
+              is_cached:
+                type: boolean
+              values:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    value:
+                      type: number
+                    ts:
+                      type: string
+                  required:
+                  - value
+                  - ts
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+        - name: sample-request
+          dimension: segsize
+          dimension_id: abc123
+          dimension_type: size
+          range: 2d
+          aggregation: max
+          interval: 2h
+          is_cached: true
+          values:
+          - value: 0
+            ts: '1525231674371'
+          - value: 100
+            ts: '1525238874371'
+          - value: 200
+            ts: '1525246074371'
+          - value: 300
+            ts: '1525253274371'
+          - value: 400
+            ts: '1525260474371'
+          - value: 500
+            ts: '1525267674371'
+          - value: 600
+            ts: '1525274874371'
+          - value: 700
+            ts: '1525282074371'
+          - value: 800
+            ts: '1525289274371'
+          - value: 900
+            ts: '1525296474371'
+        message: success
+        status: 200
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

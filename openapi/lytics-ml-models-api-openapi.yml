@@ -1,0 +1,623 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@lytics.com
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  description: Version 2 of the Lytics API
+  termsOfService: https://www.lytics.com/terms-of-service/
+  title: Lytics ML Models API
+  version: '2.0'
+servers:
+- url: https://api.lytics.io/v2
+tags:
+- name: ML Models
+paths:
+  /ml:
+    get:
+      description: Get a list of all ML models for the account
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.MLModel'
+                      type: array
+                  type: object
+          description: ML Model List Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get ML Models
+      tags:
+      - ML Models
+    post:
+      description: Create an ML Model
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.MLModel'
+        description: ML Model Request
+        required: true
+        x-originalParamName: model
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.MLModel'
+                  type: object
+          description: ML Model Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Post ML Model
+      tags:
+      - ML Models
+  /ml/{id}:
+    delete:
+      description: Delete an ML model by ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The model ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: OK
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete ML Model
+      tags:
+      - ML Models
+    get:
+      description: Get an ML model by ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The model ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.MLModel'
+                  type: object
+          description: ML Model Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get ML Model
+      tags:
+      - ML Models
+    put:
+      description: Update an ML model by ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The model ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Promote and deploy the model to users
+        in: query
+        name: is_active
+        schema:
+          type: string
+      - description: Label of the model
+        in: query
+        name: label
+        schema:
+          type: string
+      - description: Hide the model from the UI
+        in: query
+        name: hidden
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.MLModel'
+                  type: object
+          description: ML Model Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Update ML Model
+      tags:
+      - ML Models
+  /ml/{id}/summary:
+    get:
+      description: Get an ML model's summary by ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The model ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.MLSummaryResponse'
+                  type: object
+          description: ML Model Summary Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get ML Model Summary
+      tags:
+      - ML Models
+components:
+  schemas:
+    models.ModelMessage:
+      properties:
+        severity:
+          description: Severity level of the message; "info", "warn", "error", or "debug"
+          type: string
+        tags:
+          description: Tags for the message; "summary", "workflow", "autotune", "collinearity", or "verdict"
+          items:
+            type: string
+          type: array
+        text:
+          description: Model message
+          type: string
+      type: object
+    models.MLSummaryResponse:
+      properties:
+        features:
+          description: All features of final model build with importances and correlations of each
+          items:
+            $ref: '#/components/schemas/models.Feature'
+          type: array
+        id:
+          description: ID of the model
+          type: string
+        name:
+          description: Name of the model
+          type: string
+        state:
+          description: State of the model, "complete", "building", or "invalid"
+          type: string
+        summary:
+          $ref: '#/components/schemas/models.MLSummary'
+      type: object
+    models.ConfusionMatrix:
+      properties:
+        FalseNegative:
+          description: Predicted negative but actual positive
+          type: integer
+        FalsePositive:
+          description: Predicted positive but actual negative
+          type: integer
+        TrueNegative:
+          description: Predicted negative and actual negative
+          type: integer
+        TruePositive:
+          description: Predicted positive and actual positive
+          type: integer
+      type: object
+    models.ModelConfig:
+      properties:
+        additional:
+          description: Additional features to include in the model
+          items:
+            type: string
+          type: array
+        auto_tune:
+          description: Automatically search through all data fields in Lytics and build the optimized model of the best fields
+          type: boolean
+        blocked:
+          description: Features to exclude from the model
+          items:
+            type: string
+          type: array
+        build_only:
+          description: Train the model only, do not deploy
+          type: boolean
+        collect:
+          description: Number of samples to collect for training
+          type: integer
+        internal:
+          description: Internal Lytics model; not visible to users
+          type: boolean
+        re_run:
+          description: Re-train the model every week
+          type: boolean
+        use_content:
+          description: Use content affinities as features
+          type: boolean
+        use_scores:
+          description: Use behavioral scores as features
+          type: boolean
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.MLSummary:
+      properties:
+        accuracy:
+          description: Measure of 0-10 of how accurate the model is. Interpreted from the R-squared
+          type: integer
+        auc:
+          description: '"Area under curve" (0-1) for the ROC (receiver operating characteristic curve). AUC provides an overall measure of performance across all possible thresholds'
+          type: number
+        audience_similarity:
+          description: Jaccard Index/Similarity for source and target segments for a model
+          type: number
+        error_matrix:
+          $ref: '#/components/schemas/models.ConfusionMatrix'
+        model_health:
+          description: Health of the model; "healthy" or "unhealthy". Unhealthy models are not accurate enough or encountered an error during training
+          type: string
+        mse:
+          description: Mean squared error is the average squared difference between the estimated values and the actual value
+          type: number
+        msgs:
+          description: Messages to help debug and improve the model
+          items:
+            $ref: '#/components/schemas/models.ModelMessage'
+          type: array
+        reach:
+          description: Measure of 0-10 of how many users this model can reach. Interpreted from the False Positive Rate
+          type: integer
+        rsq:
+          description: R-squared is a measure (0-1) of "goodness of fit", i.e. how well the model fits the data
+          type: number
+        source_predictions:
+          additionalProperties:
+            type: integer
+          description: Test dataset predictions for the source audience
+          type: object
+        target_predictions:
+          additionalProperties:
+            type: integer
+          description: Test dataset predictions for the target audience
+          type: object
+        threshold:
+          description: Computed as the optimal threshold to use when creating predictive audiences. The value that optimizes both reach and accuracy simultaneously
+          type: number
+      type: object
+    models.Impact:
+      properties:
+        lift:
+          description: '%increase in the target audience when the feature is present'
+          type: number
+        threshold:
+          description: For numeric fields; use for determining lift
+          type: number
+        value:
+          description: For categorical fields
+          type: string
+      type: object
+    models.FieldPrevalence:
+      properties:
+        source:
+          description: Field prevalence in the source audience
+          type: number
+        target:
+          description: Field prevalence in the target audience
+          type: number
+      type: object
+    models.Feature:
+      properties:
+        correlation:
+          description: Correlation coeffient between the feature and the target audience
+          type: number
+        field_prevalence:
+          $ref: '#/components/schemas/models.FieldPrevalence'
+        impact:
+          $ref: '#/components/schemas/models.Impact'
+        importance:
+          description: Feature importance as calculated by the model
+          type: number
+        kind:
+          description: Kind of the feature; segment, lql, score, content, campaign, or unknown
+          type: string
+        name:
+          description: Name of the feature/data field
+          type: string
+        type:
+          description: Type of the feature; numeric or categorical
+          type: string
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.MLModel:
+      properties:
+        additional_data:
+          additionalProperties:
+            type: string
+          type: object
+        aid:
+          type: integer
+        author_id:
+          description: Creator of the model
+          type: string
+        config:
+          $ref: '#/components/schemas/models.ModelConfig'
+        created:
+          description: Created timestamp
+          type: string
+        description:
+          description: Description for the model
+          type: string
+        error:
+          description: Error from model training; set to nil if no error or "building" if model is still training
+          type: string
+        hidden:
+          description: Model is hidden from the UI
+          type: boolean
+        id:
+          description: ID of the model
+          type: string
+        is_active:
+          description: Has model been promoted and deployed to users
+          type: boolean
+        is_healthy:
+          description: Model health
+          type: boolean
+        label:
+          description: Label for the model
+          type: string
+        name:
+          description: Name of the model
+          type: string
+        source:
+          description: Source segment ID of the model
+          type: string
+        state:
+          description: State of the model, "complete", "building", or "invalid"
+          type: string
+        target:
+          description: Target segment ID of the model
+          type: string
+        type:
+          description: Model algorithm chosen from automatic tuning; random forest (rf), logistic regression (lr), or gradient boosting machine (gbm)
+          type: string
+        updated:
+          description: Updated timestamp for re-training
+          type: string
+        work_ids:
+          description: Work IDs of the model; presence of multiple usually indicates an eval-only work, thus the model has been deployed at one point
+          items:
+            type: string
+          type: array
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey

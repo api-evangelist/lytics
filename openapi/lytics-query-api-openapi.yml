@@ -1,0 +1,266 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Query API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Query
+  description: "Schema management api to add/edit queries and user-fields.\n\nLytics Query Language\n=============================\n\nThe Lytics Query Language is used to define the transformation of uploaded\nrecords, and event data into user Profiles.  It transforms row-level event data into Document-oriented User info.\nThis Query langage is similar to the HIVE or SQL query langauges, however departs from these in\norder to offer more of a *Rich Document* (json user profile) construction.\n\n**Query example**\n\n```\n\n# Build a user from web data\nSELECT\n    name                       -- Simple field, by default = string\n    , age            KIND INT  -- cast field as int\n    , last_visit_ts  KIND DATE -- cast as date\n\n    -- Showing the aggregate counter function and aliasing name of output column AS\n    , count(_ref)         AS ref_ct\n\n    -- Valuect makes a map[string]int count of occurences of a key\n    , valuect(`my field`) AS myfield_mapct\n\n    -- showcase every optional syntax element in column\n    --     meregeop oldest we don't want to over-write this value, keep oldest\n    --     KIND INT   normally we don't have to cast as most functions have a specific type\n    , amt AS first_order_amount\n          IF  event == \"cart checkout\"\n          SHORTDESC \"Amount of First Order\"\n          LONGDESC \"Amount of First Order\"\n          KIND INT\n          MERGEOP OLDEST\n\n    -- lets keep around the date at which they signed up (mergeop oldest)\n    , now()               AS signedup_date                  IF event == \"signed up\"    KIND DATE  MERGEOP oldest\n\n    -- maps:   map all fields that start with \"user.\" into a fact map\n    , match(\"user.\")        AS user_attributes     KIND map[string]string\n\n    -- list of strings\n    , set(event) AS all_events\n\n\n    -- Identified By Columns allow merging across streams\n    , email(EmailAddress) AS email\n    , _uid\n    , fbuid\n\nFROM\n    default\nINTO\n    user\nBY\n    _uid OR email OR fbuid\nWHERE\n    _bot = \"f\" OR NOT EXISTS _bot\nALIAS\n    web_user;\n\n# validate the query\ncurl -s -XPOST \"https://api.lytics.io/api/query/_validate\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   -H \"Content-Type: text/plain\" \\\n   --data-binary @/tmp/tmp.lql | jq '.'\n\n# upload the query\ncurl -s -XPOST \"https://api.lytics.io/api/query\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   -H \"Content-Type: text/plain\" \\\n   --data-binary @your_file.lql | jq '.'\n\n# look at schema it output:\ncurl -s -H \"Authorization: $LIOKEY\" \\\n -XGET \"https://api.lytics.io/api/schema/user\" | jq '.'\n\n```\n\n**Standard Syntax**\n\n```\n\nSelect = \"SELECT\" COLUMNS FROM INTO BY [WHERE] ALIAS\n\n# required from, the stream to operate on for this query\nFROM = \"FROM\" Identifier\n\n# Required Identified By field, name of column \"AS\" from Column\nBY = \"BY\" Identifier [\"OR\" Identifier]\n\n# Required Alias for giving a query a unqique identifier\nALIAS = \"ALIAS\" Identifier\n\n# Optional Where Filter, same as SQL where\nWHERE = \"WHERE\" LogicalExpression\n\nCOLUMNS         = COLUMN [, COLUMN]\n\nCOLUMN     = Expression [\"AS\" Identifier]\n     [\"IF\" LogicalExpression] [\"SHORTDESC\" String]\n     [\"LONGDESC\" String] [\"KIND\" Kind] [\"MERGEOP\" MergeOp]\n\nLogicalExpression = NOT\n           | Comparison\n           | EXISTS\n           | IN\n           | CONTAINS\n           | LIKE\n           | Function\n           | Expression\n           | \"(\" LogicalExpression \")\"\n           | LogicalExpression OR LogicalExpression\n           | LogicalExpression AND LogicalExpression\n\nExpression =\n    Identifier\n    | Function\n    | Literal\n\nFunction = Identifier \"(\" Expression [, Expression] \")\"\n\nNOT            = \"NOT\" LogicalExpression\nComparison     = Identifier ComparisonOp Literal\nComparisonOp   = \">\" | \">=\" | \"<\" | \"<=\" | \"==\" | \"!=\"\nEXISTS         = \"EXISTS\" Identifier\nIN             = Identifier \"IN\" (Literal, Literal, ...)\nCONTAINS       = Identifier \"CONTAINS\" Literal\nLIKE           = Identifier \"LIKE\" String # uses * for wildcards\n\n\nLiteral = String | Int | Float | Bool | Timestamp\n\nIdentifier = [a-zA-Z][a-zA-Z0-9_]+ | \"`\" + String + \"`\"\n\nKind = \"int\" | \"number\" | \"string\" | \"date\" | \"[]string\" |\n    \"ts[]string\" | \"map[string]int\" | \"map[string]number\" | \"map[string]string*\n\n# MergeOp's are very seldom used and have to be used on the right Kind\n#  ie string can use Latest, Oldest (but not min, max)\nMergeOp =  \"max\" | \"min\" | \"latest\" | \"oldest\" | \"mapmax\"\n\n\n```\n\n* **SELECT** Select data to be added to user profiles.   Including Maps, Counts, and other complex data types.\n\n* **FROM** The stream to select from\n\n* **INTO** This is `USER` for all user profiles.   (technically you could create other types, such as \"account\")\n\n* **WHERE** Filters out entire records to not be included/analyzed.  Bots, Employees, Test data.\n\n* **BY** What field are we going to identify this entity by\n\n* **ALIAS** When a selection query has an alias, that is the profile-fragment(table) name to use\n\nFunctions\n--------------------------------\n\nThere are a variety of functions for transformation and logic evaluation.\n\n**Aggregate Functions**\n\nThere are a variety of expressions for building document type structures (maps, lists, sets).\nThese are functional expressions but can only be used in Columns.\n\n- **cap**  Limit the items stored in a field by count or by date. `cap(field, int)` `cap(field, \"number_of_days\")` (e.g. `cap(field, \"30d\")`). Returns an array containing the values within the capped count or length of time.\n\n- **count**   Count of this key.  For instance, count occurences of sessions that have started (ie, visited web site).\n\n- **set**  Create a unique list/array of each value we have seen from this field\n\n- **min,max**  Minimum or Maxium value (for numerics)\n\n- **sum** Sum values (keep track of total video play time, etc)\n\n**Logical Functions**\nLocal Evaluation, return boolean true/false.\n\n- **all** checks for existince of n keys `all(key1,key2,key3,...)` returns boolean.\n\n- **any** accepts a list of values and returns True if any are the contents of a field  `any(fieldname, value1,value2,value3) `\n\n- **exists** Check for field (aka key) existence.\n    * `exists(purchase_total)` checks to see if `purchase_total` is defined for the current message\n    * `valuect(yymm())        AS visits_by_yymm    IF exists(_sesstart) ` Only fires `valuect(yymm())` if `_sesstart` exists\n\n- **in** Determines if a field value is in a set of values.\n    * `\"t\" AS is_student IF role_type IN (\"student\",\"other\")`\n    * `dailyContact          AS dailyContact   IF dailyContact IN (\"student\",\"other\")`\n\n- **eq**  Equal to       `eq(domain,\"google.com\")`\n\n- **ne**  Not Equal to    `ne(domain,\"google.com\")`\n\n- **lt**  Less Than    `lt(seconds(video_time), 30)`\n\n- **le**  Less Than or Equal to    `le(seconds(video_time), 30)`\n\n- **gt**  Greater Than              `gt(seconds(video_time), 30)`\n\n- **ge**  Greater Than or Equal to    `ge(seconds(video_time), 30)`\n\n- **not** Not                         `not(exists(domain))`\n\n- **or**  Or                          `or(exists(domain), contains(domain,\"google.com\")) AS from_google`\n\n**String Functions**\n\n- **join** Join together multiple values, coerce them into strings.  Last argument is which string to use to join (may be empty string).\n    * `join(\"apples\",\"oranges\",\",\")   => \"apples,oranges\"`\n    * `join(\"apples\",\"oranges\",\"\")   => \"applesoranges\"`\n\n- **len**  Length (of array, string)\n\n- **oneof** Choose value from the first field that has a non nil value.\n    * `oneof(fielda,fieldb,fieldc)`\n\n- **replace** - Replace a matching part of a string with an empty string.  Converts to string first.\n    * `replace(url,\"/search/apachesolr_search/\")` - Removes `/search/apachesolr_search/` from URL (in this case, leaving the search term\n\n- **split** Breaks a variable into smaller fragments given a specific delimiter\n    * `split(cc,\",\")` - Splits the variable `cc` at each comma it contains\n\n- **strip(field)** Strips leading and trailing whitespace (spaces, tabs, newline, carriage-return) from string, or arrays of strings.\n\n- **string.lowercase** Convert strings to lower case\n\n- **string.uppercase** Convert strings to upper case\n\n- **string.titlecase** Convert strings to title case\n\n- **contains**  Does this value contain this string?  Is a sub-string match, not full match (eq)\n    * `IF contains(total_price, \"$\")` - Check to see if `total_price` has a `$` in it\n    * `IF not(contains(subscriber_key,\"-\")) AND not(contains(subscriber_key,\"@\"))` check to make sure `-` or `@` is not in it.\n\n- **hasprefix**  Does this value start with this string?\n    * `hasprefix(event, \"created\")` - Check to see if `event` starts with \"created\"\n\n- **hassuffix**  Does this value start with this string?\n    * `hassuffix(subscriber_key, \"user\")` - Check to see if `subscriber_key` ends with \"user\"\n\n**Hash & Encoding Functions**\n\n- **hash.sip** `hash.sip(email)` Hash the given value using sip hash to integer output.\n\n- **hash.md5** `hash.md5(email)` Hash the given value using md5\n\n- **hash.sha1** `hash.sha1(email)` Hash the given value using sha1\n\n- **hash.sha256** `hash.sha256(email)` Hash the given value using sha256\n\n- **hash.sha512** `hash.sha512(email)` Hash the given value using sha512\n\n- **encoding.b64encode(field)** base64 encode.\n\n- **encoding.b64decode(field)** base64 decode.\n\n**Cast & Convert**\n\n- **toint** Converts strings to integers.  Useful for converting a string to a number before applying a number-based expression.\n    * `toint(order_total)` - Converts `order_total` to an int\n    * `set(toint(split(cc,\",\")))` - Takes the field `cc` and splits it at commas, and converts the results to integers.  Then adds them to a set.\n\n- **tonumber** Convert to Number\n\n- **todate** Converts strings to dates, see full doc in Date/Time section below.\n\n- **tobool(field)** Cast to Boolean.\n\n**Map & Set/Array Functions**\n\n- **filter** Filter out Values that match specified list of match filter criteria\n    * `filter(split(\"apples,oranges\",\",\"),\"ora*\")  => [\"apples\"]`\n\n- **len**  Length (of array, string)\n\n- **map** Type: Map  `map(key1, todate(date_field))`\n    * `map(key1, todate(date_field))  KIND map[string]time `  By default the `map` is generic map, cast to map[string]time with\n\n- **match** Type:  Map (generic map, use KIND to cast) Match a key, and then keep a map of key/values with the match value removed\n    * `, match(\"topic_\")           AS global       KIND map[string]number`\n\n- **mapkeys** Type:  Map input, []string{} output. Given a map, return a list of string of each of the keys.\n\n- **mapvalues** Type:  Map input, []string{} output. Given a map, return a list of string values of each of the values.\n\n- **mapinvert** Type:  Map input, MapString output. Given a map, return a map[string]string inverting keys/values.\n\n- **array.index**  Cherry pick a single item out of an array:\n    * `array.index(split(\"apples,oranges,peaches\",\",\"),1)  => [\"oranges\"]`\n\n- **array.slice**  Slice an array of items selecting some sub-set of them.\n    * `array.slice(split(\"apples,oranges,peaches,pineapple\",\",\"),2)  => [\"peaches\",\"pineapple\"]`\n    * `array.slice(split(\"apples,oranges,peaches,pineapple\",\",\"),1,3)  => [\"oranges\",\"peaches\"]`\n\n**Url/Http & Email Functions**\n\n- **email** Extract email address from \"`Bob <emailaddress@lytics.io>`\" format\n\n- **emailname** Extract *Bob* from \"`Bob <emailaddress@gmail.com>`\" or `email@gmail.com`\n\n- **emaildomain** Extract *gmail.com* from \"`Bob <emailaddress@gmail.com>`\" or `email@gmail.com`\n\n- **domain** Extract domain from url\n\n- **host** Extract host from url\n\n- **path** Extract the url path from url (no query string or domain), must be valid url parserable string.\n\n- **qs**  Extract the querystring parameter from url `qs(urlfield, \"nameOfParam\")`\n    * `qs(url, \"mc_eid\")` - Extracts the MailChimp user ID\n    * `set(qs(url, \"video_id\")` - Creates a set of `video_id`\n    * `qs(tolower(url), \"riid\")` - Converts the complete URL to lowercase before attempting to match\n    * `email(oneof(email, qs(url, \"email\")))` - Attempts to get the email address from the URL and from the regular fields, chooses whichever is populated and treats it like an email field\n\n- **urldecode** Perform URL decode on a field. `urldecode(field)`\n    * If `field` contains \"my%20value\", `urldecode(field)` will return \"my value\"\n\n- **urlminusqs** The url minus the querystring portion\n\n- **useragent** Extract info from user-agent string.   Below examples based on  `Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.97 Safari/537.11`\n    * `useragent(user_agent, \"bot\")` - Extracts True/False is this a bot?\n    * `useragent(user_agent, \"mobile\")` - Extracts True/False is this mobile?\n    * `useragent(user_agent, \"mozilla\")` - Extracts \"5.0\"\n    * `useragent(user_agent, \"platform\")` - Extracts \"X11\"\n    * `useragent(user_agent, \"os\")` - Extracts \"Linux x86_64\"\n    * `useragent(user_agent, \"engine\")` - Extracts \"Linux x86_64\"\n    * `useragent(user_agent, \"engine_version\")` - Extracts \"AppleWebKit\"\n    * `useragent(user_agent, \"browser\")` - Extracts \"Chrome\"\n    * `useragent(user_agent, \"browser_version\")` - Extracts \"23.0.1271.97\"\n\n- **useragent.map(field)** Extract map of all of above.\n\n**Date & Time Functions**\n\nOur core date parser recognizes about 50 date formats, so in general these will operate on _any_ format.\nIf you are using EU dates, you will need to specify the parser format.\n\n- **dayofweek** Type: Integer.  0-6 integer of day of week.\n    * Examples:  `dayofweek() => 4`  OR  `dayofweek(mydatefield)`\n\n- **epochms** Type: Integer.  Unix MS of the date stamp on the current message being processed\n\n- **extract**  Can be used to extract parts of date and time.  Example usage on the [strftime](http://strftime.org/) site\n    * `extract(reg_date, \"%B\")` Returns name of month\n    * `extract(reg_date, \"%d\")` Returns day of month\n\n- **hourofday** Type: Integer.  Hour of day (in 24 hour utc time).     `hourofday()`  OR `hourofday(field)`\n\n- **hourofweek** 0-167 integer for hour of week\n\n- **mm** Type:  Integer.  0-11 month  (alias for monthofyear)   `mm()` => current month, 6 for june, `mm(my_date_field)`\n\n- **monthofyear** Type:  Integer  Output the 0-11 month value\n\n- **now** Type:  Date   The current message/event times.\n\n- **seconds** Type: Integer.  Seconds, extracts things like `seconds(\"00:30\") => 30` and `seconds(\"10:30\") => 630`\n\n- **todate** Converts strings to dates.\n    * Datemath:   `todate(\"now-3m\")`  Date math relative to message timestamp.\n    * Parser:  `todate(\"02/01/2006\")` More than 30 formats supported. [Date Parser](https://github.com/araddon/dateparse)\n    * Examples with 2 arguments:  `todate(\"02/01/2006\",\"07/04/2014\")` use [golang's time package](http://golang.org/pkg/time/) formatting\n        * `todate(\"02/01/2006\",\"07/04/2014\")` Reformats the date `07/04/2014` from US formatting to UK formatting, with the resulting output being `04/07/2014`\n        * `todate(\"02/01/2006\",date_field_name)` Outputs `date_field_name` as European format (where `01` is a placeholder for month, `02` is a placeholder for day, and `2006` is a placeholder for year)\n\n- **todatein** Converts strings to dates, if no location info is provided in date string such as \"2017-09-30 17:00:00\" this will allow you to apply a timezone.  We still convert back to UTC for storage.\n\n- **totimeset** Type time slice/array. Takes in times and converts strings to times similar to todate without the formatting parameter.\n\n- **totimestamp** Convert to Integer Unix Seconds (UTC).\n\n- **yy** Type: int   Date conversion to YY format, so May 1 2014 is expressed as 14.   yy(dob), or yy() for record time stamp\n\n- **yymm**  String The YYMM date format, so May 1 2014 is expressed as 1405.     yy(dob), or yy() for record time stamp\n\n- **timebucket** Creates a tabulation of timestamps which can be used to segment based on timewindows. See [Segments Examples](#segment) for more information.  `timebucket(now())` for collect time, or `timebucket(todate(field))` to bucket on the value of a field\n\nKINDS (aka Data Types)\n-----------------------------------\n\nAllows explicitly setting data type.  Often this os optional\nas it is inferred from functional expression.\n\n- *int*  64 bit signed integer\n\n- *number*  64 bit signed Float value\n\n- *bool*  Boolean\n\n- *date*  Date-Time\n\n- *string* string\n\n- *[]time* Array of times\n\n- *[]string* Array of strings\n\n- *ts[]string* Time ordered Unique set of strings (useful for keeping track of order in which they performed set of unique events)\n\n- *map[string]int* Map of key/integers\n\n- *map[string]number*\n\n- *map[string]string*\n\n- *map[string]time*\n\nMerge Operations\n---------------------\n\n*MERGEOP* Allow Merge behavior's to determine if given new data we want the new field, or keep the previous.\n\n* `, my_date                   KIND DATE     MERGEOP oldest` -- Holds the first value seen for my_date\n\n* `, old_score                   KIND INT     MERGEOP oldest` -- Holds the oldest value passed in to the field\n\n* `set(lists) AS lists KIND []string MERGEOP latest` -- only store latest set (all previous values of set discarded)"
+paths:
+  /api/query:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryListModel'
+              examples:
+                response:
+                  value:
+                    status: success
+                    data:
+                    - id: abcdef123
+                      updated: '2014-10-30T21:01:06.493Z'
+                      created: '2014-10-30T21:01:06.493Z'
+                      text: SELECT ...
+      security:
+      - ApiKeyAuth: []
+      summary: Query List
+      operationId: Query List
+      description: List of all queries
+      tags:
+      - Query
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryListModel'
+              examples:
+                response:
+                  value:
+                    status: success
+                    data:
+                    - id: abcdef123
+                      updated: '2014-10-30T21:01:06.493Z'
+                      created: '2014-10-30T21:01:06.493Z'
+                      text: SELECT ...
+      security:
+      - ApiKeyAuth: []
+      summary: Query Upsert
+      operationId: Query Upsert
+      description: "Uses ALIAS name inside parsed query for ID, and either creates/updates a query.\n\n**CHANGE NOTIFICATION**  This api in the past has returned a single object\nbut is changing to return an array of query objects (because posted QL text\nmay contain more than one statement).   To get the old behavior\nof single object pass  *version=old*.\n\n```sh\n# new version, will be default in Sept 2017.\ncurl -s -XPOST \"https://api.lytics.io/api/query?version=new\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   --data-binary @your_file.lql\n\n# old version, returns object\ncurl -s -XPOST \"https://api.lytics.io/api/query?version=old\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   --data-binary @your_file.lql\n\n```"
+      tags:
+      - Query
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: version
+        in: query
+        description: Use the "new" array based response or "old" object.
+        required: false
+        example: old
+        schema:
+          type: string
+  /api/query/{idOrAlias}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryModel'
+              examples:
+                response:
+                  value:
+                    status: success
+                    data:
+                      id: abcdef123
+                      updated: '2014-10-30T21:01:06.493Z'
+                      created: '2014-10-30T21:01:06.493Z'
+                      text: SELECT ...
+      security:
+      - ApiKeyAuth: []
+      summary: Query Fetch
+      operationId: Query Fetch
+      description: Get single query by *ALIAS OR ID*
+      tags:
+      - Query
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: idOrAlias
+        in: path
+        description: Alias of query
+        required: true
+        example: web
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Query Delete
+      operationId: Query Delete
+      description: Delete A query by idOrAlias.
+      tags:
+      - Query
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: idOrAlias
+        in: path
+        description: Alias of query
+        required: true
+        example: web
+        schema:
+          type: string
+  /api/query/_validate:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryModel'
+              examples:
+                response:
+                  value:
+                    status: success
+                    data:
+                      id: abcdef123
+                      updated: '2014-10-30T21:01:06.493Z'
+                      created: '2014-10-30T21:01:06.493Z'
+                      text: SELECT ...
+      security:
+      - ApiKeyAuth: []
+      summary: Query Validation
+      operationId: Query Validation
+      description: "Upload a query for syntax validation only.\n\nOptionally, a *segments=true* parameter can be passed that\nwill validate this query both for syntax, as well as checking\nthat it doesn't invalidate existing segments.  If a segment\nuses a field that this query is about to remove/alter such\nthat the segment is no longer valid, this will warn.\n\n```sh\n\n# validate query syntax\ncurl -s -XPOST \"https://api.lytics.io/api/query/_validate\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   -H \"Content-Type: text/plain\" \\\n   --data-binary @your_file.lql\n\n# validate query syntax AND segments still valid\ncurl -s -XPOST \"https://api.lytics.io/api/query/_validate?segments=true\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   -H \"Content-Type: text/plain\" \\\n   --data-binary @your_file.lql\n\n```"
+      tags:
+      - Query
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: version
+        in: query
+        description: Use the "new" array based response or "old" object.
+        required: false
+        example: old
+        schema:
+          type: string
+  /api/query/_test:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryModel'
+              examples:
+                response:
+                  value:
+                    status: success
+                    data:
+                      id: abcdef123
+                      updated: '2014-10-30T21:01:06.493Z'
+                      created: '2014-10-30T21:01:06.493Z'
+                      text: SELECT ...
+      security:
+      - ApiKeyAuth: []
+      summary: Query Test Evaluation
+      operationId: Query Test Evaluation
+      description: "Upload a query AND data to see how it will be interpreted.\n\n```sh\n\n# add any name/value paris to query string param for data input\n# then upload query and get evaluation response\ncurl -s -XPOST \"https://api.lytics.io/api/query/_test?name=value\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   -H \"Content-Type: text/plain\" \\\n   --data-binary @your_file.lql\n\n```"
+      tags:
+      - Query
+components:
+  schemas:
+    QueryListModel:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              updated:
+                type: string
+              created:
+                type: string
+              text:
+                type: string
+      example:
+        status: success
+        data:
+        - id: abcdef123
+          updated: '2014-10-30T21:01:06.493Z'
+          created: '2014-10-30T21:01:06.493Z'
+          text: SELECT ...
+    QueryModel:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            updated:
+              type: string
+            created:
+              type: string
+            text:
+              type: string
+      example:
+        status: success
+        data:
+          id: abcdef123
+          updated: '2014-10-30T21:01:06.493Z'
+          created: '2014-10-30T21:01:06.493Z'
+          text: SELECT ...
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

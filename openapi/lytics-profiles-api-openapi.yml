@@ -1,0 +1,745 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@lytics.com
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  description: Version 2 of the Lytics API
+  termsOfService: https://www.lytics.com/terms-of-service/
+  title: Lytics Profiles API
+  version: '2.0'
+servers:
+- url: https://api.lytics.io/v2
+tags:
+- description: Get and delete user profiles.
+  name: Profiles
+paths:
+  /attributes/{table}/{key}/{value}:
+    delete:
+      description: Delete profile attributes for a user.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Identity Key (e.g. email)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: Value (e.g. hello@lytics.com)
+        in: path
+        name: value
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete profile attributes
+      tags:
+      - Profiles
+    get:
+      description: Get profile attributes for a user.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Identity Key (e.g. email)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: Value (e.g. hello@lytics.com)
+        in: path
+        name: value
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.AttributeResponse'
+                  type: object
+          description: User profile"  example({"data":{"email":"hello@lytics.com","first_name":"John","last_name":"Doe","age":30,"city":"Portland","last_updated":"2023-10-15T14:30:00Z"},"status":200,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600"})
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":400,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"BADREQ-001","message":"Invalid table name"}]})
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":404,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"NOTFOUND-003","message":"The attribute you are trying to read does not exist"}]})
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":500,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"INTERNAL-019","message":"Internal server error"}]})
+      security:
+      - ApiKeyAuth: []
+      - ApiKeyAuth: []
+      summary: Get profile attributes
+      tags:
+      - Profiles
+    patch:
+      description: Update some of the profile attributes for a user.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Identity Key (e.g. email)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: Value (e.g. hello@lytics.com)
+        in: path
+        name: value
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+        description: Profile attributes to update
+        required: true
+        x-originalParamName: attributes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.AttributeResponse'
+                  type: object
+          description: User profile"  example({"data":{"email":"hello@lytics.com","first_name":"John","last_name":"Doe","age":30,"city":"Portland","external_audiences":["sports enthusiasts", "music lovers", "new customers"],"last_updated":"2025-10-15T14:30:00Z"},"status":200,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600"})
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":400,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"BADREQ-001","message":"The body of your request could not be processed. Please check the format of your request."}]})
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":404,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"NOTFOUND-003","message":"The attribute you are trying to update does not exist"}]})
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":500,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"INTERNAL-019","message":"Internal server error"}]})
+      security:
+      - ApiKeyAuth: []
+      summary: Update some profile attributes
+      tags:
+      - Profiles
+    put:
+      description: Update all of the profile attributes for a user.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Identity Key (e.g. email)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: Value (e.g. hello@lytics.com)
+        in: path
+        name: value
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+        description: Profile attributes to update
+        required: true
+        x-originalParamName: attributes
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.AttributeResponse'
+                  type: object
+          description: User profile"  example({"data":{"email":"hello@lytics.com","first_name":"John","last_name":"Doe","age":30,"city":"Portland","external_audiences":["sports enthusiasts", "music lovers", "new customers"],"last_updated":"2025-10-15T14:30:00Z"},"status":200,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600"})
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":400,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"BADREQ-001","message":"The body of your request could not be processed. Please check the format of your request."}]})
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":404,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"NOTFOUND-003","message":"The attribute you are trying to update does not exist"}]})
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: status":500,"request_id":"bc58cac9-4712-4ff2-81c2-89941bd7b600","errors":[{"code":"INTERNAL-019","message":"Internal server error"}]})
+      security:
+      - ApiKeyAuth: []
+      summary: Update all profile attributes
+      tags:
+      - Profiles
+  /identity/deletestatus/{request_id}:
+    get:
+      description: Get the status of a GDPR-compliant user profile deletion request
+      parameters:
+      - description: The GDPR delete request ID
+        in: path
+        name: request_id
+        required: true
+        schema:
+          type: string
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.IdentityDeleteResponse'
+                  type: object
+          description: Delete status
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get the status of a user profile deletion
+      tags:
+      - Profiles
+  /identity/lookup:
+    post:
+      description: Get a user profile by identity key/value using POST
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: Fields to exclude (e.g. email,city)
+        in: query
+        name: field_blocklist
+        schema:
+          items:
+            type: string
+          type: array
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              type: object
+        description: identity/lookup body parameters (table, key, value)
+        required: true
+        x-originalParamName: body
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.IdentityResponse'
+                  type: object
+          description: User profile
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get a user profile (POST)
+      tags:
+      - Profiles
+  /identity/queue/bulk/{table}/{field}:
+    delete:
+      description: Queue bulk GDPR-compliant deletion requests for multiple user profiles
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Identity field (e.g. email)
+        in: path
+        name: field
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+        description: Bulk delete request body
+        required: true
+        x-originalParamName: body
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.IdentityDeleteBulkResponse'
+                  type: object
+          description: Bulk delete results
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Bulk delete user profiles
+      tags:
+      - Profiles
+  /identity/{table}/{key}/{value}:
+    delete:
+      description: Delete a user profile, compliant with GDPR deletion requests
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Identity Key (e.g. email)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: Value (e.g. hello@lytics.com)
+        in: path
+        name: value
+        required: true
+        schema:
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.IdentityDeleteResponse'
+                  type: object
+          description: Accepted
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      - ApiKeyAuth: []
+      summary: Delete a user profile
+      tags:
+      - Profiles
+    get:
+      description: Get a user profile by identity key/value
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The table (e.g. user)
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      - description: Identity Key (e.g. email)
+        in: path
+        name: key
+        required: true
+        schema:
+          type: string
+      - description: Value (e.g. hello@lytics.com)
+        in: path
+        name: value
+        required: true
+        schema:
+          type: string
+      - description: Fields to exclude (e.g. email,city)
+        in: query
+        name: field_blocklist
+        schema:
+          items:
+            type: string
+          type: array
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.IdentityResponse'
+                  type: object
+          description: User profile
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get a user profile (GET)
+      tags:
+      - Profiles
+components:
+  schemas:
+    models.AttributeResponse:
+      additionalProperties: true
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.IdentityResponse:
+      properties:
+        entity:
+          additionalProperties: true
+          description: Materialized view of a profile, with applicable mappings
+          type: object
+        field_sources:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: 'FieldSources lists, per field, the attribute-store sources feeding it
+
+            (Cloud Connect v2 datamodels, Attribute API) that have no schema mapping.
+
+            Only populated when requested via field_sources=true.'
+          type: object
+        fragments:
+          description: Identity fragments that compose the profile
+          items:
+            $ref: '#/components/schemas/models.IdentityFragment'
+          type: array
+        keys:
+          description: Identifiers for this entity.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+      type: object
+    models.Kv:
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      type: object
+    models.IdentityFragment:
+      properties:
+        conflict:
+          description: If this fragment has any conflicts preventing linking with the current profile.
+          type: boolean
+        conflicts_with:
+          description: Identifier of the conflicted neighbor.
+          type: string
+        created:
+          description: When this fragment was created
+          type: string
+        keys:
+          description: Identifiers for this fragment.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+        modified:
+          description: When this fragment was last modified
+          type: string
+        neighbor_limit:
+          description: Whether this fragment approaches overlinking limits
+          type: boolean
+        neighbors:
+          description: Neighbors to this fragment.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+        streams:
+          description: All streams that contribute data to this fragment.
+          items:
+            type: string
+          type: array
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.IdentityDeleteResponse:
+      properties:
+        completed:
+          type: boolean
+        request_id:
+          type: string
+        requested:
+          type: string
+        state:
+          type: string
+        submitted:
+          type: string
+      type: object
+    models.IdentityDeleteBulkResponse:
+      properties:
+        errors:
+          description: A map of value:error for unsuccessful submissions
+          type: object
+        successes:
+          additionalProperties:
+            type: string
+          description: A map of value:request_id for successful submissions
+          type: object
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey

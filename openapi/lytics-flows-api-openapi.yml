@@ -1,0 +1,776 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@lytics.com
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  description: Version 2 of the Lytics API
+  termsOfService: https://www.lytics.com/terms-of-service/
+  title: Lytics Flows API
+  version: '2.0'
+servers:
+- url: https://api.lytics.io/v2
+tags:
+- description: Create and manage flows that orchestrate multi-step audience journeys.
+  name: Flows
+paths:
+  /flow:
+    get:
+      description: Get all flows for an account. Each version of each flow is returned unless latest=true.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: Return only the latest version of each flow
+        in: query
+        name: latest
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.Flow'
+                      type: array
+                  type: object
+          description: Flow List
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get flows
+      tags:
+      - Flows
+    post:
+      description: Create a new flow or update an existing one. The flow id is taken from the request body.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.Flow'
+        description: The flow configuration
+        required: true
+        x-originalParamName: flow
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Flow'
+                  type: object
+          description: Updated Flow
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Flow'
+                  type: object
+          description: Created Flow
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Create or update flow
+      tags:
+      - Flows
+  /flow/state:
+    get:
+      description: Get all possible flow state values (step slugs / personalization keys) for the account.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+          description: Flow State List
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get flow states
+      tags:
+      - Flows
+  /flow/{name}:
+    delete:
+      description: Delete all versions of a flow by name.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The flow name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: Api Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete flow
+      tags:
+      - Flows
+    get:
+      description: Get a flow by name. All versions are returned unless latest=true.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The flow name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: Return only the latest version of the flow
+        in: query
+        name: latest
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Flow'
+                  type: object
+          description: Flow
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get flow
+      tags:
+      - Flows
+    post:
+      description: Create a new flow or update an existing one. When the body has no id, the name path param is used as the flow id.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The flow name (used as the flow id when the body has no id)
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.Flow'
+        description: The flow configuration
+        required: true
+        x-originalParamName: flow
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Flow'
+                  type: object
+          description: Updated Flow
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Flow'
+                  type: object
+          description: Created Flow
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Create or update flow by name
+      tags:
+      - Flows
+  /flow/{name}/{version}:
+    delete:
+      description: Delete a single version of a flow by name and version.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The flow name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: The flow version
+        in: path
+        name: version
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: Api Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete flow version
+      tags:
+      - Flows
+    get:
+      description: Get a specific version of a flow by name and version.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The flow name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: The flow version
+        in: path
+        name: version
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Flow'
+                  type: object
+          description: Flow
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get flow version
+      tags:
+      - Flows
+  /flow/{name}/{version}/{step}/work:
+    post:
+      description: Create the work for a given step of a flow version.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The flow name
+        in: path
+        name: name
+        required: true
+        schema:
+          type: string
+      - description: The flow version
+        in: path
+        name: version
+        required: true
+        schema:
+          type: integer
+      - description: The flow step id
+        in: path
+        name: step
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.Work'
+                  type: object
+          description: Work
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Create flow step work
+      tags:
+      - Flows
+components:
+  schemas:
+    models.SplitProbKV:
+      properties:
+        next:
+          type: integer
+        prob:
+          type: number
+      type: object
+    models.SplitAffinityKV:
+      properties:
+        affinity:
+          type: string
+        label:
+          type: string
+        next:
+          type: integer
+        priority:
+          type: integer
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.FlowStep:
+      properties:
+        affinity_config_id:
+          type: string
+        delay:
+          description: Nanoseconds to wait at this step. Mutually exclusive with delay_until.
+          type: integer
+        delay_condition:
+          type: string
+        delay_until:
+          $ref: '#/components/schemas/models.DelayUntil'
+        delay_until_enters:
+          items:
+            type: string
+          type: array
+        id:
+          type: integer
+        label:
+          type: string
+        next:
+          type: integer
+        slug:
+          type: string
+        split_affinities:
+          items:
+            $ref: '#/components/schemas/models.SplitAffinityKV'
+          type: array
+        split_conditions:
+          items:
+            $ref: '#/components/schemas/models.SplitConditionKV'
+          type: array
+        split_probabilities:
+          items:
+            $ref: '#/components/schemas/models.SplitProbKV'
+          type: array
+        type_hint:
+          enum:
+          - work_export
+          - delay
+          - conditional
+          - affinity
+          - ab_testing
+          - work_export_exit
+          type: string
+        work_config:
+          type: object
+        work_exit_step_ref:
+          type: integer
+        work_id:
+          type: string
+      type: object
+    models.Work:
+      properties:
+        account_id:
+          type: string
+        aid:
+          type: integer
+        auth_ids:
+          items:
+            type: string
+          type: array
+        config:
+          type: object
+        created:
+          format: date-time
+          type: string
+        description:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        tag:
+          type: string
+        updated:
+          format: date-time
+          type: string
+        workflow:
+          type: string
+        workflow_id:
+          type: string
+      type: object
+    models.DelayUntil:
+      properties:
+        day_of_week:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          type: integer
+        kind:
+          enum:
+          - day_of_week
+          - time_of_day
+          type: string
+        time_of_day:
+          example: 09:30
+          type: string
+        timezone:
+          example: America/New_York
+          type: string
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.Flow:
+      properties:
+        aid:
+          type: integer
+        created:
+          format: date-time
+          type: string
+        description:
+          type: string
+        entry_condition:
+          enum:
+          - in_segment
+          - on_segment_entry
+          type: string
+        entry_segment_id:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        label:
+          type: string
+        modified:
+          format: date-time
+          type: string
+        reentry_allowed:
+          type: boolean
+        reentry_condition:
+          enum:
+          - in_segment
+          - on_segment_entry
+          type: string
+        reentry_delay:
+          description: Nanoseconds to wait before a profile may re-enter the flow.
+          type: integer
+        root_step_id:
+          type: integer
+        state:
+          enum:
+          - draft
+          - running
+          - draining
+          - deleted
+          type: string
+        state_modified_at:
+          format: date-time
+          type: string
+        steps:
+          items:
+            $ref: '#/components/schemas/models.FlowStep'
+          type: array
+        version:
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.SplitConditionKV:
+      properties:
+        conditions:
+          type: string
+        label:
+          type: string
+        next:
+          type: integer
+        priority:
+          type: integer
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey

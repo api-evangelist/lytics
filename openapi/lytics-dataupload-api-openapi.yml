@@ -1,0 +1,407 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Data Upload API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: DataUpload
+  description: 'APIs for collecting or uploading data.  There are two main APIs, one for uploading
+
+    Large files (bulk, millions of records) and another for sending real-time, or slightly batched
+
+    events (Less than 10MB).
+
+
+    **stream**
+
+    A stream name is like a table in database, each stream is a differnt _Type_ of data.
+
+    You assign a name to your data uploads to identify each stream/type.
+
+    However, it should be consistent across uploads of same type of data.
+
+
+    **Timestamp Fields**
+
+    When uploading historical, or event data you may have a time/date at which
+
+    an event occured.  Normal event uploads get an event timestamp at the server time
+
+    but you can over-ride this behavior so the timestamp is defined in the event you upload.
+
+    This is a _timestamp_field_ parameter in api''s below.   The formatting for this is very, very
+
+    lenient with over 50 format''s supported.'
+paths:
+  /collect/bulk/{stream}:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkdCSVUploadModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                      message_count: 2
+                      rejected_count: 0
+                      content-type: application/json
+                      droperrors: false
+                      dryrun: false
+                      timestamp_field: event_created
+                      filename: myfile.csv
+      security:
+      - ApiKeyAuth: []
+      summary: BulkCSVUpload
+      operationId: BulkCSVUpload
+      description: "Upload CSV files (may be gzipped). They MUST contain headers: either\nin first row (by default) OR in **headers** querystring field.\nIf the file contains a timestamp field you want us to use\nsee **timestamp_field** querystring parameter for how we extract it.\n\n*Note Domain* this api is on a different domain *https://bulk.lytics.io* because the *api.lytics.io* domain\nis limited to 10MB file uploads.\n\n```sh\n# the \"user_regdata\" is the STREAM (ie Type) of data, if there\n# is multiple different types of data (userdata, emaildata, events)\n# they would have different streams.\n\n# user data\nexport LIODATAKEY=\"YOURKEY\"\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -H 'Content-type: application/csv' \\\n  --data-binary @users.csv \\\n  \"https://bulk.lytics.io/collect/bulk/user_regdata?timestamp_field=register_date\" \\\n | jq '.'\n\n\n# only do a dry-run to see if it is formatted correctly\ncurl -s \"https://bulk.lytics.io/collect/bulk/user_regdata?access_token=$LIODATAKEY&timestamp_field=register_date&dryrun=true\" \\\n    --data-binary @users.csv -H 'Content-type: application/csv' | jq '.'\n\n# append fields to each row\n#  where   append = urlencode({\"source\":\"crm\"})\n#  often used when file-name contains information\n\ncurl -s \"https://bulk.lytics.io/collect/bulk/user_regdata?append=%7B%22source%22%3A%22crm%22%7D&access_token=$LIODATAKEY\" \\\n    --data-binary @users.csv -H 'Content-type: application/csv' | jq '.'\n\n\n# full example uploading gzipped file\n\necho 'user_id,email,reg_date,item_count\n7456,email@email.com,\"2012-10-17T17:29:39.738Z\",82\n1234,email2@email.com,\"2012-12-11T19:53:31.547Z\",82' > users.csv\n\ngzip users.csv\n\ncurl -s \"https://bulk.lytics.io/collect/bulk/user_regdata?access_token=$LIODATAKEY&timestamp_field=reg_date&dryrun=true&filename=users.csv\" \\\n    --data-binary @users.csv.gz \\\n    -H 'Content-type: application/csv' | jq '.'\n```"
+      tags:
+      - DataUpload
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: stream
+        in: path
+        description: The DataType aka Table of type of data being uploaded.  See Data, Streams in web admin.
+        required: true
+        example: user_db
+        schema:
+          type: string
+      - name: access_token
+        in: query
+        description: The Lytics DATA API key. Not the management key. Or use Authorization Header.
+        required: false
+        schema:
+          type: string
+      - name: dryrun
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: boolean
+          default: 'false'
+      - name: timestamp_field
+        in: query
+        description: The name of the column or field in file that contains event timestamp.
+        required: false
+        schema:
+          type: string
+      - name: headers
+        in: query
+        description: CSV only, Comma delimited list of header columns for csv (if not first row)
+        required: false
+        schema:
+          type: string
+      - name: delimiter
+        in: query
+        description: CSV only, if not the default comma, either t=tab, or | may be accepted
+        required: false
+        schema:
+          type: string
+      - name: append
+        in: query
+        description: CSV only,  JSON encoded object of additional name-value pairs to append to each record.
+        required: false
+        schema:
+          type: string
+      - name: droperrors
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: boolean
+          default: 'false'
+      - name: filename
+        in: query
+        description: Just for record-keeping in our event - stream.
+        required: false
+        example: '"myfile.csv"'
+        schema:
+          type: string
+  /collect/bulk/{streamname}:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkJSONUploadModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                      message_count: 2
+                      rejected_count: 0
+                      content-type: application/json
+                      droperrors: false
+                      dryrun: false
+                      timestamp_field: event_created
+                      filename: myfile.json
+      security:
+      - ApiKeyAuth: []
+      summary: BulkJSONUpload
+      operationId: BulkJSONUpload
+      description: 'JSON formatting info.
+
+
+        This JSON is ok:
+
+
+        ```json
+
+        {"order_ids":[1,2,3]}
+
+        ```
+
+
+        This is not valid because it has objects nested inside arrays:
+
+
+        ```json
+
+        {"orders":[{"id":1,"price":22},{"id":2,"price":23}]}
+
+        ```'
+      tags:
+      - DataUpload
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: streamname
+        in: path
+        description: The DataType, or "Table" of type of data being uploaded
+        required: true
+        example: user_db
+        schema:
+          type: string
+      - name: access_token
+        in: query
+        description: The Lytics DATA API key. Not the management key. Or use Authorization Header.
+        required: false
+        schema:
+          type: string
+      - name: dryrun
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: boolean
+          default: 'false'
+      - name: timestamp_field
+        in: query
+        description: The name of the column or field in file that contains event timestamp.
+        required: false
+        schema:
+          type: string
+      - name: filename
+        in: query
+        description: Just for record-keeping in our event - stream.
+        required: false
+        example: '"myfile.json"'
+        schema:
+          type: string
+  /collect/json/{stream}:
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataUploadModel'
+              examples:
+                response:
+                  value:
+                    status: 200
+                    message: success
+                    data:
+                      message_count: 2
+                      rejected_count: 0
+                      content-type: application/json
+                      droperrors: false
+                      dryrun: false
+                      timestamp_field: event_created
+                      filename: myfile.json
+      security:
+      - ApiKeyAuth: []
+      summary: Data JSON Upload
+      operationId: Data JSON Upload
+      description: ''
+      tags:
+      - DataUpload
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: stream
+        in: path
+        description: The DataType, or "Table" of type of data being uploaded
+        required: true
+        example: user_db
+        schema:
+          type: string
+      - name: access_token
+        in: query
+        description: The Lytics DATA API key (not management key)
+        required: true
+        schema:
+          type: string
+      - name: dryrun
+        in: query
+        description: ''
+        required: false
+        schema:
+          type: boolean
+          default: 'false'
+      - name: timestamp_field
+        in: query
+        description: The name of the column or field in file that contains event timestamp.
+        required: false
+        schema:
+          type: string
+      - name: filename
+        in: query
+        description: Just for record-keeping in our event - stream.
+        required: false
+        example: '"myfile.json"'
+        schema:
+          type: string
+components:
+  schemas:
+    BulkJSONUploadModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            message_count:
+              type: number
+            rejected_count:
+              type: number
+            content-type:
+              type: string
+            droperrors:
+              type: boolean
+            dryrun:
+              type: boolean
+            timestamp_field:
+              type: string
+            filename:
+              type: string
+      example:
+        status: 200
+        message: success
+        data:
+          message_count: 2
+          rejected_count: 0
+          content-type: application/json
+          droperrors: false
+          dryrun: false
+          timestamp_field: event_created
+          filename: myfile.json
+    DataUploadModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            message_count:
+              type: number
+            rejected_count:
+              type: number
+            content-type:
+              type: string
+            droperrors:
+              type: boolean
+            dryrun:
+              type: boolean
+            timestamp_field:
+              type: string
+            filename:
+              type: string
+      example:
+        status: 200
+        message: success
+        data:
+          message_count: 2
+          rejected_count: 0
+          content-type: application/json
+          droperrors: false
+          dryrun: false
+          timestamp_field: event_created
+          filename: myfile.json
+    BulkdCSVUploadModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            message_count:
+              type: number
+            rejected_count:
+              type: number
+            content-type:
+              type: string
+            droperrors:
+              type: boolean
+            dryrun:
+              type: boolean
+            timestamp_field:
+              type: string
+            filename:
+              type: string
+      example:
+        status: 200
+        message: success
+        data:
+          message_count: 2
+          rejected_count: 0
+          content-type: application/json
+          droperrors: false
+          dryrun: false
+          timestamp_field: event_created
+          filename: myfile.csv
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

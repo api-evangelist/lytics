@@ -1,0 +1,811 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@lytics.com
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  description: Version 2 of the Lytics API
+  termsOfService: https://www.lytics.com/terms-of-service/
+  title: Lytics Data Models API
+  version: '2.0'
+servers:
+- url: https://api.lytics.io/v2
+tags:
+- description: Create and manage data models and their record stores.
+  name: DataModels
+paths:
+  /data/datamodel/size:
+    get:
+      description: Get recordstore size for a list of datamodel
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The datamodel IDs
+        in: query
+        name: ids
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.DataModelSizeResponse'
+                      type: array
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get recordstore size for a list of datamodel
+      tags:
+      - DataModels
+  /data/datamodel/{id}/size:
+    get:
+      description: Get recordstore size for a datamodel
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The datamodel ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.DataModelSizeResponse'
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get recordstore size for a datamodel
+      tags:
+      - DataModels
+  /datamodel:
+    delete:
+      description: Delete multiple datamodels
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The datamodel IDs
+        in: query
+        name: ids
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.DataModelDeleteStatus'
+                      type: array
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+      security:
+      - ApiKeyAuth: []
+      summary: Delete datamodels
+      tags:
+      - DataModels
+    get:
+      description: Get a list of all datamodels for the account
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: Include recordstore size
+        in: query
+        name: sizes
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.DataModelResp'
+                      type: array
+                  type: object
+          description: DataModel List Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get datamodels
+      tags:
+      - DataModels
+    post:
+      description: Create a datamodel
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.DataModelCreateReq'
+        description: DataModel Request
+        required: true
+        x-originalParamName: datamodel
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.DataModelResp'
+                  type: object
+          description: DataModel Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Create datamodel
+      tags:
+      - DataModels
+  /datamodel/{id}:
+    delete:
+      description: Delete a datamodel
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The datamodel ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete datamodel
+      tags:
+      - DataModels
+    get:
+      description: Get a datamodel by ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The datamodel ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Include recordstore size
+        in: query
+        name: sizes
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.DataModelResp'
+                  type: object
+          description: DataModel Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get datamodel
+      tags:
+      - DataModels
+    put:
+      description: Update a datamodel
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The datamodel ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.DataModelUpdateReq'
+        description: DataModel Request
+        required: true
+        x-originalParamName: datamodel
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.DataModelResp'
+                  type: object
+          description: DataModel Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Update datamodel
+      tags:
+      - DataModels
+  /datamodel/{id}/logs:
+    get:
+      description: Get datamodel logs
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The datamodel ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.DataModelLog'
+                      type: array
+                  type: object
+          description: DataModel Logs Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get datamodel logs
+      tags:
+      - DataModels
+  /datamodel/{id}/sync/{state}:
+    get:
+      description: Run a sync job for a datamodel
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The datamodel ID or slug
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Start or stop
+        in: path
+        name: state
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.DataModelResp'
+                  type: object
+          description: OK
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Run a sync job for a datamodel
+      tags:
+      - DataModels
+components:
+  schemas:
+    models.DataModelJoin:
+      properties:
+        foreign_key:
+          type: string
+        foreign_table:
+          type: string
+        primary_key:
+          type: string
+      type: object
+    models.DataModelCreateReq:
+      properties:
+        activated_fields:
+          items:
+            type: string
+          type: array
+        connection_id:
+          type: string
+        create_profiles:
+          type: boolean
+        description:
+          type: string
+        joined_to:
+          $ref: '#/components/schemas/models.DataModelJoin'
+        name:
+          type: string
+        primary_keys:
+          items:
+            type: string
+          type: array
+        slug:
+          type: string
+        sql:
+          type: string
+        sql_dialect:
+          type: string
+        status:
+          type: string
+        sync_period:
+          type: number
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.DataModelUpdateReq:
+      properties:
+        activated_fields:
+          items:
+            type: string
+          type: array
+        create_profiles:
+          type: boolean
+        description:
+          type: string
+        name:
+          type: string
+        sql:
+          type: string
+        status:
+          type: string
+        sync_period:
+          type: integer
+      type: object
+    models.AnomalyRuleResp:
+      properties:
+        aid:
+          type: integer
+        checks:
+          items:
+            $ref: '#/components/schemas/models.RuleCheckConfigReq'
+          type: array
+        created:
+          type: string
+        id:
+          type: string
+        subject_id:
+          type: string
+        subject_type:
+          type: string
+        updated:
+          type: string
+      type: object
+    models.DataModelHealth:
+      properties:
+        details:
+          type: string
+        status:
+          type: string
+      type: object
+    models.RuleCheckConfigReq:
+      properties:
+        allowable_violations:
+          type: integer
+        interval:
+          type: string
+        lookback_count:
+          type: integer
+        max_threshold:
+          type: integer
+        metric_type:
+          type: string
+        min_threshold:
+          type: integer
+        type:
+          type: string
+        variance_pct:
+          type: number
+      type: object
+    models.SyncSchedule:
+      properties:
+        next_sync_time:
+          type: string
+        prev_sync_time:
+          type: string
+        sync_period:
+          type: integer
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.DataModelResp:
+      properties:
+        account_id:
+          type: string
+        activated_fields:
+          items:
+            type: string
+          type: array
+        aid:
+          type: integer
+        anomaly_rule:
+          $ref: '#/components/schemas/models.AnomalyRuleResp'
+        author_id:
+          type: string
+        connection_id:
+          type: string
+        contextual_data:
+          items:
+            type: string
+          type: array
+        create_profiles:
+          type: boolean
+        created:
+          type: string
+        deleted:
+          type: boolean
+        description:
+          type: string
+        health:
+          $ref: '#/components/schemas/models.DataModelHealth'
+        id:
+          type: string
+        is_draft:
+          type: boolean
+        joined_to:
+          $ref: '#/components/schemas/models.DataModelJoin'
+        name:
+          type: string
+        needs_backfill:
+          type: boolean
+        primary_keys:
+          items:
+            type: string
+          type: array
+        schedule:
+          $ref: '#/components/schemas/models.SyncSchedule'
+        size:
+          type: integer
+        slug:
+          type: string
+        sql:
+          type: string
+        status:
+          type: string
+        sync_errors:
+          items:
+            $ref: '#/components/schemas/models.SyncError'
+          type: array
+        table:
+          type: string
+        updated:
+          type: string
+      type: object
+    models.DataModelSizeResponse:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        record_store_size:
+          type: integer
+        slug_name:
+          type: string
+      type: object
+    models.DataModelDeleteStatus:
+      properties:
+        deleted:
+          type: boolean
+        id:
+          type: string
+        reason:
+          type: string
+      type: object
+    models.DataModelLog:
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        verb:
+          type: string
+      type: object
+    models.SyncError:
+      properties:
+        error:
+          type: string
+        time:
+          type: string
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey

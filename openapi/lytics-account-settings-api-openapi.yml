@@ -1,0 +1,347 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Account Settings API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Account Settings
+  description: Account Settings describe features/settings for a Lytics account.
+paths:
+  /api/account/setting/{setting}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSettingModel'
+              examples:
+                response:
+                  value:
+                    can_be_assigned: true
+                    category: Security
+                    field:
+                      description: Enforce rule preventing re-use of same password.
+                      editable: false
+                      label: ''
+                      name: Enforce Password History
+                      optional: false
+                      sort_order: 0
+                      type: boolean
+                      user_config_disabled: false
+                    slug: enforce_password_history
+                    type: setting
+                    value: null
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve a Single Account Setting
+      operationId: Retrieve a Single Account Setting
+      description: Get single Account Setting by slug.
+      tags:
+      - Account Settings
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: setting
+        in: path
+        description: slug of account setting.
+        required: true
+        example: enforce_password_history
+        schema:
+          type: string
+    put:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSettingModel'
+              examples:
+                response:
+                  value:
+                    can_be_assigned: true
+                    category: Security
+                    field:
+                      description: Enforce rule preventing re-use of same password.
+                      editable: false
+                      label: ''
+                      name: Enforce Password History
+                      optional: false
+                      sort_order: 0
+                      type: boolean
+                      user_config_disabled: false
+                    slug: enforce_password_history
+                    type: setting
+                    value: null
+      security:
+      - ApiKeyAuth: []
+      summary: Account Setting Update
+      operationId: Account Setting Update
+      description: "Post update to Account Setting. See list of possible Settings from the List api.\n\n```sh\n\ncurl -XPUT \"https://api.lytics.io/api/account/setting/logon_session_days\" \\\n   -H 'Content-type: application/json' \\\n   -H 'Authorization: $LIOKEY' \\\n   -d '10'\n\n```"
+      tags:
+      - Account Settings
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: setting
+        in: path
+        description: slug of account setting.
+        required: true
+        example: enforce_password_history
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: number
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Account Setting Delete
+      operationId: Account Setting Delete
+      description: "Delete a custom account setting.  Given a key for a setting, delete the custom-value.\n\nNote, since account-settings may have default values, this only deletes the entire value that currently exists.\n\n```sh\n\ncurl -XDELETE \"https://api.lytics.io/api/account/setting/logon_session_days\" \\\n   -H 'Authorization: $LIOKEY'\n\n```"
+      tags:
+      - Account Settings
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: setting
+        in: path
+        description: slug of account setting.
+        required: true
+        example: enforce_password_history
+        schema:
+          type: string
+  /api/account/setting:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountSettingListModel'
+              examples:
+                response:
+                  value:
+                    status: success
+                    data:
+                    - can_be_assigned: true
+                      category: Security
+                      field:
+                        description: Enforce rule preventing re-use of same password.
+                        editable: false
+                        label: ''
+                        name: Enforce Password History
+                        optional: false
+                        sort_order: 0
+                        type: boolean
+                        user_config_disabled: false
+                      slug: enforce_password_history
+                      type: setting
+                      value: null
+                    - can_be_assigned: true
+                      category: Security
+                      field:
+                        description: Enforce rule forcing high-password complexity.
+                        editable: false
+                        label: ''
+                        name: Enforce Password Complexity
+                        optional: false
+                        sort_order: 0
+                        type: boolean
+                        user_config_disabled: false
+                      slug: enforce_password_complexity
+                      type: setting
+                      value: null
+                    - can_be_assigned: true
+                      category: Security
+                      field:
+                        description: Ensure all users have two-factor auth.
+                        editable: false
+                        label: ''
+                        name: All users must have two factor auth.
+                        optional: false
+                        sort_order: 0
+                        type: boolean
+                        user_config_disabled: false
+                      slug: enforce_two_factor_auth
+                      type: setting
+                      value: null
+      security:
+      - ApiKeyAuth: []
+      summary: Account Setting List
+      operationId: Account Setting List
+      description: ''
+      tags:
+      - Account Settings
+components:
+  schemas:
+    AccountSettingListModel:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              can_be_assigned:
+                type: boolean
+              category:
+                type: string
+              field:
+                type: object
+                properties:
+                  description:
+                    type: string
+                  editable:
+                    type: boolean
+                  label:
+                    type: string
+                  name:
+                    type: string
+                  optional:
+                    type: boolean
+                  sort_order:
+                    type: number
+                  type:
+                    type: string
+                  user_config_disabled:
+                    type: boolean
+              slug:
+                type: string
+              type:
+                type: string
+              value: {}
+            required:
+            - can_be_assigned
+            - category
+            - field
+            - slug
+            - type
+            - value
+      example:
+        status: success
+        data:
+        - can_be_assigned: true
+          category: Security
+          field:
+            description: Enforce rule preventing re-use of same password.
+            editable: false
+            label: ''
+            name: Enforce Password History
+            optional: false
+            sort_order: 0
+            type: boolean
+            user_config_disabled: false
+          slug: enforce_password_history
+          type: setting
+          value: null
+        - can_be_assigned: true
+          category: Security
+          field:
+            description: Enforce rule forcing high-password complexity.
+            editable: false
+            label: ''
+            name: Enforce Password Complexity
+            optional: false
+            sort_order: 0
+            type: boolean
+            user_config_disabled: false
+          slug: enforce_password_complexity
+          type: setting
+          value: null
+        - can_be_assigned: true
+          category: Security
+          field:
+            description: Ensure all users have two-factor auth.
+            editable: false
+            label: ''
+            name: All users must have two factor auth.
+            optional: false
+            sort_order: 0
+            type: boolean
+            user_config_disabled: false
+          slug: enforce_two_factor_auth
+          type: setting
+          value: null
+    AccountSettingModel:
+      type: object
+      properties:
+        can_be_assigned:
+          type: boolean
+        category:
+          type: string
+        field:
+          type: object
+          properties:
+            description:
+              type: string
+            editable:
+              type: boolean
+            label:
+              type: string
+            name:
+              type: string
+            optional:
+              type: boolean
+            sort_order:
+              type: number
+            type:
+              type: string
+            user_config_disabled:
+              type: boolean
+        slug:
+          type: string
+        type:
+          type: string
+        value: {}
+      example:
+        can_be_assigned: true
+        category: Security
+        field:
+          description: Enforce rule preventing re-use of same password.
+          editable: false
+          label: ''
+          name: Enforce Password History
+          optional: false
+          sort_order: 0
+          type: boolean
+          user_config_disabled: false
+        slug: enforce_password_history
+        type: setting
+        value: null
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,0 +1,1053 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Catalog API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Catalog
+  description: "Catalog exposes info about the schema of the data in Lytics.\n\n* **Entities** are Object Types, the primary one being a *User*\n    although most accounts also have *Content* and *Campaign* as well.\n    Custom object types may be created.\n\n* **Streams** Streams are data sources collected from api or *Integrations* (aka *Work*).\n\n* **Schema** Per entity type is list of field-types.\n    Think of it as describing columns on the user table in a database."
+paths:
+  /api/schema/_streams:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamsModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - stream: events
+                      hidden: false
+                      ct: 37
+                      curct: 0
+                      last_msg_ts: '1401216931893'
+                      last_update_ts: '1421167622683'
+                      fields:
+                      - avg: 4
+                        card: 22
+                        is_array: true
+                        name: utm_medium
+                        sample:
+                        - cpc
+                        - adwords
+                        - blog
+                        - pricing-page
+                        - social
+                        - integrations-page
+                        - email
+                        - Integrations-page
+                        - docs
+                        - search
+                        - CPC
+                        - twitter
+                        - social_organic
+                        - card
+                        - social_paid
+                        - sponsored
+                        - mailchimp
+                        - facebook
+                        - infographic
+                        - lytics-reporting
+                        - retargeting
+                        - referral
+                        smart:
+                          coverage: 0
+                          email: 0
+                          noun: 13
+                          time: 0
+                          uid: 0
+                          value: 0
+                          verb: 13
+                          ip: 0
+                          phone: 0
+                          url: 0
+                          analyses: 315
+                        sumlen: 146221
+                        type: string
+                        usage: 32484
+                        first_seen: '2016-06-08T16:11:06Z'
+                        last_seen: '2016-06-24T18:00:40.871025224Z'
+                        hidden: false
+                        column:
+                        - table: campaign
+                          as: utm_mediums
+                        - table: user
+                          as: utm_mediums
+      security:
+      - ApiKeyAuth: []
+      summary: Streams
+      operationId: Streams
+      description: Get list of streams, field info they contain.
+      tags:
+      - Catalog
+  /api/schema/_streams/{stream},{hidden}:
+    post:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Stream Hide
+      operationId: Stream Hide
+      description: "The POST endpoint allows Stream to be hidden/un-hidden. A hidden stream is not visible from the Application\n*Data > Streams* Web UI.\n\n**CAVEAT's**\n\n* This does not delete the data, only hides it from ui.\n\n* If queries (LQL) still map this data into profiles it will still be added.\n\n```\n# Hide a temporary stream\ncurl -XPOST 'https://api.lytics.io/api/schema/_streams' \\\n    -H 'Content-type: application/json' \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d '{\n        \"stream\": \"my_temp_upload\",\n        \"hidden\": true\n     }' | jq '.'\n```"
+      tags:
+      - Catalog
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: stream
+        in: path
+        description: Name of the stream To Delete
+        required: true
+        example: my_temp_upload
+        schema:
+          type: string
+      - name: hidden
+        in: path
+        description: hide stream from Web UI
+        required: true
+        example: 'true'
+        schema:
+          type: boolean
+  /api/schema/_streams/{stream},{name},{hidden}:
+    post:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Field Hide
+      operationId: Field Hide
+      description: "This POST endpoint allows specific fields belong to a stream to be hidden/un-hidden. A hidden field is not\nvisible from the Application *Data > Streams* Web UI.\n\n**CAVEAT'S**\n\n* This does not delete the data, only hides the field in the UI.\n\n* If queries (LQL) stil map this field into profiles, it will still be added\n\n```\n# Hide the 'first-name' field from the 'default' stream\ncurl -XPUT 'https://api.lytics.io/api/schema/_streams/default' \\\n    -H 'Content-type: application/json'\n    -H 'Authorization: $LIOKEY' \\\n    -d '{\n        \"name\": \"first_name\",\n        \"hidden\": true\n    }' | jq '.'\n```"
+      tags:
+      - Catalog
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: stream
+        in: path
+        description: Name of the stream containing the field to delete
+        required: true
+        example: default
+        schema:
+          type: string
+      - name: name
+        in: path
+        description: Name of the field to delete
+        required: true
+        example: first_name
+        schema:
+          type: string
+      - name: hidden
+        in: path
+        description: hide field from Web UI
+        required: true
+        example: 'true'
+        schema:
+          type: boolean
+  /api/schema/{table}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      fields:
+                      - as: created_ts
+                        is_by: false
+                        type: date
+                        shortdesc: Created Date
+                        longdesc: First time usage for this user
+                        froms:
+                        - default
+                        identities:
+                        - min
+                      - as: content
+                        is_by: false
+                        type: string
+                        shortdesc: Site Content
+                        longdesc: Specific piece of content viewed
+                        froms:
+                        - default
+                        identities:
+                        - content
+                      - as: location
+                        is_by: false
+                        type: string
+                        shortdesc: Location
+                        longdesc: ''
+                        froms:
+                        - linkedin_data
+                        identities:
+                        - location
+      security:
+      - ApiKeyAuth: []
+      summary: Schema Fields
+      operationId: Schema Fields
+      description: Get Field information about a **NodeType(user)**. Eventually, we will extend beyond user.
+      tags:
+      - Catalog
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: table
+        in: path
+        description: Name
+        required: true
+        example: user
+        schema:
+          type: string
+  /api/schema/{table}/fieldinfo:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FieldInfoModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      fields:
+                      - field: region
+                        terms_counts:
+                          '02': 704
+                          '07': 857
+                          AZ: 671
+                          CA: 18064
+                          CO: 654
+                          FL: 1537
+                          GA: 822
+                          H9: 758
+                          IL: 1254
+                          KS: 1104
+                          MA: 1301
+                          NC: 626
+                          NJ: 892
+                          NY: 4035
+                          'ON': 1097
+                          OR: 12158
+                          PA: 1040
+                          TX: 2726
+                          VA: 1894
+                          WA: 1948
+                        more_terms: true
+                        ents_present: 70489
+                        ents_absent: 65796
+                        high_card: false
+                        approx_cardinality: 331
+                      - field: utm_mediums
+                        terms_counts:
+                          Integrations-page: 1102
+                          adwords: 4434
+                          banner: 1496
+                          blog: 3413
+                          card: 10
+                          cpc: 2923
+                          email: 6051
+                          ppc: 220
+                          search: 8762
+                          social: 12513
+                          parnter: 2314
+                        more_terms: true
+                        ents_present: 29595
+                        ents_absent: 116690
+                        high_card: false
+                        approx_cardinality: 27
+                      - field: zd_yymm
+                        terms_counts:
+                          '1409': 5
+                          '1410': 12
+                          '1411': 4
+                          '1412': 4
+                          '1501': 3
+                          '1502': 10
+                          '1503': 26
+                          '1504': 20
+                          '1505': 3
+                        more_terms: false
+                        ents_present: 72
+                        ents_absent: 136213
+                        high_card: false
+                        approx_cardinality: 9
+                      - field: openct
+                        terms_counts:
+                          '1': 75
+                          '2': 42
+                          '3': 11
+                          '4': 25
+                          '5': 16
+                          '6': 17
+                          '8': 5
+                          '9': 11
+                          '10': 18
+                          '11': 7
+                          '12': 5
+                          '19': 8
+                          '20': 15
+                          '24': 3
+                          '26': 10
+                          '32': 3
+                          '35': 3
+                          '51': 15
+                          '108': 3
+                          '152': 3
+                        more_terms: true
+                        ents_present: 328
+                        ents_absent: 135957
+                        high_card: false
+                        approx_cardinality: 98
+                        stats:
+                          mean: 15.621951219512194
+                          sd: 27.978602557504388
+                          min: 1
+                          max: 264
+                          n: 328
+                      - field: mc_lastopen_ts
+                        terms_counts: {}
+                        more_terms: false
+                        histograms:
+                        - data:
+                            '1446336000000': 2
+                            '1446595200000': 2
+                            '1447891200000': 333
+                            '1448150400000': 348
+                            '1448409600000': 9
+                            '1448668800000': 8
+                          start: '1446401936511'
+                          end: '1448993936511'
+                          interval: 3d
+                        - data:
+                            '1442188800000': 35
+                            '1442793600000': 3
+                            '1445212800000': 71
+                            '1445817600000': 2
+                            '1446422400000': 4
+                            '1447632000000': 340
+                            '1448236800000': 351
+                            '1448841600000': 7
+                          start: '1441131536511'
+                          end: '1448993936511'
+                          interval: week
+                        - data:
+                            '1417392000000': 3
+                            '1420070400000': 2
+                            '1425168000000': 2
+                            '1427846400000': 43
+                            '1430438400000': 5
+                            '1433116800000': 24
+                            '1435708800000': 41
+                            '1438387200000': 48
+                            '1441065600000': 38
+                            '1443657600000': 73
+                            '1446336000000': 702
+                          start: '1417457936511'
+                          end: '1448993936511'
+                          interval: month
+                        ents_present: 1377
+                        ents_absent: 134908
+                        high_card: false
+                        approx_cardinality: 1212
+      security:
+      - ApiKeyAuth: []
+      summary: FieldInfo For Table
+      operationId: FieldInfo For Table
+      description: Get Field level info about a **NodeType(user)**. Contains the possible values contained in each field.
+      tags:
+      - Catalog
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: table
+        in: path
+        description: Table name (generally "user")
+        required: true
+        example: user
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: number of unique values to return per field
+        required: false
+        example: '20'
+        schema:
+          type: integer
+      - name: fields
+        in: query
+        description: list, or comma separated list of string fields to include
+        required: false
+        example: name,email,id
+        schema:
+          type: string
+  /api/schema/{table}/fieldsuggest/{field}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/FieldSuggestModel'
+      security:
+      - ApiKeyAuth: []
+      summary: FieldSuggest
+      operationId: FieldSuggest
+      description: Suggest Values for a field for auto-complete in webui
+      tags:
+      - Catalog
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: table
+        in: path
+        description: Table name (generally `user`)
+        required: true
+        example: user
+        schema:
+          type: string
+      - name: field
+        in: path
+        description: field name to do lookup on.
+        required: true
+        example: email
+        schema:
+          type: string
+components:
+  schemas:
+    StreamsModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              stream:
+                type: string
+              hidden:
+                type: boolean
+              ct:
+                type: number
+              curct:
+                type: number
+              last_msg_ts:
+                type: string
+              last_update_ts:
+                type: string
+              fields:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    avg:
+                      type: number
+                    card:
+                      type: number
+                    is_array:
+                      type: boolean
+                    name:
+                      type: string
+                    sample:
+                      type: array
+                      items:
+                        type: string
+                    smart:
+                      type: object
+                      properties:
+                        coverage:
+                          type: number
+                        email:
+                          type: number
+                        noun:
+                          type: number
+                        time:
+                          type: number
+                        uid:
+                          type: number
+                        value:
+                          type: number
+                        verb:
+                          type: number
+                        ip:
+                          type: number
+                        phone:
+                          type: number
+                        url:
+                          type: number
+                        analyses:
+                          type: number
+                    sumlen:
+                      type: number
+                    type:
+                      type: string
+                    usage:
+                      type: number
+                    first_seen:
+                      type: string
+                    last_seen:
+                      type: string
+                    hidden:
+                      type: boolean
+                    column:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          table:
+                            type: string
+                          as:
+                            type: string
+                        required:
+                        - table
+                        - as
+      example:
+        data:
+        - stream: events
+          hidden: false
+          ct: 37
+          curct: 0
+          last_msg_ts: '1401216931893'
+          last_update_ts: '1421167622683'
+          fields:
+          - avg: 4
+            card: 22
+            is_array: true
+            name: utm_medium
+            sample:
+            - cpc
+            - adwords
+            - blog
+            - pricing-page
+            - social
+            - integrations-page
+            - email
+            - Integrations-page
+            - docs
+            - search
+            - CPC
+            - twitter
+            - social_organic
+            - card
+            - social_paid
+            - sponsored
+            - mailchimp
+            - facebook
+            - infographic
+            - lytics-reporting
+            - retargeting
+            - referral
+            smart:
+              coverage: 0
+              email: 0
+              noun: 13
+              time: 0
+              uid: 0
+              value: 0
+              verb: 13
+              ip: 0
+              phone: 0
+              url: 0
+              analyses: 315
+            sumlen: 146221
+            type: string
+            usage: 32484
+            first_seen: '2016-06-08T16:11:06Z'
+            last_seen: '2016-06-24T18:00:40.871025224Z'
+            hidden: false
+            column:
+            - table: campaign
+              as: utm_mediums
+            - table: user
+              as: utm_mediums
+    FieldSuggestModel: {}
+    FieldInfoModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            fields:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                  terms_counts:
+                    type: object
+                    properties:
+                      '1':
+                        type: number
+                      '2':
+                        type: number
+                      '3':
+                        type: number
+                      '4':
+                        type: number
+                      '5':
+                        type: number
+                      '6':
+                        type: number
+                      '8':
+                        type: number
+                      '9':
+                        type: number
+                      '10':
+                        type: number
+                      '11':
+                        type: number
+                      '12':
+                        type: number
+                      '19':
+                        type: number
+                      '20':
+                        type: number
+                      '24':
+                        type: number
+                      '26':
+                        type: number
+                      '32':
+                        type: number
+                      '35':
+                        type: number
+                      '51':
+                        type: number
+                      '108':
+                        type: number
+                      '152':
+                        type: number
+                      '1409':
+                        type: number
+                      '1410':
+                        type: number
+                      '1411':
+                        type: number
+                      '1412':
+                        type: number
+                      '1501':
+                        type: number
+                      '1502':
+                        type: number
+                      '1503':
+                        type: number
+                      '1504':
+                        type: number
+                      '1505':
+                        type: number
+                      '02':
+                        type: number
+                      '07':
+                        type: number
+                      AZ:
+                        type: number
+                      CA:
+                        type: number
+                      CO:
+                        type: number
+                      FL:
+                        type: number
+                      GA:
+                        type: number
+                      H9:
+                        type: number
+                      IL:
+                        type: number
+                      KS:
+                        type: number
+                      MA:
+                        type: number
+                      NC:
+                        type: number
+                      NJ:
+                        type: number
+                      NY:
+                        type: number
+                      'ON':
+                        type: number
+                      OR:
+                        type: number
+                      PA:
+                        type: number
+                      TX:
+                        type: number
+                      VA:
+                        type: number
+                      WA:
+                        type: number
+                      Integrations-page:
+                        type: number
+                      adwords:
+                        type: number
+                      banner:
+                        type: number
+                      blog:
+                        type: number
+                      card:
+                        type: number
+                      cpc:
+                        type: number
+                      email:
+                        type: number
+                      ppc:
+                        type: number
+                      search:
+                        type: number
+                      social:
+                        type: number
+                      parnter:
+                        type: number
+                  more_terms:
+                    type: boolean
+                  ents_present:
+                    type: number
+                  ents_absent:
+                    type: number
+                  high_card:
+                    type: boolean
+                  approx_cardinality:
+                    type: number
+                  stats:
+                    type: object
+                    properties:
+                      mean:
+                        type: number
+                      sd:
+                        type: number
+                      min:
+                        type: number
+                      max:
+                        type: number
+                      n:
+                        type: number
+                  histograms:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        data:
+                          type: object
+                          properties:
+                            '1446336000000':
+                              type: number
+                            '1446595200000':
+                              type: number
+                            '1447891200000':
+                              type: number
+                            '1448150400000':
+                              type: number
+                            '1448409600000':
+                              type: number
+                            '1448668800000':
+                              type: number
+                            '1442188800000':
+                              type: number
+                            '1442793600000':
+                              type: number
+                            '1445212800000':
+                              type: number
+                            '1445817600000':
+                              type: number
+                            '1446422400000':
+                              type: number
+                            '1447632000000':
+                              type: number
+                            '1448236800000':
+                              type: number
+                            '1448841600000':
+                              type: number
+                            '1417392000000':
+                              type: number
+                            '1420070400000':
+                              type: number
+                            '1425168000000':
+                              type: number
+                            '1427846400000':
+                              type: number
+                            '1430438400000':
+                              type: number
+                            '1433116800000':
+                              type: number
+                            '1435708800000':
+                              type: number
+                            '1438387200000':
+                              type: number
+                            '1441065600000':
+                              type: number
+                            '1443657600000':
+                              type: number
+                        start:
+                          type: string
+                        end:
+                          type: string
+                        interval:
+                          type: string
+                      required:
+                      - data
+                      - start
+                      - end
+                      - interval
+                required:
+                - field
+                - terms_counts
+                - more_terms
+                - ents_present
+                - ents_absent
+                - high_card
+                - approx_cardinality
+      example:
+        data:
+          fields:
+          - field: region
+            terms_counts:
+              '02': 704
+              '07': 857
+              AZ: 671
+              CA: 18064
+              CO: 654
+              FL: 1537
+              GA: 822
+              H9: 758
+              IL: 1254
+              KS: 1104
+              MA: 1301
+              NC: 626
+              NJ: 892
+              NY: 4035
+              'ON': 1097
+              OR: 12158
+              PA: 1040
+              TX: 2726
+              VA: 1894
+              WA: 1948
+            more_terms: true
+            ents_present: 70489
+            ents_absent: 65796
+            high_card: false
+            approx_cardinality: 331
+          - field: utm_mediums
+            terms_counts:
+              Integrations-page: 1102
+              adwords: 4434
+              banner: 1496
+              blog: 3413
+              card: 10
+              cpc: 2923
+              email: 6051
+              ppc: 220
+              search: 8762
+              social: 12513
+              parnter: 2314
+            more_terms: true
+            ents_present: 29595
+            ents_absent: 116690
+            high_card: false
+            approx_cardinality: 27
+          - field: zd_yymm
+            terms_counts:
+              '1409': 5
+              '1410': 12
+              '1411': 4
+              '1412': 4
+              '1501': 3
+              '1502': 10
+              '1503': 26
+              '1504': 20
+              '1505': 3
+            more_terms: false
+            ents_present: 72
+            ents_absent: 136213
+            high_card: false
+            approx_cardinality: 9
+          - field: openct
+            terms_counts:
+              '1': 75
+              '2': 42
+              '3': 11
+              '4': 25
+              '5': 16
+              '6': 17
+              '8': 5
+              '9': 11
+              '10': 18
+              '11': 7
+              '12': 5
+              '19': 8
+              '20': 15
+              '24': 3
+              '26': 10
+              '32': 3
+              '35': 3
+              '51': 15
+              '108': 3
+              '152': 3
+            more_terms: true
+            ents_present: 328
+            ents_absent: 135957
+            high_card: false
+            approx_cardinality: 98
+            stats:
+              mean: 15.621951219512194
+              sd: 27.978602557504388
+              min: 1
+              max: 264
+              n: 328
+          - field: mc_lastopen_ts
+            terms_counts: {}
+            more_terms: false
+            histograms:
+            - data:
+                '1446336000000': 2
+                '1446595200000': 2
+                '1447891200000': 333
+                '1448150400000': 348
+                '1448409600000': 9
+                '1448668800000': 8
+              start: '1446401936511'
+              end: '1448993936511'
+              interval: 3d
+            - data:
+                '1442188800000': 35
+                '1442793600000': 3
+                '1445212800000': 71
+                '1445817600000': 2
+                '1446422400000': 4
+                '1447632000000': 340
+                '1448236800000': 351
+                '1448841600000': 7
+              start: '1441131536511'
+              end: '1448993936511'
+              interval: week
+            - data:
+                '1417392000000': 3
+                '1420070400000': 2
+                '1425168000000': 2
+                '1427846400000': 43
+                '1430438400000': 5
+                '1433116800000': 24
+                '1435708800000': 41
+                '1438387200000': 48
+                '1441065600000': 38
+                '1443657600000': 73
+                '1446336000000': 702
+              start: '1417457936511'
+              end: '1448993936511'
+              interval: month
+            ents_present: 1377
+            ents_absent: 134908
+            high_card: false
+            approx_cardinality: 1212
+    SchemaModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            fields:
+              type: array
+              items:
+                type: object
+                properties:
+                  as:
+                    type: string
+                  is_by:
+                    type: boolean
+                  type:
+                    type: string
+                  shortdesc:
+                    type: string
+                  longdesc:
+                    type: string
+                  froms:
+                    type: array
+                    items:
+                      type: string
+                  identities:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - as
+                - is_by
+                - type
+                - shortdesc
+                - longdesc
+                - froms
+                - identities
+      example:
+        data:
+          fields:
+          - as: created_ts
+            is_by: false
+            type: date
+            shortdesc: Created Date
+            longdesc: First time usage for this user
+            froms:
+            - default
+            identities:
+            - min
+          - as: content
+            is_by: false
+            type: string
+            shortdesc: Site Content
+            longdesc: Specific piece of content viewed
+            froms:
+            - default
+            identities:
+            - content
+          - as: location
+            is_by: false
+            type: string
+            shortdesc: Location
+            longdesc: ''
+            froms:
+            - linkedin_data
+            identities:
+            - location
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

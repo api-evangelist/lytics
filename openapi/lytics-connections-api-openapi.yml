@@ -1,0 +1,622 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@lytics.com
+    name: Lytics Support
+    url: https://support.lytics.com/hc/en-us
+  description: Version 2 of the Lytics API
+  termsOfService: https://www.lytics.com/terms-of-service/
+  title: Lytics Connections API
+  version: '2.0'
+servers:
+- url: https://api.lytics.io/v2
+tags:
+- description: Create and manage connections to external data sources.
+  name: Connections
+paths:
+  /connection:
+    get:
+      description: Get a list of all connections for the account
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.ConnectionResp'
+                      type: array
+                  type: object
+          description: Connection List Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get connections
+      tags:
+      - Connections
+    post:
+      description: Create a connection
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.ConnectionCreateReq'
+        description: Connection Request
+        required: true
+        x-originalParamName: connection
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.ConnectionResp'
+                  type: object
+          description: Connection Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Create connection
+      tags:
+      - Connections
+  /connection/{id}:
+    delete:
+      description: Delete a connection
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The connection ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: Connection Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Delete connection
+      tags:
+      - Connections
+    get:
+      description: Get a connection by ID
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The connection ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.ConnectionResp'
+                  type: object
+          description: Connection Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get connection
+      tags:
+      - Connections
+    put:
+      description: Update a connection
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The connection ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.ConnectionUpdateReq'
+        description: Connection Request
+        required: true
+        x-originalParamName: connection
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.ConnectionResp'
+                  type: object
+          description: Connection Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Update connection
+      tags:
+      - Connections
+  /connection/{id}/scan:
+    post:
+      description: Query an external data source to get sample result set for members of a Cloud Connect model.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The connection ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: maximum num of rows to return per call, default = 20, max = 100
+        in: query
+        name: limit
+        schema:
+          type: integer
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.ConnectionScanReq'
+        description: Connection Scan Request
+        required: true
+        x-originalParamName: query
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.ConnectionScanResp'
+                  type: object
+          description: Connection Scan Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Query an external data source
+      tags:
+      - Connections
+  /connection/{id}/schema:
+    get:
+      description: Returns all the table names for the given connection
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The connection ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.ConnectionTableResp'
+                      type: array
+                  type: object
+          description: Connection Schema Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get the tables for a connection
+      tags:
+      - Connections
+  /connection/{id}/schema/{table}:
+    get:
+      description: Returns all the columns for a table on the given connection
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: The connection ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: The table name
+        in: path
+        name: table
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      items:
+                        $ref: '#/components/schemas/models.ConnectionTableSchemaResp'
+                      type: array
+                  type: object
+          description: Connection Schema Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get the schema for a table on the connection
+      tags:
+      - Connections
+components:
+  schemas:
+    models.ResultSetColumn:
+      properties:
+        column_datatype:
+          type: string
+        column_name:
+          type: string
+      type: object
+    models.ConnectionTableResp:
+      properties:
+        error:
+          type: string
+        fully_qualified_name:
+          type: string
+        num_columns:
+          type: integer
+        table_name:
+          type: string
+      type: object
+    models.ConnectionScanResp:
+      properties:
+        columns:
+          items:
+            $ref: '#/components/schemas/models.ResultSetColumn'
+          type: array
+        row_count:
+          type: integer
+        rows: {}
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ConnectionResp:
+      properties:
+        account_id:
+          type: string
+        aid:
+          type: integer
+        auth_ids:
+          items:
+            type: string
+          type: array
+        author_id:
+          type: string
+        config:
+          $ref: '#/components/schemas/models.ConnectionConfig'
+        connection_config_id:
+          type: string
+        connection_config_slug:
+          type: string
+        created:
+          type: string
+        deleted:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        label:
+          type: string
+        provider_id:
+          type: string
+        provider_slug:
+          type: string
+        updated:
+          type: string
+        updated_by_user_id:
+          type: string
+      type: object
+    models.ConnectionScanReq:
+      properties:
+        primary_keys:
+          items:
+            type: string
+          type: array
+        query:
+          type: string
+      type: object
+    models.ConnectionUpdateReq:
+      properties:
+        auth_ids:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        label:
+          type: string
+      type: object
+    models.ConnectionCreateReq:
+      properties:
+        auth_ids:
+          items:
+            type: string
+          type: array
+        config:
+          $ref: '#/components/schemas/models.ConnectionConfig'
+        connection_config_id:
+          type: string
+        connection_config_slug:
+          type: string
+        description:
+          type: string
+        label:
+          type: string
+        provider_id:
+          type: string
+        provider_slug:
+          type: string
+      type: object
+    models.ConnectionConfig:
+      properties:
+        bucket:
+          type: string
+        connection_url:
+          type: string
+        database:
+          type: string
+        dataset:
+          type: string
+        file:
+          type: string
+        project:
+          type: string
+        ssl_mode:
+          type: string
+      type: object
+    models.ConnectionTableSchemaResp:
+      properties:
+        column_datatype:
+          type: string
+        column_name:
+          type: string
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey

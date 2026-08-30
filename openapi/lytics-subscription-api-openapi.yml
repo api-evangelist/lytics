@@ -1,0 +1,297 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Subscription API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: Subscription
+  description: "**BETA API**\n\nSubscriptions are queries into real-time events in Lytics, most\ncommonly listening to a list of users entering/leaving segments\nie _triggers_.\n\n**Common Use Cases**\n\n* Upon Entering/Leaving you want to send a notification callback with that user data so you can email them, save it, etc.\n\n* Upon Entering Segment, get notified, save an update to a local user-profile so next time they log in, used in your app.\n\n* Upon Entering Segments, get updated with many segments user is member of, and update list of messages user will see next time they logon to app.\n\n**Channels**\nTypes of streams the event can be delivered.\n\n* *Webhooks*\n\n* *AWS Kinesis*\n\n* *Azure Event-Hub*\n\n* *??? Ask us* Google PubSub.\n\nSome features:\n\n* *withbackfill* this true/false flag to indicate whether to backfill webhook events\n  for users currently a member of a segment.  Default is false, so only new users\n  entering/exiting a segment would cause a webhook.  If you enter withbackfill=true\n  then all users currently a member of the segment at time of submission would have\n  a webhook fired for them as well, then changes going forward would start firing.\n  If backfill is used, only a single segment can be specified.\n\n**Example**\n\n```\nexport LIOKEY=\"your_api_key\"\nexport LIODATAKEY=\"your_data_key\"\n\n# UPSERT Segment uses \"ALIAS\" as id for create/update\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: text/plain\" \\\n  -XPOST \"https://api.lytics.io/api/segment\" -d '\n\n-- Paying Users Segment\nFILTER AND (\n    paying_user = \"t\"\n)\nFROM user\nALIAS demo_segment\n\n' | jq '.'\n\n# get that Segment ID\nSEGID=`curl -s \"https://api.lytics.io/api/segment?key=$LIOKEY\" | jq -r '.data[] | select(.name == \"demo_segment\") | .id'`\necho \"Created Segment id=$SEGID\"\n\n# Create Webhook Subscription to send entry/exits events to your url\n# - entry/exits will be sent to the ngrok url below (create your own)\n# - we use app-engine for this\necho '\n{\n    \"webhook_url\": \"http://123456abc.ngrok.com/\"\n    , \"segment_ids\": [\"1234abcd\"]\n    , \"withbackfill\": false\n    , \"channel\" : \"webhook\"\n    , \"name\" : \"webhooktest1\"\n    , \"description\": \"What is this subscription for?\"\n}\n' |  \\\ncurl -v -XPOST \"https://api.lytics.io/api/subscription\" \\\n   -H \"Authorization: $LIOKEY\" \\\n   -H \"Content-Type: application/json\" -d @- | jq '.'\n\n# for kinesis\n\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: application/json\" \\\n  -XPOST \"https://api.lytics.io/api/subscription\" -d '\n{\n    \"channel\":\"kinesis\",\n    \"segment_ids\": [\"1234abcd\",\"abc345\"],\n    \"name\":\"test2\",\n    \"description\":\"hello world\",\n    \"stream\":\"lytics_triggers_stream\",\n    \"region\": \"us-east-1\",\n    \"identifier_field\":\"user_id\",\n    \"role_arn\":\"arn:aws:iam::4444444444444:role/LyticsWriteToKinesis\"\n}\n' | jq \".\"\n\n# send test data ...\n\n# toggling these next two should move user in/out of segment causing trigger\ncurl -s -XPOST \"https://api.lytics.io/collect/json/demo\" -H \"Authorization: $LIODATAKEY\"  -H 'Content-type: application/json' \\\n  -d '{ \"paying_user\":\"f\", \"user_id\":\"user123\"}' | jq '.'\n\ncurl -s -XPOST \"https://api.lytics.io/collect/json/demo\" -H \"Authorization: $LIODATAKEY\"  -H 'Content-type: application/json' \\\n  -d '{ \"paying_user\":\"t\", \"user_id\":\"user123\"}' | jq '.'\n\n```\n\n**Webhook Post Example**\nThis will send a json document like below to your subscription channel.\nBut, this is a **BETA API** and this will change.  We\nreceived feedback that the more logical set of data\nis all segment changes (not just one per subscription) so we\nare modifying the response to be an array of segment entry/exits.\n\n## Example Message\n\nThere are still message format from v1 of this api to\nmaintain backwards compatibility.\n\n```\n{\n  \"data\": {\n    \"_created\": \"2016-06-29T18:50:16.902758229Z\",\n    \"_modified\": \"2017-03-18T06:12:36.829070108Z\",\n    \"email\": \"testwebhook@lytics.io\",\n    \"user_id\": \"user123\",\n    \"segment_events\":[\n        {\n            \"id\": \"d3d8f15855b6b067709577342fe72db9\",\n            \"event\": \"exit\",\n            \"enter\": \"2017-03-02T06:12:36.829070108Z\",\n            \"exit\": \"2017-03-18T06:12:36.829070108Z\",\n            \"slug\": \"demo_segment\"\n        },\n        {\n            \"id\": \"abc678asdf\",\n            \"event\": \"enter\",\n            \"enter\": \"2017-03-02T06:12:36.829070108Z\",\n            \"exit\": \"2099-03-18T06:12:36.829070108Z\",\n            \"slug\": \"another_segment\"\n        }\n    ]\n  },\n  \"meta\":{\n     \"object\":\"user\",\n     \"source\":\"subscription\",\n     \"subscription_id\": \"7e2b8804bbe162cd3f9c0c5991bf3078\"\n  }\n}\n```"
+paths:
+  /api/subscription:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionListModel'
+              examples:
+                response:
+                  value:
+                    data:
+                    - id: 3573009ab39bbc9614f754c0fafd53d7
+                      segment_ids:
+                      - f897270369f977294871f21cc0d826e7
+                      segmentql: FILTER AND ( score_momentum > 25, score_quantity > 25 ) ALIAS seg_webhook1
+                      description: hello world
+                      name: test1
+                      updated: '2016-06-30T15:33:14.376262062-07:00'
+                      created: '2016-06-30T15:33:14.37626196-07:00'
+                      user_id: 2916b84ba4fa8b510591fd6e1c2320db
+                      account_id: testid
+                      workflow: webhook_triggers
+      security:
+      - ApiKeyAuth: []
+      summary: SubscriptionList
+      operationId: SubscriptionList
+      description: "Get A list of all Subscriptions.\n\n```sh\n\n# find subscriptions that contain a specific segment.Id or segment.Slug\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: application/json\" \\\n  \"https://api.lytics.io/api/subscription?segment_id=seg_webhook1\" | jq \".\"\n\n# same but use id.\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: application/json\" \\\n  \"https://api.lytics.io/api/subscription?segment_id=f897270369f977294871f21cc0d826e7\" | jq \".\"\n\n```"
+      tags:
+      - Subscription
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: segment_id
+        in: query
+        description: Id of Segment Id OR Slug to filter on
+        required: false
+        schema:
+          type: string
+          default: '``'
+      - name: table
+        in: query
+        description: Table name.
+        required: false
+        schema:
+          type: string
+          default: user
+    post:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 3573009ab39bbc9614f754c0fafd53d7
+                      segment_ids:
+                      - f897270369f977294871f21cc0d826e7
+                      segmentql: FILTER AND ( score_momentum > 25, score_quantity > 25 ) ALIAS seg_webhook1
+                      description: hello world
+                      name: test1
+                      updated: '2016-06-30T15:33:14.376262062-07:00'
+                      created: '2016-06-30T15:33:14.37626196-07:00'
+                      user_id: 2916b84ba4fa8b510591fd6e1c2320db
+                      account_id: testid
+                      workflow: webhook_triggers
+      security:
+      - ApiKeyAuth: []
+      summary: Subscription Upsert
+      operationId: Subscription Upsert
+      description: "Upsert a new Subscription.   Subscriptions allow you to listen and recieve\nnotification of events inside of Lytics, most common would be listen\nto users entering/leaving segments to serve as triggers.\n\nWhen creating subscriptions they have the following fields.\n\n| field         | DataType         | Description   |\n|---------------|------------------|---------------|\n| channel       | string           | Required: What Type of subscription.  [kinesis, webhook]\n| name          | string           | Name of this Subscription\n| description   | string           | Long text description (optional)\n| segment_ids   | []string         | List of segment Ids\n| withbackfill  | bool             | Should all members of this segment be included?  They will be marked as \"entered\" segment.\n\n*Webhook* only fields:\n\n| field         | DataType          | Description   |\n|---------------|-------------------|---------------|\n| webhook_url   | string            | Required for Webhooks, only used on webhooks, url to post to.\n| headers       | map[string]string | Optional map of headers to send with webhook\n| segmentio_writekey | string       | Optional api key for sending to segment.io\n\n*Kinesis* only fields:\n\n| field            | DataType         | Description   |\n|------------------|------------------|---------------|\n| region           | string           | Required.  AWS Region\n| stream           | string           | Required.  Kinesis stream\n| role_arn         | string           | AWS IAM Role to use for assume-role (see integrations doc)\n| identifier_field | string           | Optional. If provided, pull this field from user field and use as shard-key in Kinesis Put.\n\nCreate a Webhook Subscription that includes the Segment definition and custom headers (optional)\n\n```sh\n\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: application/json\" \\\n  -XPOST \"https://api.lytics.io/api/subscription\" -d '\n{\n    \"segmentql\": \"FILTER AND ( score_momentum > 25, score_quantity > 25 ) ALIAS seg_webhook1\",\n    \"name\":\"test1\",\n    \"channel\" : \"webhook\",\n    \"description\":\"hello world\",\n    \"webhook_url\":\"https://demo.appspot.com/log\",\n    \"headers\": {\"Authorization\": \"dGhpczp0aGF0\"}\n}\n' | jq \".\"\n```\n\nCreate a Webhook subscription with list of SegmentId's (previously created)\nto listen to.\n\n```\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: application/json\" \\\n  -XPOST \"https://api.lytics.io/api/subscription\" -d '\n{\n    \"segment_ids\": [\"1234abcd\",\"abc345\"],\n    \"channel\":\"webhook\",\n    \"name\":\"test2\",\n    \"description\":\"hello world\",\n    \"webhook_url\":\"https://demo.appspot.com/log\"\n}\n' | jq \".\"\n\n```\n\nCreate a Kinesis Subscription\n\n```\n\ncurl -s -H \"Authorization: $LIOKEY\" -H \"Content-Type: application/json\" \\\n  -XPOST \"https://api.lytics.io/api/subscription\" -d '\n{\n    \"channel\":\"kinesis\",\n    \"segment_ids\": [\"1234abcd\",\"abc345\"],\n    \"name\":\"test2\",\n    \"description\":\"hello world\",\n    \"stream\":\"lytics_triggers_stream\",\n    \"region\": \"us-east-1\",\n    \"identifier_field\":\"user_id\",\n    \"role_arn\":\"arn:aws:iam::4444444444444:role/LyticsWriteToKinesis\"\n}\n' | jq \".\"\n\n\n\n```"
+      tags:
+      - Subscription
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                segment_ids:
+                  type: array
+                  items:
+                    type: string
+                name:
+                  type: string
+                channel:
+                  type: string
+                withbackfill:
+                  type: boolean
+                description:
+                  type: string
+                webhook_url:
+                  type: string
+              example:
+                segment_ids:
+                - 1234abcd
+                - abc345
+                name: test2
+                channel: webhook
+                withbackfill: false
+                description: hello world
+                webhook_url: https://lyticswwwapp.appspot.com/log
+  /api/subscription/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionModel'
+              examples:
+                response:
+                  value:
+                    data:
+                      id: 3573009ab39bbc9614f754c0fafd53d7
+                      segment_ids:
+                      - f897270369f977294871f21cc0d826e7
+                      segmentql: FILTER AND ( score_momentum > 25, score_quantity > 25 ) ALIAS seg_webhook1
+                      description: hello world
+                      name: test1
+                      updated: '2016-06-30T15:33:14.376262062-07:00'
+                      created: '2016-06-30T15:33:14.37626196-07:00'
+                      user_id: 2916b84ba4fa8b510591fd6e1c2320db
+                      account_id: testid
+                      workflow: webhook_triggers
+      security:
+      - ApiKeyAuth: []
+      summary: Subscription Fetch
+      operationId: Subscription Fetch
+      description: Get a single Subscription Webhook.
+      tags:
+      - Subscription
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: subscription Id in path
+        required: true
+        example: '1234'
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Subscription Delete
+      operationId: Subscription Delete
+      description: Delete A Subscription.
+      tags:
+      - Subscription
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: subscription Id in path
+        required: true
+        example: '1234'
+        schema:
+          type: string
+components:
+  schemas:
+    SubscriptionListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              segment_ids:
+                type: array
+                items:
+                  type: string
+              segmentql:
+                type: string
+              description:
+                type: string
+              name:
+                type: string
+              updated:
+                type: string
+              created:
+                type: string
+              user_id:
+                type: string
+              account_id:
+                type: string
+              workflow:
+                type: string
+      example:
+        data:
+        - id: 3573009ab39bbc9614f754c0fafd53d7
+          segment_ids:
+          - f897270369f977294871f21cc0d826e7
+          segmentql: FILTER AND ( score_momentum > 25, score_quantity > 25 ) ALIAS seg_webhook1
+          description: hello world
+          name: test1
+          updated: '2016-06-30T15:33:14.376262062-07:00'
+          created: '2016-06-30T15:33:14.37626196-07:00'
+          user_id: 2916b84ba4fa8b510591fd6e1c2320db
+          account_id: testid
+          workflow: webhook_triggers
+    SubscriptionModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            segment_ids:
+              type: array
+              items:
+                type: string
+            segmentql:
+              type: string
+            description:
+              type: string
+            name:
+              type: string
+            updated:
+              type: string
+            created:
+              type: string
+            user_id:
+              type: string
+            account_id:
+              type: string
+            workflow:
+              type: string
+      example:
+        data:
+          id: 3573009ab39bbc9614f754c0fafd53d7
+          segment_ids:
+          - f897270369f977294871f21cc0d826e7
+          segmentql: FILTER AND ( score_momentum > 25, score_quantity > 25 ) ALIAS seg_webhook1
+          description: hello world
+          name: test1
+          updated: '2016-06-30T15:33:14.376262062-07:00'
+          created: '2016-06-30T15:33:14.37626196-07:00'
+          user_id: 2916b84ba4fa8b510591fd6e1c2320db
+          account_id: testid
+          workflow: webhook_triggers
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

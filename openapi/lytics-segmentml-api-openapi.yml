@@ -1,0 +1,628 @@
+openapi: 3.2.0
+info:
+  title: V1 Lytics Segment ML API
+  version: 1.0.0
+  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+servers:
+- url: https://api.lytics.io
+tags:
+- name: SegmentML
+  description: 'SegmentML provides a framework for building custom machine learning
+
+    models directly in Lytics.  Lytics SegmentML models are self-training,
+
+    continuously-updating and real-time.
+
+
+    SegmentML models are built by identifying:
+
+
+    1. A segment of users, called the **Target Segment** who exhibit behavior for *prediction*,
+
+
+    2. A segment of users, called the **Source Segment** to be candidates for model *evaluation*, or scoring.
+
+
+    Models are built with a variety of pre-selected candidate features, which include behavioral scores and content affinities, and can additionally support any custom field available in Lytics user profiles.
+
+
+    Attributes concerning the SegmentML model''s setup configuration are detailed in **SegmentML Create**. Attributes concerning the model''s results are defined in **SegmentML Model Fetch**.
+
+
+    Generic attributes from SegmentML model GET and POST:
+
+
+    | field          | DataType         | Description   |
+
+    |--------------  |------------------|---------------|
+
+    | name           | string           | The model''s name
+
+    | state          | string           | The state of the model: Either *building*, *invalid*, or *complete*
+
+    | reason         | string           | If the state is *invalid* the reason will denote the error
+
+    | created        | string           | Date and time the model was created'
+paths:
+  /api/segmentml/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentML Model Fetch
+      operationId: SegmentML Model Fetch
+      description: 'Get a SegmentML model.
+
+
+        Additional atttributes from a completed SegmentML model GET response:
+
+
+        | field                 | DataType         | Description   |
+
+        |-----------------------|------------------|---------------|
+
+        | features: kind        | string           | The field is either a Lytics Segment feature (*segment*), a lql/user-field feature (*lql*), a Lytics Behavioral Score feature (*score*), or a Lytics Content Affinity feature (*content*)
+
+        | features: fieldtype   | string           | Field type is either *numeric* or *categorical*
+
+        | features: name        | string           | The name of a field
+
+        | features: importance  | number           | The relative importance of a field in the model
+
+        | features: correlation | number           | Correlation between specific field and target
+
+        | features: impact      | object           | The impact object details the Lift and shows the marginal effect of a feature on the predicted outcome of the model
+
+        | mse                   | number           | Mean-squared error value
+
+        | rsq                   | number           | R-squared value or coefficient of determination
+
+        | false_negative        | number           | The number of users in the source segment who are predicted to be in the target segment.
+
+        | false_positive        | number           | The number of users in the target segment who are not predicted to be in the target segment.
+
+        | true_negative         | number           | The number of users in the source segment who are not predicted to be in the target segment.
+
+        | true_positive         | number           | The number of users in the target segment who are predicted to be in the target segment.
+
+        | success               | []number         | Number of successful predictions for a given prediction value
+
+        | failure               | []number         | Number of failed predictions for a given prediction value
+
+        | auc                   | number           | Area under the ROC curve
+
+        | threshold             | number           | Optimal decision threshold to minimize false-positives and false-negatives
+
+        | accuracy              | number           | A value that represents the accuracy of the model; scale ranges from 0 (least accurate) to 10 (most accurate).
+
+        | reach                 | number           | A value that represents the number of source users that look like target users; scale ranges from 0 (low reach) to 10 (high reach).
+
+        | model_health          | number           | The overall health of the model (i.e. "healthy", "unhealthy")
+
+        | msgs                  | number           | Messages for the user about the model with levels of severity (i.e. "debug", "info", "warn", "error")
+
+
+        To learn more about the metrics false negative, false positive etc., check out [binary classification](https://en.wikipedia.org/wiki/Binary_classification).
+
+
+        ```
+
+        # Curl example of getting a SegmentML model
+
+        curl -s -J -XGET "https://api.lytics.io/api/segmentml/all::smt_power" -H "Authorization: $LIOKEY"
+
+        ```'
+      tags:
+      - SegmentML
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of the SegmentML model to retrieve, of the form `SOURCE_SLUG::TARGET_SLUG`.
+        required: true
+        example: source::target
+        schema:
+          type: string
+    delete:
+      responses:
+        '204':
+          description: No Content
+          headers: {}
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentML Delete
+      operationId: SegmentML Delete
+      description: 'Delete a SegmentML model.
+
+
+        ```sh
+
+        # Curl example of deleting a SegmentML model
+
+        curl -s -J -XDELETE "https://api.lytics.io/api/segmentml/all::smt_power" -H "Authorization: $LIOKEY"
+
+        ```'
+      tags:
+      - SegmentML
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: ID of the SegmentML model to delete, of the form `SOURCE_SLUG::TARGET_SLUG`.
+        required: true
+        example: source::target
+        schema:
+          type: string
+  /api/segmentml:
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentMLModel'
+              examples:
+                response:
+                  value:
+                    name: test_rf
+                    state: building
+                    reason: ''
+                    created: '2018-07-10T16:10:54.456003352-07:00'
+                    conf:
+                      source:
+                        aid: 123
+                        account_id: lol
+                        id: ''
+                        name: all
+                        is_public: false
+                        slug_name: ''
+                        description: ''
+                        author_id: ''
+                        updated: '0001-01-01T00:00:00Z'
+                        created: '2018-07-10T16:10:54.442558895-07:00'
+                        invalid: false
+                        invalid_reason: ''
+                        deleted: false
+                        datemath_calc: false
+                        forward_datemath: false
+                        save_hist: false
+                        schedule_exit: false
+                        tags: null
+                      target:
+                        aid: 123
+                        account_id: lol
+                        id: ''
+                        name: goal
+                        is_public: false
+                        slug_name: ''
+                        description: ''
+                        author_id: ''
+                        updated: '0001-01-01T00:00:00Z'
+                        created: '2018-07-10T16:10:54.442559277-07:00'
+                        invalid: false
+                        invalid_reason: ''
+                        deleted: false
+                        datemath_calc: false
+                        forward_datemath: false
+                        save_hist: false
+                        schedule_exit: false
+                        tags: null
+                      target_field: null
+                      model_name: ''
+                      additional: null
+                      collections: null
+                      collect: 0
+                      use_scores: true
+                      use_content: false
+                      build_only: false
+                      auto_tune: false
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentML Create
+      operationId: SegmentML Create
+      description: "Create a new SegmentML model.\n\nModel configuration can be specified either through sending the options\nas a flat JSON object POST body or through URL parameters on the request.\n\n```sh\n# Curl example of creating a SegmentML model\ncurl -s -J -XPOST \"https://api.lytics.io/api/segmentml\" -H \"Authorization: $LIOKEY\" -d '\n{\n    \"source\": \"all\",\n    \"target\": \"smt_power\",\n    \"use_scores\": true\n}\n'\n```"
+      tags:
+      - SegmentML
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: source
+        in: query
+        description: ID or slug of the source segment.
+        required: true
+        example: all
+        schema:
+          type: string
+      - name: target
+        in: query
+        description: ID or slug of the target segment. **Required** if target field is not supplied.
+        required: false
+        example: smt_power
+        schema:
+          type: string
+      - name: use_scores
+        in: query
+        description: Include raw behavioral scores as features in the model (usually very useful).
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: target_field
+        in: query
+        description: Slug of the target field. Cannot provide both a target and a target field, hence required if target segment is not indicated (see above).
+        required: false
+        example: LTV
+        schema:
+          type: string
+      - name: use_content
+        in: query
+        description: If true, include content affinities as features in the model.
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: aspect_collections
+        in: query
+        description: List of Segment Collections to include in the model.  Possible values are "email", "web", "support", "mobile", "commerce", "behaviors", "content".
+        required: false
+        example: '["web", "mobile"]'
+        schema:
+          type: string
+      - name: additional_fields
+        in: query
+        description: List of additional user fields to include in the model.
+        required: false
+        example: '["age", "country"]'
+        schema:
+          type: string
+      - name: model_only
+        in: query
+        description: Build the model without scoring each user. This is useful during model building exercises when comparing efficiency and accuracy between models. Set true by default unless **evalonly** is selected.
+        required: false
+        example: 'true'
+        schema:
+          type: boolean
+      - name: eval_only
+        in: query
+        description: If true, a previously built model is used to rescore users. Only the source and target parameters are needed in the API call to to identify which model to use.
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: auto_tune
+        in: query
+        description: If true, enable auto-tune feature selection.
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: tune_model
+        in: query
+        description: If true, model tuning parameters are optimized before any models are built. Experimental.
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: tags
+        in: query
+        description: Includes tags to be associated with the model.
+        required: false
+        example: '["increase momentum", "mobile users"]'
+        schema:
+          type: string
+      - name: re_run
+        in: query
+        description: If true, re-run the model every week.
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: save_segments
+        in: query
+        description: "If true, this saves three different segments:\n    1) Users from source and target segments who \"look like\" users from the target segment.\n    2) Users not in the target segment.\n    3) Users from the source segment who look like users from the target segment.\n"
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: as_is
+        in: query
+        description: If true, do not remove any of the model features when creating the model.
+        required: false
+        example: 'false'
+        schema:
+          type: boolean
+      - name: num_to_train
+        in: query
+        description: The number of samples to collect from both the source and target segment for feature matrices.  Defaults to 5,000.
+        required: false
+        example: '5000'
+        schema:
+          type: number
+      - name: cor_threshold
+        in: query
+        description: Threshold (0.0-1.0) at which to remove correlated features.
+        required: false
+        example: '0.9'
+        schema:
+          type: number
+  /api/segmentml/_dependencies/{modelname}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentMLDependenciesModel'
+              examples:
+                response:
+                  value:
+                    message: success
+                    status: 200
+                    data:
+                      fields:
+                        lytics_score_frequency:
+                        - - 1
+                          - 0.5283225806451614
+                        - - 4.6
+                          - 0.5283225806451614
+                        - - 8.2
+                          - 0.5281612903225807
+                        lytics_score_intensity:
+                        - - 1
+                          - 0.5283225806451614
+                        - - 4.6
+                          - 0.5283225806451614
+                        - - 8.2
+                          - 0.5281612903225807
+      security:
+      - ApiKeyAuth: []
+      summary: SegmentML Dependencies
+      operationId: SegmentML Dependencies
+      description: ''
+      tags:
+      - SegmentML
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: modelname
+        in: path
+        description: Name of the model to get dependencies for.
+        required: true
+        example: my_model
+        schema:
+          type: string
+components:
+  schemas:
+    SegmentMLDependenciesModel:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: number
+        data:
+          type: object
+          properties:
+            fields:
+              type: object
+              properties:
+                lytics_score_frequency:
+                  type: array
+                  items:
+                    type: array
+                    items: {}
+                lytics_score_intensity:
+                  type: array
+                  items:
+                    type: array
+                    items: {}
+      example:
+        message: success
+        status: 200
+        data:
+          fields:
+            lytics_score_frequency:
+            - - 1
+              - 0.5283225806451614
+            - - 4.6
+              - 0.5283225806451614
+            - - 8.2
+              - 0.5281612903225807
+            lytics_score_intensity:
+            - - 1
+              - 0.5283225806451614
+            - - 4.6
+              - 0.5283225806451614
+            - - 8.2
+              - 0.5281612903225807
+    SegmentMLModel:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          type: string
+        reason:
+          type: string
+        created:
+          type: string
+        conf:
+          type: object
+          properties:
+            source:
+              type: object
+              properties:
+                aid:
+                  type: number
+                account_id:
+                  type: string
+                id:
+                  type: string
+                name:
+                  type: string
+                is_public:
+                  type: boolean
+                slug_name:
+                  type: string
+                description:
+                  type: string
+                author_id:
+                  type: string
+                updated:
+                  type: string
+                created:
+                  type: string
+                invalid:
+                  type: boolean
+                invalid_reason:
+                  type: string
+                deleted:
+                  type: boolean
+                datemath_calc:
+                  type: boolean
+                forward_datemath:
+                  type: boolean
+                save_hist:
+                  type: boolean
+                schedule_exit:
+                  type: boolean
+                tags: {}
+            target:
+              type: object
+              properties:
+                aid:
+                  type: number
+                account_id:
+                  type: string
+                id:
+                  type: string
+                name:
+                  type: string
+                is_public:
+                  type: boolean
+                slug_name:
+                  type: string
+                description:
+                  type: string
+                author_id:
+                  type: string
+                updated:
+                  type: string
+                created:
+                  type: string
+                invalid:
+                  type: boolean
+                invalid_reason:
+                  type: string
+                deleted:
+                  type: boolean
+                datemath_calc:
+                  type: boolean
+                forward_datemath:
+                  type: boolean
+                save_hist:
+                  type: boolean
+                schedule_exit:
+                  type: boolean
+                tags: {}
+            target_field: {}
+            model_name:
+              type: string
+            additional: {}
+            collections: {}
+            collect:
+              type: number
+            use_scores:
+              type: boolean
+            use_content:
+              type: boolean
+            build_only:
+              type: boolean
+            auto_tune:
+              type: boolean
+      example:
+        name: test_rf
+        state: building
+        reason: ''
+        created: '2018-07-10T16:10:54.456003352-07:00'
+        conf:
+          source:
+            aid: 123
+            account_id: lol
+            id: ''
+            name: all
+            is_public: false
+            slug_name: ''
+            description: ''
+            author_id: ''
+            updated: '0001-01-01T00:00:00Z'
+            created: '2018-07-10T16:10:54.442558895-07:00'
+            invalid: false
+            invalid_reason: ''
+            deleted: false
+            datemath_calc: false
+            forward_datemath: false
+            save_hist: false
+            schedule_exit: false
+            tags: null
+          target:
+            aid: 123
+            account_id: lol
+            id: ''
+            name: goal
+            is_public: false
+            slug_name: ''
+            description: ''
+            author_id: ''
+            updated: '0001-01-01T00:00:00Z'
+            created: '2018-07-10T16:10:54.442559277-07:00'
+            invalid: false
+            invalid_reason: ''
+            deleted: false
+            datemath_calc: false
+            forward_datemath: false
+            save_hist: false
+            schedule_exit: false
+            tags: null
+          target_field: null
+          model_name: ''
+          additional: null
+          collections: null
+          collect: 0
+          use_scores: true
+          use_content: false
+          build_only: false
+          auto_tune: false
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,0 +1,865 @@
+openapi: 3.2.0
+info:
+  title: Lytics Account API
+  version: '1.0'
+  description: 'Operations tagged Account across 2 of this provider''s published API definitions: lytics-api-v1-openapi.json, lytics-api-v2-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.lytics.io
+- url: https://api.lytics.io/v2
+tags:
+- name: Account
+  description: 'Account related resources of the *Lytics API*.
+
+
+    The Account resource describes an account. An account can be a *Master* account, which
+
+    means that it is a billing account. Master accounts have children accounts
+
+    which act more as separate projects, for same billing account. Each child
+
+    account can be used for Dev, Testing, etc., or for separate siloes of data
+
+    for sub-divisions, etc..
+
+
+    The Account resource has the following attributes:
+
+
+    | field       | DataType         | Description   |
+
+    |-------------|------------------|---------------|
+
+    | id          | string           | unique id
+
+    | created     | Date             | Created date
+
+    | updated     | Date             | Last Updated Date
+
+    | domain      | string           | customer-assigned unique id (auto assigned to domain name).  This must be unique across lytics accounts
+
+    | email       | string           | primary email contact for account owner
+
+    | parent_id   | string           | parent account if this account is a child-account of master billing account
+
+    | name        | string           | account name'
+paths:
+  /api/account/{id}:
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountModel'
+              examples:
+                response:
+                  value:
+                    created: '2014-10-30T21:01:06.493Z'
+                    updated: '2014-10-30T21:01:06.493Z'
+                    domain: example.lytics.io
+                    email: notreal@lytics.io
+                    id: CNakHAobwEeLuUyrKc5AQTif
+                    name: Lytics Test
+                    parent_id: CNakHAobwEeLuUyrKc5AQTif
+                    timezone: America/Los_Angeles
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve a Single Account
+      operationId: Retrieve a Single Account
+      description: Get single account by id.
+      tags:
+      - Account
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of account.
+        required: true
+        example: 1234abcd
+        schema:
+          type: string
+    put:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountModel'
+              examples:
+                response:
+                  value:
+                    created: '2014-10-30T21:01:06.493Z'
+                    updated: '2014-10-30T21:01:06.493Z'
+                    domain: example.lytics.io
+                    email: notreal@lytics.io
+                    id: CNakHAobwEeLuUyrKc5AQTif
+                    name: Lytics Test
+                    parent_id: CNakHAobwEeLuUyrKc5AQTif
+                    timezone: America/Los_Angeles
+      security:
+      - ApiKeyAuth: []
+      summary: Account Update
+      operationId: Account Update
+      description: Post update to account. See list of fields above.
+      tags:
+      - Account
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      - name: id
+        in: path
+        description: id of account.
+        required: true
+        example: 1234abcd
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+              example:
+                name: updated account name
+    servers:
+    - url: https://api.lytics.io
+  /api/account:
+    post:
+      responses:
+        '201':
+          description: Created
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountModel'
+              examples:
+                response:
+                  value:
+                    created: '2014-10-30T21:01:06.493Z'
+                    updated: '2014-10-30T21:01:06.493Z'
+                    domain: example.lytics.io
+                    email: notreal@lytics.io
+                    id: CNakHAobwEeLuUyrKc5AQTif
+                    name: Lytics Test
+                    parent_id: CNakHAobwEeLuUyrKc5AQTif
+                    timezone: America/Los_Angeles
+      security:
+      - ApiKeyAuth: []
+      summary: Account Create
+      operationId: Account Create
+      description: 'To create a child Account of a parent account, just post:'
+      tags:
+      - Account
+      parameters:
+      - name: account_id
+        in: query
+        description: Your Lytics account ID.
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                domain:
+                  type: string
+              example:
+                name: String content
+                domain: yourdomain.com
+    get:
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountsListModel'
+              examples:
+                response:
+                  value:
+                    status: success
+                    data:
+                    - apikey: ceHNqmr0ELpNTjRhVg7FFpzM
+                      created: '2014-10-30T21:01:06.493Z'
+                      dataapikey: qQsOcWCe-QipNGC2n5NRVVH7
+                      domain: example.lytics.io
+                      email: notreal@lytics.io
+                      id: CNakHAobwEeLuUyrKc5AQTif
+                      name: Lytics Test
+                      parent_id: CNakHAobwEeLuUyrKc5AQTif
+                      features:
+                        segment-sizes: true
+      security:
+      - ApiKeyAuth: []
+      summary: Accounts List
+      operationId: Accounts List
+      description: ''
+      tags:
+      - Account
+    servers:
+    - url: https://api.lytics.io
+  /account:
+    post:
+      description: Create new child account
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.ChildAccountCreateRequest'
+        description: Account Child Create Request
+        required: true
+        x-originalParamName: account
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.AccountResp'
+                  type: object
+          description: Account Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Create new child account
+      tags:
+      - Account
+    servers:
+    - url: https://api.lytics.io/v2
+  /account/setup/jobalerts:
+    post:
+      description: Set up a job alerts to send an email whenever the import/export job fails.
+      parameters:
+      - description: The account ID. Defaults to the user's default account.
+        in: query
+        name: account_id
+        schema:
+          type: string
+      - description: Whether to enable or disable the job alerting.
+        in: query
+        name: enable
+        required: true
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiResponse'
+          description: Setup successful
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Enable/Disable job alerts
+      tags:
+      - Account
+    servers:
+    - url: https://api.lytics.io/v2
+  /account/{id}:
+    get:
+      description: Get a Lytics account by ID
+      parameters:
+      - description: The account ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - description: Return role policy in response
+        in: query
+        name: roles
+        schema:
+          type: boolean
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.AccountResp'
+                  type: object
+          description: Account Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Get account
+      tags:
+      - Account
+    post:
+      description: Update existing account
+      parameters:
+      - description: The account ID
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.AccountUpdateRequest'
+        description: Account Update Request
+        required: true
+        x-originalParamName: account
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.AccountResp'
+                  type: object
+          description: Account Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Update existing account
+      tags:
+      - Account
+    servers:
+    - url: https://api.lytics.io/v2
+  /register:
+    post:
+      description: Register new account
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/models.AccountCreateRequest'
+        description: Account Register Request
+        required: true
+        x-originalParamName: account
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/models.ApiResponse'
+                - properties:
+                    data:
+                      $ref: '#/components/schemas/models.AccountResp'
+                  type: object
+          description: Account Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Not Found
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/models.ApiErrorResponse'
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Register new account
+      tags:
+      - Account
+    servers:
+    - url: https://api.lytics.io/v2
+components:
+  schemas:
+    AccountsListModel:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              apikey:
+                type: string
+              created:
+                type: string
+              dataapikey:
+                type: string
+              domain:
+                type: string
+              email:
+                type: string
+              id:
+                type: string
+              name:
+                type: string
+              parent_id:
+                type: string
+              features:
+                type: object
+                properties:
+                  segment-sizes:
+                    type: boolean
+      example:
+        status: success
+        data:
+        - apikey: ceHNqmr0ELpNTjRhVg7FFpzM
+          created: '2014-10-30T21:01:06.493Z'
+          dataapikey: qQsOcWCe-QipNGC2n5NRVVH7
+          domain: example.lytics.io
+          email: notreal@lytics.io
+          id: CNakHAobwEeLuUyrKc5AQTif
+          name: Lytics Test
+          parent_id: CNakHAobwEeLuUyrKc5AQTif
+          features:
+            segment-sizes: true
+    AccountModel:
+      type: object
+      properties:
+        created:
+          type: string
+        updated:
+          type: string
+        domain:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        parent_id:
+          type: string
+        timezone:
+          type: string
+      example:
+        created: '2014-10-30T21:01:06.493Z'
+        updated: '2014-10-30T21:01:06.493Z'
+        domain: example.lytics.io
+        email: notreal@lytics.io
+        id: CNakHAobwEeLuUyrKc5AQTif
+        name: Lytics Test
+        parent_id: CNakHAobwEeLuUyrKc5AQTif
+        timezone: America/Los_Angeles
+    models.AccountCreateRequest:
+      properties:
+        allow_pathora:
+          type: boolean
+        allowed_login_methods:
+          type: string
+        archive_retention_duration:
+          type: string
+        default_es_cluster:
+          type: string
+        description:
+          type: string
+        domain:
+          type: string
+        email:
+          type: string
+        expires:
+          type: string
+        feat_conductor_schema:
+          type: boolean
+        features:
+          additionalProperties: true
+          type: object
+        fid:
+          type: string
+        github_path:
+          type: string
+        google_marketplace_private_quote_name:
+          type: string
+        has_active_campaign:
+          type: boolean
+        lytics_warehouse:
+          type: string
+        name:
+          type: string
+        organization_id:
+          type: string
+        packages:
+          additionalProperties:
+            type: string
+          type: object
+        partner_id:
+          type: string
+        pubusers:
+          type: boolean
+        roles:
+          items:
+            type: string
+          type: array
+        salesforce_id:
+          description: Settings
+          type: string
+        settings:
+          additionalProperties: true
+          type: object
+        silo:
+          type: string
+        sso_connections:
+          type: string
+        sso_provider_id:
+          type: string
+        type:
+          type: string
+      type: object
+    models.ChildAccountCreateRequest:
+      properties:
+        description:
+          type: string
+        domain:
+          type: string
+        email:
+          type: string
+        expires:
+          type: string
+        fid:
+          type: string
+        name:
+          type: string
+        packages:
+          additionalProperties:
+            type: string
+          type: object
+        timezone:
+          type: string
+        type:
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.AccountUpdateRequest:
+      properties:
+        billing_organization_id:
+          type: string
+        description:
+          type: string
+        domain:
+          type: string
+        email:
+          type: string
+        fid:
+          type: string
+        name:
+          type: string
+        partner_id:
+          type: string
+        partner_slug:
+          type: string
+        pubusers:
+          type: boolean
+        settings:
+          additionalProperties: true
+          type: object
+        settings_delete:
+          items:
+            type: string
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+        tags_delete:
+          items:
+            type: string
+          type: array
+        timezone:
+          type: string
+      type: object
+    models.AccountResp:
+      properties:
+        aid:
+          type: integer
+        billing_organization_id:
+          type: string
+        created:
+          type: string
+        created_by_user_id:
+          type: string
+        deleted:
+          type: boolean
+        description:
+          type: string
+        domain:
+          type: string
+        email:
+          type: string
+        entitlement_plans:
+          items:
+            $ref: '#/components/schemas/models.EntitlementPlan'
+          type: array
+        entity: {}
+        expires:
+          type: string
+        features:
+          additionalProperties: true
+          type: object
+        fid:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        organization_id:
+          type: string
+        packages:
+          additionalProperties:
+            type: string
+          type: object
+        parent_id:
+          type: string
+        parentaid:
+          type: integer
+        partner_id:
+          type: string
+        partner_slug:
+          type: string
+        permanent:
+          type: boolean
+        provider_id:
+          type: string
+        pubusers:
+          type: boolean
+        roles_available:
+          items:
+            $ref: '#/components/schemas/models.RolePolicy'
+          type: array
+        status:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        timezone:
+          type: string
+        two_factor_auth:
+          type: boolean
+        type:
+          type: string
+        updated:
+          type: string
+      type: object
+    models.RolePolicy:
+      properties:
+        can_be_assigned:
+          type: boolean
+        can_be_shown:
+          type: boolean
+        description:
+          type: string
+        name:
+          type: string
+        permissions:
+          additionalProperties:
+            items:
+              type: integer
+            type: array
+          type: object
+        slug:
+          type: string
+        type:
+          type: string
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.EntitlementPlan:
+      properties:
+        created:
+          description: creation date of the entitlement plan
+          type: string
+        created_by:
+          description: ID of user that created this entitlement plan
+          type: string
+        end_date:
+          description: end date of term, entitlement applies between this and start_date
+          type: string
+        id:
+          description: plan id
+          type: string
+        inbound_entitlement:
+          description: entitlement amount per term (month or year)
+          type: integer
+        outbound_entitlement:
+          description: entitlement amount per term (month or year)
+          type: integer
+        start_date:
+          description: start date of term, entitlement applies between this and end_date
+          type: string
+        term_type:
+          description: type of term, monthly or annually
+          type: string
+        updated:
+          description: updated date of the last change to this entitlement plan
+          type: string
+        updated_by:
+          description: ID of the last user that updated this entitlement plan
+          type: string
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: Authorization
+      type: apiKey
+x-refined-from:
+- lytics-api-v1-openapi.json
+- lytics-api-v2-openapi.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
