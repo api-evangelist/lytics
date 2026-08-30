@@ -145,6 +145,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -368,6 +370,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Data Models
+  tags_raw:
   - DataModels
   properties:
   - type: OpenAPI
@@ -415,6 +419,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Data Upload
+  tags_raw:
   - DataUpload
   properties:
   - type: OpenAPI
@@ -477,6 +483,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Job
+  tags_raw:
   - Jobs
   properties:
   - type: OpenAPI
@@ -502,6 +510,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - metric
+  tags_raw:
   - Metric
   properties:
   - type: OpenAPI
@@ -1907,6 +1917,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Workflows
+  tags_raw:
   - Workflow
   properties:
   - type: OpenAPI
