@@ -366,77 +366,6 @@ apis:
     url: mcp/lytics-tool-crosswalk.yml
   - type: OpenAPI Source
     url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
-- aid: lytics:lytics-datamodels-api
-  name: Lytics Data Models API
-  description: Create and manage data models and their record stores.
-  humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io/v2
-  tags:
-  - Data Models
-  tags_raw:
-  - DataModels
-  properties:
-  - type: OpenAPI
-    url: openapi/lytics-datamodels-api-openapi.yml
-  - type: OpenAPI Source
-    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
-  - type: Documentation
-    url: https://docs.lytics.com/reference
-  - type: APIReference
-    url: https://docs.lytics.com/reference
-  - type: ToolCrosswalk
-    url: mcp/lytics-tool-crosswalk.yml
-  - type: OpenAPI Source
-    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
-- aid: lytics:lytics-dataupload-api
-  name: Lytics Data Upload API
-  description: >-
-    APIs for collecting or uploading data.  There are two main APIs, one for uploading
-
-    Large files (bulk, millions of records) and another for sending real-time, or slightly batched
-
-    events (Less than 10MB).
-
-
-    **stream**
-
-    A stream name is like a table in database, each stream is a differnt _Type_ of data.
-
-    You assign a name to your data uploads to identify each stream/type.
-
-    However, it should be consistent across uploads of same type of data.
-
-
-    **Timestamp Fields**
-
-    When uploading historical, or event data you may have a time/date at which
-
-    an event occured.  Normal event uploads get an event timestamp at the server time
-
-    but you can over-ride this behavior so the timestamp is defined in the event you upload.
-
-    This is a _timestamp_field_ parameter in api's below.   The formatting for this is very, very
-
-    lenient with over 50 format's supported.
-  humanURL: https://docs.lytics.com/reference
-  baseURL: https://api.lytics.io/v2
-  tags:
-  - Data Upload
-  tags_raw:
-  - DataUpload
-  properties:
-  - type: OpenAPI
-    url: openapi/lytics-dataupload-api-openapi.yml
-  - type: OpenAPI Source
-    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
-  - type: Documentation
-    url: https://docs.lytics.com/reference
-  - type: APIReference
-    url: https://docs.lytics.com/reference
-  - type: ToolCrosswalk
-    url: mcp/lytics-tool-crosswalk.yml
-  - type: OpenAPI Source
-    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
 - aid: lytics:lytics-experience-api
   name: Lytics Experience API
   description: >-
@@ -1925,6 +1854,46 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/lytics-workflow-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-data-models-api
+  name: Lytics Data models API
+  description: Create and manage data models and their record stores.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Data models
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-data-models-api-openapi.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
+  - type: Documentation
+    url: https://docs.lytics.com/reference
+  - type: APIReference
+    url: https://docs.lytics.com/reference
+  - type: ToolCrosswalk
+    url: mcp/lytics-tool-crosswalk.yml
+  - type: OpenAPI Source
+    url: https://dash.readme.com/api/v1/api-registry/10ej22ml8a94fx
+- aid: lytics:lytics-data-upload-api
+  name: Lytics Data Upload API
+  description: APIs for collecting or uploading data.
+  humanURL: https://docs.lytics.com/reference
+  baseURL: https://api.lytics.io/v2
+  tags:
+  - Data Upload
+  properties:
+  - type: OpenAPI
+    url: openapi/lytics-data-upload-api-openapi.yml
   - type: OpenAPI Source
     url: https://dash.readme.com/api/v1/api-registry/1y876emrv8pb2i
   - type: Documentation
