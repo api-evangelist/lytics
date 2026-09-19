@@ -394,6 +394,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Flow
+  tags_raw:
   - Flows
   properties:
   - type: OpenAPI
@@ -564,6 +566,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Providers
+  tags_raw:
   - Provider
   properties:
   - type: OpenAPI
@@ -1870,6 +1874,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Data Models
+  tags_raw:
   - Data models
   properties:
   - type: OpenAPI
