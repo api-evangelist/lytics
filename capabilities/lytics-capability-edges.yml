@@ -1,0 +1,85 @@
+slug: lytics
+provider: Lytics
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 7
+edges:
+- tag: Segment
+  spec_file: lytics-segment-api-openapi.yml
+  capability_id: BC-420.20
+  capability_id_l1: BC-420
+  capability_name: Customer Segmentation Management
+  confidence: 0.9
+  evidence: '"Segment Create", "SegmentSize", "SegmentAttribution"; vendor description: "*Segmentation
+    api* for lists of users, and creating/managing the segmentation rules"'
+  reason: Operations create and manage audience segmentation rules and sizes over user profiles — squarely
+    customer segmentation management in a CDP.
+- tag: Segments
+  spec_file: lytics-segments-api-openapi.yml
+  capability_id: BC-420.20
+  capability_id_l1: BC-420
+  capability_name: Customer Segmentation Management
+  confidence: 0.9
+  evidence: '"Create segment", "Add/Remove segment in/from the exclusion list"; schemas models.Segment,
+    models.Expr'
+  reason: v2 segment CRUD with expression-based definitions and exclusion lists is behavioural audience
+    segmentation of customers.
+- tag: ML Models
+  spec_file: lytics-ml-models-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.85
+  evidence: 'POST /ml Post ML Model; GET /ml/{id}/summary Get ML Model Summary; schemas: models.ConfusionMatrix,
+    models.Feature, models.ModelConfig'
+  reason: Full lifecycle CRUD over machine-learning models with configs, features and evaluation summaries
+    (confusion matrix) — squarely AI/ML model lifecycle management.
+- tag: Profiles
+  spec_file: lytics-profiles-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.85
+  evidence: '"Get a user profile (GET)", "Bulk delete user profiles", "Update all profile attributes";
+    schemas models.IdentityResponse, models.IdentityFragment'
+  reason: Operations read, update and delete unified user profiles and resolve identities in a CDP — this
+    is customer master/golden-record data management (identity resolution), not generic data plumbing.
+- tag: SegmentCollection
+  spec_file: lytics-segmentcollection-api-openapi.yml
+  capability_id: BC-420.20
+  capability_id_l1: BC-420
+  capability_name: Customer Segmentation Management
+  confidence: 0.8
+  evidence: '"SegmentCollectionList", "SegmentCollection Create"; schema SegmentCollectionModel'
+  reason: Grouping/organising audience segments is part of the segmentation management surface; slightly
+    thinner evidence than the Segment tag itself, hence lower confidence.
+- tag: User
+  spec_file: lytics-user-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: POST /user/{id}/roles Update user roles; POST /user/me/passwordreset Reset password; DELETE
+    /user/{id} Delete user
+  reason: Operations administer platform user accounts, credentials and role assignments — account/identity
+    and access administration rather than CDP end-customer profiles. Maps to Identity & Access Management.
+- tag: Schema
+  spec_file: lytics-schema-api-openapi.yml
+  capability_id: BC-610.40
+  capability_id_l1: BC-610
+  capability_name: Data Architecture Management
+  confidence: 0.7
+  evidence: '"List tables", "Get schema comparison", "Post field", "Update schema with LQL query"; schemas
+    models.Table, models.Field, models.Mapping, models.IDConfig, models.RetentionSettings'
+  reason: Tables, fields, mappings, identity config and retention settings are the logical data architecture
+    of the CDP data store — data architecture management within Information & Data Management, not a customer-facing
+    business capability.
