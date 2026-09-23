@@ -54,6 +54,8 @@ paths:
       summary: Get connections
       tags:
       - Connections
+      operationId: getConnection
+      x-operation-id-source: derived
     post:
       description: Create a connection
       parameters:
@@ -105,6 +107,8 @@ paths:
       summary: Create connection
       tags:
       - Connections
+      operationId: postConnection
+      x-operation-id-source: derived
   /connection/{id}:
     delete:
       description: Delete a connection
@@ -150,6 +154,8 @@ paths:
       summary: Delete connection
       tags:
       - Connections
+      operationId: deleteConnectionById
+      x-operation-id-source: derived
     get:
       description: Get a connection by ID
       parameters:
@@ -199,6 +205,8 @@ paths:
       summary: Get connection
       tags:
       - Connections
+      operationId: getConnectionById
+      x-operation-id-source: derived
     put:
       description: Update a connection
       parameters:
@@ -256,6 +264,8 @@ paths:
       summary: Update connection
       tags:
       - Connections
+      operationId: putConnectionById
+      x-operation-id-source: derived
   /connection/{id}/scan:
     post:
       description: Query an external data source to get sample result set for members of a Cloud Connect model.
@@ -313,6 +323,8 @@ paths:
       summary: Query an external data source
       tags:
       - Connections
+      operationId: postConnectionByIdScan
+      x-operation-id-source: derived
   /connection/{id}/schema:
     get:
       description: Returns all the table names for the given connection
@@ -359,6 +371,8 @@ paths:
       summary: Get the tables for a connection
       tags:
       - Connections
+      operationId: getConnectionByIdSchema
+      x-operation-id-source: derived
   /connection/{id}/schema/{table}:
     get:
       description: Returns all the columns for a table on the given connection
@@ -411,95 +425,10 @@ paths:
       summary: Get the schema for a table on the connection
       tags:
       - Connections
+      operationId: getConnectionByIdSchemaByTable
+      x-operation-id-source: derived
 components:
   schemas:
-    models.ResultSetColumn:
-      properties:
-        column_datatype:
-          type: string
-        column_name:
-          type: string
-      type: object
-    models.ConnectionTableResp:
-      properties:
-        error:
-          type: string
-        fully_qualified_name:
-          type: string
-        num_columns:
-          type: integer
-        table_name:
-          type: string
-      type: object
-    models.ConnectionScanResp:
-      properties:
-        columns:
-          items:
-            $ref: '#/components/schemas/models.ResultSetColumn'
-          type: array
-        row_count:
-          type: integer
-        rows: {}
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ConnectionResp:
-      properties:
-        account_id:
-          type: string
-        aid:
-          type: integer
-        auth_ids:
-          items:
-            type: string
-          type: array
-        author_id:
-          type: string
-        config:
-          $ref: '#/components/schemas/models.ConnectionConfig'
-        connection_config_id:
-          type: string
-        connection_config_slug:
-          type: string
-        created:
-          type: string
-        deleted:
-          type: string
-        description:
-          type: string
-        id:
-          type: string
-        label:
-          type: string
-        provider_id:
-          type: string
-        provider_slug:
-          type: string
-        updated:
-          type: string
-        updated_by_user_id:
-          type: string
-      type: object
-    models.ConnectionScanReq:
-      properties:
-        primary_keys:
-          items:
-            type: string
-          type: array
-        query:
-          type: string
-      type: object
     models.ConnectionUpdateReq:
       properties:
         auth_ids:
@@ -509,51 +438,6 @@ components:
         description:
           type: string
         label:
-          type: string
-      type: object
-    models.ConnectionCreateReq:
-      properties:
-        auth_ids:
-          items:
-            type: string
-          type: array
-        config:
-          $ref: '#/components/schemas/models.ConnectionConfig'
-        connection_config_id:
-          type: string
-        connection_config_slug:
-          type: string
-        description:
-          type: string
-        label:
-          type: string
-        provider_id:
-          type: string
-        provider_slug:
-          type: string
-      type: object
-    models.ConnectionConfig:
-      properties:
-        bucket:
-          type: string
-        connection_url:
-          type: string
-        database:
-          type: string
-        dataset:
-          type: string
-        file:
-          type: string
-        project:
-          type: string
-        ssl_mode:
-          type: string
-      type: object
-    models.ConnectionTableSchemaResp:
-      properties:
-        column_datatype:
-          type: string
-        column_name:
           type: string
       type: object
     lioerrors.ApiV2ErrorOut:
@@ -600,6 +484,16 @@ components:
           format: date-time
           type: string
       type: object
+    models.ConnectionScanResp:
+      properties:
+        columns:
+          items:
+            $ref: '#/components/schemas/models.ResultSetColumn'
+          type: array
+        row_count:
+          type: integer
+        rows: {}
+      type: object
     models.ApiResponse:
       properties:
         _meta:
@@ -609,6 +503,128 @@ components:
         data:
           description: Response Payload
           type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ResultSetColumn:
+      properties:
+        column_datatype:
+          type: string
+        column_name:
+          type: string
+      type: object
+    models.ConnectionTableResp:
+      properties:
+        error:
+          type: string
+        fully_qualified_name:
+          type: string
+        num_columns:
+          type: integer
+        table_name:
+          type: string
+      type: object
+    models.ConnectionScanReq:
+      properties:
+        primary_keys:
+          items:
+            type: string
+          type: array
+        query:
+          type: string
+      type: object
+    models.ConnectionResp:
+      properties:
+        account_id:
+          type: string
+        aid:
+          type: integer
+        auth_ids:
+          items:
+            type: string
+          type: array
+        author_id:
+          type: string
+        config:
+          $ref: '#/components/schemas/models.ConnectionConfig'
+        connection_config_id:
+          type: string
+        connection_config_slug:
+          type: string
+        created:
+          type: string
+        deleted:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        label:
+          type: string
+        provider_id:
+          type: string
+        provider_slug:
+          type: string
+        updated:
+          type: string
+        updated_by_user_id:
+          type: string
+      type: object
+    models.ConnectionCreateReq:
+      properties:
+        auth_ids:
+          items:
+            type: string
+          type: array
+        config:
+          $ref: '#/components/schemas/models.ConnectionConfig'
+        connection_config_id:
+          type: string
+        connection_config_slug:
+          type: string
+        description:
+          type: string
+        label:
+          type: string
+        provider_id:
+          type: string
+        provider_slug:
+          type: string
+      type: object
+    models.ConnectionTableSchemaResp:
+      properties:
+        column_datatype:
+          type: string
+        column_name:
+          type: string
+      type: object
+    models.ConnectionConfig:
+      properties:
+        bucket:
+          type: string
+        connection_url:
+          type: string
+        database:
+          type: string
+        dataset:
+          type: string
+        file:
+          type: string
+        project:
+          type: string
+        ssl_mode:
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
         request_id:
           type: string
         status:

@@ -2,12 +2,29 @@ openapi: 3.2.0
 info:
   title: V1 Lytics Catalog API
   version: 1.0.0
-  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+  description: 'The Lytics API is a _restful_ *JSON* api that includes:
+
+    * *Data Collection* api''s for collection, and upload of custom data.'
 servers:
 - url: https://api.lytics.io
 tags:
 - name: Catalog
-  description: "Catalog exposes info about the schema of the data in Lytics.\n\n* **Entities** are Object Types, the primary one being a *User*\n    although most accounts also have *Content* and *Campaign* as well.\n    Custom object types may be created.\n\n* **Streams** Streams are data sources collected from api or *Integrations* (aka *Work*).\n\n* **Schema** Per entity type is list of field-types.\n    Think of it as describing columns on the user table in a database."
+  description: 'Catalog exposes info about the schema of the data in Lytics.
+
+
+    * **Entities** are Object Types, the primary one being a *User*
+
+    although most accounts also have *Content* and *Campaign* as well.
+
+    Custom object types may be created.
+
+
+    * **Streams** Streams are data sources collected from api or *Integrations* (aka *Work*).
+
+
+    * **Schema** Per entity type is list of field-types.
+
+    Think of it as describing columns on the user table in a database.'
 paths:
   /api/schema/_streams:
     get:
@@ -97,7 +114,39 @@ paths:
       - ApiKeyAuth: []
       summary: Stream Hide
       operationId: Stream Hide
-      description: "The POST endpoint allows Stream to be hidden/un-hidden. A hidden stream is not visible from the Application\n*Data > Streams* Web UI.\n\n**CAVEAT's**\n\n* This does not delete the data, only hides it from ui.\n\n* If queries (LQL) still map this data into profiles it will still be added.\n\n```\n# Hide a temporary stream\ncurl -XPOST 'https://api.lytics.io/api/schema/_streams' \\\n    -H 'Content-type: application/json' \\\n    -H \"Authorization: $LIOKEY\" \\\n    -d '{\n        \"stream\": \"my_temp_upload\",\n        \"hidden\": true\n     }' | jq '.'\n```"
+      description: 'The POST endpoint allows Stream to be hidden/un-hidden. A hidden stream is not visible from the Application
+
+        *Data > Streams* Web UI.
+
+
+        **CAVEAT''s**
+
+
+        * This does not delete the data, only hides it from ui.
+
+
+        * If queries (LQL) still map this data into profiles it will still be added.
+
+
+        ```
+
+        # Hide a temporary stream
+
+        curl -XPOST ''https://api.lytics.io/api/schema/_streams'' \
+
+        -H ''Content-type: application/json'' \
+
+        -H "Authorization: $LIOKEY" \
+
+        -d ''{
+
+        "stream": "my_temp_upload",
+
+        "hidden": true
+
+        }'' | jq ''.''
+
+        ```'
       tags:
       - Catalog
       parameters:
@@ -131,7 +180,39 @@ paths:
       - ApiKeyAuth: []
       summary: Field Hide
       operationId: Field Hide
-      description: "This POST endpoint allows specific fields belong to a stream to be hidden/un-hidden. A hidden field is not\nvisible from the Application *Data > Streams* Web UI.\n\n**CAVEAT'S**\n\n* This does not delete the data, only hides the field in the UI.\n\n* If queries (LQL) stil map this field into profiles, it will still be added\n\n```\n# Hide the 'first-name' field from the 'default' stream\ncurl -XPUT 'https://api.lytics.io/api/schema/_streams/default' \\\n    -H 'Content-type: application/json'\n    -H 'Authorization: $LIOKEY' \\\n    -d '{\n        \"name\": \"first_name\",\n        \"hidden\": true\n    }' | jq '.'\n```"
+      description: 'This POST endpoint allows specific fields belong to a stream to be hidden/un-hidden. A hidden field is not
+
+        visible from the Application *Data > Streams* Web UI.
+
+
+        **CAVEAT''S**
+
+
+        * This does not delete the data, only hides the field in the UI.
+
+
+        * If queries (LQL) stil map this field into profiles, it will still be added
+
+
+        ```
+
+        # Hide the ''first-name'' field from the ''default'' stream
+
+        curl -XPUT ''https://api.lytics.io/api/schema/_streams/default'' \
+
+        -H ''Content-type: application/json''
+
+        -H ''Authorization: $LIOKEY'' \
+
+        -d ''{
+
+        "name": "first_name",
+
+        "hidden": true
+
+        }'' | jq ''.''
+
+        ```'
       tags:
       - Catalog
       parameters:
@@ -454,152 +535,6 @@ paths:
           type: string
 components:
   schemas:
-    StreamsModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              stream:
-                type: string
-              hidden:
-                type: boolean
-              ct:
-                type: number
-              curct:
-                type: number
-              last_msg_ts:
-                type: string
-              last_update_ts:
-                type: string
-              fields:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    avg:
-                      type: number
-                    card:
-                      type: number
-                    is_array:
-                      type: boolean
-                    name:
-                      type: string
-                    sample:
-                      type: array
-                      items:
-                        type: string
-                    smart:
-                      type: object
-                      properties:
-                        coverage:
-                          type: number
-                        email:
-                          type: number
-                        noun:
-                          type: number
-                        time:
-                          type: number
-                        uid:
-                          type: number
-                        value:
-                          type: number
-                        verb:
-                          type: number
-                        ip:
-                          type: number
-                        phone:
-                          type: number
-                        url:
-                          type: number
-                        analyses:
-                          type: number
-                    sumlen:
-                      type: number
-                    type:
-                      type: string
-                    usage:
-                      type: number
-                    first_seen:
-                      type: string
-                    last_seen:
-                      type: string
-                    hidden:
-                      type: boolean
-                    column:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          table:
-                            type: string
-                          as:
-                            type: string
-                        required:
-                        - table
-                        - as
-      example:
-        data:
-        - stream: events
-          hidden: false
-          ct: 37
-          curct: 0
-          last_msg_ts: '1401216931893'
-          last_update_ts: '1421167622683'
-          fields:
-          - avg: 4
-            card: 22
-            is_array: true
-            name: utm_medium
-            sample:
-            - cpc
-            - adwords
-            - blog
-            - pricing-page
-            - social
-            - integrations-page
-            - email
-            - Integrations-page
-            - docs
-            - search
-            - CPC
-            - twitter
-            - social_organic
-            - card
-            - social_paid
-            - sponsored
-            - mailchimp
-            - facebook
-            - infographic
-            - lytics-reporting
-            - retargeting
-            - referral
-            smart:
-              coverage: 0
-              email: 0
-              noun: 13
-              time: 0
-              uid: 0
-              value: 0
-              verb: 13
-              ip: 0
-              phone: 0
-              url: 0
-              analyses: 315
-            sumlen: 146221
-            type: string
-            usage: 32484
-            first_seen: '2016-06-08T16:11:06Z'
-            last_seen: '2016-06-24T18:00:40.871025224Z'
-            hidden: false
-            column:
-            - table: campaign
-              as: utm_mediums
-            - table: user
-              as: utm_mediums
-    FieldSuggestModel: {}
     FieldInfoModel:
       type: object
       properties:
@@ -976,6 +911,152 @@ components:
             ents_absent: 134908
             high_card: false
             approx_cardinality: 1212
+    FieldSuggestModel: {}
+    StreamsModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              stream:
+                type: string
+              hidden:
+                type: boolean
+              ct:
+                type: number
+              curct:
+                type: number
+              last_msg_ts:
+                type: string
+              last_update_ts:
+                type: string
+              fields:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    avg:
+                      type: number
+                    card:
+                      type: number
+                    is_array:
+                      type: boolean
+                    name:
+                      type: string
+                    sample:
+                      type: array
+                      items:
+                        type: string
+                    smart:
+                      type: object
+                      properties:
+                        coverage:
+                          type: number
+                        email:
+                          type: number
+                        noun:
+                          type: number
+                        time:
+                          type: number
+                        uid:
+                          type: number
+                        value:
+                          type: number
+                        verb:
+                          type: number
+                        ip:
+                          type: number
+                        phone:
+                          type: number
+                        url:
+                          type: number
+                        analyses:
+                          type: number
+                    sumlen:
+                      type: number
+                    type:
+                      type: string
+                    usage:
+                      type: number
+                    first_seen:
+                      type: string
+                    last_seen:
+                      type: string
+                    hidden:
+                      type: boolean
+                    column:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          table:
+                            type: string
+                          as:
+                            type: string
+                        required:
+                        - table
+                        - as
+      example:
+        data:
+        - stream: events
+          hidden: false
+          ct: 37
+          curct: 0
+          last_msg_ts: '1401216931893'
+          last_update_ts: '1421167622683'
+          fields:
+          - avg: 4
+            card: 22
+            is_array: true
+            name: utm_medium
+            sample:
+            - cpc
+            - adwords
+            - blog
+            - pricing-page
+            - social
+            - integrations-page
+            - email
+            - Integrations-page
+            - docs
+            - search
+            - CPC
+            - twitter
+            - social_organic
+            - card
+            - social_paid
+            - sponsored
+            - mailchimp
+            - facebook
+            - infographic
+            - lytics-reporting
+            - retargeting
+            - referral
+            smart:
+              coverage: 0
+              email: 0
+              noun: 13
+              time: 0
+              uid: 0
+              value: 0
+              verb: 13
+              ip: 0
+              phone: 0
+              url: 0
+              analyses: 315
+            sumlen: 146221
+            type: string
+            usage: 32484
+            first_seen: '2016-06-08T16:11:06Z'
+            last_seen: '2016-06-24T18:00:40.871025224Z'
+            hidden: false
+            column:
+            - table: campaign
+              as: utm_mediums
+            - table: user
+              as: utm_mediums
     SchemaModel:
       type: object
       properties:

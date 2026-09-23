@@ -48,6 +48,8 @@ paths:
       summary: List tables
       tags:
       - Schema
+      operationId: getSchema
+      x-operation-id-source: derived
   /schema/bulk:
     post:
       description: Schema bulk upsert creates/updates multiple schema objects. It does not delete any existing schema objects.
@@ -94,6 +96,8 @@ paths:
       summary: Schema Bulk Upsert
       tags:
       - Schema
+      operationId: postSchemaBulk
+      x-operation-id-source: derived
     put:
       description: Schema bulk upsert creates/updates multiple schema objects. It does not delete any existing schema objects.
       parameters:
@@ -139,6 +143,8 @@ paths:
       summary: Schema Bulk Upsert
       tags:
       - Schema
+      operationId: putSchemaBulk
+      x-operation-id-source: derived
   /schema/expression/evaluate:
     post:
       description: Evaluate an adhoc mapping expression against a single event
@@ -191,6 +197,8 @@ paths:
       summary: Evaluate Expression
       tags:
       - Schema
+      operationId: postSchemaExpressionEvaluate
+      x-operation-id-source: derived
   /schema/lql:
     post:
       description: Upload LQL query to update schema with corresponding fields and mappings.
@@ -243,6 +251,8 @@ paths:
       summary: Update schema with LQL query
       tags:
       - Schema
+      operationId: postSchemaLql
+      x-operation-id-source: derived
   /schema/{table}:
     get:
       description: Retrieve current schema fields, mappings and ranks
@@ -298,6 +308,8 @@ paths:
       summary: Get schema
       tags:
       - Schema
+      operationId: getSchemaByTable
+      x-operation-id-source: derived
   /schema/{table}/compare:
     get:
       description: Get a diff of two schema versions
@@ -358,6 +370,8 @@ paths:
       summary: Get schema comparison
       tags:
       - Schema
+      operationId: getSchemaByTableCompare
+      x-operation-id-source: derived
   /schema/{table}/evaluate:
     post:
       description: Evaluate the current published schema against test events
@@ -424,6 +438,8 @@ paths:
       summary: Evaluate Schema
       tags:
       - Schema
+      operationId: postSchemaByTableEvaluate
+      x-operation-id-source: derived
   /schema/{table}/field:
     get:
       description: Retrieve current fields
@@ -490,6 +506,8 @@ paths:
       summary: Get fields
       tags:
       - Schema
+      operationId: getSchemaByTableField
+      x-operation-id-source: derived
     post:
       description: Upsert a field in draft schema.
       parameters:
@@ -558,6 +576,8 @@ paths:
       summary: Post field
       tags:
       - Schema
+      operationId: postSchemaByTableField
+      x-operation-id-source: derived
   /schema/{table}/field/{field_id}:
     delete:
       description: Soft-delete a schema field from this draft, or hard-delete it if new.
@@ -609,6 +629,8 @@ paths:
       summary: Delete field
       tags:
       - Schema
+      operationId: deleteSchemaByTableFieldByFieldId
+      x-operation-id-source: derived
     get:
       description: Retrieve a field by its ID
       parameters:
@@ -669,6 +691,8 @@ paths:
       summary: Get a field
       tags:
       - Schema
+      operationId: getSchemaByTableFieldByFieldId
+      x-operation-id-source: derived
   /schema/{table}/idconfig:
     get:
       description: List graph compaction and many-to-one merging configuration for all identity fields.
@@ -726,6 +750,8 @@ paths:
       summary: List all identity config
       tags:
       - Schema
+      operationId: getSchemaByTableIdconfig
+      x-operation-id-source: derived
     post:
       description: Create or update configuration for a single identity field.
       parameters:
@@ -786,6 +812,8 @@ paths:
       summary: Post ID config
       tags:
       - Schema
+      operationId: postSchemaByTableIdconfig
+      x-operation-id-source: derived
   /schema/{table}/idconfig/{field_id}:
     delete:
       description: Soft-delete graph compaction and many-to-one merging config from a single schema field, or hard-delete them if new.
@@ -837,6 +865,8 @@ paths:
       summary: Delete ID Settings
       tags:
       - Schema
+      operationId: deleteSchemaByTableIdconfigByFieldId
+      x-operation-id-source: derived
     get:
       description: Get graph compaction and many-to-one merging configuration for a single identity field.
       parameters:
@@ -897,6 +927,8 @@ paths:
       summary: Get identity field config
       tags:
       - Schema
+      operationId: getSchemaByTableIdconfigByFieldId
+      x-operation-id-source: derived
   /schema/{table}/mapping:
     get:
       description: Retrive current mappings
@@ -954,6 +986,8 @@ paths:
       summary: Get mappings
       tags:
       - Schema
+      operationId: getSchemaByTableMapping
+      x-operation-id-source: derived
     post:
       description: Upsert a mapping in draft schema.
       parameters:
@@ -1022,6 +1056,8 @@ paths:
       summary: Post mapping
       tags:
       - Schema
+      operationId: postSchemaByTableMapping
+      x-operation-id-source: derived
   /schema/{table}/mapping/{mapping_id}:
     delete:
       description: Soft-delete a data mapping from this draft, or hard-delete it if new.
@@ -1073,6 +1109,8 @@ paths:
       summary: Delete mapping
       tags:
       - Schema
+      operationId: deleteSchemaByTableMappingByMappingId
+      x-operation-id-source: derived
     get:
       description: Retrieve a mapping by ID
       parameters:
@@ -1133,6 +1171,8 @@ paths:
       summary: Get a mapping
       tags:
       - Schema
+      operationId: getSchemaByTableMappingByMappingId
+      x-operation-id-source: derived
   /schema/{table}/publish:
     post:
       description: Publish changes to your schema
@@ -1191,6 +1231,8 @@ paths:
       summary: Publish schema
       tags:
       - Schema
+      operationId: postSchemaByTablePublish
+      x-operation-id-source: derived
   /schema/{table}/rank:
     get:
       description: Retrieve current identifier rank list.
@@ -1246,6 +1288,8 @@ paths:
       summary: Get rank
       tags:
       - Schema
+      operationId: getSchemaByTableRank
+      x-operation-id-source: derived
     post:
       description: Create or update identifier rank list.
       parameters:
@@ -1303,6 +1347,8 @@ paths:
       summary: Post ID rank list
       tags:
       - Schema
+      operationId: postSchemaByTableRank
+      x-operation-id-source: derived
   /schema/{table}/retentionsettings:
     get:
       description: Retrieve current retention settings.
@@ -1358,6 +1404,8 @@ paths:
       summary: Get retention settings
       tags:
       - Schema
+      operationId: getSchemaByTableRetentionsettings
+      x-operation-id-source: derived
     post:
       description: Create or update retention settings.
       parameters:
@@ -1426,6 +1474,8 @@ paths:
       summary: Post retention settings
       tags:
       - Schema
+      operationId: postSchemaByTableRetentionsettings
+      x-operation-id-source: derived
   /schema/{table}/revert:
     post:
       description: Restore an entire schema version to the state of the current live schema.
@@ -1481,6 +1531,8 @@ paths:
       summary: Revert schema changes
       tags:
       - Schema
+      operationId: postSchemaByTableRevert
+      x-operation-id-source: derived
   /schema/{table}/validate:
     get:
       description: Run validation for schema
@@ -1533,6 +1585,8 @@ paths:
       summary: Validate schema
       tags:
       - Schema
+      operationId: getSchemaByTableValidate
+      x-operation-id-source: derived
   /schema/{table}/version:
     get:
       description: Get a list of all schema versions in its history
@@ -1585,45 +1639,80 @@ paths:
       summary: Get schema history
       tags:
       - Schema
+      operationId: getSchemaByTableVersion
+      x-operation-id-source: derived
 components:
   schemas:
-    models.Mapping:
+    lioerrors.ApiV2ErrorOut:
       properties:
-        created:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
           format: date-time
+          type: string
+      type: object
+    models.IDConfig:
+      properties:
+        compact_after_days:
+          type: integer
+        compact_over:
+          type: integer
+        created:
           type: string
         edit_status:
           type: string
-        expr:
-          description: The LQL expression for the mapping
-          type: string
         field:
-          description: The target field of the mapping
           type: string
-        guard_expr:
-          description: The LQL Guard expression for the mapping
-          type: string
-        id:
-          description: The ID of the mapping
-          type: string
-        managed_by:
-          type: string
+        many_to:
+          items:
+            type: string
+          type: array
         modified:
-          format: date-time
           type: string
-        stream:
-          description: The stream associated with the mapping
-          type: string
-      required:
-      - field
       type: object
-    v2schemadiff.Diff:
+    models.ExpressionEvalRequest:
       properties:
-        from_val: {}
-        property:
-          description: Property can be field type, mapping expression, etc.
+        data:
+          additionalProperties: true
+          type: object
+        expression:
           type: string
-        to_val: {}
       type: object
     models.Field:
       properties:
@@ -1671,14 +1760,33 @@ components:
         type:
           type: string
       type: object
-    models.Ranks:
+    v2schemadiff.Diff:
       properties:
-        id_config:
+        from_val: {}
+        property:
+          description: Property can be field type, mapping expression, etc.
+          type: string
+        to_val: {}
+      type: object
+    models.SchemaEvalRequest:
+      additionalProperties:
+        items:
+          additionalProperties: true
+          type: object
+        type: array
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
           items:
-            $ref: '#/components/schemas/models.IDConfig'
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
           type: array
-        id_ranks:
-          $ref: '#/components/schemas/models.RankList'
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     models.RankList:
       properties:
@@ -1695,23 +1803,64 @@ components:
         modified:
           type: string
       type: object
-    models.SchemaValidateResponse:
+    models.VersionDiff:
       properties:
-        has_unpublished_changes:
-          type: boolean
-        id:
-          description: UUID for this schema version
+        diff:
+          items:
+            $ref: '#/components/schemas/v2schemadiff.SchemaChange'
+          type: array
+        from:
+          $ref: '#/components/schemas/models.SchemaResponse'
+        to:
+          $ref: '#/components/schemas/models.SchemaResponse'
+      type: object
+    models.RetentionSettings:
+      properties:
+        capacity:
+          type: integer
+        created:
           type: string
-        parent_id:
+        edit_status:
+          type: string
+        keep_days:
+          type: integer
+        modified:
+          type: string
+      type: object
+    models.Table:
+      properties:
+        draft_id:
+          type: string
+        draft_version:
+          type: integer
+        live_id:
           type: string
         table:
           type: string
-        validation_errors:
-          items:
-            type: string
-          type: array
-        version_number:
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
           type: integer
+      type: object
+    models.VersionCommit:
+      properties:
+        description:
+          description: Longer description of changes
+          type: string
+        tag:
+          description: Tag for short-hand reference
+          type: string
       type: object
     models.SchemaResponse:
       properties:
@@ -1761,34 +1910,23 @@ components:
         version_number:
           type: integer
       type: object
-    models.Table:
+    models.SchemaValidateResponse:
       properties:
-        draft_id:
+        has_unpublished_changes:
+          type: boolean
+        id:
+          description: UUID for this schema version
           type: string
-        draft_version:
-          type: integer
-        live_id:
+        parent_id:
           type: string
         table:
           type: string
-      type: object
-    models.SchemaEvalRequest:
-      additionalProperties:
-        items:
-          additionalProperties: true
-          type: object
-        type: array
-      type: object
-    models.LQLUploadResponse:
-      properties:
-        fields:
+        validation_errors:
           items:
-            $ref: '#/components/schemas/models.Field'
+            type: string
           type: array
-        mappings:
-          items:
-            $ref: '#/components/schemas/models.Mapping'
-          type: array
+        version_number:
+          type: integer
       type: object
     models.Assertions:
       properties:
@@ -1821,69 +1959,25 @@ components:
               type: integer
           type: object
       type: object
-    models.VersionDiff:
+    models.LQLUploadResponse:
       properties:
-        diff:
+        fields:
           items:
-            $ref: '#/components/schemas/v2schemadiff.SchemaChange'
+            $ref: '#/components/schemas/models.Field'
           type: array
-        from:
-          $ref: '#/components/schemas/models.SchemaResponse'
-        to:
-          $ref: '#/components/schemas/models.SchemaResponse'
+        mappings:
+          items:
+            $ref: '#/components/schemas/models.Mapping'
+          type: array
       type: object
-    lioerrors.ApiV2ErrorOut:
+    models.Ranks:
       properties:
-        code:
-          description: Lytics Error Code
-          enum:
-          - UNKNOWN-000
-          - BADREQ-001
-          - JOB-BADREQ-002
-          - NOTFOUND-003
-          - JOB-NOTFOUND-004
-          - WF-NOTFOUND-005
-          - AUTH-NOTFOUND-006
-          - AUTHTYPE-NOTFOUND-007
-          - AUTH-BADREQ-008
-          - TABLE-NOTFOUND-009
-          - SCHEMA-NOTFOUND-010
-          - SCHEMAVERSION-NOTFOUND-011
-          - ENTITY-NOTFOUND-012
-          - QUERY-NOTFOUND-013
-          - STREAM-NOTFOUND-014
-          - PROVIDER-BADREQ-015
-          - PROVIDER-NOTFOUND-016
-          - UNAUTHORIZED-017
-          - SCHEMA-INVALID-018
-          - INTERNAL-019
-          - ROUTERULE-NOTFOUND-020
-          - ACCOUNT-NOTFOUND-021
-          - JOB-FAULT-022
-          - USER-NOTFOUND-023
-          - USER-BADREQ-024
-          - JSON-BADREQ-025
-          - FORBIDDEN-026
-          type: string
-        level:
-          description: When the error was generated
-          type: string
-        message:
-          description: A description of the error that occurred
-          type: string
-        timestamp:
-          description: The time the error occurred
-          format: date-time
-          type: string
-      type: object
-    models.VersionCommit:
-      properties:
-        description:
-          description: Longer description of changes
-          type: string
-        tag:
-          description: Tag for short-hand reference
-          type: string
+        id_config:
+          items:
+            $ref: '#/components/schemas/models.IDConfig'
+          type: array
+        id_ranks:
+          $ref: '#/components/schemas/models.RankList'
       type: object
     v2schemadiff.SchemaChange:
       properties:
@@ -1909,73 +2003,35 @@ components:
           - modified
           type: string
       type: object
-    models.ExpressionEvalRequest:
+    models.Mapping:
       properties:
-        data:
-          additionalProperties: true
-          type: object
-        expression:
-          type: string
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.IDConfig:
-      properties:
-        compact_after_days:
-          type: integer
-        compact_over:
-          type: integer
         created:
+          format: date-time
           type: string
         edit_status:
+          type: string
+        expr:
+          description: The LQL expression for the mapping
           type: string
         field:
+          description: The target field of the mapping
           type: string
-        many_to:
-          items:
-            type: string
-          type: array
+        guard_expr:
+          description: The LQL Guard expression for the mapping
+          type: string
+        id:
+          description: The ID of the mapping
+          type: string
+        managed_by:
+          type: string
         modified:
+          format: date-time
           type: string
-      type: object
-    models.RetentionSettings:
-      properties:
-        capacity:
-          type: integer
-        created:
+        stream:
+          description: The stream associated with the mapping
           type: string
-        edit_status:
-          type: string
-        keep_days:
-          type: integer
-        modified:
-          type: string
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
+      required:
+      - field
       type: object
   securitySchemes:
     ApiKeyAuth:

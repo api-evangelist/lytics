@@ -59,6 +59,8 @@ paths:
       summary: List templates
       tags:
       - Templates
+      operationId: getTemplate
+      x-operation-id-source: derived
     post:
       parameters:
       - description: The account ID. Defaults to the user's default account.
@@ -130,6 +132,8 @@ paths:
       summary: Create a template
       tags:
       - Templates
+      operationId: postTemplate
+      x-operation-id-source: derived
   /template/test:
     post:
       parameters:
@@ -176,6 +180,8 @@ paths:
       summary: Test a template
       tags:
       - Templates
+      operationId: postTemplateTest
+      x-operation-id-source: derived
   /template/{id}:
     delete:
       parameters:
@@ -220,6 +226,8 @@ paths:
       summary: Delete template
       tags:
       - Templates
+      operationId: deleteTemplateById
+      x-operation-id-source: derived
     get:
       parameters:
       - description: The account ID. Defaults to the user's default account.
@@ -268,6 +276,8 @@ paths:
       summary: Get a template
       tags:
       - Templates
+      operationId: getTemplateById
+      x-operation-id-source: derived
     post:
       parameters:
       - description: The account ID. Defaults to the user's default account.
@@ -345,6 +355,8 @@ paths:
       summary: Update a template
       tags:
       - Templates
+      operationId: postTemplateById
+      x-operation-id-source: derived
   /template/{id}/definition:
     get:
       parameters:
@@ -394,6 +406,8 @@ paths:
       summary: Get a template definition
       tags:
       - Templates
+      operationId: getTemplateByIdDefinition
+      x-operation-id-source: derived
   /template/{id}/test:
     post:
       parameters:
@@ -446,49 +460,10 @@ paths:
       summary: Test a template
       tags:
       - Templates
+      operationId: postTemplateByIdTest
+      x-operation-id-source: derived
 components:
   schemas:
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.TemplateMetadata:
-      properties:
-        author_id:
-          type: string
-        created:
-          type: string
-        description:
-          type: string
-        desired_format:
-          type: string
-        field_filter:
-          items:
-            type: string
-          type: array
-        id:
-          type: string
-        lytics_managed:
-          description: undocumented, sysadmin-use only
-          type: boolean
-        name:
-          type: string
-        target:
-          type: string
-        type:
-          type: string
-        updated:
-          type: string
-      type: object
     models.SampleSegmentsInput:
       properties:
         as:
@@ -562,16 +537,33 @@ components:
           description: HTTP Status Code
           type: integer
       type: object
-    models.TemplateTestRequest:
+    models.TemplateMetadata:
       properties:
-        entity:
-          additionalProperties: true
-          type: object
-        job_config:
-          additionalProperties: true
-          type: object
-        sample_segments:
-          $ref: '#/components/schemas/models.SampleSegmentsInput'
+        author_id:
+          type: string
+        created:
+          type: string
+        description:
+          type: string
+        desired_format:
+          type: string
+        field_filter:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+        lytics_managed:
+          description: undocumented, sysadmin-use only
+          type: boolean
+        name:
+          type: string
+        target:
+          type: string
+        type:
+          type: string
+        updated:
+          type: string
       type: object
     models.AdhocTemplateTestRequest:
       properties:
@@ -592,6 +584,30 @@ components:
           - jsonnet
           - handlebars
           type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.TemplateTestRequest:
+      properties:
+        entity:
+          additionalProperties: true
+          type: object
+        job_config:
+          additionalProperties: true
+          type: object
+        sample_segments:
+          $ref: '#/components/schemas/models.SampleSegmentsInput'
       type: object
   securitySchemes:
     ApiKeyAuth:

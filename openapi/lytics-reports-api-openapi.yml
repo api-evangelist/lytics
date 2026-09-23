@@ -60,6 +60,8 @@ paths:
       summary: Get Reports
       tags:
       - Reports
+      operationId: getReport
+      x-operation-id-source: derived
     post:
       description: Create a new Report
       parameters:
@@ -122,6 +124,8 @@ paths:
       summary: Create a Report
       tags:
       - Reports
+      operationId: postReport
+      x-operation-id-source: derived
   /report/{id}:
     delete:
       description: Delete a Report by ID
@@ -172,6 +176,8 @@ paths:
       summary: Delete a Report
       tags:
       - Reports
+      operationId: deleteReportById
+      x-operation-id-source: derived
     get:
       description: Get a Report by ID
       parameters:
@@ -221,6 +227,8 @@ paths:
       summary: Get a Report
       tags:
       - Reports
+      operationId: getReportById
+      x-operation-id-source: derived
     put:
       description: Update a Report's label or description
       parameters:
@@ -278,6 +286,8 @@ paths:
       summary: Update Report
       tags:
       - Reports
+      operationId: putReportById
+      x-operation-id-source: derived
   /report/{id}/component:
     post:
       description: 'Add a new Report Component to the Report. If the component already exists, it will be updated.
@@ -363,6 +373,8 @@ paths:
       summary: Create a new Report Component
       tags:
       - Reports
+      operationId: postReportByIdComponent
+      x-operation-id-source: derived
   /report/{id}/component/{componentid}:
     delete:
       description: Delete a Report Component by ID
@@ -419,6 +431,8 @@ paths:
       summary: Delete a Report Component
       tags:
       - Reports
+      operationId: deleteReportByIdComponentByComponentid
+      x-operation-id-source: derived
     put:
       description: Update a Report Component by ID
       parameters:
@@ -482,45 +496,10 @@ paths:
       summary: Update a Report component
       tags:
       - Reports
+      operationId: putReportByIdComponentByComponentid
+      x-operation-id-source: derived
 components:
   schemas:
-    models.Component:
-      properties:
-        config:
-          description: The configuration for the component. The structure of this object is dependent on the type of component. See the top of the page for more information.
-        description:
-          description: An optional description of the component
-          type: string
-        id:
-          type: string
-        name:
-          description: The name of the component to be used in the Report.
-          type: string
-        type:
-          description: The type of component to be used in the Report.
-          enum:
-          - size
-          - composition
-          - overlap
-          - dataflow
-          type: string
-      required:
-      - name
-      - type
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -565,6 +544,21 @@ components:
           format: date-time
           type: string
       type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.Report:
       properties:
         components:
@@ -584,15 +578,37 @@ components:
       required:
       - label
       type: object
-    models.ApiResponse:
+    models.Component:
       properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
+        config:
+          description: The configuration for the component. The structure of this object is dependent on the type of component. See the top of the page for more information.
+        description:
+          description: An optional description of the component
+          type: string
+        id:
+          type: string
+        name:
+          description: The name of the component to be used in the Report.
+          type: string
+        type:
+          description: The type of component to be used in the Report.
+          enum:
+          - size
+          - composition
+          - overlap
+          - dataflow
+          type: string
+      required:
+      - name
+      - type
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
         request_id:
           type: string
         status:

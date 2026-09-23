@@ -54,6 +54,8 @@ paths:
       summary: Get auths
       tags:
       - Auths
+      operationId: getAuth
+      x-operation-id-source: derived
   /auth/airship-connect:
     post:
       description: Create a AirshipConnect auth
@@ -105,6 +107,8 @@ paths:
       summary: 'AirshipConnect: Create auth'
       tags:
       - Auths
+      operationId: postAuthAirshipConnect
+      x-operation-id-source: derived
   /auth/airship-connect/{id}:
     get:
       description: Get a AirshipConnect auth
@@ -149,6 +153,8 @@ paths:
       summary: 'AirshipConnect: Get auth'
       tags:
       - Auths
+      operationId: getAuthAirshipConnectById
+      x-operation-id-source: derived
     put:
       description: Update a AirshipConnect auth
       parameters:
@@ -205,6 +211,8 @@ paths:
       summary: 'AirshipConnect: Update auth'
       tags:
       - Auths
+      operationId: putAuthAirshipConnectById
+      x-operation-id-source: derived
   /auth/airship-master-secret:
     post:
       description: Create a AirshipMasterSecret auth
@@ -256,6 +264,8 @@ paths:
       summary: 'AirshipMasterSecret: Create auth'
       tags:
       - Auths
+      operationId: postAuthAirshipMasterSecret
+      x-operation-id-source: derived
   /auth/airship-master-secret/{id}:
     get:
       description: Get a AirshipMasterSecret auth
@@ -300,6 +310,8 @@ paths:
       summary: 'AirshipMasterSecret: Get auth'
       tags:
       - Auths
+      operationId: getAuthAirshipMasterSecretById
+      x-operation-id-source: derived
     put:
       description: Update a AirshipMasterSecret auth
       parameters:
@@ -356,6 +368,8 @@ paths:
       summary: 'AirshipMasterSecret: Update auth'
       tags:
       - Auths
+      operationId: putAuthAirshipMasterSecretById
+      x-operation-id-source: derived
   /auth/algolia-api-key:
     post:
       description: Create a AlgoliaApiKey auth
@@ -407,6 +421,8 @@ paths:
       summary: 'AlgoliaApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthAlgoliaApiKey
+      x-operation-id-source: derived
   /auth/algolia-api-key/{id}:
     get:
       description: Get a AlgoliaApiKey auth
@@ -451,6 +467,8 @@ paths:
       summary: 'AlgoliaApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthAlgoliaApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a AlgoliaApiKey auth
       parameters:
@@ -507,6 +525,8 @@ paths:
       summary: 'AlgoliaApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthAlgoliaApiKeyById
+      x-operation-id-source: derived
   /auth/amplitude-api-key:
     post:
       description: Create a AmplitudeApiKey auth
@@ -558,6 +578,8 @@ paths:
       summary: 'AmplitudeApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthAmplitudeApiKey
+      x-operation-id-source: derived
   /auth/amplitude-api-key/{id}:
     get:
       description: Get a AmplitudeApiKey auth
@@ -602,6 +624,8 @@ paths:
       summary: 'AmplitudeApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthAmplitudeApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a AmplitudeApiKey auth
       parameters:
@@ -658,6 +682,8 @@ paths:
       summary: 'AmplitudeApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthAmplitudeApiKeyById
+      x-operation-id-source: derived
   /auth/api:
     post:
       description: Create a Api auth
@@ -709,6 +735,8 @@ paths:
       summary: 'Api: Create auth'
       tags:
       - Auths
+      operationId: postAuthApi
+      x-operation-id-source: derived
   /auth/api/{id}:
     get:
       description: Get a Api auth
@@ -753,6 +781,8 @@ paths:
       summary: 'Api: Get auth'
       tags:
       - Auths
+      operationId: getAuthApiById
+      x-operation-id-source: derived
     put:
       description: Update a Api auth
       parameters:
@@ -809,6 +839,8 @@ paths:
       summary: 'Api: Update auth'
       tags:
       - Auths
+      operationId: putAuthApiById
+      x-operation-id-source: derived
   /auth/apikey:
     post:
       description: Create a Apikey auth
@@ -860,6 +892,8 @@ paths:
       summary: 'Apikey: Create auth'
       tags:
       - Auths
+      operationId: postAuthApikey
+      x-operation-id-source: derived
   /auth/apikey/{id}:
     get:
       description: Get a Apikey auth
@@ -904,6 +938,8 @@ paths:
       summary: 'Apikey: Get auth'
       tags:
       - Auths
+      operationId: getAuthApikeyById
+      x-operation-id-source: derived
     put:
       description: Update a Apikey auth
       parameters:
@@ -960,6 +996,8 @@ paths:
       summary: 'Apikey: Update auth'
       tags:
       - Auths
+      operationId: putAuthApikeyById
+      x-operation-id-source: derived
   /auth/appsflyer-devkey:
     post:
       description: Create a AppsflyerDevkey auth
@@ -1011,6 +1049,8 @@ paths:
       summary: 'AppsflyerDevkey: Create auth'
       tags:
       - Auths
+      operationId: postAuthAppsflyerDevkey
+      x-operation-id-source: derived
   /auth/appsflyer-devkey/{id}:
     get:
       description: Get a AppsflyerDevkey auth
@@ -1055,6 +1095,8 @@ paths:
       summary: 'AppsflyerDevkey: Get auth'
       tags:
       - Auths
+      operationId: getAuthAppsflyerDevkeyById
+      x-operation-id-source: derived
     put:
       description: Update a AppsflyerDevkey auth
       parameters:
@@ -1111,6 +1153,8 @@ paths:
       summary: 'AppsflyerDevkey: Update auth'
       tags:
       - Auths
+      operationId: putAuthAppsflyerDevkeyById
+      x-operation-id-source: derived
   /auth/attentive-api-key:
     post:
       description: Create a AttentiveApiKey auth
@@ -1162,6 +1206,8 @@ paths:
       summary: 'AttentiveApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthAttentiveApiKey
+      x-operation-id-source: derived
   /auth/attentive-api-key/{id}:
     get:
       description: Get a AttentiveApiKey auth
@@ -1206,6 +1252,8 @@ paths:
       summary: 'AttentiveApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthAttentiveApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a AttentiveApiKey auth
       parameters:
@@ -1262,6 +1310,8 @@ paths:
       summary: 'AttentiveApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthAttentiveApiKeyById
+      x-operation-id-source: derived
   /auth/aws-aws-keys:
     post:
       description: Create a Aws_AwsKeys auth
@@ -1313,6 +1363,8 @@ paths:
       summary: 'Aws_AwsKeys: Create auth'
       tags:
       - Auths
+      operationId: postAuthAwsAwsKeys
+      x-operation-id-source: derived
   /auth/aws-aws-keys/{id}:
     get:
       description: Get a Aws_AwsKeys auth
@@ -1357,6 +1409,8 @@ paths:
       summary: 'Aws_AwsKeys: Get auth'
       tags:
       - Auths
+      operationId: getAuthAwsAwsKeysById
+      x-operation-id-source: derived
     put:
       description: Update a Aws_AwsKeys auth
       parameters:
@@ -1413,6 +1467,8 @@ paths:
       summary: 'Aws_AwsKeys: Update auth'
       tags:
       - Auths
+      operationId: putAuthAwsAwsKeysById
+      x-operation-id-source: derived
   /auth/aws-delegated:
     post:
       description: Create a AwsDelegated auth
@@ -1464,6 +1520,8 @@ paths:
       summary: 'AwsDelegated: Create auth'
       tags:
       - Auths
+      operationId: postAuthAwsDelegated
+      x-operation-id-source: derived
   /auth/aws-delegated-pgp:
     post:
       description: Create a AwsDelegatedPgp auth
@@ -1515,6 +1573,8 @@ paths:
       summary: 'AwsDelegatedPgp: Create auth'
       tags:
       - Auths
+      operationId: postAuthAwsDelegatedPgp
+      x-operation-id-source: derived
   /auth/aws-delegated-pgp/{id}:
     get:
       description: Get a AwsDelegatedPgp auth
@@ -1559,6 +1619,8 @@ paths:
       summary: 'AwsDelegatedPgp: Get auth'
       tags:
       - Auths
+      operationId: getAuthAwsDelegatedPgpById
+      x-operation-id-source: derived
     put:
       description: Update a AwsDelegatedPgp auth
       parameters:
@@ -1615,6 +1677,8 @@ paths:
       summary: 'AwsDelegatedPgp: Update auth'
       tags:
       - Auths
+      operationId: putAuthAwsDelegatedPgpById
+      x-operation-id-source: derived
   /auth/aws-delegated-public-pgp:
     post:
       description: Create a AwsDelegatedPublicPgp auth
@@ -1666,6 +1730,8 @@ paths:
       summary: 'AwsDelegatedPublicPgp: Create auth'
       tags:
       - Auths
+      operationId: postAuthAwsDelegatedPublicPgp
+      x-operation-id-source: derived
   /auth/aws-delegated-public-pgp/{id}:
     get:
       description: Get a AwsDelegatedPublicPgp auth
@@ -1710,6 +1776,8 @@ paths:
       summary: 'AwsDelegatedPublicPgp: Get auth'
       tags:
       - Auths
+      operationId: getAuthAwsDelegatedPublicPgpById
+      x-operation-id-source: derived
     put:
       description: Update a AwsDelegatedPublicPgp auth
       parameters:
@@ -1766,6 +1834,8 @@ paths:
       summary: 'AwsDelegatedPublicPgp: Update auth'
       tags:
       - Auths
+      operationId: putAuthAwsDelegatedPublicPgpById
+      x-operation-id-source: derived
   /auth/aws-delegated/{id}:
     get:
       description: Get a AwsDelegated auth
@@ -1810,6 +1880,8 @@ paths:
       summary: 'AwsDelegated: Get auth'
       tags:
       - Auths
+      operationId: getAuthAwsDelegatedById
+      x-operation-id-source: derived
     put:
       description: Update a AwsDelegated auth
       parameters:
@@ -1866,6 +1938,8 @@ paths:
       summary: 'AwsDelegated: Update auth'
       tags:
       - Auths
+      operationId: putAuthAwsDelegatedById
+      x-operation-id-source: derived
   /auth/aws-keys:
     post:
       description: Create a AwsKeys auth
@@ -1917,6 +1991,8 @@ paths:
       summary: 'AwsKeys: Create auth'
       tags:
       - Auths
+      operationId: postAuthAwsKeys
+      x-operation-id-source: derived
   /auth/aws-keys-pgp:
     post:
       description: Create a AwsKeysPgp auth
@@ -1968,6 +2044,8 @@ paths:
       summary: 'AwsKeysPgp: Create auth'
       tags:
       - Auths
+      operationId: postAuthAwsKeysPgp
+      x-operation-id-source: derived
   /auth/aws-keys-pgp/{id}:
     get:
       description: Get a AwsKeysPgp auth
@@ -2012,6 +2090,8 @@ paths:
       summary: 'AwsKeysPgp: Get auth'
       tags:
       - Auths
+      operationId: getAuthAwsKeysPgpById
+      x-operation-id-source: derived
     put:
       description: Update a AwsKeysPgp auth
       parameters:
@@ -2068,6 +2148,8 @@ paths:
       summary: 'AwsKeysPgp: Update auth'
       tags:
       - Auths
+      operationId: putAuthAwsKeysPgpById
+      x-operation-id-source: derived
   /auth/aws-keys-public-pgp:
     post:
       description: Create a AwsKeysPublicPgp auth
@@ -2119,6 +2201,8 @@ paths:
       summary: 'AwsKeysPublicPgp: Create auth'
       tags:
       - Auths
+      operationId: postAuthAwsKeysPublicPgp
+      x-operation-id-source: derived
   /auth/aws-keys-public-pgp/{id}:
     get:
       description: Get a AwsKeysPublicPgp auth
@@ -2163,6 +2247,8 @@ paths:
       summary: 'AwsKeysPublicPgp: Get auth'
       tags:
       - Auths
+      operationId: getAuthAwsKeysPublicPgpById
+      x-operation-id-source: derived
     put:
       description: Update a AwsKeysPublicPgp auth
       parameters:
@@ -2219,6 +2305,8 @@ paths:
       summary: 'AwsKeysPublicPgp: Update auth'
       tags:
       - Auths
+      operationId: putAuthAwsKeysPublicPgpById
+      x-operation-id-source: derived
   /auth/aws-keys/{id}:
     get:
       description: Get a AwsKeys auth
@@ -2263,6 +2351,8 @@ paths:
       summary: 'AwsKeys: Get auth'
       tags:
       - Auths
+      operationId: getAuthAwsKeysById
+      x-operation-id-source: derived
     put:
       description: Update a AwsKeys auth
       parameters:
@@ -2319,6 +2409,8 @@ paths:
       summary: 'AwsKeys: Update auth'
       tags:
       - Auths
+      operationId: putAuthAwsKeysById
+      x-operation-id-source: derived
   /auth/aws-s3-redshift:
     post:
       description: Create a Aws_S3_Redshift auth
@@ -2370,6 +2462,8 @@ paths:
       summary: 'Aws_S3_Redshift: Create auth'
       tags:
       - Auths
+      operationId: postAuthAwsS3Redshift
+      x-operation-id-source: derived
   /auth/aws-s3-redshift/{id}:
     get:
       description: Get a Aws_S3_Redshift auth
@@ -2414,6 +2508,8 @@ paths:
       summary: 'Aws_S3_Redshift: Get auth'
       tags:
       - Auths
+      operationId: getAuthAwsS3RedshiftById
+      x-operation-id-source: derived
     put:
       description: Update a Aws_S3_Redshift auth
       parameters:
@@ -2470,6 +2566,8 @@ paths:
       summary: 'Aws_S3_Redshift: Update auth'
       tags:
       - Auths
+      operationId: putAuthAwsS3RedshiftById
+      x-operation-id-source: derived
   /auth/azure-event-hub:
     post:
       description: Create a AzureEventHub auth
@@ -2521,6 +2619,8 @@ paths:
       summary: 'AzureEventHub: Create auth'
       tags:
       - Auths
+      operationId: postAuthAzureEventHub
+      x-operation-id-source: derived
   /auth/azure-event-hub/{id}:
     get:
       description: Get a AzureEventHub auth
@@ -2565,6 +2665,8 @@ paths:
       summary: 'AzureEventHub: Get auth'
       tags:
       - Auths
+      operationId: getAuthAzureEventHubById
+      x-operation-id-source: derived
     put:
       description: Update a AzureEventHub auth
       parameters:
@@ -2621,6 +2723,8 @@ paths:
       summary: 'AzureEventHub: Update auth'
       tags:
       - Auths
+      operationId: putAuthAzureEventHubById
+      x-operation-id-source: derived
   /auth/azure-storage-connection:
     post:
       description: Create a AzureStorageConnection auth
@@ -2672,6 +2776,8 @@ paths:
       summary: 'AzureStorageConnection: Create auth'
       tags:
       - Auths
+      operationId: postAuthAzureStorageConnection
+      x-operation-id-source: derived
   /auth/azure-storage-connection/{id}:
     get:
       description: Get a AzureStorageConnection auth
@@ -2716,6 +2822,8 @@ paths:
       summary: 'AzureStorageConnection: Get auth'
       tags:
       - Auths
+      operationId: getAuthAzureStorageConnectionById
+      x-operation-id-source: derived
     put:
       description: Update a AzureStorageConnection auth
       parameters:
@@ -2772,6 +2880,8 @@ paths:
       summary: 'AzureStorageConnection: Update auth'
       tags:
       - Auths
+      operationId: putAuthAzureStorageConnectionById
+      x-operation-id-source: derived
   /auth/azuresql-db:
     post:
       description: Create a AzuresqlDb auth
@@ -2823,6 +2933,8 @@ paths:
       summary: 'AzuresqlDb: Create auth'
       tags:
       - Auths
+      operationId: postAuthAzuresqlDb
+      x-operation-id-source: derived
   /auth/azuresql-db/{id}:
     get:
       description: Get a AzuresqlDb auth
@@ -2867,6 +2979,8 @@ paths:
       summary: 'AzuresqlDb: Get auth'
       tags:
       - Auths
+      operationId: getAuthAzuresqlDbById
+      x-operation-id-source: derived
     put:
       description: Update a AzuresqlDb auth
       parameters:
@@ -2923,6 +3037,8 @@ paths:
       summary: 'AzuresqlDb: Update auth'
       tags:
       - Auths
+      operationId: putAuthAzuresqlDbById
+      x-operation-id-source: derived
   /auth/basic-auth:
     post:
       description: Create a BasicAuth auth
@@ -2974,6 +3090,8 @@ paths:
       summary: 'BasicAuth: Create auth'
       tags:
       - Auths
+      operationId: postAuthBasicAuth
+      x-operation-id-source: derived
   /auth/basic-auth/{id}:
     get:
       description: Get a BasicAuth auth
@@ -3018,6 +3136,8 @@ paths:
       summary: 'BasicAuth: Get auth'
       tags:
       - Auths
+      operationId: getAuthBasicAuthById
+      x-operation-id-source: derived
     put:
       description: Update a BasicAuth auth
       parameters:
@@ -3074,6 +3194,8 @@ paths:
       summary: 'BasicAuth: Update auth'
       tags:
       - Auths
+      operationId: putAuthBasicAuthById
+      x-operation-id-source: derived
   /auth/bc-access-token:
     post:
       description: Create a BcAccessToken auth
@@ -3125,6 +3247,8 @@ paths:
       summary: 'BcAccessToken: Create auth'
       tags:
       - Auths
+      operationId: postAuthBcAccessToken
+      x-operation-id-source: derived
   /auth/bc-access-token/{id}:
     get:
       description: Get a BcAccessToken auth
@@ -3169,6 +3293,8 @@ paths:
       summary: 'BcAccessToken: Get auth'
       tags:
       - Auths
+      operationId: getAuthBcAccessTokenById
+      x-operation-id-source: derived
     put:
       description: Update a BcAccessToken auth
       parameters:
@@ -3225,6 +3351,8 @@ paths:
       summary: 'BcAccessToken: Update auth'
       tags:
       - Auths
+      operationId: putAuthBcAccessTokenById
+      x-operation-id-source: derived
   /auth/bluehornet-api-key:
     post:
       description: Create a BluehornetApiKey auth
@@ -3276,6 +3404,8 @@ paths:
       summary: 'BluehornetApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthBluehornetApiKey
+      x-operation-id-source: derived
   /auth/bluehornet-api-key/{id}:
     get:
       description: Get a BluehornetApiKey auth
@@ -3320,6 +3450,8 @@ paths:
       summary: 'BluehornetApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthBluehornetApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a BluehornetApiKey auth
       parameters:
@@ -3376,6 +3508,8 @@ paths:
       summary: 'BluehornetApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthBluehornetApiKeyById
+      x-operation-id-source: derived
   /auth/bluekai-userkey:
     post:
       description: Create a Bluekai_Userkey auth
@@ -3427,6 +3561,8 @@ paths:
       summary: 'Bluekai_Userkey: Create auth'
       tags:
       - Auths
+      operationId: postAuthBluekaiUserkey
+      x-operation-id-source: derived
   /auth/bluekai-userkey/{id}:
     get:
       description: Get a Bluekai_Userkey auth
@@ -3471,6 +3607,8 @@ paths:
       summary: 'Bluekai_Userkey: Get auth'
       tags:
       - Auths
+      operationId: getAuthBluekaiUserkeyById
+      x-operation-id-source: derived
     put:
       description: Update a Bluekai_Userkey auth
       parameters:
@@ -3527,6 +3665,8 @@ paths:
       summary: 'Bluekai_Userkey: Update auth'
       tags:
       - Auths
+      operationId: putAuthBluekaiUserkeyById
+      x-operation-id-source: derived
   /auth/bluekai-userpass:
     post:
       description: Create a Bluekai_Userpass auth
@@ -3578,6 +3718,8 @@ paths:
       summary: 'Bluekai_Userpass: Create auth'
       tags:
       - Auths
+      operationId: postAuthBluekaiUserpass
+      x-operation-id-source: derived
   /auth/bluekai-userpass/{id}:
     get:
       description: Get a Bluekai_Userpass auth
@@ -3622,6 +3764,8 @@ paths:
       summary: 'Bluekai_Userpass: Get auth'
       tags:
       - Auths
+      operationId: getAuthBluekaiUserpassById
+      x-operation-id-source: derived
     put:
       description: Update a Bluekai_Userpass auth
       parameters:
@@ -3678,6 +3822,8 @@ paths:
       summary: 'Bluekai_Userpass: Update auth'
       tags:
       - Auths
+      operationId: putAuthBluekaiUserpassById
+      x-operation-id-source: derived
   /auth/blueshift-api-key:
     post:
       description: Create a BlueshiftApiKey auth
@@ -3729,6 +3875,8 @@ paths:
       summary: 'BlueshiftApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthBlueshiftApiKey
+      x-operation-id-source: derived
   /auth/blueshift-api-key/{id}:
     get:
       description: Get a BlueshiftApiKey auth
@@ -3773,6 +3921,8 @@ paths:
       summary: 'BlueshiftApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthBlueshiftApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a BlueshiftApiKey auth
       parameters:
@@ -3829,6 +3979,8 @@ paths:
       summary: 'BlueshiftApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthBlueshiftApiKeyById
+      x-operation-id-source: derived
   /auth/bq-jwt:
     post:
       description: Create a BqJwt auth
@@ -3880,6 +4032,8 @@ paths:
       summary: 'BqJwt: Create auth'
       tags:
       - Auths
+      operationId: postAuthBqJwt
+      x-operation-id-source: derived
   /auth/bq-jwt-import:
     post:
       description: Create a BqJwtImport auth
@@ -3931,6 +4085,8 @@ paths:
       summary: 'BqJwtImport: Create auth'
       tags:
       - Auths
+      operationId: postAuthBqJwtImport
+      x-operation-id-source: derived
   /auth/bq-jwt-import/{id}:
     get:
       description: Get a BqJwtImport auth
@@ -3975,6 +4131,8 @@ paths:
       summary: 'BqJwtImport: Get auth'
       tags:
       - Auths
+      operationId: getAuthBqJwtImportById
+      x-operation-id-source: derived
     put:
       description: Update a BqJwtImport auth
       parameters:
@@ -4031,6 +4189,8 @@ paths:
       summary: 'BqJwtImport: Update auth'
       tags:
       - Auths
+      operationId: putAuthBqJwtImportById
+      x-operation-id-source: derived
   /auth/bq-jwt/{id}:
     get:
       description: Get a BqJwt auth
@@ -4075,6 +4235,8 @@ paths:
       summary: 'BqJwt: Get auth'
       tags:
       - Auths
+      operationId: getAuthBqJwtById
+      x-operation-id-source: derived
     put:
       description: Update a BqJwt auth
       parameters:
@@ -4131,6 +4293,8 @@ paths:
       summary: 'BqJwt: Update auth'
       tags:
       - Auths
+      operationId: putAuthBqJwtById
+      x-operation-id-source: derived
   /auth/braze:
     post:
       description: Create a Braze auth
@@ -4182,6 +4346,8 @@ paths:
       summary: 'Braze: Create auth'
       tags:
       - Auths
+      operationId: postAuthBraze
+      x-operation-id-source: derived
   /auth/braze/{id}:
     get:
       description: Get a Braze auth
@@ -4226,6 +4392,8 @@ paths:
       summary: 'Braze: Get auth'
       tags:
       - Auths
+      operationId: getAuthBrazeById
+      x-operation-id-source: derived
     put:
       description: Update a Braze auth
       parameters:
@@ -4282,6 +4450,8 @@ paths:
       summary: 'Braze: Update auth'
       tags:
       - Auths
+      operationId: putAuthBrazeById
+      x-operation-id-source: derived
   /auth/brevo:
     post:
       description: Create a Brevo auth
@@ -4333,6 +4503,8 @@ paths:
       summary: 'Brevo: Create auth'
       tags:
       - Auths
+      operationId: postAuthBrevo
+      x-operation-id-source: derived
   /auth/brevo/{id}:
     get:
       description: Get a Brevo auth
@@ -4377,6 +4549,8 @@ paths:
       summary: 'Brevo: Get auth'
       tags:
       - Auths
+      operationId: getAuthBrevoById
+      x-operation-id-source: derived
     put:
       description: Update a Brevo auth
       parameters:
@@ -4433,6 +4607,8 @@ paths:
       summary: 'Brevo: Update auth'
       tags:
       - Auths
+      operationId: putAuthBrevoById
+      x-operation-id-source: derived
   /auth/cheetah:
     post:
       description: Create a Cheetah auth
@@ -4484,6 +4660,8 @@ paths:
       summary: 'Cheetah: Create auth'
       tags:
       - Auths
+      operationId: postAuthCheetah
+      x-operation-id-source: derived
   /auth/cheetah/{id}:
     get:
       description: Get a Cheetah auth
@@ -4528,6 +4706,8 @@ paths:
       summary: 'Cheetah: Get auth'
       tags:
       - Auths
+      operationId: getAuthCheetahById
+      x-operation-id-source: derived
     put:
       description: Update a Cheetah auth
       parameters:
@@ -4584,6 +4764,8 @@ paths:
       summary: 'Cheetah: Update auth'
       tags:
       - Auths
+      operationId: putAuthCheetahById
+      x-operation-id-source: derived
   /auth/clearbit:
     post:
       description: Create a Clearbit auth
@@ -4635,6 +4817,8 @@ paths:
       summary: 'Clearbit: Create auth'
       tags:
       - Auths
+      operationId: postAuthClearbit
+      x-operation-id-source: derived
   /auth/clearbit-lytics:
     post:
       description: Create a ClearbitLytics auth
@@ -4686,6 +4870,8 @@ paths:
       summary: 'ClearbitLytics: Create auth'
       tags:
       - Auths
+      operationId: postAuthClearbitLytics
+      x-operation-id-source: derived
   /auth/clearbit-lytics/{id}:
     get:
       description: Get a ClearbitLytics auth
@@ -4730,6 +4916,8 @@ paths:
       summary: 'ClearbitLytics: Get auth'
       tags:
       - Auths
+      operationId: getAuthClearbitLyticsById
+      x-operation-id-source: derived
     put:
       description: Update a ClearbitLytics auth
       parameters:
@@ -4786,6 +4974,8 @@ paths:
       summary: 'ClearbitLytics: Update auth'
       tags:
       - Auths
+      operationId: putAuthClearbitLyticsById
+      x-operation-id-source: derived
   /auth/clearbit/{id}:
     get:
       description: Get a Clearbit auth
@@ -4830,6 +5020,8 @@ paths:
       summary: 'Clearbit: Get auth'
       tags:
       - Auths
+      operationId: getAuthClearbitById
+      x-operation-id-source: derived
     put:
       description: Update a Clearbit auth
       parameters:
@@ -4886,6 +5078,8 @@ paths:
       summary: 'Clearbit: Update auth'
       tags:
       - Auths
+      operationId: putAuthClearbitById
+      x-operation-id-source: derived
   /auth/connect-apikey:
     post:
       description: Create a ConnectApikey auth
@@ -4937,6 +5131,8 @@ paths:
       summary: 'ConnectApikey: Create auth'
       tags:
       - Auths
+      operationId: postAuthConnectApikey
+      x-operation-id-source: derived
   /auth/connect-apikey/{id}:
     get:
       description: Get a ConnectApikey auth
@@ -4981,6 +5177,8 @@ paths:
       summary: 'ConnectApikey: Get auth'
       tags:
       - Auths
+      operationId: getAuthConnectApikeyById
+      x-operation-id-source: derived
     put:
       description: Update a ConnectApikey auth
       parameters:
@@ -5037,6 +5235,8 @@ paths:
       summary: 'ConnectApikey: Update auth'
       tags:
       - Auths
+      operationId: putAuthConnectApikeyById
+      x-operation-id-source: derived
   /auth/content-cookies:
     post:
       description: Create a ContentCookies auth
@@ -5088,6 +5288,8 @@ paths:
       summary: 'ContentCookies: Create auth'
       tags:
       - Auths
+      operationId: postAuthContentCookies
+      x-operation-id-source: derived
   /auth/content-cookies/{id}:
     get:
       description: Get a ContentCookies auth
@@ -5132,6 +5334,8 @@ paths:
       summary: 'ContentCookies: Get auth'
       tags:
       - Auths
+      operationId: getAuthContentCookiesById
+      x-operation-id-source: derived
     put:
       description: Update a ContentCookies auth
       parameters:
@@ -5188,6 +5392,8 @@ paths:
       summary: 'ContentCookies: Update auth'
       tags:
       - Auths
+      operationId: putAuthContentCookiesById
+      x-operation-id-source: derived
   /auth/contentstack-api-key:
     post:
       description: Create a ContentstackApiKey auth
@@ -5239,6 +5445,8 @@ paths:
       summary: 'ContentstackApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthContentstackApiKey
+      x-operation-id-source: derived
   /auth/contentstack-api-key/{id}:
     get:
       description: Get a ContentstackApiKey auth
@@ -5283,6 +5491,8 @@ paths:
       summary: 'ContentstackApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthContentstackApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a ContentstackApiKey auth
       parameters:
@@ -5339,6 +5549,8 @@ paths:
       summary: 'ContentstackApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthContentstackApiKeyById
+      x-operation-id-source: derived
   /auth/contentstack-authtoken:
     post:
       description: Create a ContentstackAuthtoken auth
@@ -5390,6 +5602,8 @@ paths:
       summary: 'ContentstackAuthtoken: Create auth'
       tags:
       - Auths
+      operationId: postAuthContentstackAuthtoken
+      x-operation-id-source: derived
   /auth/contentstack-authtoken/{id}:
     get:
       description: Get a ContentstackAuthtoken auth
@@ -5434,6 +5648,8 @@ paths:
       summary: 'ContentstackAuthtoken: Get auth'
       tags:
       - Auths
+      operationId: getAuthContentstackAuthtokenById
+      x-operation-id-source: derived
     put:
       description: Update a ContentstackAuthtoken auth
       parameters:
@@ -5490,6 +5706,8 @@ paths:
       summary: 'ContentstackAuthtoken: Update auth'
       tags:
       - Auths
+      operationId: putAuthContentstackAuthtokenById
+      x-operation-id-source: derived
   /auth/cordial:
     post:
       description: Create a Cordial auth
@@ -5541,6 +5759,8 @@ paths:
       summary: 'Cordial: Create auth'
       tags:
       - Auths
+      operationId: postAuthCordial
+      x-operation-id-source: derived
   /auth/cordial-userpass:
     post:
       description: Create a CordialUserpass auth
@@ -5592,6 +5812,8 @@ paths:
       summary: 'CordialUserpass: Create auth'
       tags:
       - Auths
+      operationId: postAuthCordialUserpass
+      x-operation-id-source: derived
   /auth/cordial-userpass/{id}:
     get:
       description: Get a CordialUserpass auth
@@ -5636,6 +5858,8 @@ paths:
       summary: 'CordialUserpass: Get auth'
       tags:
       - Auths
+      operationId: getAuthCordialUserpassById
+      x-operation-id-source: derived
     put:
       description: Update a CordialUserpass auth
       parameters:
@@ -5692,6 +5916,8 @@ paths:
       summary: 'CordialUserpass: Update auth'
       tags:
       - Auths
+      operationId: putAuthCordialUserpassById
+      x-operation-id-source: derived
   /auth/cordial/{id}:
     get:
       description: Get a Cordial auth
@@ -5736,6 +5962,8 @@ paths:
       summary: 'Cordial: Get auth'
       tags:
       - Auths
+      operationId: getAuthCordialById
+      x-operation-id-source: derived
     put:
       description: Update a Cordial auth
       parameters:
@@ -5792,6 +6020,8 @@ paths:
       summary: 'Cordial: Update auth'
       tags:
       - Auths
+      operationId: putAuthCordialById
+      x-operation-id-source: derived
   /auth/criteo-api-credentials:
     post:
       description: Create a CriteoApiCredentials auth
@@ -5843,6 +6073,8 @@ paths:
       summary: 'CriteoApiCredentials: Create auth'
       tags:
       - Auths
+      operationId: postAuthCriteoApiCredentials
+      x-operation-id-source: derived
   /auth/criteo-api-credentials/{id}:
     get:
       description: Get a CriteoApiCredentials auth
@@ -5887,6 +6119,8 @@ paths:
       summary: 'CriteoApiCredentials: Get auth'
       tags:
       - Auths
+      operationId: getAuthCriteoApiCredentialsById
+      x-operation-id-source: derived
     put:
       description: Update a CriteoApiCredentials auth
       parameters:
@@ -5943,6 +6177,8 @@ paths:
       summary: 'CriteoApiCredentials: Update auth'
       tags:
       - Auths
+      operationId: putAuthCriteoApiCredentialsById
+      x-operation-id-source: derived
   /auth/customerio-apikey:
     post:
       description: Create a CustomerioApikey auth
@@ -5994,6 +6230,8 @@ paths:
       summary: 'CustomerioApikey: Create auth'
       tags:
       - Auths
+      operationId: postAuthCustomerioApikey
+      x-operation-id-source: derived
   /auth/customerio-apikey/{id}:
     get:
       description: Get a CustomerioApikey auth
@@ -6038,6 +6276,8 @@ paths:
       summary: 'CustomerioApikey: Get auth'
       tags:
       - Auths
+      operationId: getAuthCustomerioApikeyById
+      x-operation-id-source: derived
     put:
       description: Update a CustomerioApikey auth
       parameters:
@@ -6094,6 +6334,8 @@ paths:
       summary: 'CustomerioApikey: Update auth'
       tags:
       - Auths
+      operationId: putAuthCustomerioApikeyById
+      x-operation-id-source: derived
   /auth/customerio-webhooks:
     post:
       description: Create a CustomerioWebhooks auth
@@ -6145,6 +6387,8 @@ paths:
       summary: 'CustomerioWebhooks: Create auth'
       tags:
       - Auths
+      operationId: postAuthCustomerioWebhooks
+      x-operation-id-source: derived
   /auth/customerio-webhooks/{id}:
     get:
       description: Get a CustomerioWebhooks auth
@@ -6189,6 +6433,8 @@ paths:
       summary: 'CustomerioWebhooks: Get auth'
       tags:
       - Auths
+      operationId: getAuthCustomerioWebhooksById
+      x-operation-id-source: derived
     put:
       description: Update a CustomerioWebhooks auth
       parameters:
@@ -6245,6 +6491,8 @@ paths:
       summary: 'CustomerioWebhooks: Update auth'
       tags:
       - Auths
+      operationId: putAuthCustomerioWebhooksById
+      x-operation-id-source: derived
   /auth/databricks-db:
     post:
       description: Create a DatabricksDB auth
@@ -6296,6 +6544,8 @@ paths:
       summary: 'DatabricksDB: Create auth'
       tags:
       - Auths
+      operationId: postAuthDatabricksDb
+      x-operation-id-source: derived
   /auth/databricks-db/{id}:
     get:
       description: Get a DatabricksDB auth
@@ -6340,6 +6590,8 @@ paths:
       summary: 'DatabricksDB: Get auth'
       tags:
       - Auths
+      operationId: getAuthDatabricksDbById
+      x-operation-id-source: derived
     put:
       description: Update a DatabricksDB auth
       parameters:
@@ -6396,6 +6648,8 @@ paths:
       summary: 'DatabricksDB: Update auth'
       tags:
       - Auths
+      operationId: putAuthDatabricksDbById
+      x-operation-id-source: derived
   /auth/datax:
     post:
       description: Create a Datax auth
@@ -6447,6 +6701,8 @@ paths:
       summary: 'Datax: Create auth'
       tags:
       - Auths
+      operationId: postAuthDatax
+      x-operation-id-source: derived
   /auth/datax/{id}:
     get:
       description: Get a Datax auth
@@ -6491,6 +6747,8 @@ paths:
       summary: 'Datax: Get auth'
       tags:
       - Auths
+      operationId: getAuthDataxById
+      x-operation-id-source: derived
     put:
       description: Update a Datax auth
       parameters:
@@ -6547,6 +6805,8 @@ paths:
       summary: 'Datax: Update auth'
       tags:
       - Auths
+      operationId: putAuthDataxById
+      x-operation-id-source: derived
   /auth/dotmailer-api:
     post:
       description: Create a DotmailerApi auth
@@ -6598,6 +6858,8 @@ paths:
       summary: 'DotmailerApi: Create auth'
       tags:
       - Auths
+      operationId: postAuthDotmailerApi
+      x-operation-id-source: derived
   /auth/dotmailer-api/{id}:
     get:
       description: Get a DotmailerApi auth
@@ -6642,6 +6904,8 @@ paths:
       summary: 'DotmailerApi: Get auth'
       tags:
       - Auths
+      operationId: getAuthDotmailerApiById
+      x-operation-id-source: derived
     put:
       description: Update a DotmailerApi auth
       parameters:
@@ -6698,6 +6962,8 @@ paths:
       summary: 'DotmailerApi: Update auth'
       tags:
       - Auths
+      operationId: putAuthDotmailerApiById
+      x-operation-id-source: derived
   /auth/drift-app-key:
     post:
       description: Create a DriftAppKey auth
@@ -6749,6 +7015,8 @@ paths:
       summary: 'DriftAppKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthDriftAppKey
+      x-operation-id-source: derived
   /auth/drift-app-key/{id}:
     get:
       description: Get a DriftAppKey auth
@@ -6793,6 +7061,8 @@ paths:
       summary: 'DriftAppKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthDriftAppKeyById
+      x-operation-id-source: derived
     put:
       description: Update a DriftAppKey auth
       parameters:
@@ -6849,6 +7119,8 @@ paths:
       summary: 'DriftAppKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthDriftAppKeyById
+      x-operation-id-source: derived
   /auth/dv360-oauth:
     post:
       description: Create a Dv360_Oauth auth
@@ -6900,6 +7172,8 @@ paths:
       summary: 'Dv360_Oauth: Create auth'
       tags:
       - Auths
+      operationId: postAuthDv360Oauth
+      x-operation-id-source: derived
   /auth/dv360-oauth/{id}:
     get:
       description: Get a Dv360_Oauth auth
@@ -6944,6 +7218,8 @@ paths:
       summary: 'Dv360_Oauth: Get auth'
       tags:
       - Auths
+      operationId: getAuthDv360OauthById
+      x-operation-id-source: derived
     put:
       description: Update a Dv360_Oauth auth
       parameters:
@@ -7000,6 +7276,8 @@ paths:
       summary: 'Dv360_Oauth: Update auth'
       tags:
       - Auths
+      operationId: putAuthDv360OauthById
+      x-operation-id-source: derived
   /auth/email:
     post:
       description: Create a Email auth
@@ -7051,6 +7329,8 @@ paths:
       summary: 'Email: Create auth'
       tags:
       - Auths
+      operationId: postAuthEmail
+      x-operation-id-source: derived
   /auth/email/{id}:
     get:
       description: Get a Email auth
@@ -7095,6 +7375,8 @@ paths:
       summary: 'Email: Get auth'
       tags:
       - Auths
+      operationId: getAuthEmailById
+      x-operation-id-source: derived
     put:
       description: Update a Email auth
       parameters:
@@ -7151,6 +7433,8 @@ paths:
       summary: 'Email: Update auth'
       tags:
       - Auths
+      operationId: putAuthEmailById
+      x-operation-id-source: derived
   /auth/episerver-api-key:
     post:
       description: Create a EpiserverApiKey auth
@@ -7202,6 +7486,8 @@ paths:
       summary: 'EpiserverApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthEpiserverApiKey
+      x-operation-id-source: derived
   /auth/episerver-api-key/{id}:
     get:
       description: Get a EpiserverApiKey auth
@@ -7246,6 +7532,8 @@ paths:
       summary: 'EpiserverApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthEpiserverApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a EpiserverApiKey auth
       parameters:
@@ -7302,6 +7590,8 @@ paths:
       summary: 'EpiserverApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthEpiserverApiKeyById
+      x-operation-id-source: derived
   /auth/fb-system-user:
     post:
       description: Create a FbSystemUser auth
@@ -7353,6 +7643,8 @@ paths:
       summary: 'FbSystemUser: Create auth'
       tags:
       - Auths
+      operationId: postAuthFbSystemUser
+      x-operation-id-source: derived
   /auth/fb-system-user/{id}:
     get:
       description: Get a FbSystemUser auth
@@ -7397,6 +7689,8 @@ paths:
       summary: 'FbSystemUser: Get auth'
       tags:
       - Auths
+      operationId: getAuthFbSystemUserById
+      x-operation-id-source: derived
     put:
       description: Update a FbSystemUser auth
       parameters:
@@ -7453,6 +7747,8 @@ paths:
       summary: 'FbSystemUser: Update auth'
       tags:
       - Auths
+      operationId: putAuthFbSystemUserById
+      x-operation-id-source: derived
   /auth/fullcontact:
     post:
       description: Create a Fullcontact auth
@@ -7504,6 +7800,8 @@ paths:
       summary: 'Fullcontact: Create auth'
       tags:
       - Auths
+      operationId: postAuthFullcontact
+      x-operation-id-source: derived
   /auth/fullcontact/{id}:
     get:
       description: Get a Fullcontact auth
@@ -7548,6 +7846,8 @@ paths:
       summary: 'Fullcontact: Get auth'
       tags:
       - Auths
+      operationId: getAuthFullcontactById
+      x-operation-id-source: derived
     put:
       description: Update a Fullcontact auth
       parameters:
@@ -7604,6 +7904,8 @@ paths:
       summary: 'Fullcontact: Update auth'
       tags:
       - Auths
+      operationId: putAuthFullcontactById
+      x-operation-id-source: derived
   /auth/gcs-jwt:
     post:
       description: Create a GcsJwt auth
@@ -7655,6 +7957,8 @@ paths:
       summary: 'GcsJwt: Create auth'
       tags:
       - Auths
+      operationId: postAuthGcsJwt
+      x-operation-id-source: derived
   /auth/gcs-jwt/{id}:
     get:
       description: Get a GcsJwt auth
@@ -7699,6 +8003,8 @@ paths:
       summary: 'GcsJwt: Get auth'
       tags:
       - Auths
+      operationId: getAuthGcsJwtById
+      x-operation-id-source: derived
     put:
       description: Update a GcsJwt auth
       parameters:
@@ -7755,6 +8061,8 @@ paths:
       summary: 'GcsJwt: Update auth'
       tags:
       - Auths
+      operationId: putAuthGcsJwtById
+      x-operation-id-source: derived
   /auth/gigya:
     post:
       description: Create a Gigya auth
@@ -7806,6 +8114,8 @@ paths:
       summary: 'Gigya: Create auth'
       tags:
       - Auths
+      operationId: postAuthGigya
+      x-operation-id-source: derived
   /auth/gigya/{id}:
     get:
       description: Get a Gigya auth
@@ -7850,6 +8160,8 @@ paths:
       summary: 'Gigya: Get auth'
       tags:
       - Auths
+      operationId: getAuthGigyaById
+      x-operation-id-source: derived
     put:
       description: Update a Gigya auth
       parameters:
@@ -7906,6 +8218,8 @@ paths:
       summary: 'Gigya: Update auth'
       tags:
       - Auths
+      operationId: putAuthGigyaById
+      x-operation-id-source: derived
   /auth/googleanalytics-no-auth:
     post:
       description: Create a Googleanalytics_NoAuth auth
@@ -7957,6 +8271,8 @@ paths:
       summary: 'Googleanalytics_NoAuth: Create auth'
       tags:
       - Auths
+      operationId: postAuthGoogleanalyticsNoAuth
+      x-operation-id-source: derived
   /auth/googleanalytics-no-auth/{id}:
     get:
       description: Get a Googleanalytics_NoAuth auth
@@ -8001,6 +8317,8 @@ paths:
       summary: 'Googleanalytics_NoAuth: Get auth'
       tags:
       - Auths
+      operationId: getAuthGoogleanalyticsNoAuthById
+      x-operation-id-source: derived
     put:
       description: Update a Googleanalytics_NoAuth auth
       parameters:
@@ -8057,6 +8375,8 @@ paths:
       summary: 'Googleanalytics_NoAuth: Update auth'
       tags:
       - Auths
+      operationId: putAuthGoogleanalyticsNoAuthById
+      x-operation-id-source: derived
   /auth/header-param-auth:
     post:
       description: Create a HeaderParamAuth auth
@@ -8108,6 +8428,8 @@ paths:
       summary: 'HeaderParamAuth: Create auth'
       tags:
       - Auths
+      operationId: postAuthHeaderParamAuth
+      x-operation-id-source: derived
   /auth/header-param-auth/{id}:
     get:
       description: Get a HeaderParamAuth auth
@@ -8152,6 +8474,8 @@ paths:
       summary: 'HeaderParamAuth: Get auth'
       tags:
       - Auths
+      operationId: getAuthHeaderParamAuthById
+      x-operation-id-source: derived
     put:
       description: Update a HeaderParamAuth auth
       parameters:
@@ -8208,6 +8532,8 @@ paths:
       summary: 'HeaderParamAuth: Update auth'
       tags:
       - Auths
+      operationId: putAuthHeaderParamAuthById
+      x-operation-id-source: derived
   /auth/icontact-api:
     post:
       description: Create a IcontactApi auth
@@ -8259,6 +8585,8 @@ paths:
       summary: 'IcontactApi: Create auth'
       tags:
       - Auths
+      operationId: postAuthIcontactApi
+      x-operation-id-source: derived
   /auth/icontact-api/{id}:
     get:
       description: Get a IcontactApi auth
@@ -8303,6 +8631,8 @@ paths:
       summary: 'IcontactApi: Get auth'
       tags:
       - Auths
+      operationId: getAuthIcontactApiById
+      x-operation-id-source: derived
     put:
       description: Update a IcontactApi auth
       parameters:
@@ -8359,6 +8689,8 @@ paths:
       summary: 'IcontactApi: Update auth'
       tags:
       - Auths
+      operationId: putAuthIcontactApiById
+      x-operation-id-source: derived
   /auth/infobip-api-key:
     post:
       description: Create a InfobipApiKey auth
@@ -8410,6 +8742,8 @@ paths:
       summary: 'InfobipApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthInfobipApiKey
+      x-operation-id-source: derived
   /auth/infobip-api-key/{id}:
     get:
       description: Get a InfobipApiKey auth
@@ -8454,6 +8788,8 @@ paths:
       summary: 'InfobipApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthInfobipApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a InfobipApiKey auth
       parameters:
@@ -8510,6 +8846,8 @@ paths:
       summary: 'InfobipApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthInfobipApiKeyById
+      x-operation-id-source: derived
   /auth/insider-api-key:
     post:
       description: Create a InsiderApiKey auth
@@ -8561,6 +8899,8 @@ paths:
       summary: 'InsiderApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthInsiderApiKey
+      x-operation-id-source: derived
   /auth/insider-api-key/{id}:
     get:
       description: Get a InsiderApiKey auth
@@ -8605,6 +8945,8 @@ paths:
       summary: 'InsiderApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthInsiderApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a InsiderApiKey auth
       parameters:
@@ -8661,6 +9003,8 @@ paths:
       summary: 'InsiderApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthInsiderApiKeyById
+      x-operation-id-source: derived
   /auth/integration-secret:
     post:
       description: Create a IntegrationSecret auth
@@ -8712,6 +9056,8 @@ paths:
       summary: 'IntegrationSecret: Create auth'
       tags:
       - Auths
+      operationId: postAuthIntegrationSecret
+      x-operation-id-source: derived
   /auth/integration-secret/{id}:
     get:
       description: Get a IntegrationSecret auth
@@ -8756,6 +9102,8 @@ paths:
       summary: 'IntegrationSecret: Get auth'
       tags:
       - Auths
+      operationId: getAuthIntegrationSecretById
+      x-operation-id-source: derived
     put:
       description: Update a IntegrationSecret auth
       parameters:
@@ -8812,6 +9160,8 @@ paths:
       summary: 'IntegrationSecret: Update auth'
       tags:
       - Auths
+      operationId: putAuthIntegrationSecretById
+      x-operation-id-source: derived
   /auth/iterable:
     post:
       description: Create a Iterable auth
@@ -8863,6 +9213,8 @@ paths:
       summary: 'Iterable: Create auth'
       tags:
       - Auths
+      operationId: postAuthIterable
+      x-operation-id-source: derived
   /auth/iterable/{id}:
     get:
       description: Get a Iterable auth
@@ -8907,6 +9259,8 @@ paths:
       summary: 'Iterable: Get auth'
       tags:
       - Auths
+      operationId: getAuthIterableById
+      x-operation-id-source: derived
     put:
       description: Update a Iterable auth
       parameters:
@@ -8963,6 +9317,8 @@ paths:
       summary: 'Iterable: Update auth'
       tags:
       - Auths
+      operationId: putAuthIterableById
+      x-operation-id-source: derived
   /auth/klaviyo:
     post:
       description: Create a Klaviyo auth
@@ -9014,6 +9370,8 @@ paths:
       summary: 'Klaviyo: Create auth'
       tags:
       - Auths
+      operationId: postAuthKlaviyo
+      x-operation-id-source: derived
   /auth/klaviyo/{id}:
     get:
       description: Get a Klaviyo auth
@@ -9058,6 +9416,8 @@ paths:
       summary: 'Klaviyo: Get auth'
       tags:
       - Auths
+      operationId: getAuthKlaviyoById
+      x-operation-id-source: derived
     put:
       description: Update a Klaviyo auth
       parameters:
@@ -9114,6 +9474,8 @@ paths:
       summary: 'Klaviyo: Update auth'
       tags:
       - Auths
+      operationId: putAuthKlaviyoById
+      x-operation-id-source: derived
   /auth/leadsquared:
     post:
       description: Create a Leadsquared auth
@@ -9165,6 +9527,8 @@ paths:
       summary: 'Leadsquared: Create auth'
       tags:
       - Auths
+      operationId: postAuthLeadsquared
+      x-operation-id-source: derived
   /auth/leadsquared/{id}:
     get:
       description: Get a Leadsquared auth
@@ -9209,6 +9573,8 @@ paths:
       summary: 'Leadsquared: Get auth'
       tags:
       - Auths
+      operationId: getAuthLeadsquaredById
+      x-operation-id-source: derived
     put:
       description: Update a Leadsquared auth
       parameters:
@@ -9265,6 +9631,8 @@ paths:
       summary: 'Leadsquared: Update auth'
       tags:
       - Auths
+      operationId: putAuthLeadsquaredById
+      x-operation-id-source: derived
   /auth/lineads-api-secretkey:
     post:
       description: Create a LineadsApiSecretkey auth
@@ -9316,6 +9684,8 @@ paths:
       summary: 'LineadsApiSecretkey: Create auth'
       tags:
       - Auths
+      operationId: postAuthLineadsApiSecretkey
+      x-operation-id-source: derived
   /auth/lineads-api-secretkey/{id}:
     get:
       description: Get a LineadsApiSecretkey auth
@@ -9360,6 +9730,8 @@ paths:
       summary: 'LineadsApiSecretkey: Get auth'
       tags:
       - Auths
+      operationId: getAuthLineadsApiSecretkeyById
+      x-operation-id-source: derived
     put:
       description: Update a LineadsApiSecretkey auth
       parameters:
@@ -9416,6 +9788,8 @@ paths:
       summary: 'LineadsApiSecretkey: Update auth'
       tags:
       - Auths
+      operationId: putAuthLineadsApiSecretkeyById
+      x-operation-id-source: derived
   /auth/liveramp-aws-keys:
     post:
       description: Create a Liveramp_AwsKeys auth
@@ -9467,6 +9841,8 @@ paths:
       summary: 'Liveramp_AwsKeys: Create auth'
       tags:
       - Auths
+      operationId: postAuthLiverampAwsKeys
+      x-operation-id-source: derived
   /auth/liveramp-aws-keys/{id}:
     get:
       description: Get a Liveramp_AwsKeys auth
@@ -9511,6 +9887,8 @@ paths:
       summary: 'Liveramp_AwsKeys: Get auth'
       tags:
       - Auths
+      operationId: getAuthLiverampAwsKeysById
+      x-operation-id-source: derived
     put:
       description: Update a Liveramp_AwsKeys auth
       parameters:
@@ -9567,6 +9945,8 @@ paths:
       summary: 'Liveramp_AwsKeys: Update auth'
       tags:
       - Auths
+      operationId: putAuthLiverampAwsKeysById
+      x-operation-id-source: derived
   /auth/liveramp-userkey:
     post:
       description: Create a Liveramp_Userkey auth
@@ -9618,6 +9998,8 @@ paths:
       summary: 'Liveramp_Userkey: Create auth'
       tags:
       - Auths
+      operationId: postAuthLiverampUserkey
+      x-operation-id-source: derived
   /auth/liveramp-userkey/{id}:
     get:
       description: Get a Liveramp_Userkey auth
@@ -9662,6 +10044,8 @@ paths:
       summary: 'Liveramp_Userkey: Get auth'
       tags:
       - Auths
+      operationId: getAuthLiverampUserkeyById
+      x-operation-id-source: derived
     put:
       description: Update a Liveramp_Userkey auth
       parameters:
@@ -9718,6 +10102,8 @@ paths:
       summary: 'Liveramp_Userkey: Update auth'
       tags:
       - Auths
+      operationId: putAuthLiverampUserkeyById
+      x-operation-id-source: derived
   /auth/liveramp-userpass:
     post:
       description: Create a Liveramp_Userpass auth
@@ -9769,6 +10155,8 @@ paths:
       summary: 'Liveramp_Userpass: Create auth'
       tags:
       - Auths
+      operationId: postAuthLiverampUserpass
+      x-operation-id-source: derived
   /auth/liveramp-userpass/{id}:
     get:
       description: Get a Liveramp_Userpass auth
@@ -9813,6 +10201,8 @@ paths:
       summary: 'Liveramp_Userpass: Get auth'
       tags:
       - Auths
+      operationId: getAuthLiverampUserpassById
+      x-operation-id-source: derived
     put:
       description: Update a Liveramp_Userpass auth
       parameters:
@@ -9869,6 +10259,8 @@ paths:
       summary: 'Liveramp_Userpass: Update auth'
       tags:
       - Auths
+      operationId: putAuthLiverampUserpassById
+      x-operation-id-source: derived
   /auth/localytics-keys:
     post:
       description: Create a LocalyticsKeys auth
@@ -9920,6 +10312,8 @@ paths:
       summary: 'LocalyticsKeys: Create auth'
       tags:
       - Auths
+      operationId: postAuthLocalyticsKeys
+      x-operation-id-source: derived
   /auth/localytics-keys/{id}:
     get:
       description: Get a LocalyticsKeys auth
@@ -9964,6 +10358,8 @@ paths:
       summary: 'LocalyticsKeys: Get auth'
       tags:
       - Auths
+      operationId: getAuthLocalyticsKeysById
+      x-operation-id-source: derived
     put:
       description: Update a LocalyticsKeys auth
       parameters:
@@ -10020,6 +10416,8 @@ paths:
       summary: 'LocalyticsKeys: Update auth'
       tags:
       - Auths
+      operationId: putAuthLocalyticsKeysById
+      x-operation-id-source: derived
   /auth/lytics-aws-sftp-auth:
     post:
       description: Create a LyticsAwsSftpAuth auth
@@ -10071,6 +10469,8 @@ paths:
       summary: 'LyticsAwsSftpAuth: Create auth'
       tags:
       - Auths
+      operationId: postAuthLyticsAwsSftpAuth
+      x-operation-id-source: derived
   /auth/lytics-aws-sftp-auth/{id}:
     get:
       description: Get a LyticsAwsSftpAuth auth
@@ -10115,6 +10515,8 @@ paths:
       summary: 'LyticsAwsSftpAuth: Get auth'
       tags:
       - Auths
+      operationId: getAuthLyticsAwsSftpAuthById
+      x-operation-id-source: derived
     put:
       description: Update a LyticsAwsSftpAuth auth
       parameters:
@@ -10171,6 +10573,8 @@ paths:
       summary: 'LyticsAwsSftpAuth: Update auth'
       tags:
       - Auths
+      operationId: putAuthLyticsAwsSftpAuthById
+      x-operation-id-source: derived
   /auth/lytics-lotame-s3:
     post:
       description: Create a LyticsLotameS3 auth
@@ -10222,6 +10626,8 @@ paths:
       summary: 'LyticsLotameS3: Create auth'
       tags:
       - Auths
+      operationId: postAuthLyticsLotameS3
+      x-operation-id-source: derived
   /auth/lytics-lotame-s3/{id}:
     get:
       description: Get a LyticsLotameS3 auth
@@ -10266,6 +10672,8 @@ paths:
       summary: 'LyticsLotameS3: Get auth'
       tags:
       - Auths
+      operationId: getAuthLyticsLotameS3ById
+      x-operation-id-source: derived
     put:
       description: Update a LyticsLotameS3 auth
       parameters:
@@ -10322,6 +10730,8 @@ paths:
       summary: 'LyticsLotameS3: Update auth'
       tags:
       - Auths
+      operationId: putAuthLyticsLotameS3ById
+      x-operation-id-source: derived
   /auth/mailgun-api-key:
     post:
       description: Create a MailgunApiKey auth
@@ -10373,6 +10783,8 @@ paths:
       summary: 'MailgunApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthMailgunApiKey
+      x-operation-id-source: derived
   /auth/mailgun-api-key/{id}:
     get:
       description: Get a MailgunApiKey auth
@@ -10417,6 +10829,8 @@ paths:
       summary: 'MailgunApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthMailgunApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a MailgunApiKey auth
       parameters:
@@ -10473,6 +10887,8 @@ paths:
       summary: 'MailgunApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthMailgunApiKeyById
+      x-operation-id-source: derived
   /auth/mandrill-api-key:
     post:
       description: Create a MandrillApiKey auth
@@ -10524,6 +10940,8 @@ paths:
       summary: 'MandrillApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthMandrillApiKey
+      x-operation-id-source: derived
   /auth/mandrill-api-key/{id}:
     get:
       description: Get a MandrillApiKey auth
@@ -10568,6 +10986,8 @@ paths:
       summary: 'MandrillApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthMandrillApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a MandrillApiKey auth
       parameters:
@@ -10624,6 +11044,8 @@ paths:
       summary: 'MandrillApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthMandrillApiKeyById
+      x-operation-id-source: derived
   /auth/mapp-userpass:
     post:
       description: Create a Mapp_Userpass auth
@@ -10675,6 +11097,8 @@ paths:
       summary: 'Mapp_Userpass: Create auth'
       tags:
       - Auths
+      operationId: postAuthMappUserpass
+      x-operation-id-source: derived
   /auth/mapp-userpass/{id}:
     get:
       description: Get a Mapp_Userpass auth
@@ -10719,6 +11143,8 @@ paths:
       summary: 'Mapp_Userpass: Get auth'
       tags:
       - Auths
+      operationId: getAuthMappUserpassById
+      x-operation-id-source: derived
     put:
       description: Update a Mapp_Userpass auth
       parameters:
@@ -10775,6 +11201,8 @@ paths:
       summary: 'Mapp_Userpass: Update auth'
       tags:
       - Auths
+      operationId: putAuthMappUserpassById
+      x-operation-id-source: derived
   /auth/marketingcloud-v2:
     post:
       description: Create a MarketingcloudV2 auth
@@ -10826,6 +11254,8 @@ paths:
       summary: 'MarketingcloudV2: Create auth'
       tags:
       - Auths
+      operationId: postAuthMarketingcloudV2
+      x-operation-id-source: derived
   /auth/marketingcloud-v2/{id}:
     get:
       description: Get a MarketingcloudV2 auth
@@ -10870,6 +11300,8 @@ paths:
       summary: 'MarketingcloudV2: Get auth'
       tags:
       - Auths
+      operationId: getAuthMarketingcloudV2ById
+      x-operation-id-source: derived
     put:
       description: Update a MarketingcloudV2 auth
       parameters:
@@ -10926,6 +11358,8 @@ paths:
       summary: 'MarketingcloudV2: Update auth'
       tags:
       - Auths
+      operationId: putAuthMarketingcloudV2ById
+      x-operation-id-source: derived
   /auth/marketo-client:
     post:
       description: Create a MarketoClient auth
@@ -10977,6 +11411,8 @@ paths:
       summary: 'MarketoClient: Create auth'
       tags:
       - Auths
+      operationId: postAuthMarketoClient
+      x-operation-id-source: derived
   /auth/marketo-client/{id}:
     get:
       description: Get a MarketoClient auth
@@ -11021,6 +11457,8 @@ paths:
       summary: 'MarketoClient: Get auth'
       tags:
       - Auths
+      operationId: getAuthMarketoClientById
+      x-operation-id-source: derived
     put:
       description: Update a MarketoClient auth
       parameters:
@@ -11077,6 +11515,8 @@ paths:
       summary: 'MarketoClient: Update auth'
       tags:
       - Auths
+      operationId: putAuthMarketoClientById
+      x-operation-id-source: derived
   /auth/maropost:
     post:
       description: Create a Maropost auth
@@ -11128,6 +11568,8 @@ paths:
       summary: 'Maropost: Create auth'
       tags:
       - Auths
+      operationId: postAuthMaropost
+      x-operation-id-source: derived
   /auth/maropost/{id}:
     get:
       description: Get a Maropost auth
@@ -11172,6 +11614,8 @@ paths:
       summary: 'Maropost: Get auth'
       tags:
       - Auths
+      operationId: getAuthMaropostById
+      x-operation-id-source: derived
     put:
       description: Update a Maropost auth
       parameters:
@@ -11228,6 +11672,8 @@ paths:
       summary: 'Maropost: Update auth'
       tags:
       - Auths
+      operationId: putAuthMaropostById
+      x-operation-id-source: derived
   /auth/mediamath-no-auth:
     post:
       description: Create a Mediamath_NoAuth auth
@@ -11279,6 +11725,8 @@ paths:
       summary: 'Mediamath_NoAuth: Create auth'
       tags:
       - Auths
+      operationId: postAuthMediamathNoAuth
+      x-operation-id-source: derived
   /auth/mediamath-no-auth/{id}:
     get:
       description: Get a Mediamath_NoAuth auth
@@ -11323,6 +11771,8 @@ paths:
       summary: 'Mediamath_NoAuth: Get auth'
       tags:
       - Auths
+      operationId: getAuthMediamathNoAuthById
+      x-operation-id-source: derived
     put:
       description: Update a Mediamath_NoAuth auth
       parameters:
@@ -11379,6 +11829,8 @@ paths:
       summary: 'Mediamath_NoAuth: Update auth'
       tags:
       - Auths
+      operationId: putAuthMediamathNoAuthById
+      x-operation-id-source: derived
   /auth/messagecentral:
     post:
       description: Create a Messagecentral auth
@@ -11430,6 +11882,8 @@ paths:
       summary: 'Messagecentral: Create auth'
       tags:
       - Auths
+      operationId: postAuthMessagecentral
+      x-operation-id-source: derived
   /auth/messagecentral/{id}:
     get:
       description: Get a Messagecentral auth
@@ -11474,6 +11928,8 @@ paths:
       summary: 'Messagecentral: Get auth'
       tags:
       - Auths
+      operationId: getAuthMessagecentralById
+      x-operation-id-source: derived
     put:
       description: Update a Messagecentral auth
       parameters:
@@ -11530,6 +11986,8 @@ paths:
       summary: 'Messagecentral: Update auth'
       tags:
       - Auths
+      operationId: putAuthMessagecentralById
+      x-operation-id-source: derived
   /auth/microsoft-capi-token:
     post:
       description: Create a MicrosoftCapiToken auth
@@ -11581,6 +12039,8 @@ paths:
       summary: 'MicrosoftCapiToken: Create auth'
       tags:
       - Auths
+      operationId: postAuthMicrosoftCapiToken
+      x-operation-id-source: derived
   /auth/microsoft-capi-token/{id}:
     get:
       description: Get a MicrosoftCapiToken auth
@@ -11625,6 +12085,8 @@ paths:
       summary: 'MicrosoftCapiToken: Get auth'
       tags:
       - Auths
+      operationId: getAuthMicrosoftCapiTokenById
+      x-operation-id-source: derived
     put:
       description: Update a MicrosoftCapiToken auth
       parameters:
@@ -11681,6 +12143,8 @@ paths:
       summary: 'MicrosoftCapiToken: Update auth'
       tags:
       - Auths
+      operationId: putAuthMicrosoftCapiTokenById
+      x-operation-id-source: derived
   /auth/mixpanel-api-secret:
     post:
       description: Create a MixpanelApiSecret auth
@@ -11732,6 +12196,8 @@ paths:
       summary: 'MixpanelApiSecret: Create auth'
       tags:
       - Auths
+      operationId: postAuthMixpanelApiSecret
+      x-operation-id-source: derived
   /auth/mixpanel-api-secret/{id}:
     get:
       description: Get a MixpanelApiSecret auth
@@ -11776,6 +12242,8 @@ paths:
       summary: 'MixpanelApiSecret: Get auth'
       tags:
       - Auths
+      operationId: getAuthMixpanelApiSecretById
+      x-operation-id-source: derived
     put:
       description: Update a MixpanelApiSecret auth
       parameters:
@@ -11832,6 +12300,8 @@ paths:
       summary: 'MixpanelApiSecret: Update auth'
       tags:
       - Auths
+      operationId: putAuthMixpanelApiSecretById
+      x-operation-id-source: derived
   /auth/mp-api-secret:
     post:
       description: Create a MpApiSecret auth
@@ -11883,6 +12353,8 @@ paths:
       summary: 'MpApiSecret: Create auth'
       tags:
       - Auths
+      operationId: postAuthMpApiSecret
+      x-operation-id-source: derived
   /auth/mp-api-secret/{id}:
     get:
       description: Get a MpApiSecret auth
@@ -11927,6 +12399,8 @@ paths:
       summary: 'MpApiSecret: Get auth'
       tags:
       - Auths
+      operationId: getAuthMpApiSecretById
+      x-operation-id-source: derived
     put:
       description: Update a MpApiSecret auth
       parameters:
@@ -11983,6 +12457,8 @@ paths:
       summary: 'MpApiSecret: Update auth'
       tags:
       - Auths
+      operationId: putAuthMpApiSecretById
+      x-operation-id-source: derived
   /auth/netsuite-suitetalk:
     post:
       description: Create a NetsuiteSuitetalk auth
@@ -12034,6 +12510,8 @@ paths:
       summary: 'NetsuiteSuitetalk: Create auth'
       tags:
       - Auths
+      operationId: postAuthNetsuiteSuitetalk
+      x-operation-id-source: derived
   /auth/netsuite-suitetalk/{id}:
     get:
       description: Get a NetsuiteSuitetalk auth
@@ -12078,6 +12556,8 @@ paths:
       summary: 'NetsuiteSuitetalk: Get auth'
       tags:
       - Auths
+      operationId: getAuthNetsuiteSuitetalkById
+      x-operation-id-source: derived
     put:
       description: Update a NetsuiteSuitetalk auth
       parameters:
@@ -12134,6 +12614,8 @@ paths:
       summary: 'NetsuiteSuitetalk: Update auth'
       tags:
       - Auths
+      operationId: putAuthNetsuiteSuitetalkById
+      x-operation-id-source: derived
   /auth/newrelic-insights-apikey:
     post:
       description: Create a NewrelicInsightsApikey auth
@@ -12185,6 +12667,8 @@ paths:
       summary: 'NewrelicInsightsApikey: Create auth'
       tags:
       - Auths
+      operationId: postAuthNewrelicInsightsApikey
+      x-operation-id-source: derived
   /auth/newrelic-insights-apikey/{id}:
     get:
       description: Get a NewrelicInsightsApikey auth
@@ -12229,6 +12713,8 @@ paths:
       summary: 'NewrelicInsightsApikey: Get auth'
       tags:
       - Auths
+      operationId: getAuthNewrelicInsightsApikeyById
+      x-operation-id-source: derived
     put:
       description: Update a NewrelicInsightsApikey auth
       parameters:
@@ -12285,6 +12771,8 @@ paths:
       summary: 'NewrelicInsightsApikey: Update auth'
       tags:
       - Auths
+      operationId: putAuthNewrelicInsightsApikeyById
+      x-operation-id-source: derived
   /auth/onesignal:
     post:
       description: Create a Onesignal auth
@@ -12336,6 +12824,8 @@ paths:
       summary: 'Onesignal: Create auth'
       tags:
       - Auths
+      operationId: postAuthOnesignal
+      x-operation-id-source: derived
   /auth/onesignal/{id}:
     get:
       description: Get a Onesignal auth
@@ -12380,6 +12870,8 @@ paths:
       summary: 'Onesignal: Get auth'
       tags:
       - Auths
+      operationId: getAuthOnesignalById
+      x-operation-id-source: derived
     put:
       description: Update a Onesignal auth
       parameters:
@@ -12436,6 +12928,8 @@ paths:
       summary: 'Onesignal: Update auth'
       tags:
       - Auths
+      operationId: putAuthOnesignalById
+      x-operation-id-source: derived
   /auth/optimizely-odp-api-key:
     post:
       description: Create a OptimizelyOdpApiKey auth
@@ -12487,6 +12981,8 @@ paths:
       summary: 'OptimizelyOdpApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthOptimizelyOdpApiKey
+      x-operation-id-source: derived
   /auth/optimizely-odp-api-key/{id}:
     get:
       description: Get a OptimizelyOdpApiKey auth
@@ -12531,6 +13027,8 @@ paths:
       summary: 'OptimizelyOdpApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthOptimizelyOdpApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a OptimizelyOdpApiKey auth
       parameters:
@@ -12587,6 +13085,8 @@ paths:
       summary: 'OptimizelyOdpApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthOptimizelyOdpApiKeyById
+      x-operation-id-source: derived
   /auth/pinterest-capi-token:
     post:
       description: Create a PinterestCapiToken auth
@@ -12638,6 +13138,8 @@ paths:
       summary: 'PinterestCapiToken: Create auth'
       tags:
       - Auths
+      operationId: postAuthPinterestCapiToken
+      x-operation-id-source: derived
   /auth/pinterest-capi-token/{id}:
     get:
       description: Get a PinterestCapiToken auth
@@ -12682,6 +13184,8 @@ paths:
       summary: 'PinterestCapiToken: Get auth'
       tags:
       - Auths
+      operationId: getAuthPinterestCapiTokenById
+      x-operation-id-source: derived
     put:
       description: Update a PinterestCapiToken auth
       parameters:
@@ -12738,6 +13242,8 @@ paths:
       summary: 'PinterestCapiToken: Update auth'
       tags:
       - Auths
+      operationId: putAuthPinterestCapiTokenById
+      x-operation-id-source: derived
   /auth/postup:
     post:
       description: Create a Postup auth
@@ -12789,6 +13295,8 @@ paths:
       summary: 'Postup: Create auth'
       tags:
       - Auths
+      operationId: postAuthPostup
+      x-operation-id-source: derived
   /auth/postup/{id}:
     get:
       description: Get a Postup auth
@@ -12833,6 +13341,8 @@ paths:
       summary: 'Postup: Get auth'
       tags:
       - Auths
+      operationId: getAuthPostupById
+      x-operation-id-source: derived
     put:
       description: Update a Postup auth
       parameters:
@@ -12889,6 +13399,8 @@ paths:
       summary: 'Postup: Update auth'
       tags:
       - Auths
+      operationId: putAuthPostupById
+      x-operation-id-source: derived
   /auth/pubsub-jwt:
     post:
       description: Create a PubsubJwt auth
@@ -12940,6 +13452,8 @@ paths:
       summary: 'PubsubJwt: Create auth'
       tags:
       - Auths
+      operationId: postAuthPubsubJwt
+      x-operation-id-source: derived
   /auth/pubsub-jwt/{id}:
     get:
       description: Get a PubsubJwt auth
@@ -12984,6 +13498,8 @@ paths:
       summary: 'PubsubJwt: Get auth'
       tags:
       - Auths
+      operationId: getAuthPubsubJwtById
+      x-operation-id-source: derived
     put:
       description: Update a PubsubJwt auth
       parameters:
@@ -13040,6 +13556,8 @@ paths:
       summary: 'PubsubJwt: Update auth'
       tags:
       - Auths
+      operationId: putAuthPubsubJwtById
+      x-operation-id-source: derived
   /auth/pushly:
     post:
       description: Create a Pushly auth
@@ -13091,6 +13609,8 @@ paths:
       summary: 'Pushly: Create auth'
       tags:
       - Auths
+      operationId: postAuthPushly
+      x-operation-id-source: derived
   /auth/pushly/{id}:
     get:
       description: Get a Pushly auth
@@ -13135,6 +13655,8 @@ paths:
       summary: 'Pushly: Get auth'
       tags:
       - Auths
+      operationId: getAuthPushlyById
+      x-operation-id-source: derived
     put:
       description: Update a Pushly auth
       parameters:
@@ -13191,6 +13713,8 @@ paths:
       summary: 'Pushly: Update auth'
       tags:
       - Auths
+      operationId: putAuthPushlyById
+      x-operation-id-source: derived
   /auth/reddit-conversion:
     post:
       description: Create a RedditConversion auth
@@ -13242,6 +13766,8 @@ paths:
       summary: 'RedditConversion: Create auth'
       tags:
       - Auths
+      operationId: postAuthRedditConversion
+      x-operation-id-source: derived
   /auth/reddit-conversion/{id}:
     get:
       description: Get a RedditConversion auth
@@ -13286,6 +13812,8 @@ paths:
       summary: 'RedditConversion: Get auth'
       tags:
       - Auths
+      operationId: getAuthRedditConversionById
+      x-operation-id-source: derived
     put:
       description: Update a RedditConversion auth
       parameters:
@@ -13342,6 +13870,8 @@ paths:
       summary: 'RedditConversion: Update auth'
       tags:
       - Auths
+      operationId: putAuthRedditConversionById
+      x-operation-id-source: derived
   /auth/redshift-postgresql:
     post:
       description: Create a RedshiftPostgresql auth
@@ -13393,6 +13923,8 @@ paths:
       summary: 'RedshiftPostgresql: Create auth'
       tags:
       - Auths
+      operationId: postAuthRedshiftPostgresql
+      x-operation-id-source: derived
   /auth/redshift-postgresql/{id}:
     get:
       description: Get a RedshiftPostgresql auth
@@ -13437,6 +13969,8 @@ paths:
       summary: 'RedshiftPostgresql: Get auth'
       tags:
       - Auths
+      operationId: getAuthRedshiftPostgresqlById
+      x-operation-id-source: derived
     put:
       description: Update a RedshiftPostgresql auth
       parameters:
@@ -13493,6 +14027,8 @@ paths:
       summary: 'RedshiftPostgresql: Update auth'
       tags:
       - Auths
+      operationId: putAuthRedshiftPostgresqlById
+      x-operation-id-source: derived
   /auth/responsys-interact:
     post:
       description: Create a ResponsysInteract auth
@@ -13544,6 +14080,8 @@ paths:
       summary: 'ResponsysInteract: Create auth'
       tags:
       - Auths
+      operationId: postAuthResponsysInteract
+      x-operation-id-source: derived
   /auth/responsys-interact/{id}:
     get:
       description: Get a ResponsysInteract auth
@@ -13588,6 +14126,8 @@ paths:
       summary: 'ResponsysInteract: Get auth'
       tags:
       - Auths
+      operationId: getAuthResponsysInteractById
+      x-operation-id-source: derived
     put:
       description: Update a ResponsysInteract auth
       parameters:
@@ -13644,6 +14184,8 @@ paths:
       summary: 'ResponsysInteract: Update auth'
       tags:
       - Auths
+      operationId: putAuthResponsysInteractById
+      x-operation-id-source: derived
   /auth/responsys-sftp:
     post:
       description: Create a ResponsysSftp auth
@@ -13695,6 +14237,8 @@ paths:
       summary: 'ResponsysSftp: Create auth'
       tags:
       - Auths
+      operationId: postAuthResponsysSftp
+      x-operation-id-source: derived
   /auth/responsys-sftp-with-pgp:
     post:
       description: Create a ResponsysSftpWithPgp auth
@@ -13746,6 +14290,8 @@ paths:
       summary: 'ResponsysSftpWithPgp: Create auth'
       tags:
       - Auths
+      operationId: postAuthResponsysSftpWithPgp
+      x-operation-id-source: derived
   /auth/responsys-sftp-with-pgp/{id}:
     get:
       description: Get a ResponsysSftpWithPgp auth
@@ -13790,6 +14336,8 @@ paths:
       summary: 'ResponsysSftpWithPgp: Get auth'
       tags:
       - Auths
+      operationId: getAuthResponsysSftpWithPgpById
+      x-operation-id-source: derived
     put:
       description: Update a ResponsysSftpWithPgp auth
       parameters:
@@ -13846,6 +14394,8 @@ paths:
       summary: 'ResponsysSftpWithPgp: Update auth'
       tags:
       - Auths
+      operationId: putAuthResponsysSftpWithPgpById
+      x-operation-id-source: derived
   /auth/responsys-sftp/{id}:
     get:
       description: Get a ResponsysSftp auth
@@ -13890,6 +14440,8 @@ paths:
       summary: 'ResponsysSftp: Get auth'
       tags:
       - Auths
+      operationId: getAuthResponsysSftpById
+      x-operation-id-source: derived
     put:
       description: Update a ResponsysSftp auth
       parameters:
@@ -13946,6 +14498,8 @@ paths:
       summary: 'ResponsysSftp: Update auth'
       tags:
       - Auths
+      operationId: putAuthResponsysSftpById
+      x-operation-id-source: derived
   /auth/retentionscience-key:
     post:
       description: Create a RetentionscienceKey auth
@@ -13997,6 +14551,8 @@ paths:
       summary: 'RetentionscienceKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthRetentionscienceKey
+      x-operation-id-source: derived
   /auth/retentionscience-key/{id}:
     get:
       description: Get a RetentionscienceKey auth
@@ -14041,6 +14597,8 @@ paths:
       summary: 'RetentionscienceKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthRetentionscienceKeyById
+      x-operation-id-source: derived
     put:
       description: Update a RetentionscienceKey auth
       parameters:
@@ -14097,6 +14655,8 @@ paths:
       summary: 'RetentionscienceKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthRetentionscienceKeyById
+      x-operation-id-source: derived
   /auth/s3:
     post:
       description: Create a S3 auth
@@ -14148,6 +14708,8 @@ paths:
       summary: 'S3: Create auth'
       tags:
       - Auths
+      operationId: postAuthS3
+      x-operation-id-source: derived
   /auth/s3/{id}:
     get:
       description: Get a S3 auth
@@ -14192,6 +14754,8 @@ paths:
       summary: 'S3: Get auth'
       tags:
       - Auths
+      operationId: getAuthS3ById
+      x-operation-id-source: derived
     put:
       description: Update a S3 auth
       parameters:
@@ -14248,6 +14812,8 @@ paths:
       summary: 'S3: Update auth'
       tags:
       - Auths
+      operationId: putAuthS3ById
+      x-operation-id-source: derived
   /auth/sailthru-api-key:
     post:
       description: Create a SailthruApiKey auth
@@ -14299,6 +14865,8 @@ paths:
       summary: 'SailthruApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthSailthruApiKey
+      x-operation-id-source: derived
   /auth/sailthru-api-key/{id}:
     get:
       description: Get a SailthruApiKey auth
@@ -14343,6 +14911,8 @@ paths:
       summary: 'SailthruApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthSailthruApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a SailthruApiKey auth
       parameters:
@@ -14399,6 +14969,8 @@ paths:
       summary: 'SailthruApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthSailthruApiKeyById
+      x-operation-id-source: derived
   /auth/salesforce-data-cloud-jwt:
     post:
       description: Create a SalesforceDataCloudJwt auth
@@ -14450,6 +15022,8 @@ paths:
       summary: 'SalesforceDataCloudJwt: Create auth'
       tags:
       - Auths
+      operationId: postAuthSalesforceDataCloudJwt
+      x-operation-id-source: derived
   /auth/salesforce-data-cloud-jwt/{id}:
     get:
       description: Get a SalesforceDataCloudJwt auth
@@ -14494,6 +15068,8 @@ paths:
       summary: 'SalesforceDataCloudJwt: Get auth'
       tags:
       - Auths
+      operationId: getAuthSalesforceDataCloudJwtById
+      x-operation-id-source: derived
     put:
       description: Update a SalesforceDataCloudJwt auth
       parameters:
@@ -14550,6 +15126,8 @@ paths:
       summary: 'SalesforceDataCloudJwt: Update auth'
       tags:
       - Auths
+      operationId: putAuthSalesforceDataCloudJwtById
+      x-operation-id-source: derived
   /auth/salesforce-data-cloud-sandbox-jwt:
     post:
       description: Create a SalesforceDataCloudSandboxJwt auth
@@ -14601,6 +15179,8 @@ paths:
       summary: 'SalesforceDataCloudSandboxJwt: Create auth'
       tags:
       - Auths
+      operationId: postAuthSalesforceDataCloudSandboxJwt
+      x-operation-id-source: derived
   /auth/salesforce-data-cloud-sandbox-jwt/{id}:
     get:
       description: Get a SalesforceDataCloudSandboxJwt auth
@@ -14645,6 +15225,8 @@ paths:
       summary: 'SalesforceDataCloudSandboxJwt: Get auth'
       tags:
       - Auths
+      operationId: getAuthSalesforceDataCloudSandboxJwtById
+      x-operation-id-source: derived
     put:
       description: Update a SalesforceDataCloudSandboxJwt auth
       parameters:
@@ -14701,6 +15283,8 @@ paths:
       summary: 'SalesforceDataCloudSandboxJwt: Update auth'
       tags:
       - Auths
+      operationId: putAuthSalesforceDataCloudSandboxJwtById
+      x-operation-id-source: derived
   /auth/salesforce-jwt:
     post:
       description: Create a SalesforceJwt auth
@@ -14752,6 +15336,8 @@ paths:
       summary: 'SalesforceJwt: Create auth'
       tags:
       - Auths
+      operationId: postAuthSalesforceJwt
+      x-operation-id-source: derived
   /auth/salesforce-jwt/{id}:
     get:
       description: Get a SalesforceJwt auth
@@ -14796,6 +15382,8 @@ paths:
       summary: 'SalesforceJwt: Get auth'
       tags:
       - Auths
+      operationId: getAuthSalesforceJwtById
+      x-operation-id-source: derived
     put:
       description: Update a SalesforceJwt auth
       parameters:
@@ -14852,6 +15440,8 @@ paths:
       summary: 'SalesforceJwt: Update auth'
       tags:
       - Auths
+      operationId: putAuthSalesforceJwtById
+      x-operation-id-source: derived
   /auth/salesforce-sandbox-jwt:
     post:
       description: Create a SalesforceSandboxJwt auth
@@ -14903,6 +15493,8 @@ paths:
       summary: 'SalesforceSandboxJwt: Create auth'
       tags:
       - Auths
+      operationId: postAuthSalesforceSandboxJwt
+      x-operation-id-source: derived
   /auth/salesforce-sandbox-jwt/{id}:
     get:
       description: Get a SalesforceSandboxJwt auth
@@ -14947,6 +15539,8 @@ paths:
       summary: 'SalesforceSandboxJwt: Get auth'
       tags:
       - Auths
+      operationId: getAuthSalesforceSandboxJwtById
+      x-operation-id-source: derived
     put:
       description: Update a SalesforceSandboxJwt auth
       parameters:
@@ -15003,6 +15597,8 @@ paths:
       summary: 'SalesforceSandboxJwt: Update auth'
       tags:
       - Auths
+      operationId: putAuthSalesforceSandboxJwtById
+      x-operation-id-source: derived
   /auth/secretkey-v2:
     post:
       description: Create a SecretkeyV2 auth
@@ -15054,6 +15650,8 @@ paths:
       summary: 'SecretkeyV2: Create auth'
       tags:
       - Auths
+      operationId: postAuthSecretkeyV2
+      x-operation-id-source: derived
   /auth/secretkey-v2/{id}:
     get:
       description: Get a SecretkeyV2 auth
@@ -15098,6 +15696,8 @@ paths:
       summary: 'SecretkeyV2: Get auth'
       tags:
       - Auths
+      operationId: getAuthSecretkeyV2ById
+      x-operation-id-source: derived
     put:
       description: Update a SecretkeyV2 auth
       parameters:
@@ -15154,6 +15754,8 @@ paths:
       summary: 'SecretkeyV2: Update auth'
       tags:
       - Auths
+      operationId: putAuthSecretkeyV2ById
+      x-operation-id-source: derived
   /auth/selligent-userpass:
     post:
       description: Create a Selligent_Userpass auth
@@ -15205,6 +15807,8 @@ paths:
       summary: 'Selligent_Userpass: Create auth'
       tags:
       - Auths
+      operationId: postAuthSelligentUserpass
+      x-operation-id-source: derived
   /auth/selligent-userpass/{id}:
     get:
       description: Get a Selligent_Userpass auth
@@ -15249,6 +15853,8 @@ paths:
       summary: 'Selligent_Userpass: Get auth'
       tags:
       - Auths
+      operationId: getAuthSelligentUserpassById
+      x-operation-id-source: derived
     put:
       description: Update a Selligent_Userpass auth
       parameters:
@@ -15305,6 +15911,8 @@ paths:
       summary: 'Selligent_Userpass: Update auth'
       tags:
       - Auths
+      operationId: putAuthSelligentUserpassById
+      x-operation-id-source: derived
   /auth/sendgrid:
     post:
       description: Create a Sendgrid auth
@@ -15356,6 +15964,8 @@ paths:
       summary: 'Sendgrid: Create auth'
       tags:
       - Auths
+      operationId: postAuthSendgrid
+      x-operation-id-source: derived
   /auth/sendgrid/{id}:
     get:
       description: Get a Sendgrid auth
@@ -15400,6 +16010,8 @@ paths:
       summary: 'Sendgrid: Get auth'
       tags:
       - Auths
+      operationId: getAuthSendgridById
+      x-operation-id-source: derived
     put:
       description: Update a Sendgrid auth
       parameters:
@@ -15456,6 +16068,8 @@ paths:
       summary: 'Sendgrid: Update auth'
       tags:
       - Auths
+      operationId: putAuthSendgridById
+      x-operation-id-source: derived
   /auth/shopify-api-token:
     post:
       description: Create a ShopifyApiToken auth
@@ -15507,6 +16121,8 @@ paths:
       summary: 'ShopifyApiToken: Create auth'
       tags:
       - Auths
+      operationId: postAuthShopifyApiToken
+      x-operation-id-source: derived
   /auth/shopify-api-token/{id}:
     get:
       description: Get a ShopifyApiToken auth
@@ -15551,6 +16167,8 @@ paths:
       summary: 'ShopifyApiToken: Get auth'
       tags:
       - Auths
+      operationId: getAuthShopifyApiTokenById
+      x-operation-id-source: derived
     put:
       description: Update a ShopifyApiToken auth
       parameters:
@@ -15607,6 +16225,8 @@ paths:
       summary: 'ShopifyApiToken: Update auth'
       tags:
       - Auths
+      operationId: putAuthShopifyApiTokenById
+      x-operation-id-source: derived
   /auth/silverpop-full-auth:
     post:
       description: Create a SilverpopFullAuth auth
@@ -15658,6 +16278,8 @@ paths:
       summary: 'SilverpopFullAuth: Create auth'
       tags:
       - Auths
+      operationId: postAuthSilverpopFullAuth
+      x-operation-id-source: derived
   /auth/silverpop-full-auth/{id}:
     get:
       description: Get a SilverpopFullAuth auth
@@ -15702,6 +16324,8 @@ paths:
       summary: 'SilverpopFullAuth: Get auth'
       tags:
       - Auths
+      operationId: getAuthSilverpopFullAuthById
+      x-operation-id-source: derived
     put:
       description: Update a SilverpopFullAuth auth
       parameters:
@@ -15758,6 +16382,8 @@ paths:
       summary: 'SilverpopFullAuth: Update auth'
       tags:
       - Auths
+      operationId: putAuthSilverpopFullAuthById
+      x-operation-id-source: derived
   /auth/snapchat-capi-token:
     post:
       description: Create a SnapchatCapiToken auth
@@ -15809,6 +16435,8 @@ paths:
       summary: 'SnapchatCapiToken: Create auth'
       tags:
       - Auths
+      operationId: postAuthSnapchatCapiToken
+      x-operation-id-source: derived
   /auth/snapchat-capi-token/{id}:
     get:
       description: Get a SnapchatCapiToken auth
@@ -15853,6 +16481,8 @@ paths:
       summary: 'SnapchatCapiToken: Get auth'
       tags:
       - Auths
+      operationId: getAuthSnapchatCapiTokenById
+      x-operation-id-source: derived
     put:
       description: Update a SnapchatCapiToken auth
       parameters:
@@ -15909,6 +16539,8 @@ paths:
       summary: 'SnapchatCapiToken: Update auth'
       tags:
       - Auths
+      operationId: putAuthSnapchatCapiTokenById
+      x-operation-id-source: derived
   /auth/snowflake-direct:
     post:
       description: Create a SnowflakeDirect auth
@@ -15960,6 +16592,8 @@ paths:
       summary: 'SnowflakeDirect: Create auth'
       tags:
       - Auths
+      operationId: postAuthSnowflakeDirect
+      x-operation-id-source: derived
   /auth/snowflake-direct-gcs:
     post:
       description: Create a SnowflakeDirectGcs auth
@@ -16011,6 +16645,8 @@ paths:
       summary: 'SnowflakeDirectGcs: Create auth'
       tags:
       - Auths
+      operationId: postAuthSnowflakeDirectGcs
+      x-operation-id-source: derived
   /auth/snowflake-direct-gcs/{id}:
     get:
       description: Get a SnowflakeDirectGcs auth
@@ -16055,6 +16691,8 @@ paths:
       summary: 'SnowflakeDirectGcs: Get auth'
       tags:
       - Auths
+      operationId: getAuthSnowflakeDirectGcsById
+      x-operation-id-source: derived
     put:
       description: Update a SnowflakeDirectGcs auth
       parameters:
@@ -16111,6 +16749,8 @@ paths:
       summary: 'SnowflakeDirectGcs: Update auth'
       tags:
       - Auths
+      operationId: putAuthSnowflakeDirectGcsById
+      x-operation-id-source: derived
   /auth/snowflake-direct/{id}:
     get:
       description: Get a SnowflakeDirect auth
@@ -16155,6 +16795,8 @@ paths:
       summary: 'SnowflakeDirect: Get auth'
       tags:
       - Auths
+      operationId: getAuthSnowflakeDirectById
+      x-operation-id-source: derived
     put:
       description: Update a SnowflakeDirect auth
       parameters:
@@ -16211,6 +16853,8 @@ paths:
       summary: 'SnowflakeDirect: Update auth'
       tags:
       - Auths
+      operationId: putAuthSnowflakeDirectById
+      x-operation-id-source: derived
   /auth/sparkpost-api-key:
     post:
       description: Create a SparkpostApiKey auth
@@ -16262,6 +16906,8 @@ paths:
       summary: 'SparkpostApiKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthSparkpostApiKey
+      x-operation-id-source: derived
   /auth/sparkpost-api-key/{id}:
     get:
       description: Get a SparkpostApiKey auth
@@ -16306,6 +16952,8 @@ paths:
       summary: 'SparkpostApiKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthSparkpostApiKeyById
+      x-operation-id-source: derived
     put:
       description: Update a SparkpostApiKey auth
       parameters:
@@ -16362,6 +17010,8 @@ paths:
       summary: 'SparkpostApiKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthSparkpostApiKeyById
+      x-operation-id-source: derived
   /auth/stackdriver-jwt:
     post:
       description: Create a StackdriverJwt auth
@@ -16413,6 +17063,8 @@ paths:
       summary: 'StackdriverJwt: Create auth'
       tags:
       - Auths
+      operationId: postAuthStackdriverJwt
+      x-operation-id-source: derived
   /auth/stackdriver-jwt/{id}:
     get:
       description: Get a StackdriverJwt auth
@@ -16457,6 +17109,8 @@ paths:
       summary: 'StackdriverJwt: Get auth'
       tags:
       - Auths
+      operationId: getAuthStackdriverJwtById
+      x-operation-id-source: derived
     put:
       description: Update a StackdriverJwt auth
       parameters:
@@ -16513,6 +17167,8 @@ paths:
       summary: 'StackdriverJwt: Update auth'
       tags:
       - Auths
+      operationId: putAuthStackdriverJwtById
+      x-operation-id-source: derived
   /auth/surveymonkey:
     post:
       description: Create a Surveymonkey auth
@@ -16564,6 +17220,8 @@ paths:
       summary: 'Surveymonkey: Create auth'
       tags:
       - Auths
+      operationId: postAuthSurveymonkey
+      x-operation-id-source: derived
   /auth/surveymonkey/{id}:
     get:
       description: Get a Surveymonkey auth
@@ -16608,6 +17266,8 @@ paths:
       summary: 'Surveymonkey: Get auth'
       tags:
       - Auths
+      operationId: getAuthSurveymonkeyById
+      x-operation-id-source: derived
     put:
       description: Update a Surveymonkey auth
       parameters:
@@ -16664,6 +17324,8 @@ paths:
       summary: 'Surveymonkey: Update auth'
       tags:
       - Auths
+      operationId: putAuthSurveymonkeyById
+      x-operation-id-source: derived
   /auth/thetradedesk-api-token:
     post:
       description: Create a ThetradedeskApiToken auth
@@ -16715,6 +17377,8 @@ paths:
       summary: 'ThetradedeskApiToken: Create auth'
       tags:
       - Auths
+      operationId: postAuthThetradedeskApiToken
+      x-operation-id-source: derived
   /auth/thetradedesk-api-token/{id}:
     get:
       description: Get a ThetradedeskApiToken auth
@@ -16759,6 +17423,8 @@ paths:
       summary: 'ThetradedeskApiToken: Get auth'
       tags:
       - Auths
+      operationId: getAuthThetradedeskApiTokenById
+      x-operation-id-source: derived
     put:
       description: Update a ThetradedeskApiToken auth
       parameters:
@@ -16815,6 +17481,8 @@ paths:
       summary: 'ThetradedeskApiToken: Update auth'
       tags:
       - Auths
+      operationId: putAuthThetradedeskApiTokenById
+      x-operation-id-source: derived
   /auth/thetradedesk-userpass:
     post:
       description: Create a Thetradedesk_Userpass auth
@@ -16866,6 +17534,8 @@ paths:
       summary: 'Thetradedesk_Userpass: Create auth'
       tags:
       - Auths
+      operationId: postAuthThetradedeskUserpass
+      x-operation-id-source: derived
   /auth/thetradedesk-userpass/{id}:
     get:
       description: Get a Thetradedesk_Userpass auth
@@ -16910,6 +17580,8 @@ paths:
       summary: 'Thetradedesk_Userpass: Get auth'
       tags:
       - Auths
+      operationId: getAuthThetradedeskUserpassById
+      x-operation-id-source: derived
     put:
       description: Update a Thetradedesk_Userpass auth
       parameters:
@@ -16966,6 +17638,8 @@ paths:
       summary: 'Thetradedesk_Userpass: Update auth'
       tags:
       - Auths
+      operationId: putAuthThetradedeskUserpassById
+      x-operation-id-source: derived
   /auth/tiktok-events-token:
     post:
       description: Create a TiktokEventsToken auth
@@ -17017,6 +17691,8 @@ paths:
       summary: 'TiktokEventsToken: Create auth'
       tags:
       - Auths
+      operationId: postAuthTiktokEventsToken
+      x-operation-id-source: derived
   /auth/tiktok-events-token/{id}:
     get:
       description: Get a TiktokEventsToken auth
@@ -17061,6 +17737,8 @@ paths:
       summary: 'TiktokEventsToken: Get auth'
       tags:
       - Auths
+      operationId: getAuthTiktokEventsTokenById
+      x-operation-id-source: derived
     put:
       description: Update a TiktokEventsToken auth
       parameters:
@@ -17117,6 +17795,8 @@ paths:
       summary: 'TiktokEventsToken: Update auth'
       tags:
       - Auths
+      operationId: putAuthTiktokEventsTokenById
+      x-operation-id-source: derived
   /auth/trigger-userpass:
     post:
       description: Create a TriggerUserpass auth
@@ -17168,6 +17848,8 @@ paths:
       summary: 'TriggerUserpass: Create auth'
       tags:
       - Auths
+      operationId: postAuthTriggerUserpass
+      x-operation-id-source: derived
   /auth/trigger-userpass/{id}:
     get:
       description: Get a TriggerUserpass auth
@@ -17212,6 +17894,8 @@ paths:
       summary: 'TriggerUserpass: Get auth'
       tags:
       - Auths
+      operationId: getAuthTriggerUserpassById
+      x-operation-id-source: derived
     put:
       description: Update a TriggerUserpass auth
       parameters:
@@ -17268,6 +17952,8 @@ paths:
       summary: 'TriggerUserpass: Update auth'
       tags:
       - Auths
+      operationId: putAuthTriggerUserpassById
+      x-operation-id-source: derived
   /auth/twitter-oauth1-0a:
     post:
       description: Create a Twitter_oauth1_0a auth
@@ -17319,6 +18005,8 @@ paths:
       summary: 'Twitter_oauth1_0a: Create auth'
       tags:
       - Auths
+      operationId: postAuthTwitterOauth10a
+      x-operation-id-source: derived
   /auth/twitter-oauth1-0a/{id}:
     get:
       description: Get a Twitter_oauth1_0a auth
@@ -17363,6 +18051,8 @@ paths:
       summary: 'Twitter_oauth1_0a: Get auth'
       tags:
       - Auths
+      operationId: getAuthTwitterOauth10aById
+      x-operation-id-source: derived
     put:
       description: Update a Twitter_oauth1_0a auth
       parameters:
@@ -17419,6 +18109,8 @@ paths:
       summary: 'Twitter_oauth1_0a: Update auth'
       tags:
       - Auths
+      operationId: putAuthTwitterOauth10aById
+      x-operation-id-source: derived
   /auth/user-pass-key:
     post:
       description: Create a UserPassKey auth
@@ -17470,6 +18162,8 @@ paths:
       summary: 'UserPassKey: Create auth'
       tags:
       - Auths
+      operationId: postAuthUserPassKey
+      x-operation-id-source: derived
   /auth/user-pass-key/{id}:
     get:
       description: Get a UserPassKey auth
@@ -17514,6 +18208,8 @@ paths:
       summary: 'UserPassKey: Get auth'
       tags:
       - Auths
+      operationId: getAuthUserPassKeyById
+      x-operation-id-source: derived
     put:
       description: Update a UserPassKey auth
       parameters:
@@ -17570,6 +18266,8 @@ paths:
       summary: 'UserPassKey: Update auth'
       tags:
       - Auths
+      operationId: putAuthUserPassKeyById
+      x-operation-id-source: derived
   /auth/userpass-private-pgp:
     post:
       description: Create a UserpassPrivatePgp auth
@@ -17621,6 +18319,8 @@ paths:
       summary: 'UserpassPrivatePgp: Create auth'
       tags:
       - Auths
+      operationId: postAuthUserpassPrivatePgp
+      x-operation-id-source: derived
   /auth/userpass-private-pgp/{id}:
     get:
       description: Get a UserpassPrivatePgp auth
@@ -17665,6 +18365,8 @@ paths:
       summary: 'UserpassPrivatePgp: Get auth'
       tags:
       - Auths
+      operationId: getAuthUserpassPrivatePgpById
+      x-operation-id-source: derived
     put:
       description: Update a UserpassPrivatePgp auth
       parameters:
@@ -17721,6 +18423,8 @@ paths:
       summary: 'UserpassPrivatePgp: Update auth'
       tags:
       - Auths
+      operationId: putAuthUserpassPrivatePgpById
+      x-operation-id-source: derived
   /auth/userpass-public-pgp:
     post:
       description: Create a UserpassPublicPgp auth
@@ -17772,6 +18476,8 @@ paths:
       summary: 'UserpassPublicPgp: Create auth'
       tags:
       - Auths
+      operationId: postAuthUserpassPublicPgp
+      x-operation-id-source: derived
   /auth/userpass-public-pgp/{id}:
     get:
       description: Get a UserpassPublicPgp auth
@@ -17816,6 +18522,8 @@ paths:
       summary: 'UserpassPublicPgp: Get auth'
       tags:
       - Auths
+      operationId: getAuthUserpassPublicPgpById
+      x-operation-id-source: derived
     put:
       description: Update a UserpassPublicPgp auth
       parameters:
@@ -17872,6 +18580,8 @@ paths:
       summary: 'UserpassPublicPgp: Update auth'
       tags:
       - Auths
+      operationId: putAuthUserpassPublicPgpById
+      x-operation-id-source: derived
   /auth/userpass-secret:
     post:
       description: Create a UserpassSecret auth
@@ -17923,6 +18633,8 @@ paths:
       summary: 'UserpassSecret: Create auth'
       tags:
       - Auths
+      operationId: postAuthUserpassSecret
+      x-operation-id-source: derived
   /auth/userpass-secret/{id}:
     get:
       description: Get a UserpassSecret auth
@@ -17967,6 +18679,8 @@ paths:
       summary: 'UserpassSecret: Get auth'
       tags:
       - Auths
+      operationId: getAuthUserpassSecretById
+      x-operation-id-source: derived
     put:
       description: Update a UserpassSecret auth
       parameters:
@@ -18023,6 +18737,8 @@ paths:
       summary: 'UserpassSecret: Update auth'
       tags:
       - Auths
+      operationId: putAuthUserpassSecretById
+      x-operation-id-source: derived
   /auth/versium-apikey:
     post:
       description: Create a VersiumApikey auth
@@ -18074,6 +18790,8 @@ paths:
       summary: 'VersiumApikey: Create auth'
       tags:
       - Auths
+      operationId: postAuthVersiumApikey
+      x-operation-id-source: derived
   /auth/versium-apikey/{id}:
     get:
       description: Get a VersiumApikey auth
@@ -18118,6 +18836,8 @@ paths:
       summary: 'VersiumApikey: Get auth'
       tags:
       - Auths
+      operationId: getAuthVersiumApikeyById
+      x-operation-id-source: derived
     put:
       description: Update a VersiumApikey auth
       parameters:
@@ -18174,6 +18894,8 @@ paths:
       summary: 'VersiumApikey: Update auth'
       tags:
       - Auths
+      operationId: putAuthVersiumApikeyById
+      x-operation-id-source: derived
   /auth/webhook-no-auth:
     post:
       description: Create a Webhook_NoAuth auth
@@ -18225,6 +18947,8 @@ paths:
       summary: 'Webhook_NoAuth: Create auth'
       tags:
       - Auths
+      operationId: postAuthWebhookNoAuth
+      x-operation-id-source: derived
   /auth/webhook-no-auth/{id}:
     get:
       description: Get a Webhook_NoAuth auth
@@ -18269,6 +18993,8 @@ paths:
       summary: 'Webhook_NoAuth: Get auth'
       tags:
       - Auths
+      operationId: getAuthWebhookNoAuthById
+      x-operation-id-source: derived
     put:
       description: Update a Webhook_NoAuth auth
       parameters:
@@ -18325,6 +19051,8 @@ paths:
       summary: 'Webhook_NoAuth: Update auth'
       tags:
       - Auths
+      operationId: putAuthWebhookNoAuthById
+      x-operation-id-source: derived
   /auth/webhook-oauth2-client-credentials:
     post:
       description: Create a Webhook_Oauth2_ClientCredentials auth
@@ -18376,6 +19104,8 @@ paths:
       summary: 'Webhook_Oauth2_ClientCredentials: Create auth'
       tags:
       - Auths
+      operationId: postAuthWebhookOauth2ClientCredentials
+      x-operation-id-source: derived
   /auth/webhook-oauth2-client-credentials/{id}:
     get:
       description: Get a Webhook_Oauth2_ClientCredentials auth
@@ -18420,6 +19150,8 @@ paths:
       summary: 'Webhook_Oauth2_ClientCredentials: Get auth'
       tags:
       - Auths
+      operationId: getAuthWebhookOauth2ClientCredentialsById
+      x-operation-id-source: derived
     put:
       description: Update a Webhook_Oauth2_ClientCredentials auth
       parameters:
@@ -18476,6 +19208,8 @@ paths:
       summary: 'Webhook_Oauth2_ClientCredentials: Update auth'
       tags:
       - Auths
+      operationId: putAuthWebhookOauth2ClientCredentialsById
+      x-operation-id-source: derived
   /auth/westfield:
     post:
       description: Create a Westfield auth
@@ -18527,6 +19261,8 @@ paths:
       summary: 'Westfield: Create auth'
       tags:
       - Auths
+      operationId: postAuthWestfield
+      x-operation-id-source: derived
   /auth/westfield/{id}:
     get:
       description: Get a Westfield auth
@@ -18571,6 +19307,8 @@ paths:
       summary: 'Westfield: Get auth'
       tags:
       - Auths
+      operationId: getAuthWestfieldById
+      x-operation-id-source: derived
     put:
       description: Update a Westfield auth
       parameters:
@@ -18627,6 +19365,8 @@ paths:
       summary: 'Westfield: Update auth'
       tags:
       - Auths
+      operationId: putAuthWestfieldById
+      x-operation-id-source: derived
   /auth/wistia-token:
     post:
       description: Create a WistiaToken auth
@@ -18678,6 +19418,8 @@ paths:
       summary: 'WistiaToken: Create auth'
       tags:
       - Auths
+      operationId: postAuthWistiaToken
+      x-operation-id-source: derived
   /auth/wistia-token/{id}:
     get:
       description: Get a WistiaToken auth
@@ -18722,6 +19464,8 @@ paths:
       summary: 'WistiaToken: Get auth'
       tags:
       - Auths
+      operationId: getAuthWistiaTokenById
+      x-operation-id-source: derived
     put:
       description: Update a WistiaToken auth
       parameters:
@@ -18778,6 +19522,8 @@ paths:
       summary: 'WistiaToken: Update auth'
       tags:
       - Auths
+      operationId: putAuthWistiaTokenById
+      x-operation-id-source: derived
   /auth/yesmail:
     post:
       description: Create a Yesmail auth
@@ -18829,6 +19575,8 @@ paths:
       summary: 'Yesmail: Create auth'
       tags:
       - Auths
+      operationId: postAuthYesmail
+      x-operation-id-source: derived
   /auth/yesmail/{id}:
     get:
       description: Get a Yesmail auth
@@ -18873,6 +19621,8 @@ paths:
       summary: 'Yesmail: Get auth'
       tags:
       - Auths
+      operationId: getAuthYesmailById
+      x-operation-id-source: derived
     put:
       description: Update a Yesmail auth
       parameters:
@@ -18929,6 +19679,8 @@ paths:
       summary: 'Yesmail: Update auth'
       tags:
       - Auths
+      operationId: putAuthYesmailById
+      x-operation-id-source: derived
   /auth/zuora:
     post:
       description: Create a Zuora auth
@@ -18980,6 +19732,8 @@ paths:
       summary: 'Zuora: Create auth'
       tags:
       - Auths
+      operationId: postAuthZuora
+      x-operation-id-source: derived
   /auth/zuora/{id}:
     get:
       description: Get a Zuora auth
@@ -19024,6 +19778,8 @@ paths:
       summary: 'Zuora: Get auth'
       tags:
       - Auths
+      operationId: getAuthZuoraById
+      x-operation-id-source: derived
     put:
       description: Update a Zuora auth
       parameters:
@@ -19080,179 +19836,42 @@ paths:
       summary: 'Zuora: Update auth'
       tags:
       - Auths
+      operationId: putAuthZuoraById
+      x-operation-id-source: derived
 components:
   schemas:
-    models.SparkpostApiKey:
-      properties:
-        apikey:
-          description: 'You can create an API Key by logging into SparkPost and clicking on Account. Make sure to enable Event Webhooks: Read/Write permission'
-          type: string
-      type: object
-    models.Aws_S3_Redshift:
+    models.AwsKeysPublicPgp:
       properties:
         access_key:
           type: string
-        connection_url:
-          type: string
-        password:
-          type: string
-        secret_key:
-          type: string
-        ssl_mode:
-          type: string
-        user:
-          type: string
-      type: object
-    models.Bluekai_Userkey:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        partner_name:
-          description: Partner name that BlueKai recognizes you with.
-          type: string
-        port:
-          type: integer
-        privatekey:
-          type: string
-        site_id:
-          description: Site ID provided by the BlueKai
-          type: integer
-        user:
-          type: string
-      type: object
-    models.IntegrationSecret:
-      properties:
-        api_url:
-          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/v1...)
-          type: string
-        integration_id:
-          type: string
-        secret:
-          type: string
-      type: object
-    models.ShopifyApiToken:
-      properties:
-        subdomain:
-          description: Get this from Shopify account UI
-          type: string
-        token:
-          type: string
-      type: object
-    models.LineadsApiSecretkey:
-      properties:
-        access_key:
-          description: '#nosec G117 -- field carries the LINE Ads API Access Key (kid), provided by the customer.'
-          type: string
-        secret_key:
-          description: LINE Ads API Secret Key. Used to HMAC-SHA256 sign each request via JWS.
-          type: string
-      type: object
-    models.MicrosoftCapiToken:
-      properties:
-        token:
-          type: string
-      type: object
-    models.Mediamath_NoAuth:
-      type: object
-    models.RedshiftPostgresql:
-      properties:
-        connection_url:
-          type: string
-        password:
-          type: string
-        ssl_mode:
-          type: string
-        user:
-          type: string
-      type: object
-    models.AwsKeysPgp:
-      properties:
-        access_key:
-          type: string
-        pgppassphrase:
-          type: string
-        pgpprivatekey:
+        pgppublickey:
           type: string
         secret_key:
           type: string
       type: object
-    models.Liveramp_Userkey:
+    models.Aws_AwsKeys:
       properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+        access_key:
           type: string
-        host:
-          type: string
-        passphrase:
-          type: string
-        port:
-          type: integer
-        privatekey:
-          type: string
-        user:
+        secret_key:
           type: string
       type: object
-    models.Webhook_Oauth2_ClientCredentials:
+    models.SilverpopFullAuth:
       properties:
-        access_token_manager_id:
-          type: string
         client_id:
           type: string
         client_secret:
           type: string
-        scope:
+        pod:
           type: string
-        token_endpoint:
+        refresh_token:
           type: string
-        webhook_request_headers:
+        sftp_password:
           type: string
-        webhook_request_params:
-          type: string
-      type: object
-    models.AwsKeys:
-      properties:
-        access_key:
-          type: string
-        secret_key:
+        sftp_user:
           type: string
       type: object
-    models.GcsJwt:
-      properties:
-        cert_json:
-          type: string
-      type: object
-    models.ResponsysInteract:
-      properties:
-        instance:
-          description: One of interact2, interact5, or interact8
-          type: string
-        password:
-          type: string
-        username:
-          type: string
-      type: object
-    models.Twitter_oauth1_0a:
-      properties:
-        code:
-          type: string
-        oauth_token:
-          type: string
-        oauth_verifier:
-          type: string
-        scope:
-          type: string
-      type: object
-    models.AirshipConnect:
-      properties:
-        access_token:
-          type: string
-        app_key:
-          type: string
-        project_location:
-          type: string
+    models.Email:
       type: object
     models.Bluekai_Userpass:
       properties:
@@ -19272,100 +19891,6 @@ components:
           description: Site ID provided by the BlueKai
           type: integer
         user:
-          type: string
-      type: object
-    models.Liveramp_Userpass:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        password:
-          type: string
-        port:
-          type: integer
-        user:
-          type: string
-      type: object
-    models.PinterestCapiToken:
-      properties:
-        account_id:
-          type: string
-        token:
-          type: string
-      type: object
-    models.IcontactApi:
-      properties:
-        api_password:
-          type: string
-        api_username:
-          type: string
-      type: object
-    models.RetentionscienceKey:
-      properties:
-        api_key:
-          type: string
-      type: object
-    models.DriftAppKey:
-      properties:
-        app_key:
-          type: string
-      type: object
-    models.SnowflakeDirect:
-      properties:
-        account_name:
-          description: 'Enter your Snowflake account locator, ex. `xy12345.us-east-2.aws`. Be sure to format the locator according to your cloud platform and region, as described here: https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#locator-formats-by-cloud-platform-and-region'
-          type: string
-        database:
-          type: string
-        password:
-          type: string
-        private_key:
-          type: string
-        role:
-          type: string
-        user_name:
-          type: string
-        warehouse:
-          type: string
-      type: object
-    models.MixpanelApiSecret:
-      properties:
-        apisecret:
-          type: string
-      type: object
-    models.Webhook_NoAuth:
-      type: object
-    models.EpiserverApiKey:
-      properties:
-        client_id:
-          description: Client ID provided by Episerver
-          type: string
-        user_api_key:
-          type: string
-        user_name:
-          description: API User Name
-          type: string
-      type: object
-    models.Googleanalytics_NoAuth:
-      type: object
-    models.MarketingcloudV2:
-      properties:
-        account_id:
-          type: string
-        auth_uri:
-          type: string
-        client_id:
-          type: string
-        client_secret:
-          type: string
-      type: object
-    models.CriteoApiCredentials:
-      properties:
-        client_id:
-          type: string
-        client_secret:
           type: string
       type: object
     models.SnowflakeDirectGcs:
@@ -19390,21 +19915,371 @@ components:
         warehouse:
           type: string
       type: object
-    models.BqJwtImport:
+    models.Brevo:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.AzureStorageConnection:
+      properties:
+        aes_iv:
+          description: Optional - add an AES intialization vector (IV) as a hex string in conjunction with the AES key above
+          type: string
+        aes_key:
+          description: Optional - add an AES key as a hex string to AES-encrypt specified fields in the Azure blob files
+          type: string
+        connection_string:
+          type: string
+        pgppublickey:
+          description: Optional - add a PGP public key to encrypt Azure blob files
+          type: string
+      type: object
+    models.AwsDelegatedPublicPgp:
+      properties:
+        pgppublickey:
+          type: string
+      type: object
+    models.Postup:
+      properties:
+        password:
+          type: string
+        username:
+          type: string
+      type: object
+    models.MailgunApiKey:
+      properties:
+        apikey:
+          type: string
+        domain:
+          type: string
+      type: object
+    models.Api:
+      properties:
+        apikey:
+          type: string
+        personalkey:
+          type: string
+      type: object
+    models.SnowflakeDirect:
+      properties:
+        account_name:
+          description: 'Enter your Snowflake account locator, ex. `xy12345.us-east-2.aws`. Be sure to format the locator according to your cloud platform and region, as described here: https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#locator-formats-by-cloud-platform-and-region'
+          type: string
+        database:
+          type: string
+        password:
+          type: string
+        private_key:
+          type: string
+        role:
+          type: string
+        user_name:
+          type: string
+        warehouse:
+          type: string
+      type: object
+    models.SalesforceJwt:
+      properties:
+        consumer_key:
+          description: The Consumer Key from your Salesforce External Client App
+          type: string
+        my_domain_url:
+          description: The org My Domain URL the JWT assertion is POSTed to
+          type: string
+        private_key:
+          description: '#nosec [G117] RSA private key in PEM format'
+          type: string
+        sf_username:
+          description: The Salesforce username of the authorized user
+          type: string
+      type: object
+    models.Clearbit:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.SalesforceSandboxJwt:
+      properties:
+        consumer_key:
+          description: The Consumer Key from your Salesforce External Client App
+          type: string
+        my_domain_url:
+          description: The sandbox My Domain URL the JWT assertion is POSTed to
+          type: string
+        private_key:
+          description: '#nosec [G117] RSA private key in PEM format'
+          type: string
+        sf_username:
+          description: The Salesforce username of the authorized user
+          type: string
+      type: object
+    models.IntegrationSecret:
+      properties:
+        api_url:
+          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/v1...)
+          type: string
+        integration_id:
+          type: string
+        secret:
+          type: string
+      type: object
+    models.AuthResponse:
+      properties:
+        account_id:
+          description: Lytics Account ID
+          type: string
+        created:
+          type: string
+        description:
+          description: A client-defined description for the authorization
+          type: string
+        id:
+          description: A Lytics-assigned, immutable unique ID for the Authorization
+          type: string
+        label:
+          description: A client-defined label for the authorization
+          type: string
+        last_accessed_at:
+          description: Last accessed time for the lytics api_key
+          type: string
+        provider_id:
+          description: The authorization's provider ID
+          type: string
+        provider_slug:
+          description: The authorization's provider slug
+          type: string
+        status:
+          description: Indicates the health status of auth
+          enum:
+          - healthy
+          - unhealthy
+          - unknown
+          type: string
+        type:
+          description: The auth type. Providers may have one or more auth types
+          type: string
+        unhealthy:
+          description: Indicates the authorization credentials are unusable
+          type: boolean
+        updated:
+          type: string
+        user_id:
+          description: The user ID that created or updated the authorization
+          type: string
+      type: object
+    models.FbSystemUser:
+      properties:
+        access_token:
+          type: string
+        ads_account_id:
+          type: string
+      type: object
+    models.MarketingcloudV2:
+      properties:
+        account_id:
+          type: string
+        auth_uri:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      type: object
+    models.Liveramp_Userpass:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        password:
+          type: string
+        port:
+          type: integer
+        user:
+          type: string
+      type: object
+    models.Liveramp_Userkey:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        passphrase:
+          type: string
+        port:
+          type: integer
+        privatekey:
+          type: string
+        user:
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.VersiumApikey:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.LineadsApiSecretkey:
+      properties:
+        access_key:
+          description: '#nosec G117 -- field carries the LINE Ads API Access Key (kid), provided by the customer.'
+          type: string
+        secret_key:
+          description: LINE Ads API Secret Key. Used to HMAC-SHA256 sign each request via JWS.
+          type: string
+      type: object
+    models.Zuora:
+      properties:
+        partner:
+          type: string
+        password:
+          type: string
+        username:
+          type: string
+      type: object
+    models.GcsJwt:
       properties:
         cert_json:
           type: string
       type: object
-    models.CustomerioApikey:
+    models.S3:
       properties:
-        apikey:
+        access_key:
           type: string
-        site_id:
+        bucket:
+          type: string
+        secret_key:
           type: string
       type: object
-    models.MandrillApiKey:
+    models.SparkpostApiKey:
       properties:
         apikey:
+          description: 'You can create an API Key by logging into SparkPost and clicking on Account. Make sure to enable Event Webhooks: Read/Write permission'
+          type: string
+      type: object
+    models.UserPassKey:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        passphrase:
+          description: Enter passphrase for the private key if any
+          type: string
+        password:
+          description: Enter password. Please leave this empty if you would want to use private key
+          type: string
+        port:
+          type: integer
+        privatekey:
+          description: Enter private key. Please leave this empty if you would want to use password
+          type: string
+        user:
+          type: string
+      type: object
+    models.Twitter_oauth1_0a:
+      properties:
+        code:
+          type: string
+        oauth_token:
+          type: string
+        oauth_verifier:
+          type: string
+        scope:
+          type: string
+      type: object
+    models.Googleanalytics_NoAuth:
+      type: object
+    models.Braze:
+      properties:
+        apikey:
+          type: string
+        instance:
+          description: Select the instance of Braze your account uses. For more on how to find your instance please read our docs about Braze.
+          type: string
+      type: object
+    models.RedditConversion:
+      properties:
+        access_token:
+          type: string
+      type: object
+    models.Klaviyo:
+      properties:
+        api_key:
+          type: string
+      type: object
+    models.LyticsAwsSftpAuth:
+      properties:
+        host:
+          type: string
+        passphrase:
+          description: Enter passphrase for the private key if any
+          type: string
+        password:
+          description: Enter desired password. Must be between 8 to 32 characters and include at least one uppercase letter, lowercase letter, number and special character. **NOTE:** Either password or public key must be provided
+          type: string
+        port:
+          type: string
+        privatekey:
+          description: Enter SSH private key. **NOTE:** When using public key, private key must be provided.
+          type: string
+        publickey:
+          description: Enter SSH public key. **NOTE:** Either password or public key must be provided
+          type: string
+        user:
+          description: Enter username. Must be between 3 to 32 characters. Username can have characters a-z, A-Z, 0-9, hyphen(-), underscore(_). It cannot start with hyphen(-)
+          type: string
+      type: object
+    models.BasicAuth:
+      properties:
+        password:
+          type: string
+        url:
+          description: Specify an arbitrary URL that requires basic authentication to access. This will validate that the credentials provided have correct permissions to access basic authenticated URLs.
+          type: string
+        username:
+          type: string
+      type: object
+    models.SalesforceDataCloudJwt:
+      properties:
+        consumer_key:
+          description: The Consumer Key from your Salesforce External Client App
+          type: string
+        my_domain_url:
+          description: The org My Domain URL the JWT assertion is POSTed to
+          type: string
+        private_key:
+          description: '#nosec [G117] RSA private key in PEM format'
+          type: string
+        sf_username:
+          description: The Salesforce username of the authorized user
+          type: string
+      type: object
+    models.WistiaToken:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.Surveymonkey:
+      properties:
+        access_token:
           type: string
       type: object
     models.UserpassPrivatePgp:
@@ -19432,62 +20307,51 @@ components:
         user:
           type: string
       type: object
-    models.FbSystemUser:
+    models.MixpanelApiSecret:
       properties:
-        access_token:
-          type: string
-        ads_account_id:
+        apisecret:
           type: string
       type: object
-    models.DatabricksDB:
-      properties:
-        host:
-          type: string
-        httppath:
-          type: string
-        port:
-          type: integer
-        token:
-          type: string
-      type: object
-    models.AzuresqlDb:
-      properties:
-        database:
-          type: string
-        password:
-          type: string
-        port:
-          type: string
-        server:
-          type: string
-        user:
-          type: string
-      type: object
-    models.Clearbit:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.NewrelicInsightsApikey:
+    models.RetentionscienceKey:
       properties:
         api_key:
           type: string
       type: object
-    models.SnapchatCapiToken:
+    models.Bluekai_Userkey:
       properties:
-        token:
-          description: 'Paste a long-lived Snapchat Conversions API token. Generate this in Snapchat Ads Manager under Business Details → Conversions API Tokens (requires Organization Admin). Recommended for Conversions API exports: the token does not expire and is not subject to the Marketing API throughput limit.'
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        partner_name:
+          description: Partner name that BlueKai recognizes you with.
+          type: string
+        port:
+          type: integer
+        privatekey:
+          type: string
+        site_id:
+          description: Site ID provided by the BlueKai
+          type: integer
+        user:
           type: string
       type: object
-    models.Apikey:
+    models.MandrillApiKey:
       properties:
         apikey:
           type: string
-        email:
+      type: object
+    models.ContentstackAuthtoken:
+      properties:
+        authtoken:
           type: string
-        subdomain:
-          description: Get this from Zendesk account UI
+        base_url:
           type: string
+        region:
+          type: string
+      type: object
+    models.Webhook_NoAuth:
       type: object
     models.ResponsysSftpWithPgp:
       properties:
@@ -19507,96 +20371,48 @@ components:
         user:
           type: string
       type: object
-    models.Braze:
+    models.UserpassSecret:
       properties:
-        apikey:
+        api_url:
+          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/v1/integration...)
           type: string
-        instance:
-          description: Select the instance of Braze your account uses. For more on how to find your instance please read our docs about Braze.
+        integration_id:
+          type: string
+        password:
+          type: string
+        rest_api_url:
+          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/rest/v17...)
+          type: string
+        secret:
+          type: string
+        user:
           type: string
       type: object
-    models.ClearbitLytics:
-      type: object
-    models.AttentiveApiKey:
+    models.LocalyticsKeys:
       properties:
         api_key:
-          description: '#nosec G117 -- field holds the Attentive API key, not a leaked credential'
+          type: string
+        api_secret:
           type: string
       type: object
-    models.Selligent_Userpass:
+    models.RedshiftPostgresql:
       properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
+        connection_url:
           type: string
         password:
           type: string
-        port:
-          type: integer
+        ssl_mode:
+          type: string
         user:
           type: string
       type: object
-    models.Dv360_Oauth:
+    models.AirshipMasterSecret:
       properties:
-        code:
+        app_key:
           type: string
-        scope:
+        master_secret:
           type: string
-      type: object
-    models.AwsDelegatedPublicPgp:
-      properties:
-        pgppublickey:
-          type: string
-      type: object
-    models.Mapp_Userpass:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        password:
-          type: string
-        port:
-          type: integer
-        user:
-          type: string
-      type: object
-    models.Maropost:
-      properties:
-        account:
-          type: integer
-        apikey:
-          type: string
-      type: object
-    models.SalesforceDataCloudJwt:
-      properties:
-        consumer_key:
-          description: The Consumer Key from your Salesforce External Client App
-          type: string
-        my_domain_url:
-          description: The org My Domain URL the JWT assertion is POSTed to
-          type: string
-        private_key:
-          description: '#nosec [G117] RSA private key in PEM format'
-          type: string
-        sf_username:
-          description: The Salesforce username of the authorized user
-          type: string
-      type: object
-    models.S3:
-      properties:
-        access_key:
-          type: string
-        bucket:
-          type: string
-        secret_key:
-          type: string
-      type: object
-    models.Fullcontact:
-      properties:
-        apikey:
+        project_location:
           type: string
       type: object
     models.CordialUserpass:
@@ -19615,98 +20431,10 @@ components:
         user:
           type: string
       type: object
-    models.Brevo:
+    models.SnapchatCapiToken:
       properties:
-        apikey:
-          type: string
-      type: object
-    models.LocalyticsKeys:
-      properties:
-        api_key:
-          type: string
-        api_secret:
-          type: string
-      type: object
-    models.Datax:
-      properties:
-        mdm_id:
-          type: string
-        use_gdpr:
-          type: string
-      type: object
-    models.ContentstackAuthtoken:
-      properties:
-        authtoken:
-          type: string
-        base_url:
-          type: string
-        region:
-          type: string
-      type: object
-    models.AppsflyerDevkey:
-      properties:
-        app_id:
-          type: string
-        dev_key:
-          type: string
-        platform:
-          type: string
-      type: object
-    models.Gigya:
-      properties:
-        api_key:
-          type: string
-        datacenter:
-          type: string
-        secret_key:
-          type: string
-        user_key:
-          description: User & Secret Key pair are located in your Account Settings
-          type: string
-      type: object
-    models.MailgunApiKey:
-      properties:
-        apikey:
-          type: string
-        domain:
-          type: string
-      type: object
-    models.MarketoClient:
-      properties:
-        clientId:
-          type: string
-        clientSecret:
-          type: string
-        restUrl:
-          type: string
-      type: object
-    models.SalesforceJwt:
-      properties:
-        consumer_key:
-          description: The Consumer Key from your Salesforce External Client App
-          type: string
-        my_domain_url:
-          description: The org My Domain URL the JWT assertion is POSTed to
-          type: string
-        private_key:
-          description: '#nosec [G117] RSA private key in PEM format'
-          type: string
-        sf_username:
-          description: The Salesforce username of the authorized user
-          type: string
-      type: object
-    models.Cordial:
-      properties:
-        api_key:
-          type: string
-      type: object
-    models.CustomerioWebhooks:
-      type: object
-    models.BluehornetApiKey:
-      properties:
-        api_key:
-          type: string
-        secret:
+        token:
+          description: 'Paste a long-lived Snapchat Conversions API token. Generate this in Snapchat Ads Manager under Business Details → Conversions API Tokens (requires Organization Admin). Recommended for Conversions API exports: the token does not expire and is not subject to the Marketing API throughput limit.'
           type: string
       type: object
     models.ApiErrorResponse:
@@ -19722,134 +20450,87 @@ components:
           description: HTTP Status Code
           type: integer
       type: object
+    models.SecretkeyV2:
+      properties:
+        secret_key:
+          type: string
+      type: object
+    models.ClearbitLytics:
+      type: object
+    models.AirshipConnect:
+      properties:
+        access_token:
+          type: string
+        app_key:
+          type: string
+        project_location:
+          type: string
+      type: object
+    models.ThetradedeskApiToken:
+      properties:
+        token:
+          description: Paste a long-lived The Trade Desk API token. Generate this in the TTD platform under your account's API tokens section. Use this when you have a token issued for the Conversion API and do not want to share TTD username/password credentials.
+          type: string
+      type: object
+    models.Messagecentral:
+      properties:
+        apikey:
+          type: string
+        orgid:
+          type: string
+      type: object
+    models.Gigya:
+      properties:
+        api_key:
+          type: string
+        datacenter:
+          type: string
+        secret_key:
+          type: string
+        user_key:
+          description: User & Secret Key pair are located in your Account Settings
+          type: string
+      type: object
+    models.CustomerioApikey:
+      properties:
+        apikey:
+          type: string
+        site_id:
+          type: string
+      type: object
     models.InsiderApiKey:
       properties:
         apikey:
           type: string
       type: object
-    models.AwsDelegated:
-      type: object
-    models.Iterable:
+    models.AwsDelegatedPgp:
       properties:
-        apikey:
+        pgppassphrase:
+          type: string
+        pgpprivatekey:
           type: string
       type: object
-    models.ApiResponse:
+    models.EpiserverApiKey:
       properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
+        client_id:
+          description: Client ID provided by Episerver
           type: string
-        status:
-          description: HTTP Status Code
-          type: integer
+        user_api_key:
+          type: string
+        user_name:
+          description: API User Name
+          type: string
       type: object
-    models.Cheetah:
+    models.BluehornetApiKey:
       properties:
-        consumer_key:
+        api_key:
           type: string
-        consumer_secret:
-          type: string
-        region:
+        secret:
           type: string
       type: object
-    models.UserPassKey:
+    models.DriftAppKey:
       properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        passphrase:
-          description: Enter passphrase for the private key if any
-          type: string
-        password:
-          description: Enter password. Please leave this empty if you would want to use private key
-          type: string
-        port:
-          type: integer
-        privatekey:
-          description: Enter private key. Please leave this empty if you would want to use password
-          type: string
-        user:
-          type: string
-      type: object
-    models.Zuora:
-      properties:
-        partner:
-          type: string
-        password:
-          type: string
-        username:
-          type: string
-      type: object
-    models.BasicAuth:
-      properties:
-        password:
-          type: string
-        url:
-          description: Specify an arbitrary URL that requires basic authentication to access. This will validate that the credentials provided have correct permissions to access basic authenticated URLs.
-          type: string
-        username:
-          type: string
-      type: object
-    models.TiktokEventsToken:
-      properties:
-        token:
-          type: string
-      type: object
-    models.SalesforceDataCloudSandboxJwt:
-      properties:
-        consumer_key:
-          description: The Consumer Key from your Salesforce External Client App
-          type: string
-        my_domain_url:
-          description: The sandbox My Domain URL the JWT assertion is POSTed to
-          type: string
-        private_key:
-          description: '#nosec [G117] RSA private key in PEM format'
-          type: string
-        sf_username:
-          description: The Salesforce username of the authorized user
-          type: string
-      type: object
-    models.Email:
-      type: object
-    models.SalesforceSandboxJwt:
-      properties:
-        consumer_key:
-          description: The Consumer Key from your Salesforce External Client App
-          type: string
-        my_domain_url:
-          description: The sandbox My Domain URL the JWT assertion is POSTed to
-          type: string
-        private_key:
-          description: '#nosec [G117] RSA private key in PEM format'
-          type: string
-        sf_username:
-          description: The Salesforce username of the authorized user
-          type: string
-      type: object
-    models.Pushly:
-      properties:
-        apikey:
-          type: string
-        domain_id:
-          type: string
-      type: object
-    models.ConnectApikey:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.RedditConversion:
-      properties:
-        access_token:
+        app_key:
           type: string
       type: object
     models.OptimizelyOdpApiKey:
@@ -19858,69 +20539,11 @@ components:
           description: '#nosec G117 -- field holds the ODP API key, not a leaked credential'
           type: string
       type: object
-    models.Klaviyo:
+    models.Dv360_Oauth:
       properties:
-        api_key:
+        code:
           type: string
-      type: object
-    models.Yesmail:
-      properties:
-        apikey:
-          type: string
-        apiuser:
-          type: string
-      type: object
-    models.SecretkeyV2:
-      properties:
-        secret_key:
-          type: string
-      type: object
-    models.Sendgrid:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.Postup:
-      properties:
-        password:
-          type: string
-        username:
-          type: string
-      type: object
-    models.PubsubJwt:
-      properties:
-        cert_json:
-          type: string
-      type: object
-    models.TriggerUserpass:
-      properties:
-        password:
-          type: string
-        rest_api_url:
-          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/rest/v17...)
-          type: string
-        user:
-          type: string
-      type: object
-    models.ResponsysSftp:
-      properties:
-        folder:
-          description: Folder path to place files
-          type: string
-        host:
-          type: string
-        port:
-          type: integer
-        privatekey:
-          type: string
-        user:
-          type: string
-      type: object
-    models.Api:
-      properties:
-        apikey:
-          type: string
-        personalkey:
+        scope:
           type: string
       type: object
     lioerrors.ApiV2ErrorOut:
@@ -19967,144 +20590,36 @@ components:
           format: date-time
           type: string
       type: object
-    models.Liveramp_AwsKeys:
-      properties:
-        access_key:
-          type: string
-        secret_key:
-          type: string
-      type: object
-    models.BqJwt:
-      properties:
-        cert_json:
-          type: string
-      type: object
-    models.AlgoliaApiKey:
-      properties:
-        api_key:
-          description: An API key with the search, browse and recommendation ACL permissions
-          type: string
-        application_id:
-          description: Enter your Algolia application ID
-          type: string
-      type: object
-    models.Surveymonkey:
-      properties:
-        access_token:
-          type: string
-      type: object
     models.BlueshiftApiKey:
       properties:
         user_api_key:
           type: string
       type: object
-    models.InfobipApiKey:
-      properties:
-        apikey:
-          description: '#nosec G117 -- field carries the Infobip API key, provided by the customer.'
-          type: string
-        base_url:
-          description: Per-account host, e.g. xyz123.api.infobip.com
-          type: string
-      type: object
-    models.HeaderParamAuth:
-      properties:
-        webhook_request_headers:
-          description: 'Enter headers for the webhook POST request. Add a new line for each header as key:value e.g. `Authorization: some-token`'
-          type: string
-        webhook_request_params:
-          description: Enter URL parameters for the webhook POST request. e.g. `param-key1=value1&param-key2=value2`
-          type: string
-      type: object
-    models.AwsDelegatedPgp:
-      properties:
-        pgppassphrase:
-          type: string
-        pgpprivatekey:
-          type: string
-      type: object
-    models.ContentstackApiKey:
-      properties:
-        base_url:
-          type: string
-        delivery_token:
-          type: string
-        management_token:
-          type: string
-        region:
-          type: string
-        stack_api_key:
-          type: string
-      type: object
-    models.WistiaToken:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.Aws_AwsKeys:
-      properties:
-        access_key:
-          type: string
-        secret_key:
-          type: string
-      type: object
-    models.AwsKeysPublicPgp:
-      properties:
-        access_key:
-          type: string
-        pgppublickey:
-          type: string
-        secret_key:
-          type: string
-      type: object
-    models.LyticsAwsSftpAuth:
-      properties:
-        host:
-          type: string
-        passphrase:
-          description: Enter passphrase for the private key if any
-          type: string
-        password:
-          description: Enter desired password. Must be between 8 to 32 characters and include at least one uppercase letter, lowercase letter, number and special character. **NOTE:** Either password or public key must be provided
-          type: string
-        port:
-          type: string
-        privatekey:
-          description: Enter SSH private key. **NOTE:** When using public key, private key must be provided.
-          type: string
-        publickey:
-          description: Enter SSH public key. **NOTE:** Either password or public key must be provided
-          type: string
-        user:
-          description: Enter username. Must be between 3 to 32 characters. Username can have characters a-z, A-Z, 0-9, hyphen(-), underscore(_). It cannot start with hyphen(-)
-          type: string
-      type: object
-    models.SilverpopFullAuth:
-      properties:
-        client_id:
-          type: string
-        client_secret:
-          type: string
-        pod:
-          type: string
-        refresh_token:
-          type: string
-        sftp_password:
-          type: string
-        sftp_user:
-          type: string
-      type: object
-    models.ThetradedeskApiToken:
-      properties:
-        token:
-          description: Paste a long-lived The Trade Desk API token. Generate this in the TTD platform under your account's API tokens section. Use this when you have a token issued for the Conversion API and do not want to share TTD username/password credentials.
-          type: string
-      type: object
-    models.AmplitudeApiKey:
+    models.SailthruApiKey:
       properties:
         apikey:
           type: string
         apisecret:
+          type: string
+      type: object
+    models.Aws_S3_Redshift:
+      properties:
+        access_key:
+          type: string
+        connection_url:
+          type: string
+        password:
+          type: string
+        secret_key:
+          type: string
+        ssl_mode:
+          type: string
+        user:
+          type: string
+      type: object
+    models.Onesignal:
+      properties:
+        apikey:
           type: string
       type: object
     models.StackdriverJwt:
@@ -20135,9 +20650,142 @@ components:
         user:
           type: string
       type: object
-    models.Onesignal:
+    models.ShopifyApiToken:
+      properties:
+        subdomain:
+          description: Get this from Shopify account UI
+          type: string
+        token:
+          type: string
+      type: object
+    models.AttentiveApiKey:
+      properties:
+        api_key:
+          description: '#nosec G117 -- field holds the Attentive API key, not a leaked credential'
+          type: string
+      type: object
+    models.Mediamath_NoAuth:
+      type: object
+    models.AzuresqlDb:
+      properties:
+        database:
+          type: string
+        password:
+          type: string
+        port:
+          type: string
+        server:
+          type: string
+        user:
+          type: string
+      type: object
+    models.Webhook_Oauth2_ClientCredentials:
+      properties:
+        access_token_manager_id:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        token_endpoint:
+          type: string
+        webhook_request_headers:
+          type: string
+        webhook_request_params:
+          type: string
+      type: object
+    models.InfobipApiKey:
       properties:
         apikey:
+          description: '#nosec G117 -- field carries the Infobip API key, provided by the customer.'
+          type: string
+        base_url:
+          description: Per-account host, e.g. xyz123.api.infobip.com
+          type: string
+      type: object
+    models.ResponsysSftp:
+      properties:
+        folder:
+          description: Folder path to place files
+          type: string
+        host:
+          type: string
+        port:
+          type: integer
+        privatekey:
+          type: string
+        user:
+          type: string
+      type: object
+    models.BcAccessToken:
+      properties:
+        access_token:
+          description: Your access token must have read-access scopes to Customers and Orders for imports and modify scope to Customers and read-access scope to Orders for exports
+          type: string
+        store_hash:
+          description: Enter your unique store hash ID
+          type: string
+      type: object
+    models.Cheetah:
+      properties:
+        consumer_key:
+          type: string
+        consumer_secret:
+          type: string
+        region:
+          type: string
+      type: object
+    models.Yesmail:
+      properties:
+        apikey:
+          type: string
+        apiuser:
+          type: string
+      type: object
+    models.NewrelicInsightsApikey:
+      properties:
+        api_key:
+          type: string
+      type: object
+    models.Mapp_Userpass:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        password:
+          type: string
+        port:
+          type: integer
+        user:
+          type: string
+      type: object
+    models.Maropost:
+      properties:
+        account:
+          type: integer
+        apikey:
+          type: string
+      type: object
+    models.AlgoliaApiKey:
+      properties:
+        api_key:
+          description: An API key with the search, browse and recommendation ACL permissions
+          type: string
+        application_id:
+          description: Enter your Algolia application ID
+          type: string
+      type: object
+    models.MarketoClient:
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+        restUrl:
           type: string
       type: object
     models.Westfield:
@@ -20149,156 +20797,60 @@ components:
         client_secret:
           type: string
       type: object
-    models.SailthruApiKey:
-      properties:
-        apikey:
-          type: string
-        apisecret:
-          type: string
-      type: object
-    models.AzureEventHub:
-      properties:
-        connection_string:
-          type: string
-      type: object
     models.MpApiSecret:
       properties:
         api_secret:
           type: string
       type: object
-    models.NetsuiteSuitetalk:
+    models.Selligent_Userpass:
       properties:
-        account_id:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
           type: string
-        consumer_key:
-          type: string
-        consumer_secret:
-          type: string
-        token_key:
-          type: string
-        token_secret:
-          type: string
-      type: object
-    models.Thetradedesk_Userpass:
-      properties:
-        partner_id:
-          description: Enter your The Trade Desk Partner ID. This Partner ID is used during experience import and is different than The Trade Desk Advertiser ID
+        host:
           type: string
         password:
           type: string
-        secret_key:
-          description: Enter your The Trade Desk Partner Secret Key
+        port:
+          type: integer
+        user:
+          type: string
+      type: object
+    models.TiktokEventsToken:
+      properties:
+        token:
+          type: string
+      type: object
+    models.ResponsysInteract:
+      properties:
+        instance:
+          description: One of interact2, interact5, or interact8
+          type: string
+        password:
           type: string
         username:
           type: string
       type: object
-    models.Leadsquared:
+    models.AwsKeys:
       properties:
-        accessKey:
+        access_key:
           type: string
-        region:
-          description: chooose which LeadSquared region you created your account on. This determines which API Host we connect with
-          type: string
-        secretKey:
+        secret_key:
           type: string
       type: object
-    models.VersiumApikey:
+    models.Iterable:
       properties:
         apikey:
           type: string
       type: object
-    models.AzureStorageConnection:
+    models.Liveramp_AwsKeys:
       properties:
-        aes_iv:
-          description: Optional - add an AES intialization vector (IV) as a hex string in conjunction with the AES key above
+        access_key:
           type: string
-        aes_key:
-          description: Optional - add an AES key as a hex string to AES-encrypt specified fields in the Azure blob files
-          type: string
-        connection_string:
-          type: string
-        pgppublickey:
-          description: Optional - add a PGP public key to encrypt Azure blob files
+        secret_key:
           type: string
       type: object
-    models.Messagecentral:
-      properties:
-        apikey:
-          type: string
-        orgid:
-          type: string
-      type: object
-    models.ContentCookies:
-      properties:
-        cookie:
-          description: Specify a fully formatted cookie (e.g. COOKIE_NAME=COOKIE_VALUE).
-          type: string
-        url:
-          description: Specify an arbitrary URL that requires cookie authentication to access. This will validate that the cookie provided has permissions to access authenticated URLs.
-          type: string
-      type: object
-    models.UserpassSecret:
-      properties:
-        api_url:
-          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/v1/integration...)
-          type: string
-        integration_id:
-          type: string
-        password:
-          type: string
-        rest_api_url:
-          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/rest/v17...)
-          type: string
-        secret:
-          type: string
-        user:
-          type: string
-      type: object
-    models.LyticsLotameS3:
-      type: object
-    models.AuthResponse:
-      properties:
-        account_id:
-          description: Lytics Account ID
-          type: string
-        created:
-          type: string
-        description:
-          description: A client-defined description for the authorization
-          type: string
-        id:
-          description: A Lytics-assigned, immutable unique ID for the Authorization
-          type: string
-        label:
-          description: A client-defined label for the authorization
-          type: string
-        last_accessed_at:
-          description: Last accessed time for the lytics api_key
-          type: string
-        provider_id:
-          description: The authorization's provider ID
-          type: string
-        provider_slug:
-          description: The authorization's provider slug
-          type: string
-        status:
-          description: Indicates the health status of auth
-          enum:
-          - healthy
-          - unhealthy
-          - unknown
-          type: string
-        type:
-          description: The auth type. Providers may have one or more auth types
-          type: string
-        unhealthy:
-          description: Indicates the authorization credentials are unusable
-          type: boolean
-        updated:
-          type: string
-        user_id:
-          description: The user ID that created or updated the authorization
-          type: string
+    models.AwsDelegated:
       type: object
     models.AuthRequest:
       properties:
@@ -20329,6 +20881,178 @@ components:
       - config
       - label
       type: object
+    models.AmplitudeApiKey:
+      properties:
+        apikey:
+          type: string
+        apisecret:
+          type: string
+      type: object
+    models.DatabricksDB:
+      properties:
+        host:
+          type: string
+        httppath:
+          type: string
+        port:
+          type: integer
+        token:
+          type: string
+      type: object
+    models.ContentCookies:
+      properties:
+        cookie:
+          description: Specify a fully formatted cookie (e.g. COOKIE_NAME=COOKIE_VALUE).
+          type: string
+        url:
+          description: Specify an arbitrary URL that requires cookie authentication to access. This will validate that the cookie provided has permissions to access authenticated URLs.
+          type: string
+      type: object
+    models.PinterestCapiToken:
+      properties:
+        account_id:
+          type: string
+        token:
+          type: string
+      type: object
+    models.Datax:
+      properties:
+        mdm_id:
+          type: string
+        use_gdpr:
+          type: string
+      type: object
+    models.NetsuiteSuitetalk:
+      properties:
+        account_id:
+          type: string
+        consumer_key:
+          type: string
+        consumer_secret:
+          type: string
+        token_key:
+          type: string
+        token_secret:
+          type: string
+      type: object
+    models.Leadsquared:
+      properties:
+        accessKey:
+          type: string
+        region:
+          description: chooose which LeadSquared region you created your account on. This determines which API Host we connect with
+          type: string
+        secretKey:
+          type: string
+      type: object
+    models.AzureEventHub:
+      properties:
+        connection_string:
+          type: string
+      type: object
+    models.Apikey:
+      properties:
+        apikey:
+          type: string
+        email:
+          type: string
+        subdomain:
+          description: Get this from Zendesk account UI
+          type: string
+      type: object
+    models.BqJwt:
+      properties:
+        cert_json:
+          type: string
+      type: object
+    models.PubsubJwt:
+      properties:
+        cert_json:
+          type: string
+      type: object
+    models.AwsKeysPgp:
+      properties:
+        access_key:
+          type: string
+        pgppassphrase:
+          type: string
+        pgpprivatekey:
+          type: string
+        secret_key:
+          type: string
+      type: object
+    models.SalesforceDataCloudSandboxJwt:
+      properties:
+        consumer_key:
+          description: The Consumer Key from your Salesforce External Client App
+          type: string
+        my_domain_url:
+          description: The sandbox My Domain URL the JWT assertion is POSTed to
+          type: string
+        private_key:
+          description: '#nosec [G117] RSA private key in PEM format'
+          type: string
+        sf_username:
+          description: The Salesforce username of the authorized user
+          type: string
+      type: object
+    models.BqJwtImport:
+      properties:
+        cert_json:
+          type: string
+      type: object
+    models.CriteoApiCredentials:
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      type: object
+    models.Cordial:
+      properties:
+        api_key:
+          type: string
+      type: object
+    models.MicrosoftCapiToken:
+      properties:
+        token:
+          type: string
+      type: object
+    models.Fullcontact:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.TriggerUserpass:
+      properties:
+        password:
+          type: string
+        rest_api_url:
+          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/rest/v17...)
+          type: string
+        user:
+          type: string
+      type: object
+    models.CustomerioWebhooks:
+      type: object
+    models.HeaderParamAuth:
+      properties:
+        webhook_request_headers:
+          description: 'Enter headers for the webhook POST request. Add a new line for each header as key:value e.g. `Authorization: some-token`'
+          type: string
+        webhook_request_params:
+          description: Enter URL parameters for the webhook POST request. e.g. `param-key1=value1&param-key2=value2`
+          type: string
+      type: object
+    models.IcontactApi:
+      properties:
+        api_password:
+          type: string
+        api_username:
+          type: string
+      type: object
+    models.LyticsLotameS3:
+      type: object
     models.DotmailerApi:
       properties:
         password:
@@ -20336,22 +21060,56 @@ components:
         username:
           type: string
       type: object
-    models.BcAccessToken:
+    models.Sendgrid:
       properties:
-        access_token:
-          description: Your access token must have read-access scopes to Customers and Orders for imports and modify scope to Customers and read-access scope to Orders for exports
-          type: string
-        store_hash:
-          description: Enter your unique store hash ID
+        apikey:
           type: string
       type: object
-    models.AirshipMasterSecret:
+    models.ContentstackApiKey:
       properties:
-        app_key:
+        base_url:
           type: string
-        master_secret:
+        delivery_token:
           type: string
-        project_location:
+        management_token:
+          type: string
+        region:
+          type: string
+        stack_api_key:
+          type: string
+      type: object
+    models.Pushly:
+      properties:
+        apikey:
+          type: string
+        domain_id:
+          type: string
+      type: object
+    models.AppsflyerDevkey:
+      properties:
+        app_id:
+          type: string
+        dev_key:
+          type: string
+        platform:
+          type: string
+      type: object
+    models.Thetradedesk_Userpass:
+      properties:
+        partner_id:
+          description: Enter your The Trade Desk Partner ID. This Partner ID is used during experience import and is different than The Trade Desk Advertiser ID
+          type: string
+        password:
+          type: string
+        secret_key:
+          description: Enter your The Trade Desk Partner Secret Key
+          type: string
+        username:
+          type: string
+      type: object
+    models.ConnectApikey:
+      properties:
+        apikey:
           type: string
       type: object
   securitySchemes:

@@ -71,6 +71,8 @@ paths:
       summary: Delete profile attributes
       tags:
       - Profiles
+      operationId: deleteAttributesByTableByKeyByValue
+      x-operation-id-source: derived
     get:
       description: Get profile attributes for a user.
       parameters:
@@ -133,6 +135,8 @@ paths:
       summary: Get profile attributes
       tags:
       - Profiles
+      operationId: getAttributesByTableByKeyByValue
+      x-operation-id-source: derived
     patch:
       description: Update some of the profile attributes for a user.
       parameters:
@@ -202,6 +206,8 @@ paths:
       summary: Update some profile attributes
       tags:
       - Profiles
+      operationId: patchAttributesByTableByKeyByValue
+      x-operation-id-source: derived
     put:
       description: Update all of the profile attributes for a user.
       parameters:
@@ -271,6 +277,8 @@ paths:
       summary: Update all profile attributes
       tags:
       - Profiles
+      operationId: putAttributesByTableByKeyByValue
+      x-operation-id-source: derived
   /identity/deletestatus/{request_id}:
     get:
       description: Get the status of a GDPR-compliant user profile deletion request
@@ -321,6 +329,8 @@ paths:
       summary: Get the status of a user profile deletion
       tags:
       - Profiles
+      operationId: getIdentityDeletestatusByRequestId
+      x-operation-id-source: derived
   /identity/lookup:
     post:
       description: Get a user profile by identity key/value using POST
@@ -380,6 +390,8 @@ paths:
       summary: Get a user profile (POST)
       tags:
       - Profiles
+      operationId: postIdentityLookup
+      x-operation-id-source: derived
   /identity/queue/bulk/{table}/{field}:
     delete:
       description: Queue bulk GDPR-compliant deletion requests for multiple user profiles
@@ -438,6 +450,8 @@ paths:
       summary: Bulk delete user profiles
       tags:
       - Profiles
+      operationId: deleteIdentityQueueBulkByTableByField
+      x-operation-id-source: derived
   /identity/{table}/{key}/{value}:
     delete:
       description: Delete a user profile, compliant with GDPR deletion requests
@@ -501,6 +515,8 @@ paths:
       summary: Delete a user profile
       tags:
       - Profiles
+      operationId: deleteIdentityByTableByKeyByValue
+      x-operation-id-source: derived
     get:
       description: Get a user profile by identity key/value
       parameters:
@@ -569,92 +585,10 @@ paths:
       summary: Get a user profile (GET)
       tags:
       - Profiles
+      operationId: getIdentityByTableByKeyByValue
+      x-operation-id-source: derived
 components:
   schemas:
-    models.AttributeResponse:
-      additionalProperties: true
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.IdentityResponse:
-      properties:
-        entity:
-          additionalProperties: true
-          description: Materialized view of a profile, with applicable mappings
-          type: object
-        field_sources:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: 'FieldSources lists, per field, the attribute-store sources feeding it
-
-            (Cloud Connect v2 datamodels, Attribute API) that have no schema mapping.
-
-            Only populated when requested via field_sources=true.'
-          type: object
-        fragments:
-          description: Identity fragments that compose the profile
-          items:
-            $ref: '#/components/schemas/models.IdentityFragment'
-          type: array
-        keys:
-          description: Identifiers for this entity.
-          items:
-            $ref: '#/components/schemas/models.Kv'
-          type: array
-      type: object
-    models.Kv:
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-      type: object
-    models.IdentityFragment:
-      properties:
-        conflict:
-          description: If this fragment has any conflicts preventing linking with the current profile.
-          type: boolean
-        conflicts_with:
-          description: Identifier of the conflicted neighbor.
-          type: string
-        created:
-          description: When this fragment was created
-          type: string
-        keys:
-          description: Identifiers for this fragment.
-          items:
-            $ref: '#/components/schemas/models.Kv'
-          type: array
-        modified:
-          description: When this fragment was last modified
-          type: string
-        neighbor_limit:
-          description: Whether this fragment approaches overlinking limits
-          type: boolean
-        neighbors:
-          description: Neighbors to this fragment.
-          items:
-            $ref: '#/components/schemas/models.Kv'
-          type: array
-        streams:
-          description: All streams that contribute data to this fragment.
-          items:
-            type: string
-          type: array
-      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -699,6 +633,19 @@ components:
           format: date-time
           type: string
       type: object
+    models.IdentityDeleteResponse:
+      properties:
+        completed:
+          type: boolean
+        request_id:
+          type: string
+        requested:
+          type: string
+        state:
+          type: string
+        submitted:
+          type: string
+      type: object
     models.ApiResponse:
       properties:
         _meta:
@@ -714,18 +661,86 @@ components:
           description: HTTP Status Code
           type: integer
       type: object
-    models.IdentityDeleteResponse:
+    models.Kv:
       properties:
-        completed:
+        key:
+          type: string
+        value:
+          type: string
+      type: object
+    models.IdentityFragment:
+      properties:
+        conflict:
+          description: If this fragment has any conflicts preventing linking with the current profile.
           type: boolean
+        conflicts_with:
+          description: Identifier of the conflicted neighbor.
+          type: string
+        created:
+          description: When this fragment was created
+          type: string
+        keys:
+          description: Identifiers for this fragment.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+        modified:
+          description: When this fragment was last modified
+          type: string
+        neighbor_limit:
+          description: Whether this fragment approaches overlinking limits
+          type: boolean
+        neighbors:
+          description: Neighbors to this fragment.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+        streams:
+          description: All streams that contribute data to this fragment.
+          items:
+            type: string
+          type: array
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
         request_id:
           type: string
-        requested:
-          type: string
-        state:
-          type: string
-        submitted:
-          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.IdentityResponse:
+      properties:
+        entity:
+          additionalProperties: true
+          description: Materialized view of a profile, with applicable mappings
+          type: object
+        field_sources:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: 'FieldSources lists, per field, the attribute-store sources feeding it
+
+            (Cloud Connect v2 datamodels, Attribute API) that have no schema mapping.
+
+            Only populated when requested via field_sources=true.'
+          type: object
+        fragments:
+          description: Identity fragments that compose the profile
+          items:
+            $ref: '#/components/schemas/models.IdentityFragment'
+          type: array
+        keys:
+          description: Identifiers for this entity.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
       type: object
     models.IdentityDeleteBulkResponse:
       properties:
@@ -737,6 +752,9 @@ components:
             type: string
           description: A map of value:request_id for successful submissions
           type: object
+      type: object
+    models.AttributeResponse:
+      additionalProperties: true
       type: object
   securitySchemes:
     ApiKeyAuth:

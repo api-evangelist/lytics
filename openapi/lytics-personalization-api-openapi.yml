@@ -2,12 +2,34 @@ openapi: 3.2.0
 info:
   title: V1 Lytics Personalization API
   version: 1.0.0
-  description: "The Lytics API is a _restful_ *JSON* api that includes:\n* *Data Collection* api's for collection, and upload of custom data.\n* *Personalization api* for real-time user profile usage in personalization.\n* *Segmentation api* for lists of users, and creating/managing the segmentation rules.\n* *Catalog api* for schema information.\n* *Content api* for content recommendation, and content-classification to drive personalization.\n* *Management api* for general account management.\n## Authentication\nThe *Lytics API* supports authentication using one of the following:\nLogin to your account [Lytics App](https://activate.getlytics.com) and navigate to *Account* to find your keys.\nAfter you have acquired your token, use it to access the Lytics API.\nOur api supports two methods for authorization:\n*  query string url parameter, using **access_token**\n*  http **Authorization** HEADER\n\n```\n# example showing passing auth token in header\ncurl -XPOST 'https://api.lytics.io/api/segment' \\\n    -H \"Authorization: pretendtoken8762\" \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n# example as query string parameter\ncurl -XPOST 'https://api.lytics.io/api/segment?access_token=804ef78pretendtoken8762' \\\n    -H 'Content-type: application/json' \\\n    -d '{\"notreal\" : []}'\n\n```\n\nAdditionally, there are two types of authentication token's:\n\n* *User Auth Token* is normally just for the web admin. But may be used on the api, this is a user-specific token, and attributes actions to this user. This token expires.\n\n* *API User* is a less privileged role and does not expire.  But, less history is available on actions.\n\n## IP Whitelisting\n\nFor better security, you can manage access to the Lytics API using the IP address whitelisting api_ip_whitelist setting on your account. This setting will also be applied to manage admin access to your Lytics account.\n\nProvide a CIDR value for the range of IP addresses you trust. Lytics will then ignore any unauthenticated users and/or IP addresses that fall out of the valid range. This means you can grant access to only your trusted users.\n\nWhat is CIDR?\nCIDR is a flexible allocation of IP addresses. Use an [IP address tool] (https://www.ipaddressguide.com/), to convert your IP addresses into a CIDR format, either v4 or v6.\n\n## Documentation Examples\n\nWe use [jq json command line prettifier](https://stedolan.github.io/jq/) in our examples throughout this doc.\n\n## Media Types\n\nOur API is a JSON REST API. We have data-upload api's which support\ncsv uploads as well.\n\nRequests with a message-body use plain JSON to set or update resource states.\n\n## Error States\n\nThe common [HTTP Response Status Codes](https://github.com/for-GET/know-your-http-well/blob/master/status-codes.md) are used.\n\n## Query Parameters\n\nA variety of places our api accepts query parameters that allow a list of values.\nThe documentation will often say it allows `[]string or []int` (meaning an array of strings, or integers).\nWhen this occurs, we allow a variety of formats to pass these.\n\n*  `ids=1234`         convert this to []string{\"123\"}\n\n*  `ids=[123,456]`    convert this to []string{\"123\",\"456\"}\n\n*  `ids=123,456`      convert this to []string{\"123\",\"456\"}\n\n*  `ids=123&ids=456`  convert this to []string{\"123\",\"456\"}\n\n*  `ids[]=123&ids[]=456`  convert this to []string{\"123\",\"456\"}  Note that we alias ids[] = ids"
+  description: 'The Lytics API is a _restful_ *JSON* api that includes:
+
+    * *Data Collection* api''s for collection, and upload of custom data.'
 servers:
 - url: https://api.lytics.io
 tags:
 - name: Personalization
-  description: "Entity API, ie Personalization or Profile API.\n\nRetrieve attributes and segments an entity (most likely a user) is a member of.\n\nThe *Entity* is a *User* most likely, but since Lytics is organized as a Graph Database,\nother types of entities may be modeled such as Accounts, or Company, Content, or custom.\n\n```\n# read a single user\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/entity/user/user_id/user123\" | jq '.'\n\n```"
+  description: 'Entity API, ie Personalization or Profile API.
+
+
+    Retrieve attributes and segments an entity (most likely a user) is a member of.
+
+
+    The *Entity* is a *User* most likely, but since Lytics is organized as a Graph Database,
+
+    other types of entities may be modeled such as Accounts, or Company, Content, or custom.
+
+
+    ```
+
+    # read a single user
+
+    curl -s -H "Authorization: $LIOKEY" \
+
+    -XGET "https://api.lytics.io/api/entity/user/user_id/user123" | jq ''.''
+
+
+    ```'
 paths:
   /api/me/{fieldname}/{fieldval}:
     get:
@@ -41,7 +63,7 @@ paths:
       - ApiKeyAuth: []
       summary: User Me
       operationId: User Me
-      description: Get single User Entity.  This is an alias for `/api/entity/user`.
+      description: Get single User Entity. This is an alias for `/api/entity/user`.
       tags:
       - Personalization
       parameters:
@@ -142,7 +164,26 @@ paths:
       - ApiKeyAuth: []
       summary: Personalization
       operationId: Personalization
-      description: "Get single User Entity.\n\n```\n# get user whose user_id = user123\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/entity/user/user_id/user123\" | jq '.'\n\n# get user whose email = aaron@aaron.com\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XGET \"https://api.lytics.io/api/entity/user/email/aaron@aaron.com\" | jq '.'\n\n```"
+      description: 'Get single User Entity.
+
+
+        ```
+
+        # get user whose user_id = user123
+
+        curl -s -H "Authorization: $LIOKEY" \
+
+        -XGET "https://api.lytics.io/api/entity/user/user_id/user123" | jq ''.''
+
+
+        # get user whose email = aaron@aaron.com
+
+        curl -s -H "Authorization: $LIOKEY" \
+
+        -XGET "https://api.lytics.io/api/entity/user/email/aaron@aaron.com" | jq ''.''
+
+
+        ```'
       tags:
       - Personalization
       parameters:
@@ -239,7 +280,37 @@ paths:
       - ApiKeyAuth: []
       summary: Profile Delete Request
       operationId: Profile Delete Request
-      description: "Deletes a single Entity (normally a user).\n\nThis API persists a deletion event for the particular profile provided. This operation is asynchronous; it will take\nsome time for the profile to be removed from downstream databases and indexes. This request returns a \"request_id\"\nwhich may be used to determine the status of that deletion. While the profile may become unavailable quickly, it may\ntake a while for the full process to complete since it includes all archived historic data.\n\n```\n# Delete user whose \"user_id\" = \"userdeleteme12\"\n# user_id can be any by-field\n\ncurl -s -H \"Authorization: $LIOKEY\" \\\n  -XDELETE \"https://api.lytics.io/api/entity/user/user_id/userdeleteme12\" | jq '.'\n\n\n```\n\n**Use Cases**\n\n* *GDPR* right to be forgotten, a user asks for profile to be deleted."
+      description: 'Deletes a single Entity (normally a user).
+
+
+        This API persists a deletion event for the particular profile provided. This operation is asynchronous; it will take
+
+        some time for the profile to be removed from downstream databases and indexes. This request returns a "request_id"
+
+        which may be used to determine the status of that deletion. While the profile may become unavailable quickly, it may
+
+        take a while for the full process to complete since it includes all archived historic data.
+
+
+        ```
+
+        # Delete user whose "user_id" = "userdeleteme12"
+
+        # user_id can be any by-field
+
+
+        curl -s -H "Authorization: $LIOKEY" \
+
+        -XDELETE "https://api.lytics.io/api/entity/user/user_id/userdeleteme12" | jq ''.''
+
+
+        ```
+
+
+        **Use Cases**
+
+
+        * *GDPR* right to be forgotten, a user asks for profile to be deleted.'
       tags:
       - Personalization
       parameters:
@@ -302,7 +373,7 @@ paths:
       - ApiKeyAuth: []
       summary: Web Personalization
       operationId: Web Personalization
-      description: 'Get single User Entity using cookie id.  This is same as entity api
+      description: 'Get single User Entity using cookie id. This is same as entity api
 
         but you don''t specify a `fieldname` (user_id, email, etc) and instead it only uses the cookie identifier.'
       tags:
@@ -414,26 +485,6 @@ paths:
           type: string
 components:
   schemas:
-    ProfileDeletionModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            request_id:
-              type: string
-            complete:
-              type: boolean
-      example:
-        status: 200
-        message: delete request received
-        data:
-          request_id: e9d5f2d3d2c7a7d0e801-1526083200
-          complete: false
     PersonalizationModel:
       type: object
       properties:
@@ -475,6 +526,26 @@ components:
           format: json
           name: user
         status: 200
+    ProfileDeletionModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            request_id:
+              type: string
+            complete:
+              type: boolean
+      example:
+        status: 200
+        message: delete request received
+        data:
+          request_id: e9d5f2d3d2c7a7d0e801-1526083200
+          complete: false
   securitySchemes:
     ApiKeyAuth:
       in: header

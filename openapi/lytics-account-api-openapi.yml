@@ -8,40 +8,7 @@ servers:
 - url: https://api.lytics.io/v2
 tags:
 - name: Account
-  description: 'Account related resources of the *Lytics API*.
-
-
-    The Account resource describes an account. An account can be a *Master* account, which
-
-    means that it is a billing account. Master accounts have children accounts
-
-    which act more as separate projects, for same billing account. Each child
-
-    account can be used for Dev, Testing, etc., or for separate siloes of data
-
-    for sub-divisions, etc..
-
-
-    The Account resource has the following attributes:
-
-
-    | field       | DataType         | Description   |
-
-    |-------------|------------------|---------------|
-
-    | id          | string           | unique id
-
-    | created     | Date             | Created date
-
-    | updated     | Date             | Last Updated Date
-
-    | domain      | string           | customer-assigned unique id (auto assigned to domain name).  This must be unique across lytics accounts
-
-    | email       | string           | primary email contact for account owner
-
-    | parent_id   | string           | parent account if this account is a child-account of master billing account
-
-    | name        | string           | account name'
+  description: Account related resources of the *Lytics API*.
 paths:
   /api/account/{id}:
     get:
@@ -221,7 +188,6 @@ paths:
     - url: https://api.lytics.io
   /account:
     post:
-      description: Create new child account
       requestBody:
         content:
           '*/*':
@@ -265,6 +231,8 @@ paths:
       summary: Create new child account
       tags:
       - Account
+      operationId: postAccount
+      x-operation-id-source: derived
     servers:
     - url: https://api.lytics.io/v2
   /account/setup/jobalerts:
@@ -300,6 +268,8 @@ paths:
       summary: Enable/Disable job alerts
       tags:
       - Account
+      operationId: postAccountSetupJobalerts
+      x-operation-id-source: derived
     servers:
     - url: https://api.lytics.io/v2
   /account/{id}:
@@ -352,8 +322,9 @@ paths:
       summary: Get account
       tags:
       - Account
+      operationId: getAccountById
+      x-operation-id-source: derived
     post:
-      description: Update existing account
       parameters:
       - description: The account ID
         in: path
@@ -404,11 +375,12 @@ paths:
       summary: Update existing account
       tags:
       - Account
+      operationId: postAccountById
+      x-operation-id-source: derived
     servers:
     - url: https://api.lytics.io/v2
   /register:
     post:
-      description: Register new account
       requestBody:
         content:
           '*/*':
@@ -452,10 +424,40 @@ paths:
       summary: Register new account
       tags:
       - Account
+      operationId: postRegister
+      x-operation-id-source: derived
     servers:
     - url: https://api.lytics.io/v2
 components:
   schemas:
+    AccountModel:
+      type: object
+      properties:
+        created:
+          type: string
+        updated:
+          type: string
+        domain:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        parent_id:
+          type: string
+        timezone:
+          type: string
+      example:
+        created: '2014-10-30T21:01:06.493Z'
+        updated: '2014-10-30T21:01:06.493Z'
+        domain: example.lytics.io
+        email: notreal@lytics.io
+        id: CNakHAobwEeLuUyrKc5AQTif
+        name: Lytics Test
+        parent_id: CNakHAobwEeLuUyrKc5AQTif
+        timezone: America/Los_Angeles
     AccountsListModel:
       type: object
       properties:
@@ -500,34 +502,109 @@ components:
           parent_id: CNakHAobwEeLuUyrKc5AQTif
           features:
             segment-sizes: true
-    AccountModel:
-      type: object
+    models.ChildAccountCreateRequest:
       properties:
-        created:
-          type: string
-        updated:
+        description:
           type: string
         domain:
           type: string
         email:
           type: string
-        id:
+        expires:
+          type: string
+        fid:
           type: string
         name:
           type: string
-        parent_id:
-          type: string
+        packages:
+          additionalProperties:
+            type: string
+          type: object
         timezone:
           type: string
-      example:
-        created: '2014-10-30T21:01:06.493Z'
-        updated: '2014-10-30T21:01:06.493Z'
-        domain: example.lytics.io
-        email: notreal@lytics.io
-        id: CNakHAobwEeLuUyrKc5AQTif
-        name: Lytics Test
-        parent_id: CNakHAobwEeLuUyrKc5AQTif
-        timezone: America/Los_Angeles
+        type:
+          type: string
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.RolePolicy:
+      properties:
+        can_be_assigned:
+          type: boolean
+        can_be_shown:
+          type: boolean
+        description:
+          type: string
+        name:
+          type: string
+        permissions:
+          additionalProperties:
+            items:
+              type: integer
+            type: array
+          type: object
+        slug:
+          type: string
+        type:
+          type: string
+      type: object
     models.AccountCreateRequest:
       properties:
         allow_pathora:
@@ -592,29 +669,6 @@ components:
         type:
           type: string
       type: object
-    models.ChildAccountCreateRequest:
-      properties:
-        description:
-          type: string
-        domain:
-          type: string
-        email:
-          type: string
-        expires:
-          type: string
-        fid:
-          type: string
-        name:
-          type: string
-        packages:
-          additionalProperties:
-            type: string
-          type: object
-        timezone:
-          type: string
-        type:
-          type: string
-      type: object
     models.ApiErrorResponse:
       properties:
         errors:
@@ -627,44 +681,6 @@ components:
         status:
           description: HTTP Status Code
           type: integer
-      type: object
-    models.AccountUpdateRequest:
-      properties:
-        billing_organization_id:
-          type: string
-        description:
-          type: string
-        domain:
-          type: string
-        email:
-          type: string
-        fid:
-          type: string
-        name:
-          type: string
-        partner_id:
-          type: string
-        partner_slug:
-          type: string
-        pubusers:
-          type: boolean
-        settings:
-          additionalProperties: true
-          type: object
-        settings_delete:
-          items:
-            type: string
-          type: array
-        tags:
-          items:
-            type: string
-          type: array
-        tags_delete:
-          items:
-            type: string
-          type: array
-        timezone:
-          type: string
       type: object
     models.AccountResp:
       properties:
@@ -739,85 +755,43 @@ components:
         updated:
           type: string
       type: object
-    models.RolePolicy:
+    models.AccountUpdateRequest:
       properties:
-        can_be_assigned:
-          type: boolean
-        can_be_shown:
-          type: boolean
+        billing_organization_id:
+          type: string
         description:
+          type: string
+        domain:
+          type: string
+        email:
+          type: string
+        fid:
           type: string
         name:
           type: string
-        permissions:
-          additionalProperties:
-            items:
-              type: integer
-            type: array
-          type: object
-        slug:
+        partner_id:
           type: string
-        type:
+        partner_slug:
           type: string
-      type: object
-    lioerrors.ApiV2ErrorOut:
-      properties:
-        code:
-          description: Lytics Error Code
-          enum:
-          - UNKNOWN-000
-          - BADREQ-001
-          - JOB-BADREQ-002
-          - NOTFOUND-003
-          - JOB-NOTFOUND-004
-          - WF-NOTFOUND-005
-          - AUTH-NOTFOUND-006
-          - AUTHTYPE-NOTFOUND-007
-          - AUTH-BADREQ-008
-          - TABLE-NOTFOUND-009
-          - SCHEMA-NOTFOUND-010
-          - SCHEMAVERSION-NOTFOUND-011
-          - ENTITY-NOTFOUND-012
-          - QUERY-NOTFOUND-013
-          - STREAM-NOTFOUND-014
-          - PROVIDER-BADREQ-015
-          - PROVIDER-NOTFOUND-016
-          - UNAUTHORIZED-017
-          - SCHEMA-INVALID-018
-          - INTERNAL-019
-          - ROUTERULE-NOTFOUND-020
-          - ACCOUNT-NOTFOUND-021
-          - JOB-FAULT-022
-          - USER-NOTFOUND-023
-          - USER-BADREQ-024
-          - JSON-BADREQ-025
-          - FORBIDDEN-026
-          type: string
-        level:
-          description: When the error was generated
-          type: string
-        message:
-          description: A description of the error that occurred
-          type: string
-        timestamp:
-          description: The time the error occurred
-          format: date-time
-          type: string
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
+        pubusers:
+          type: boolean
+        settings:
           additionalProperties: true
-          description: Response Metadata
           type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
+        settings_delete:
+          items:
+            type: string
+          type: array
+        tags:
+          items:
+            type: string
+          type: array
+        tags_delete:
+          items:
+            type: string
+          type: array
+        timezone:
           type: string
-        status:
-          description: HTTP Status Code
-          type: integer
       type: object
     models.EntitlementPlan:
       properties:

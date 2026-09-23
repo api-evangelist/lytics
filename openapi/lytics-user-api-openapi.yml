@@ -156,7 +156,41 @@ paths:
       - ApiKeyAuth: []
       summary: User Create
       operationId: User Create
-      description: "Create/Invite A **Lytics Admin User** this will either create\na new user if that email is new, or invite user to have access to\ncurrent account.\n\n```sh\n\n# Create/Invite new user for current LIOKEY account\n#  with suppression to not send welcome email\n\ncurl -v -XPOST \"https://api.lytics.io/api/user?suppress=true\"  \\\n  -H 'Content-type: application/json' \\\n  -H \"Authorization: $LIOKEY\" \\\n  -d '{\n    \"email\" : \"fakeuser2@lytics.io\"\n    , \"password\":\"aNotSoGoodPassword%^\"\n    , \"name\":\"aaron\"\n    , \"roles\": [\"api\",\"admin\"]\n}'\n\n\n```"
+      description: 'Create/Invite A **Lytics Admin User** this will either create
+
+        a new user if that email is new, or invite user to have access to
+
+        current account.
+
+
+        ```sh
+
+
+        # Create/Invite new user for current LIOKEY account
+
+        # with suppression to not send welcome email
+
+
+        curl -v -XPOST "https://api.lytics.io/api/user?suppress=true" \
+
+        -H ''Content-type: application/json'' \
+
+        -H "Authorization: $LIOKEY" \
+
+        -d ''{
+
+        "email" : "fakeuser2@lytics.io"
+
+        , "password":"aNotSoGoodPassword%^"
+
+        , "name":"aaron"
+
+        , "roles": ["api","admin"]
+
+        }''
+
+
+        ```'
       tags:
       - User
       parameters:
@@ -335,6 +369,8 @@ paths:
       summary: Get users
       tags:
       - User
+      operationId: getUser
+      x-operation-id-source: derived
     servers:
     - url: https://api.lytics.io/v2
   /user/me/passwordreset:
@@ -395,6 +431,8 @@ paths:
       summary: Reset password
       tags:
       - User
+      operationId: postUserMePasswordreset
+      x-operation-id-source: derived
     servers:
     - url: https://api.lytics.io/v2
   /user/{id}:
@@ -442,6 +480,8 @@ paths:
       summary: Delete user
       tags:
       - User
+      operationId: deleteUserById
+      x-operation-id-source: derived
     get:
       description: Get a user by ID, email address, or the special value `me` (returns the authenticated user).
       parameters:
@@ -503,6 +543,8 @@ paths:
       summary: Get user
       tags:
       - User
+      operationId: getUserById
+      x-operation-id-source: derived
     servers:
     - url: https://api.lytics.io/v2
   /user/{id}/roles:
@@ -569,6 +611,8 @@ paths:
       summary: Update user roles
       tags:
       - User
+      operationId: postUserByIdRoles
+      x-operation-id-source: derived
     servers:
     - url: https://api.lytics.io/v2
 components:
@@ -691,49 +735,6 @@ components:
             - admin
             created: '2014-08-04T21:18:20.124Z'
             updated: '2014-08-04T21:18:20.124Z'
-    models.PasswordResetReq:
-      properties:
-        oldpassword:
-          type: string
-        password:
-          type: string
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.RoleReq:
-      properties:
-        roles:
-          items:
-            enum:
-            - admin
-            - authed2
-            - content_manager
-            - segment_manager
-            - marketer
-            - data_manager
-            - campaign_manager
-            - observer
-            - data_write
-            - user_search
-            - report_viewer
-            - report_manager
-            - orchestrate
-            - experience_manager
-            - developer_free
-            type: string
-          type: array
-      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -793,70 +794,12 @@ components:
           description: HTTP Status Code
           type: integer
       type: object
-    models.UserAccount:
+    models.PasswordResetReq:
       properties:
-        account_id:
-          description: The Account ID
+        oldpassword:
           type: string
-        aid:
-          description: The account AID
-          type: integer
-        auth0_connections:
-          items:
-            type: string
-          type: array
-        created:
-          format: date-time
+        password:
           type: string
-        expiration:
-          format: date-time
-          type: string
-        granted_by:
-          description: The User ID who granted the account access
-          type: string
-        reason:
-          type: string
-        roles:
-          description: Which roles does the user have for this account
-          items:
-            type: string
-          type: array
-        updated:
-          format: date-time
-          type: string
-      type: object
-    models.User:
-      properties:
-        auth_type:
-          enum:
-          - password
-          - google
-          - github
-          type: string
-        email:
-          type: string
-        name:
-          type: string
-        roles:
-          items:
-            enum:
-            - admin
-            - authed2
-            - content_manager
-            - segment_manager
-            - marketer
-            - data_manager
-            - campaign_manager
-            - observer
-            - data_write
-            - user_search
-            - report_viewer
-            - report_manager
-            - orchestrate
-            - experience_manager
-            - developer_free
-            type: string
-          type: array
       type: object
     models.UserResp:
       properties:
@@ -914,6 +857,107 @@ components:
           type: boolean
         organization_id:
           type: string
+        updated:
+          format: date-time
+          type: string
+      type: object
+    models.User:
+      properties:
+        auth_type:
+          enum:
+          - password
+          - google
+          - github
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        roles:
+          items:
+            enum:
+            - admin
+            - authed2
+            - content_manager
+            - segment_manager
+            - marketer
+            - data_manager
+            - campaign_manager
+            - observer
+            - data_write
+            - user_search
+            - report_viewer
+            - report_manager
+            - orchestrate
+            - experience_manager
+            - developer_free
+            type: string
+          type: array
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.RoleReq:
+      properties:
+        roles:
+          items:
+            enum:
+            - admin
+            - authed2
+            - content_manager
+            - segment_manager
+            - marketer
+            - data_manager
+            - campaign_manager
+            - observer
+            - data_write
+            - user_search
+            - report_viewer
+            - report_manager
+            - orchestrate
+            - experience_manager
+            - developer_free
+            type: string
+          type: array
+      type: object
+    models.UserAccount:
+      properties:
+        account_id:
+          description: The Account ID
+          type: string
+        aid:
+          description: The account AID
+          type: integer
+        auth0_connections:
+          items:
+            type: string
+          type: array
+        created:
+          format: date-time
+          type: string
+        expiration:
+          format: date-time
+          type: string
+        granted_by:
+          description: The User ID who granted the account access
+          type: string
+        reason:
+          type: string
+        roles:
+          description: Which roles does the user have for this account
+          items:
+            type: string
+          type: array
         updated:
           format: date-time
           type: string

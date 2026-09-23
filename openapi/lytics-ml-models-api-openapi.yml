@@ -59,6 +59,8 @@ paths:
       summary: Get ML Models
       tags:
       - ML Models
+      operationId: getMl
+      x-operation-id-source: derived
     post:
       description: Create an ML Model
       parameters:
@@ -110,6 +112,8 @@ paths:
       summary: Post ML Model
       tags:
       - ML Models
+      operationId: postMl
+      x-operation-id-source: derived
   /ml/{id}:
     delete:
       description: Delete an ML model by ID
@@ -149,6 +153,8 @@ paths:
       summary: Delete ML Model
       tags:
       - ML Models
+      operationId: deleteMlById
+      x-operation-id-source: derived
     get:
       description: Get an ML model by ID
       parameters:
@@ -198,6 +204,8 @@ paths:
       summary: Get ML Model
       tags:
       - ML Models
+      operationId: getMlById
+      x-operation-id-source: derived
     put:
       description: Update an ML model by ID
       parameters:
@@ -262,6 +270,8 @@ paths:
       summary: Update ML Model
       tags:
       - ML Models
+      operationId: putMlById
+      x-operation-id-source: derived
   /ml/{id}/summary:
     get:
       description: Get an ML model's summary by ID
@@ -312,103 +322,10 @@ paths:
       summary: Get ML Model Summary
       tags:
       - ML Models
+      operationId: getMlByIdSummary
+      x-operation-id-source: derived
 components:
   schemas:
-    models.ModelMessage:
-      properties:
-        severity:
-          description: Severity level of the message; "info", "warn", "error", or "debug"
-          type: string
-        tags:
-          description: Tags for the message; "summary", "workflow", "autotune", "collinearity", or "verdict"
-          items:
-            type: string
-          type: array
-        text:
-          description: Model message
-          type: string
-      type: object
-    models.MLSummaryResponse:
-      properties:
-        features:
-          description: All features of final model build with importances and correlations of each
-          items:
-            $ref: '#/components/schemas/models.Feature'
-          type: array
-        id:
-          description: ID of the model
-          type: string
-        name:
-          description: Name of the model
-          type: string
-        state:
-          description: State of the model, "complete", "building", or "invalid"
-          type: string
-        summary:
-          $ref: '#/components/schemas/models.MLSummary'
-      type: object
-    models.ConfusionMatrix:
-      properties:
-        FalseNegative:
-          description: Predicted negative but actual positive
-          type: integer
-        FalsePositive:
-          description: Predicted positive but actual negative
-          type: integer
-        TrueNegative:
-          description: Predicted negative and actual negative
-          type: integer
-        TruePositive:
-          description: Predicted positive and actual positive
-          type: integer
-      type: object
-    models.ModelConfig:
-      properties:
-        additional:
-          description: Additional features to include in the model
-          items:
-            type: string
-          type: array
-        auto_tune:
-          description: Automatically search through all data fields in Lytics and build the optimized model of the best fields
-          type: boolean
-        blocked:
-          description: Features to exclude from the model
-          items:
-            type: string
-          type: array
-        build_only:
-          description: Train the model only, do not deploy
-          type: boolean
-        collect:
-          description: Number of samples to collect for training
-          type: integer
-        internal:
-          description: Internal Lytics model; not visible to users
-          type: boolean
-        re_run:
-          description: Re-train the model every week
-          type: boolean
-        use_content:
-          description: Use content affinities as features
-          type: boolean
-        use_scores:
-          description: Use behavioral scores as features
-          type: boolean
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
     models.MLSummary:
       properties:
         accuracy:
@@ -453,48 +370,39 @@ components:
           description: Computed as the optimal threshold to use when creating predictive audiences. The value that optimizes both reach and accuracy simultaneously
           type: number
       type: object
-    models.Impact:
+    models.ModelConfig:
       properties:
-        lift:
-          description: '%increase in the target audience when the feature is present'
-          type: number
-        threshold:
-          description: For numeric fields; use for determining lift
-          type: number
-        value:
-          description: For categorical fields
-          type: string
-      type: object
-    models.FieldPrevalence:
-      properties:
-        source:
-          description: Field prevalence in the source audience
-          type: number
-        target:
-          description: Field prevalence in the target audience
-          type: number
-      type: object
-    models.Feature:
-      properties:
-        correlation:
-          description: Correlation coeffient between the feature and the target audience
-          type: number
-        field_prevalence:
-          $ref: '#/components/schemas/models.FieldPrevalence'
-        impact:
-          $ref: '#/components/schemas/models.Impact'
-        importance:
-          description: Feature importance as calculated by the model
-          type: number
-        kind:
-          description: Kind of the feature; segment, lql, score, content, campaign, or unknown
-          type: string
-        name:
-          description: Name of the feature/data field
-          type: string
-        type:
-          description: Type of the feature; numeric or categorical
-          type: string
+        additional:
+          description: Additional features to include in the model
+          items:
+            type: string
+          type: array
+        auto_tune:
+          description: Automatically search through all data fields in Lytics and build the optimized model of the best fields
+          type: boolean
+        blocked:
+          description: Features to exclude from the model
+          items:
+            type: string
+          type: array
+        build_only:
+          description: Train the model only, do not deploy
+          type: boolean
+        collect:
+          description: Number of samples to collect for training
+          type: integer
+        internal:
+          description: Internal Lytics model; not visible to users
+          type: boolean
+        re_run:
+          description: Re-train the model every week
+          type: boolean
+        use_content:
+          description: Use content affinities as features
+          type: boolean
+        use_scores:
+          description: Use behavioral scores as features
+          type: boolean
       type: object
     lioerrors.ApiV2ErrorOut:
       properties:
@@ -553,6 +461,63 @@ components:
           type: string
         status:
           description: HTTP Status Code
+          type: integer
+      type: object
+    models.ModelMessage:
+      properties:
+        severity:
+          description: Severity level of the message; "info", "warn", "error", or "debug"
+          type: string
+        tags:
+          description: Tags for the message; "summary", "workflow", "autotune", "collinearity", or "verdict"
+          items:
+            type: string
+          type: array
+        text:
+          description: Model message
+          type: string
+      type: object
+    models.MLSummaryResponse:
+      properties:
+        features:
+          description: All features of final model build with importances and correlations of each
+          items:
+            $ref: '#/components/schemas/models.Feature'
+          type: array
+        id:
+          description: ID of the model
+          type: string
+        name:
+          description: Name of the model
+          type: string
+        state:
+          description: State of the model, "complete", "building", or "invalid"
+          type: string
+        summary:
+          $ref: '#/components/schemas/models.MLSummary'
+      type: object
+    models.FieldPrevalence:
+      properties:
+        source:
+          description: Field prevalence in the source audience
+          type: number
+        target:
+          description: Field prevalence in the target audience
+          type: number
+      type: object
+    models.ConfusionMatrix:
+      properties:
+        FalseNegative:
+          description: Predicted negative but actual positive
+          type: integer
+        FalsePositive:
+          description: Predicted positive but actual negative
+          type: integer
+        TrueNegative:
+          description: Predicted negative and actual negative
+          type: integer
+        TruePositive:
+          description: Predicted positive and actual positive
           type: integer
       type: object
     models.MLModel:
@@ -615,6 +580,53 @@ components:
           items:
             type: string
           type: array
+      type: object
+    models.Feature:
+      properties:
+        correlation:
+          description: Correlation coeffient between the feature and the target audience
+          type: number
+        field_prevalence:
+          $ref: '#/components/schemas/models.FieldPrevalence'
+        impact:
+          $ref: '#/components/schemas/models.Impact'
+        importance:
+          description: Feature importance as calculated by the model
+          type: number
+        kind:
+          description: Kind of the feature; segment, lql, score, content, campaign, or unknown
+          type: string
+        name:
+          description: Name of the feature/data field
+          type: string
+        type:
+          description: Type of the feature; numeric or categorical
+          type: string
+      type: object
+    models.Impact:
+      properties:
+        lift:
+          description: '%increase in the target audience when the feature is present'
+          type: number
+        threshold:
+          description: For numeric fields; use for determining lift
+          type: number
+        value:
+          description: For categorical fields
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
   securitySchemes:
     ApiKeyAuth:

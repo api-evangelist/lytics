@@ -12,11 +12,10 @@ servers:
 - url: https://api.lytics.io/v2
 tags:
 - description: Create and manage data models and their record stores.
-  name: DataModels
+  name: Data models
 paths:
   /data/datamodel/size:
     get:
-      description: Get recordstore size for a list of datamodel
       parameters:
       - description: The account ID. Defaults to the user's default account.
         in: query
@@ -65,10 +64,11 @@ paths:
       - ApiKeyAuth: []
       summary: Get recordstore size for a list of datamodel
       tags:
-      - DataModels
+      - Data models
+      operationId: getDataDatamodelSize
+      x-operation-id-source: derived
   /data/datamodel/{id}/size:
     get:
-      description: Get recordstore size for a datamodel
       parameters:
       - description: The account ID. Defaults to the user's default account.
         in: query
@@ -115,7 +115,9 @@ paths:
       - ApiKeyAuth: []
       summary: Get recordstore size for a datamodel
       tags:
-      - DataModels
+      - Data models
+      operationId: getDataDatamodelByIdSize
+      x-operation-id-source: derived
   /datamodel:
     delete:
       description: Delete multiple datamodels
@@ -155,7 +157,9 @@ paths:
       - ApiKeyAuth: []
       summary: Delete datamodels
       tags:
-      - DataModels
+      - Data models
+      operationId: deleteDatamodel
+      x-operation-id-source: derived
     get:
       description: Get a list of all datamodels for the account
       parameters:
@@ -199,7 +203,9 @@ paths:
       - ApiKeyAuth: []
       summary: Get datamodels
       tags:
-      - DataModels
+      - Data models
+      operationId: getDatamodel
+      x-operation-id-source: derived
     post:
       description: Create a datamodel
       parameters:
@@ -250,7 +256,9 @@ paths:
       - ApiKeyAuth: []
       summary: Create datamodel
       tags:
-      - DataModels
+      - Data models
+      operationId: postDatamodel
+      x-operation-id-source: derived
   /datamodel/{id}:
     delete:
       description: Delete a datamodel
@@ -295,7 +303,9 @@ paths:
       - ApiKeyAuth: []
       summary: Delete datamodel
       tags:
-      - DataModels
+      - Data models
+      operationId: deleteDatamodelById
+      x-operation-id-source: derived
     get:
       description: Get a datamodel by ID
       parameters:
@@ -349,7 +359,9 @@ paths:
       - ApiKeyAuth: []
       summary: Get datamodel
       tags:
-      - DataModels
+      - Data models
+      operationId: getDatamodelById
+      x-operation-id-source: derived
     put:
       description: Update a datamodel
       parameters:
@@ -406,10 +418,11 @@ paths:
       - ApiKeyAuth: []
       summary: Update datamodel
       tags:
-      - DataModels
+      - Data models
+      operationId: putDatamodelById
+      x-operation-id-source: derived
   /datamodel/{id}/logs:
     get:
-      description: Get datamodel logs
       parameters:
       - description: The account ID. Defaults to the user's default account.
         in: query
@@ -458,10 +471,11 @@ paths:
       - ApiKeyAuth: []
       summary: Get datamodel logs
       tags:
-      - DataModels
+      - Data models
+      operationId: getDatamodelByIdLogs
+      x-operation-id-source: derived
   /datamodel/{id}/sync/{state}:
     get:
-      description: Run a sync job for a datamodel
       parameters:
       - description: The account ID. Defaults to the user's default account.
         in: query
@@ -514,61 +528,17 @@ paths:
       - ApiKeyAuth: []
       summary: Run a sync job for a datamodel
       tags:
-      - DataModels
+      - Data models
+      operationId: getDatamodelByIdSyncByState
+      x-operation-id-source: derived
 components:
   schemas:
-    models.DataModelJoin:
+    models.SyncError:
       properties:
-        foreign_key:
+        error:
           type: string
-        foreign_table:
+        time:
           type: string
-        primary_key:
-          type: string
-      type: object
-    models.DataModelCreateReq:
-      properties:
-        activated_fields:
-          items:
-            type: string
-          type: array
-        connection_id:
-          type: string
-        create_profiles:
-          type: boolean
-        description:
-          type: string
-        joined_to:
-          $ref: '#/components/schemas/models.DataModelJoin'
-        name:
-          type: string
-        primary_keys:
-          items:
-            type: string
-          type: array
-        slug:
-          type: string
-        sql:
-          type: string
-        sql_dialect:
-          type: string
-        status:
-          type: string
-        sync_period:
-          type: number
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
       type: object
     models.DataModelUpdateReq:
       properties:
@@ -585,60 +555,6 @@ components:
         sql:
           type: string
         status:
-          type: string
-        sync_period:
-          type: integer
-      type: object
-    models.AnomalyRuleResp:
-      properties:
-        aid:
-          type: integer
-        checks:
-          items:
-            $ref: '#/components/schemas/models.RuleCheckConfigReq'
-          type: array
-        created:
-          type: string
-        id:
-          type: string
-        subject_id:
-          type: string
-        subject_type:
-          type: string
-        updated:
-          type: string
-      type: object
-    models.DataModelHealth:
-      properties:
-        details:
-          type: string
-        status:
-          type: string
-      type: object
-    models.RuleCheckConfigReq:
-      properties:
-        allowable_violations:
-          type: integer
-        interval:
-          type: string
-        lookback_count:
-          type: integer
-        max_threshold:
-          type: integer
-        metric_type:
-          type: string
-        min_threshold:
-          type: integer
-        type:
-          type: string
-        variance_pct:
-          type: number
-      type: object
-    models.SyncSchedule:
-      properties:
-        next_sync_time:
-          type: string
-        prev_sync_time:
           type: string
         sync_period:
           type: integer
@@ -686,6 +602,41 @@ components:
           description: The time the error occurred
           format: date-time
           type: string
+      type: object
+    models.DataModelHealth:
+      properties:
+        details:
+          type: string
+        status:
+          type: string
+      type: object
+    models.RuleCheckConfigReq:
+      properties:
+        allowable_violations:
+          type: integer
+        interval:
+          type: string
+        lookback_count:
+          type: integer
+        max_threshold:
+          type: integer
+        metric_type:
+          type: string
+        min_threshold:
+          type: integer
+        type:
+          type: string
+        variance_pct:
+          type: number
+      type: object
+    models.SyncSchedule:
+      properties:
+        next_sync_time:
+          type: string
+        prev_sync_time:
+          type: string
+        sync_period:
+          type: integer
       type: object
     models.ApiResponse:
       properties:
@@ -765,24 +716,13 @@ components:
         updated:
           type: string
       type: object
-    models.DataModelSizeResponse:
+    models.DataModelJoin:
       properties:
-        id:
+        foreign_key:
           type: string
-        name:
+        foreign_table:
           type: string
-        record_store_size:
-          type: integer
-        slug_name:
-          type: string
-      type: object
-    models.DataModelDeleteStatus:
-      properties:
-        deleted:
-          type: boolean
-        id:
-          type: string
-        reason:
+        primary_key:
           type: string
       type: object
     models.DataModelLog:
@@ -797,12 +737,88 @@ components:
         verb:
           type: string
       type: object
-    models.SyncError:
+    models.DataModelSizeResponse:
       properties:
-        error:
+        id:
           type: string
-        time:
+        name:
           type: string
+        record_store_size:
+          type: integer
+        slug_name:
+          type: string
+      type: object
+    models.AnomalyRuleResp:
+      properties:
+        aid:
+          type: integer
+        checks:
+          items:
+            $ref: '#/components/schemas/models.RuleCheckConfigReq'
+          type: array
+        created:
+          type: string
+        id:
+          type: string
+        subject_id:
+          type: string
+        subject_type:
+          type: string
+        updated:
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.DataModelDeleteStatus:
+      properties:
+        deleted:
+          type: boolean
+        id:
+          type: string
+        reason:
+          type: string
+      type: object
+    models.DataModelCreateReq:
+      properties:
+        activated_fields:
+          items:
+            type: string
+          type: array
+        connection_id:
+          type: string
+        create_profiles:
+          type: boolean
+        description:
+          type: string
+        joined_to:
+          $ref: '#/components/schemas/models.DataModelJoin'
+        name:
+          type: string
+        primary_keys:
+          items:
+            type: string
+          type: array
+        slug:
+          type: string
+        sql:
+          type: string
+        sql_dialect:
+          type: string
+        status:
+          type: string
+        sync_period:
+          type: number
       type: object
   securitySchemes:
     ApiKeyAuth:
