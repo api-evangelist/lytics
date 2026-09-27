@@ -22,7 +22,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: SegmentML Model Fetch
-      operationId: SegmentML Model Fetch
+      operationId: SegmentMLModelFetch
       description: 'Get a SegmentML model.
 
 
@@ -100,6 +100,8 @@ paths:
         example: source::target
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: SegmentML Model Fetch
     delete:
       responses:
         '204':
@@ -108,7 +110,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: SegmentML Delete
-      operationId: SegmentML Delete
+      operationId: SegmentMLDelete
       description: 'Delete a SegmentML model.
 
 
@@ -135,6 +137,8 @@ paths:
         example: source::target
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: SegmentML Delete
   /api/segmentml:
     post:
       responses:
@@ -203,7 +207,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: SegmentML Create
-      operationId: SegmentML Create
+      operationId: SegmentMLCreate
       description: 'Create a new SegmentML model.
 
 
@@ -359,6 +363,8 @@ paths:
         example: '0.9'
         schema:
           type: number
+      x-operation-id-source: normalized
+      x-operation-id-original: SegmentML Create
   /api/segmentml/_dependencies/{modelname}:
     get:
       responses:
@@ -393,7 +399,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: SegmentML Dependencies
-      operationId: SegmentML Dependencies
+      operationId: SegmentMLDependencies
       description: ''
       tags:
       - SegmentML
@@ -411,8 +417,52 @@ paths:
         example: my_model
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: SegmentML Dependencies
 components:
   schemas:
+    SegmentMLDependenciesModel:
+      type: object
+      properties:
+        message:
+          type: string
+        status:
+          type: number
+        data:
+          type: object
+          properties:
+            fields:
+              type: object
+              properties:
+                lytics_score_frequency:
+                  type: array
+                  items:
+                    type: array
+                    items: {}
+                lytics_score_intensity:
+                  type: array
+                  items:
+                    type: array
+                    items: {}
+      example:
+        message: success
+        status: 200
+        data:
+          fields:
+            lytics_score_frequency:
+            - - 1
+              - 0.5283225806451614
+            - - 4.6
+              - 0.5283225806451614
+            - - 8.2
+              - 0.5281612903225807
+            lytics_score_intensity:
+            - - 1
+              - 0.5283225806451614
+            - - 4.6
+              - 0.5283225806451614
+            - - 8.2
+              - 0.5281612903225807
     SegmentMLModel:
       type: object
       properties:
@@ -571,48 +621,6 @@ components:
           use_content: false
           build_only: false
           auto_tune: false
-    SegmentMLDependenciesModel:
-      type: object
-      properties:
-        message:
-          type: string
-        status:
-          type: number
-        data:
-          type: object
-          properties:
-            fields:
-              type: object
-              properties:
-                lytics_score_frequency:
-                  type: array
-                  items:
-                    type: array
-                    items: {}
-                lytics_score_intensity:
-                  type: array
-                  items:
-                    type: array
-                    items: {}
-      example:
-        message: success
-        status: 200
-        data:
-          fields:
-            lytics_score_frequency:
-            - - 1
-              - 0.5283225806451614
-            - - 4.6
-              - 0.5283225806451614
-            - - 8.2
-              - 0.5281612903225807
-            lytics_score_intensity:
-            - - 1
-              - 0.5283225806451614
-            - - 4.6
-              - 0.5283225806451614
-            - - 8.2
-              - 0.5281612903225807
   securitySchemes:
     ApiKeyAuth:
       in: header

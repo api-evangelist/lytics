@@ -404,7 +404,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Preview Config
-      operationId: Preview Config
+      operationId: PreviewConfig
       description: Renders a JavaScript file containing a single Experiences Pathfora configuration for previewing a web personalize Experience.
       tags:
       - Experience
@@ -429,6 +429,8 @@ paths:
         example: 864a26fd5d5148b0b7fa187828368b81
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Preview Config
   /api/experience/candidate/{accountid}/config.js:
     get:
       responses:
@@ -438,7 +440,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Production Config
-      operationId: Production Config
+      operationId: ProductionConfig
       description: Renders a JavaScript file containing all published Experiences Candidate Pathfora configurations.
       tags:
       - Experience
@@ -456,6 +458,8 @@ paths:
         example: 864a26fd5d5148b0b7fa187828368b81
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Production Config
   /api/experience/group:
     get:
       responses:
@@ -743,10 +747,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Master Group Priority
-      operationId: Master Group Priority
+      operationId: MasterGroupPriority
       description: Manages the unique top level Journey priority record for an account. Used only for managing hierarchy of Experience Groups classified as Journeys in the UI.
       tags:
       - Experience
+      x-operation-id-source: normalized
+      x-operation-id-original: Master Group Priority
 components:
   securitySchemes:
     ApiKeyAuth:

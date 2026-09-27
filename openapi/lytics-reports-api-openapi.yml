@@ -500,6 +500,30 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.Component:
+      properties:
+        config:
+          description: The configuration for the component. The structure of this object is dependent on the type of component. See the top of the page for more information.
+        description:
+          description: An optional description of the component
+          type: string
+        id:
+          type: string
+        name:
+          description: The name of the component to be used in the Report.
+          type: string
+        type:
+          description: The type of component to be used in the Report.
+          enum:
+          - size
+          - composition
+          - overlap
+          - dataflow
+          type: string
+      required:
+      - name
+      - type
+      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -544,21 +568,6 @@ components:
           format: date-time
           type: string
       type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
     models.Report:
       properties:
         components:
@@ -578,30 +587,6 @@ components:
       required:
       - label
       type: object
-    models.Component:
-      properties:
-        config:
-          description: The configuration for the component. The structure of this object is dependent on the type of component. See the top of the page for more information.
-        description:
-          description: An optional description of the component
-          type: string
-        id:
-          type: string
-        name:
-          description: The name of the component to be used in the Report.
-          type: string
-        type:
-          description: The type of component to be used in the Report.
-          enum:
-          - size
-          - composition
-          - overlap
-          - dataflow
-          type: string
-      required:
-      - name
-      - type
-      type: object
     models.ApiErrorResponse:
       properties:
         errors:
@@ -609,6 +594,21 @@ components:
           items:
             $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
           type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
         request_id:
           type: string
         status:

@@ -50,7 +50,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: User Fetch
-      operationId: User Fetch
+      operationId: UserFetch
       description: Get a single admin user
       tags:
       - User
@@ -68,6 +68,8 @@ paths:
         example: 1234abc
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: User Fetch
     put:
       responses:
         '200':
@@ -101,7 +103,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: User Update
-      operationId: User Update
+      operationId: UserUpdate
       description: Update An **Lytics Admin User**
       tags:
       - User
@@ -119,6 +121,8 @@ paths:
         example: 1234abc
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: User Update
     servers:
     - url: https://api.lytics.io
   /api/user:
@@ -155,7 +159,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: User Create
-      operationId: User Create
+      operationId: UserCreate
       description: 'Create/Invite A **Lytics Admin User** this will either create
 
         a new user if that email is new, or invite user to have access to
@@ -220,6 +224,8 @@ paths:
               example:
                 name: Bob
                 email: bob@bob.com
+      x-operation-id-source: normalized
+      x-operation-id-original: User Create
     get:
       responses:
         '200':
@@ -253,10 +259,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: User List
-      operationId: User List
+      operationId: UserList
       description: Get a list of all administrative users for an account and their roles.
       tags:
       - User
+      x-operation-id-source: normalized
+      x-operation-id-original: User List
     servers:
     - url: https://api.lytics.io
   /api/user/{userid}/setpassword:
@@ -293,7 +301,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: User SetPassword
-      operationId: User SetPassword
+      operationId: UserSetPassword
       description: ''
       tags:
       - User
@@ -321,6 +329,8 @@ paths:
                   type: string
               example:
                 password: abc
+      x-operation-id-source: normalized
+      x-operation-id-original: User SetPassword
     servers:
     - url: https://api.lytics.io
   /user:
@@ -735,71 +745,70 @@ components:
             - admin
             created: '2014-08-04T21:18:20.124Z'
             updated: '2014-08-04T21:18:20.124Z'
-    lioerrors.ApiV2ErrorOut:
+    models.UserAccount:
       properties:
-        code:
-          description: Lytics Error Code
-          enum:
-          - UNKNOWN-000
-          - BADREQ-001
-          - JOB-BADREQ-002
-          - NOTFOUND-003
-          - JOB-NOTFOUND-004
-          - WF-NOTFOUND-005
-          - AUTH-NOTFOUND-006
-          - AUTHTYPE-NOTFOUND-007
-          - AUTH-BADREQ-008
-          - TABLE-NOTFOUND-009
-          - SCHEMA-NOTFOUND-010
-          - SCHEMAVERSION-NOTFOUND-011
-          - ENTITY-NOTFOUND-012
-          - QUERY-NOTFOUND-013
-          - STREAM-NOTFOUND-014
-          - PROVIDER-BADREQ-015
-          - PROVIDER-NOTFOUND-016
-          - UNAUTHORIZED-017
-          - SCHEMA-INVALID-018
-          - INTERNAL-019
-          - ROUTERULE-NOTFOUND-020
-          - ACCOUNT-NOTFOUND-021
-          - JOB-FAULT-022
-          - USER-NOTFOUND-023
-          - USER-BADREQ-024
-          - JSON-BADREQ-025
-          - FORBIDDEN-026
+        account_id:
+          description: The Account ID
           type: string
-        level:
-          description: When the error was generated
+        aid:
+          description: The account AID
+          type: integer
+        auth0_connections:
+          items:
+            type: string
+          type: array
+        created:
+          format: date-time
           type: string
-        message:
-          description: A description of the error that occurred
+        expiration:
+          format: date-time
           type: string
-        timestamp:
-          description: The time the error occurred
+        granted_by:
+          description: The User ID who granted the account access
+          type: string
+        reason:
+          type: string
+        roles:
+          description: Which roles does the user have for this account
+          items:
+            type: string
+          type: array
+        updated:
           format: date-time
           type: string
       type: object
-    models.ApiResponse:
+    models.User:
       properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
+        auth_type:
+          enum:
+          - password
+          - google
+          - github
           type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.PasswordResetReq:
-      properties:
-        oldpassword:
+        email:
           type: string
-        password:
+        name:
           type: string
+        roles:
+          items:
+            enum:
+            - admin
+            - authed2
+            - content_manager
+            - segment_manager
+            - marketer
+            - data_manager
+            - campaign_manager
+            - observer
+            - data_write
+            - user_search
+            - report_viewer
+            - report_manager
+            - orchestrate
+            - experience_manager
+            - developer_free
+            type: string
+          type: array
       type: object
     models.UserResp:
       properties:
@@ -861,38 +870,49 @@ components:
           format: date-time
           type: string
       type: object
-    models.User:
+    lioerrors.ApiV2ErrorOut:
       properties:
-        auth_type:
+        code:
+          description: Lytics Error Code
           enum:
-          - password
-          - google
-          - github
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
           type: string
-        email:
+        level:
+          description: When the error was generated
           type: string
-        name:
+        message:
+          description: A description of the error that occurred
           type: string
-        roles:
-          items:
-            enum:
-            - admin
-            - authed2
-            - content_manager
-            - segment_manager
-            - marketer
-            - data_manager
-            - campaign_manager
-            - observer
-            - data_write
-            - user_search
-            - report_viewer
-            - report_manager
-            - orchestrate
-            - experience_manager
-            - developer_free
-            type: string
-          type: array
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
       type: object
     models.ApiErrorResponse:
       properties:
@@ -901,6 +921,21 @@ components:
           items:
             $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
           type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
         request_id:
           type: string
         status:
@@ -930,36 +965,11 @@ components:
             type: string
           type: array
       type: object
-    models.UserAccount:
+    models.PasswordResetReq:
       properties:
-        account_id:
-          description: The Account ID
+        oldpassword:
           type: string
-        aid:
-          description: The account AID
-          type: integer
-        auth0_connections:
-          items:
-            type: string
-          type: array
-        created:
-          format: date-time
-          type: string
-        expiration:
-          format: date-time
-          type: string
-        granted_by:
-          description: The User ID who granted the account access
-          type: string
-        reason:
-          type: string
-        roles:
-          description: Which roles does the user have for this account
-          items:
-            type: string
-          type: array
-        updated:
-          format: date-time
+        password:
           type: string
       type: object
   securitySchemes:

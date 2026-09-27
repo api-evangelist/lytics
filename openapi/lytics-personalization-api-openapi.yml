@@ -62,7 +62,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: User Me
-      operationId: User Me
+      operationId: UserMe
       description: Get single User Entity. This is an alias for `/api/entity/user`.
       tags:
       - Personalization
@@ -132,6 +132,8 @@ paths:
         schema:
           type: boolean
           default: 'false'
+      x-operation-id-source: normalized
+      x-operation-id-original: User Me
   /api/entity/{table}/{fieldname}/{fieldval}:
     get:
       responses:
@@ -279,7 +281,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Profile Delete Request
-      operationId: Profile Delete Request
+      operationId: ProfileDeleteRequest
       description: 'Deletes a single Entity (normally a user).
 
 
@@ -341,6 +343,8 @@ paths:
         example: bob@gmail.com
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Profile Delete Request
   /api/entity/{table}/{fieldval}:
     get:
       responses:
@@ -372,7 +376,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Web Personalization
-      operationId: Web Personalization
+      operationId: WebPersonalization
       description: 'Get single User Entity using cookie id. This is same as entity api
 
         but you don''t specify a `fieldname` (user_id, email, etc) and instead it only uses the cookie identifier.'
@@ -444,6 +448,8 @@ paths:
         schema:
           type: boolean
           default: 'false'
+      x-operation-id-source: normalized
+      x-operation-id-original: Web Personalization
   /api/entity/deletestatus/{request_id}:
     get:
       responses:
@@ -465,7 +471,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: ProfileDeletion Status
-      operationId: ProfileDeletion Status
+      operationId: ProfileDeletionStatus
       description: Retrieves the status of a submitted deletion event.
       tags:
       - Personalization
@@ -483,8 +489,30 @@ paths:
         example: e9d5f2d3d2c7a7d0e801-1526083200
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: ProfileDeletion Status
 components:
   schemas:
+    ProfileDeletionModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            request_id:
+              type: string
+            complete:
+              type: boolean
+      example:
+        status: 200
+        message: delete request received
+        data:
+          request_id: e9d5f2d3d2c7a7d0e801-1526083200
+          complete: false
     PersonalizationModel:
       type: object
       properties:
@@ -526,26 +554,6 @@ components:
           format: json
           name: user
         status: 200
-    ProfileDeletionModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            request_id:
-              type: string
-            complete:
-              type: boolean
-      example:
-        status: 200
-        message: delete request received
-        data:
-          request_id: e9d5f2d3d2c7a7d0e801-1526083200
-          complete: false
   securitySchemes:
     ApiKeyAuth:
       in: header

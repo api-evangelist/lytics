@@ -301,10 +301,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Topic Blacklist Fetch
-      operationId: Content Topic Blacklist Fetch
+      operationId: ContentTopicBlacklistFetch
       description: Fetch the blacklisted topics
       tags:
       - Content
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Topic Blacklist Fetch
     post:
       responses:
         '200':
@@ -339,7 +341,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Topic Blacklist Create
-      operationId: Content Topic Blacklist Create
+      operationId: ContentTopicBlacklistCreate
       description: 'Blacklist or un-blacklist topics to an account''s topic-blacklist
 
 
@@ -390,6 +392,8 @@ paths:
         ```'
       tags:
       - Content
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Topic Blacklist Create
     put:
       responses:
         '200':
@@ -424,7 +428,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Topic Blacklist Update
-      operationId: Content Topic Blacklist Update
+      operationId: ContentTopicBlacklistUpdate
       description: 'Replace topics in an account''s topic-blacklist
 
 
@@ -450,6 +454,8 @@ paths:
         ```'
       tags:
       - Content
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Topic Blacklist Update
     servers:
     - url: https://api.lytics.io
   /api/content/topicrollup/{id}:
@@ -479,7 +485,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: ContentTopicRollup Fetch
-      operationId: ContentTopicRollup Fetch
+      operationId: ContentTopicRollupFetch
       description: Fetch a topic-rollup by **id**
       tags:
       - Content
@@ -497,6 +503,8 @@ paths:
         example: 123abc
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: ContentTopicRollup Fetch
     post:
       responses:
         '201':
@@ -523,7 +531,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: ContentTopicRollup Create
-      operationId: ContentTopicRollup Create
+      operationId: ContentTopicRollupCreate
       description: 'Create a topic-rollup.
 
 
@@ -572,6 +580,8 @@ paths:
         example: 123abc
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: ContentTopicRollup Create
     delete:
       responses:
         '204':
@@ -580,7 +590,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: ContentTopicRollup Delete
-      operationId: ContentTopicRollup Delete
+      operationId: ContentTopicRollupDelete
       description: Delete a topic-rollup
       tags:
       - Content
@@ -598,6 +608,8 @@ paths:
         example: 123abc
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: ContentTopicRollup Delete
     servers:
     - url: https://api.lytics.io
   /api/content/doc:
@@ -733,7 +745,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Classify
-      operationId: Content Classify Debug
+      operationId: ContentClassifyDebug
       description: Classify a document without adding the document to the content table corpus. Used for debugging.
       tags:
       - Content
@@ -758,6 +770,8 @@ paths:
         example: my text
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Classify Debug
     post:
       responses:
         '200':
@@ -835,7 +849,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Classify
-      operationId: Content Classify
+      operationId: ContentClassify
       description: Classify a document and add the document to the content table corpus.
       tags:
       - Content
@@ -860,6 +874,8 @@ paths:
         example: my text
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Classify
     servers:
     - url: https://api.lytics.io
   /api/content/recommend/user/{fieldname}/{fieldval}:
@@ -917,7 +933,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Recommendation
-      operationId: Content Recommendation
+      operationId: ContentRecommendation
       description: ''
       tags:
       - Content
@@ -1005,6 +1021,8 @@ paths:
         example: www.example.com
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Recommendation
     servers:
     - url: https://api.lytics.io
   /api/content/recommend/segment/{segId}:
@@ -1062,7 +1080,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Segment Recommendation
-      operationId: Content Segment Recommendation
+      operationId: ContentSegmentRecommendation
       description: ''
       tags:
       - Content
@@ -1108,6 +1126,8 @@ paths:
         example: affinity
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Segment Recommendation
     servers:
     - url: https://api.lytics.io
   /api/content/recommend/{account}/user/{fieldname}/{fieldval}:
@@ -1165,7 +1185,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Public Content Recommendation
-      operationId: Public Content Recommendation
+      operationId: PublicContentRecommendation
       description: ''
       tags:
       - Content
@@ -1260,6 +1280,8 @@ paths:
         example: www.example.com
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Public Content Recommendation
     servers:
     - url: https://api.lytics.io
   /api/content/taxonomy:
@@ -1309,7 +1331,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Taxonomy
-      operationId: Content Taxonomy
+      operationId: ContentTaxonomy
       description: ''
       tags:
       - Content
@@ -1369,6 +1391,8 @@ paths:
         example: '0.0'
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Taxonomy
     servers:
     - url: https://api.lytics.io
   /api/content/corpus:
@@ -1400,7 +1424,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Corpus
-      operationId: Content Corpus
+      operationId: ContentCorpus
       description: 'Add a document to the content table corpus. Either a URL or text must be provided.
 
         This allows entry of documents/content that get added to content
@@ -1488,6 +1512,8 @@ paths:
         example: Data,Hockey
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Corpus
     servers:
     - url: https://api.lytics.io
   /api/content/filter/topic:
@@ -1518,7 +1544,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Plot
-      operationId: Content Plot
+      operationId: ContentPlot
       description: ''
       tags:
       - Content
@@ -1558,6 +1584,8 @@ paths:
         schema:
           type: integer
           default: 10
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Plot
     servers:
     - url: https://api.lytics.io
   /api/content/doc/{docField}/{docId}/topic/{topicLabel}:
@@ -1599,7 +1627,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Topic Add
-      operationId: Topic Add
+      operationId: TopicAdd
       description: Add a topic to a Document.
       tags:
       - Content
@@ -1639,6 +1667,8 @@ paths:
         schema:
           type: string
           default: '0.5'
+      x-operation-id-source: normalized
+      x-operation-id-original: Topic Add
     delete:
       responses:
         '204':
@@ -1647,7 +1677,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Topic Remove
-      operationId: Topic Remove
+      operationId: TopicRemove
       description: ''
       tags:
       - Content
@@ -1687,6 +1717,8 @@ paths:
         schema:
           type: string
           default: '0.5'
+      x-operation-id-source: normalized
+      x-operation-id-original: Topic Remove
     servers:
     - url: https://api.lytics.io
   /api/content/crawl:
@@ -1702,7 +1734,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Crawl
-      operationId: Content Crawl
+      operationId: ContentCrawl
       description: Create a new crawl for an account
       tags:
       - Content
@@ -1727,6 +1759,8 @@ paths:
         example: '["lytics.com"]'
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Crawl
     servers:
     - url: https://api.lytics.io
   /api/content/metrics:
@@ -1755,10 +1789,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Metrics
-      operationId: Content Metrics
+      operationId: ContentMetrics
       description: Fetch the Account content Metrics.
       tags:
       - Content
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Metrics
     servers:
     - url: https://api.lytics.io
   /api/content/topic/cluster:
@@ -1790,7 +1826,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Topic Clusters
-      operationId: Content Topic Clusters
+      operationId: ContentTopicClusters
       description: 'Get a collection of the most central topics in account''s topic graph, with each topic''s corresponding cluster. This endpoint is meant
 
         to be used as a means to experiment with the `limit`, `direction`, `penalty`, and `threshold` parameters to create a set of clusters
@@ -1835,6 +1871,8 @@ paths:
         example: '0.4'
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Topic Clusters
     post:
       responses:
         '200':
@@ -1863,7 +1901,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create Content Topic Clusters
-      operationId: Create Content Topic Clusters
+      operationId: CreateContentTopicClusters
       description: Create a collection of the most central topics in an account's topic grah, with each topic's corresponding cluster.
       tags:
       - Content
@@ -1902,6 +1940,8 @@ paths:
         example: '0.4'
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Create Content Topic Clusters
     servers:
     - url: https://api.lytics.io
   /api/content/topic/cluster/{topicId}:
@@ -1933,7 +1973,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Content Topic Cluster
-      operationId: Content Topic Cluster
+      operationId: ContentTopicCluster
       description: 'Get topics that are related to an input topic.
 
         This can be useful for creating topic rollups,
@@ -1987,6 +2027,8 @@ paths:
         example: '0.4'
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Content Topic Cluster
     servers:
     - url: https://api.lytics.io
   /content/align:
@@ -2184,303 +2226,78 @@ paths:
     - url: https://api.lytics.io/v2
 components:
   schemas:
-    ContentTopicBlocklistModel:
+    ContentTaxonomyModel:
       type: object
       properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              label:
-                type: string
-              doc_count:
-                type: number
-              total:
-                type: number
-              missing:
-                type: number
-              present:
-                type: number
-              avg:
-                type: number
-              tags:
-                type: array
-                items:
-                  type: string
-            required:
-            - label
-            - doc_count
-            - total
-            - missing
-            - present
-            - avg
-            - tags
-      example:
-        status: 200
-        message: success
-        data:
-        - label: Data-First Marketing
-          doc_count: 275
-          total: 380636
-          missing: 216048
-          present: 143710
-          avg: 0.5983867964798089
-          tags:
-          - blacklisted
-        - label: User Data Unification
-          doc_count: 273
-          total: 380636
-          missing: 216048
-          present: 154068
-          avg: 0.6036863622558337
-          tags:
-          - blacklisted
-    ContentTopicSummaryModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
         data:
           type: object
           properties:
-            topics:
-              type: object
-              properties:
-                total:
-                  type: number
-                missing:
-                  type: number
-                present:
-                  type: number
-                bucket_none:
-                  type: number
-                bucket_low:
-                  type: number
-                bucket_mid:
-                  type: number
-                bucket_high:
-                  type: number
-                avg:
-                  type: number
-            docs:
-              type: object
-              properties:
-                total:
-                  type: number
-                urls:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      url:
-                        type: string
-                      title:
-                        type: string
-                      topics:
-                        type: array
-                        items:
-                          type: string
-                      id:
-                        type: string
-      example:
-        status: 200
-        message: success
-        data:
-          topics:
-            total: 3232717
-            missing: 2985477
-            present: 239239
-            bucket_none: 8001
-            bucket_low: 26279
-            bucket_mid: 11742
-            bucket_high: 201218
-            avg: 0.90787879293533
-          docs:
-            total: 373
-            urls:
-            - url: www.our-site.com/product/new-product-xyz
-              title: Blue Running Shoes that make you faster
-              topics:
-              - our-site (company)
-              - running
-              - shoes
-              id: '3395466611293777389'
-    ContentPlotModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            segment_id:
-              type: string
-            collections:
+            n:
+              type: number
+            nodes:
               type: array
               items:
                 type: object
                 properties:
-                  field:
-                    type: string
                   name:
                     type: string
-                  points:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        topic:
-                          type: string
-                        value:
-                          type: number
-                        avg_affinity:
-                          type: number
-                        doc_ct:
-                          type: number
-      example:
-        status: 200
-        message: success
-        data:
-          segment_id: 34a492e518b117228954e0bd8a7cfda7
-          collections:
-          - field: int_score_momentum
-            name: do_more
-            points:
-            - topic: guerrilla marketing
-              value: 41.411764705882
-              avg_affinity: 0.58597826180251
-              doc_ct: 27
-    ContentTopicRollupSummaryModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            docs:
-              type: object
-              properties:
-                total:
-                  type: number
-                urls:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      author:
-                        type: string
-                      created:
-                        type: string
-                      description:
-                        type: string
-                      fetched:
-                        type: string
-                      id:
-                        type: string
-                      meta:
-                        type: array
-                        items:
-                          type: string
-                      primary_image:
-                        type: string
-                      stream:
-                        type: string
-                      title:
-                        type: string
-                      topic_relevances:
-                        type: object
-                        properties:
-                          Recipe:
-                            type: number
-                          baking:
-                            type: number
-                      topic_rollups:
-                        type: object
-                        properties:
-                          Things:
-                            type: number
-                          Desserts:
-                            type: number
-                      topics:
-                        type: array
-                        items:
-                          type: string
-                      updated:
-                        type: string
-                      url:
-                        type: string
-                    required:
-                    - author
-                    - created
-                    - description
-                    - id
-                    - primary_image
-                    - stream
-                    - title
-                    - topic_relevances
-                    - topic_rollups
-                    - topics
-                    - updated
-                    - url
-            rollups: {}
+                  doc_count:
+                    type: number
+                required:
+                - name
+                - doc_count
+            links:
+              type: array
+              items:
+                type: object
+                properties:
+                  source:
+                    type: number
+                  target:
+                    type: number
+                  value:
+                    type: number
+                required:
+                - source
+                - target
+                - value
         message:
           type: string
         status:
           type: number
       example:
         data:
-          docs:
-            total: 2
-            urls:
-            - author: Cookie Monster
-              created: '2016-01-14T08:39:01.354824186-07:00'
-              description: you should definitely make these cookies
-              fetched: '2016-07-19T13:39:20.158747984-04:00'
-              id: '4525087172572165639'
-              meta:
-              - og:locale/en_US
-              primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
-              stream: default
-              title: how to make some cookies
-              topic_relevances:
-                Recipe: 0.64
-                baking: 0.75
-              topic_rollups:
-                Things: 0.75
-              topics:
-              - baking
-              - Recipe
-              updated: '2016-07-19T13:34:18-04:00'
-              url: www.recipes.com/chocolate-chip-cookies
-            - author: The Swedish Chef
-              created: '2016-07-19T13:39:20.158747984-04:00'
-              description: a delicious cake
-              id: '-2119104978705508335'
-              primary_image: http://www.vanillacake.com/cake.jpg
-              stream: default
-              title: Basic Vanilla Cake Recipe
-              topic_relevances:
-                Recipe: 0.64
-                baking: 0.85
-              topic_rollups:
-                Desserts: 0.85
-              topics:
-              - Recipe
-              - baking
-              updated: '2016-07-19T13:29:18-04:00'
-              url: www.recipes.com/cake
-          rollups: null
+          n: 438
+          nodes:
+          - name: marketing technology
+            doc_count: 2
+          - name: AdWords
+            doc_count: 1
+          - name: ad retargeting
+            doc_count: 4
+          - name: analytics
+            doc_count: 2
+          - name: customer service
+            doc_count: 1
+          - name: data visualization
+            doc_count: 2
+          - name: data-first marketing
+            doc_count: 157
+          - name: personalization
+            doc_count: 15
+          links:
+          - source: 66
+            target: 54
+            value: 0.375
+          - source: 66
+            target: 75
+            value: 0.25
+          - source: 66
+            target: 37
+            value: 0.25
         message: success
         status: 200
-    ContentSegmentRecommendationModel:
+    ContentRecommendationModel:
       type: object
       properties:
         data:
@@ -2627,155 +2444,7 @@ components:
             value: 0.66
           - label: baking
             value: 0.55
-    ContentTopicClustersModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            clusters:
-              type: array
-              items:
-                type: array
-                items: {}
-            coverage:
-              type: number
-        message:
-          type: string
-        status:
-          type: number
-      example:
-        data:
-          clusters:
-          - - Baking
-            - Cakes
-            - Cupakes
-            - Cookies
-          - - Grilling
-            - Beef
-            - Chicken
-            - Steak
-          coverage: 0.2062
-        message: success
-        status: 200
-    ContentDocumentModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            total:
-              type: number
-            urls:
-              type: array
-              items:
-                type: object
-                properties:
-                  url:
-                    type: string
-                  title:
-                    type: string
-                  topics:
-                    type: array
-                    items:
-                      type: string
-                  id:
-                    type: string
-      example:
-        status: 200
-        message: success
-        data:
-          total: 1
-          urls:
-          - url: www.our-site.com/product/new-product-xyz
-            title: Blue Running Shoes that make you faster
-            topics:
-            - our-site (company)
-            - running
-            - shoes
-            id: '3395466611293777389'
-    ContentMetricsModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            total:
-              type: number
-            nokeys:
-              type: number
-            nocontent:
-              type: number
-            noclassifiedcontent:
-              type: number
-            noaffinities:
-              type: number
-            errors:
-              type: number
-            success:
-              type: number
-        message:
-          type: string
-        status:
-          type: number
-      example:
-        data:
-          total: 215590
-          nokeys: 0
-          nocontent: 144430
-          noclassifiedcontent: 53537
-          noaffinities: 0
-          errors: 0
-          success: 17623
-        message: success
-        status: 200
-    ContentTopicRollupListModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              account_id:
-                type: string
-              label:
-                type: string
-              created:
-                type: string
-              updated:
-                type: string
-              topics:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    label:
-                      type: string
-                    value:
-                      type: number
-                  required:
-                  - label
-                  - value
-      example:
-        data:
-        - id: 6a7f76ff97ad0e3e96c162f74aee8f8f
-          account_id: 4f7b525bdba058fc096757a6
-          label: Baking rollup
-          created: '2014-08-04T21:18:20.124Z'
-          updated: '2014-08-04T21:18:20.124Z'
-          topics:
-          - label: Recipe
-            value: 0.66
-          - label: baking
-            value: 0.55
-    ContentRecommendationModel:
+    ContentSegmentRecommendationModel:
       type: object
       properties:
         data:
@@ -2882,71 +2551,7 @@ components:
           visited: true
         message: success
         status: 200
-    ContentTopicsModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              label:
-                type: string
-              doc_count:
-                type: number
-              total:
-                type: number
-              missing:
-                type: number
-              present:
-                type: number
-              avg:
-                type: number
-              tags:
-                type: array
-                items:
-                  type: string
-            required:
-            - label
-            - doc_count
-            - total
-            - missing
-            - present
-            - avg
-            - tags
-      example:
-        status: 200
-        message: success
-        data:
-        - label: Data-First Marketing
-          doc_count: 275
-          total: 380636
-          missing: 216048
-          present: 143710
-          avg: 0.5983867964798089
-          tags:
-          - custom
-        - label: User Data Unification
-          doc_count: 273
-          total: 380636
-          missing: 216048
-          present: 154068
-          avg: 0.6036863622558337
-          tags:
-          - custom
-        - label: Customer Data Platform
-          doc_count: 313
-          total: 380260
-          missing: 216043
-          present: 159628
-          avg: 0.9704200631406573
-          tags:
-          - custom
-    ContentCorpusModel:
+    ContentPlotModel:
       type: object
       properties:
         status:
@@ -2956,40 +2561,152 @@ components:
         data:
           type: object
           properties:
-            body:
+            segment_id:
+              type: string
+            collections:
               type: array
               items:
-                type: string
-            source:
-              type: array
-              items:
-                type: string
-            updated:
-              type: array
-              items:
-                type: string
-            url:
-              type: array
-              items:
-                type: string
-            version:
-              type: array
-              items:
-                type: string
+                type: object
+                properties:
+                  field:
+                    type: string
+                  name:
+                    type: string
+                  points:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        topic:
+                          type: string
+                        value:
+                          type: number
+                        avg_affinity:
+                          type: number
+                        doc_ct:
+                          type: number
       example:
         status: 200
         message: success
         data:
-          body:
-          - here is some body text
-          source:
-          - upload
-          updated:
-          - 2016-09-13 21:59:38.551972802 -0400 EDT
-          url:
-          - http://www.google.com/
-          version:
-          - '4'
+          segment_id: 34a492e518b117228954e0bd8a7cfda7
+          collections:
+          - field: int_score_momentum
+            name: do_more
+            points:
+            - topic: guerrilla marketing
+              value: 41.411764705882
+              avg_affinity: 0.58597826180251
+              doc_ct: 27
+    ContentMetricsModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            total:
+              type: number
+            nokeys:
+              type: number
+            nocontent:
+              type: number
+            noclassifiedcontent:
+              type: number
+            noaffinities:
+              type: number
+            errors:
+              type: number
+            success:
+              type: number
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          total: 215590
+          nokeys: 0
+          nocontent: 144430
+          noclassifiedcontent: 53537
+          noaffinities: 0
+          errors: 0
+          success: 17623
+        message: success
+        status: 200
+    TopicCurationModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            author:
+              type: string
+            created:
+              type: string
+            description:
+              type: string
+            fetched:
+              type: string
+            id:
+              type: string
+            meta:
+              type: array
+              items:
+                type: string
+            primary_image:
+              type: string
+            stream:
+              type: string
+            title:
+              type: string
+            topic_relevances:
+              type: object
+              properties:
+                Recipe:
+                  type: number
+                baking:
+                  type: number
+            topic_rollups:
+              type: object
+              properties:
+                Things:
+                  type: number
+            topics:
+              type: array
+              items:
+                type: string
+            updated:
+              type: string
+            url:
+              type: string
+      example:
+        status: 200
+        message: success
+        data:
+          author: Cookie Monster
+          created: '2016-01-14T08:39:01.354824186-07:00'
+          description: you should definitely make these cookies
+          fetched: '2016-07-19T13:39:20.158747984-04:00'
+          id: '4525087172572165639'
+          meta:
+          - og:locale/en_US
+          primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
+          stream: default
+          title: how to make some cookies
+          topic_relevances:
+            Recipe: 0.64
+            baking: 0.75
+          topic_rollups:
+            Things: 0.75
+          topics:
+          - baking
+          - Recipe
+          updated: '2016-07-19T13:34:18-04:00'
+          url: www.recipes.com/chocolate-chip-cookies
     ContentClassifyModel:
       type: object
       properties:
@@ -3173,79 +2890,257 @@ components:
           version: 4
         message: success
         status: 200
-    ContentTaxonomyModel:
+    ContentTopicRollupSummaryModel:
       type: object
       properties:
         data:
           type: object
           properties:
-            n:
-              type: number
-            nodes:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  doc_count:
-                    type: number
-                required:
-                - name
-                - doc_count
-            links:
-              type: array
-              items:
-                type: object
-                properties:
-                  source:
-                    type: number
-                  target:
-                    type: number
-                  value:
-                    type: number
-                required:
-                - source
-                - target
-                - value
+            docs:
+              type: object
+              properties:
+                total:
+                  type: number
+                urls:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      author:
+                        type: string
+                      created:
+                        type: string
+                      description:
+                        type: string
+                      fetched:
+                        type: string
+                      id:
+                        type: string
+                      meta:
+                        type: array
+                        items:
+                          type: string
+                      primary_image:
+                        type: string
+                      stream:
+                        type: string
+                      title:
+                        type: string
+                      topic_relevances:
+                        type: object
+                        properties:
+                          Recipe:
+                            type: number
+                          baking:
+                            type: number
+                      topic_rollups:
+                        type: object
+                        properties:
+                          Things:
+                            type: number
+                          Desserts:
+                            type: number
+                      topics:
+                        type: array
+                        items:
+                          type: string
+                      updated:
+                        type: string
+                      url:
+                        type: string
+                    required:
+                    - author
+                    - created
+                    - description
+                    - id
+                    - primary_image
+                    - stream
+                    - title
+                    - topic_relevances
+                    - topic_rollups
+                    - topics
+                    - updated
+                    - url
+            rollups: {}
         message:
           type: string
         status:
           type: number
       example:
         data:
-          n: 438
-          nodes:
-          - name: marketing technology
-            doc_count: 2
-          - name: AdWords
-            doc_count: 1
-          - name: ad retargeting
-            doc_count: 4
-          - name: analytics
-            doc_count: 2
-          - name: customer service
-            doc_count: 1
-          - name: data visualization
-            doc_count: 2
-          - name: data-first marketing
-            doc_count: 157
-          - name: personalization
-            doc_count: 15
-          links:
-          - source: 66
-            target: 54
-            value: 0.375
-          - source: 66
-            target: 75
-            value: 0.25
-          - source: 66
-            target: 37
-            value: 0.25
+          docs:
+            total: 2
+            urls:
+            - author: Cookie Monster
+              created: '2016-01-14T08:39:01.354824186-07:00'
+              description: you should definitely make these cookies
+              fetched: '2016-07-19T13:39:20.158747984-04:00'
+              id: '4525087172572165639'
+              meta:
+              - og:locale/en_US
+              primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
+              stream: default
+              title: how to make some cookies
+              topic_relevances:
+                Recipe: 0.64
+                baking: 0.75
+              topic_rollups:
+                Things: 0.75
+              topics:
+              - baking
+              - Recipe
+              updated: '2016-07-19T13:34:18-04:00'
+              url: www.recipes.com/chocolate-chip-cookies
+            - author: The Swedish Chef
+              created: '2016-07-19T13:39:20.158747984-04:00'
+              description: a delicious cake
+              id: '-2119104978705508335'
+              primary_image: http://www.vanillacake.com/cake.jpg
+              stream: default
+              title: Basic Vanilla Cake Recipe
+              topic_relevances:
+                Recipe: 0.64
+                baking: 0.85
+              topic_rollups:
+                Desserts: 0.85
+              topics:
+              - Recipe
+              - baking
+              updated: '2016-07-19T13:29:18-04:00'
+              url: www.recipes.com/cake
+          rollups: null
         message: success
         status: 200
-    ContentCrawlModel: {}
-    TopicCurationModel:
+    ContentTopicRollupListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              account_id:
+                type: string
+              label:
+                type: string
+              created:
+                type: string
+              updated:
+                type: string
+              topics:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    value:
+                      type: number
+                  required:
+                  - label
+                  - value
+      example:
+        data:
+        - id: 6a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          label: Baking rollup
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          topics:
+          - label: Recipe
+            value: 0.66
+          - label: baking
+            value: 0.55
+    ContentTopicBlocklistModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              doc_count:
+                type: number
+              total:
+                type: number
+              missing:
+                type: number
+              present:
+                type: number
+              avg:
+                type: number
+              tags:
+                type: array
+                items:
+                  type: string
+            required:
+            - label
+            - doc_count
+            - total
+            - missing
+            - present
+            - avg
+            - tags
+      example:
+        status: 200
+        message: success
+        data:
+        - label: Data-First Marketing
+          doc_count: 275
+          total: 380636
+          missing: 216048
+          present: 143710
+          avg: 0.5983867964798089
+          tags:
+          - blacklisted
+        - label: User Data Unification
+          doc_count: 273
+          total: 380636
+          missing: 216048
+          present: 154068
+          avg: 0.6036863622558337
+          tags:
+          - blacklisted
+    ContentTopicClustersModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            clusters:
+              type: array
+              items:
+                type: array
+                items: {}
+            coverage:
+              type: number
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          clusters:
+          - - Baking
+            - Cakes
+            - Cupakes
+            - Cookies
+          - - Grilling
+            - Beef
+            - Chicken
+            - Steak
+          coverage: 0.2062
+        message: success
+        status: 200
+    ContentTopicSummaryModel:
       type: object
       properties:
         status:
@@ -3255,76 +3150,272 @@ components:
         data:
           type: object
           properties:
-            author:
-              type: string
-            created:
-              type: string
-            description:
-              type: string
-            fetched:
-              type: string
-            id:
-              type: string
-            meta:
+            topics:
+              type: object
+              properties:
+                total:
+                  type: number
+                missing:
+                  type: number
+                present:
+                  type: number
+                bucket_none:
+                  type: number
+                bucket_low:
+                  type: number
+                bucket_mid:
+                  type: number
+                bucket_high:
+                  type: number
+                avg:
+                  type: number
+            docs:
+              type: object
+              properties:
+                total:
+                  type: number
+                urls:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                      title:
+                        type: string
+                      topics:
+                        type: array
+                        items:
+                          type: string
+                      id:
+                        type: string
+      example:
+        status: 200
+        message: success
+        data:
+          topics:
+            total: 3232717
+            missing: 2985477
+            present: 239239
+            bucket_none: 8001
+            bucket_low: 26279
+            bucket_mid: 11742
+            bucket_high: 201218
+            avg: 0.90787879293533
+          docs:
+            total: 373
+            urls:
+            - url: www.our-site.com/product/new-product-xyz
+              title: Blue Running Shoes that make you faster
+              topics:
+              - our-site (company)
+              - running
+              - shoes
+              id: '3395466611293777389'
+    ContentDocumentModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            total:
+              type: number
+            urls:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  title:
+                    type: string
+                  topics:
+                    type: array
+                    items:
+                      type: string
+                  id:
+                    type: string
+      example:
+        status: 200
+        message: success
+        data:
+          total: 1
+          urls:
+          - url: www.our-site.com/product/new-product-xyz
+            title: Blue Running Shoes that make you faster
+            topics:
+            - our-site (company)
+            - running
+            - shoes
+            id: '3395466611293777389'
+    ContentCorpusModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            body:
               type: array
               items:
                 type: string
-            primary_image:
-              type: string
-            stream:
-              type: string
-            title:
-              type: string
-            topic_relevances:
-              type: object
-              properties:
-                Recipe:
-                  type: number
-                baking:
-                  type: number
-            topic_rollups:
-              type: object
-              properties:
-                Things:
-                  type: number
-            topics:
+            source:
               type: array
               items:
                 type: string
             updated:
-              type: string
+              type: array
+              items:
+                type: string
             url:
-              type: string
+              type: array
+              items:
+                type: string
+            version:
+              type: array
+              items:
+                type: string
       example:
         status: 200
         message: success
         data:
-          author: Cookie Monster
-          created: '2016-01-14T08:39:01.354824186-07:00'
-          description: you should definitely make these cookies
-          fetched: '2016-07-19T13:39:20.158747984-04:00'
-          id: '4525087172572165639'
-          meta:
-          - og:locale/en_US
-          primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
-          stream: default
-          title: how to make some cookies
-          topic_relevances:
-            Recipe: 0.64
-            baking: 0.75
-          topic_rollups:
-            Things: 0.75
-          topics:
-          - baking
-          - Recipe
-          updated: '2016-07-19T13:34:18-04:00'
-          url: www.recipes.com/chocolate-chip-cookies
+          body:
+          - here is some body text
+          source:
+          - upload
+          updated:
+          - 2016-09-13 21:59:38.551972802 -0400 EDT
+          url:
+          - http://www.google.com/
+          version:
+          - '4'
+    ContentTopicsModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              doc_count:
+                type: number
+              total:
+                type: number
+              missing:
+                type: number
+              present:
+                type: number
+              avg:
+                type: number
+              tags:
+                type: array
+                items:
+                  type: string
+            required:
+            - label
+            - doc_count
+            - total
+            - missing
+            - present
+            - avg
+            - tags
+      example:
+        status: 200
+        message: success
+        data:
+        - label: Data-First Marketing
+          doc_count: 275
+          total: 380636
+          missing: 216048
+          present: 143710
+          avg: 0.5983867964798089
+          tags:
+          - custom
+        - label: User Data Unification
+          doc_count: 273
+          total: 380636
+          missing: 216048
+          present: 154068
+          avg: 0.6036863622558337
+          tags:
+          - custom
+        - label: Customer Data Platform
+          doc_count: 313
+          total: 380260
+          missing: 216043
+          present: 159628
+          avg: 0.9704200631406573
+          tags:
+          - custom
+    ContentCrawlModel: {}
+    models.ContentAlignResp:
+      properties:
+        alignment:
+          additionalProperties:
+            type: number
+          type: object
+      type: object
+    models.ContentOpportunityTopic:
+      properties:
+        context_layer:
+          description: The context layer that produced the opportunity metrics
+          type: string
+        dimensions:
+          description: The dimensions and scores associated with the topic
+          items:
+            $ref: '#/components/schemas/models.ContentOpportunityDimension'
+          type: array
+        segments:
+          description: The segments related to the topic
+          items:
+            type: string
+          type: array
+        topic:
+          description: The topic name
+          type: string
+      type: object
+    models.ContentOpportunityDimension:
+      properties:
+        label:
+          description: The dimension label
+          type: string
+        subject:
+          description: The entity type the dimension applies to
+          type: string
+        value:
+          description: The aggregated opportunity score for this dimension
+          type: number
+      type: object
     models.ContentAlignReq:
       properties:
         topics:
           additionalProperties:
             type: number
           type: object
+      type: object
+    models.ContentClassifyResp:
+      properties:
+        content:
+          additionalProperties: true
+          description: The content that was classified
+          type: object
+        steps:
+          description: The steps that were taken to classify the content
+          items: {}
+          type: array
       type: object
     lioerrors.ApiV2ErrorOut:
       properties:
@@ -3370,83 +3461,6 @@ components:
           format: date-time
           type: string
       type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ContentOpportunityTopic:
-      properties:
-        context_layer:
-          description: The context layer that produced the opportunity metrics
-          type: string
-        dimensions:
-          description: The dimensions and scores associated with the topic
-          items:
-            $ref: '#/components/schemas/models.ContentOpportunityDimension'
-          type: array
-        segments:
-          description: The segments related to the topic
-          items:
-            type: string
-          type: array
-        topic:
-          description: The topic name
-          type: string
-      type: object
-    models.ContentAlignResp:
-      properties:
-        alignment:
-          additionalProperties:
-            type: number
-          type: object
-      type: object
-    models.ContentOpportunityDimension:
-      properties:
-        label:
-          description: The dimension label
-          type: string
-        subject:
-          description: The entity type the dimension applies to
-          type: string
-        value:
-          description: The aggregated opportunity score for this dimension
-          type: number
-      type: object
-    models.ContentClassifyResp:
-      properties:
-        content:
-          additionalProperties: true
-          description: The content that was classified
-          type: object
-        steps:
-          description: The steps that were taken to classify the content
-          items: {}
-          type: array
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
     models.ContentOpportunityResp:
       properties:
         topics:
@@ -3470,6 +3484,34 @@ components:
             type: number
           description: The topics that were inferred from the input
           type: object
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
   securitySchemes:
     ApiKeyAuth:

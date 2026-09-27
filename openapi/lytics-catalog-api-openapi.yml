@@ -113,7 +113,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Stream Hide
-      operationId: Stream Hide
+      operationId: StreamHide
       description: 'The POST endpoint allows Stream to be hidden/un-hidden. A hidden stream is not visible from the Application
 
         *Data > Streams* Web UI.
@@ -170,6 +170,8 @@ paths:
         example: 'true'
         schema:
           type: boolean
+      x-operation-id-source: normalized
+      x-operation-id-original: Stream Hide
   /api/schema/_streams/{stream},{name},{hidden}:
     post:
       responses:
@@ -179,7 +181,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Field Hide
-      operationId: Field Hide
+      operationId: FieldHide
       description: 'This POST endpoint allows specific fields belong to a stream to be hidden/un-hidden. A hidden field is not
 
         visible from the Application *Data > Streams* Web UI.
@@ -243,6 +245,8 @@ paths:
         example: 'true'
         schema:
           type: boolean
+      x-operation-id-source: normalized
+      x-operation-id-original: Field Hide
   /api/schema/{table}:
     get:
       responses:
@@ -288,7 +292,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Schema Fields
-      operationId: Schema Fields
+      operationId: SchemaFields
       description: Get Field information about a **NodeType(user)**. Eventually, we will extend beyond user.
       tags:
       - Catalog
@@ -306,6 +310,8 @@ paths:
         example: user
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Schema Fields
   /api/schema/{table}/fieldinfo:
     get:
       responses:
@@ -463,7 +469,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: FieldInfo For Table
-      operationId: FieldInfo For Table
+      operationId: FieldInfoForTable
       description: Get Field level info about a **NodeType(user)**. Contains the possible values contained in each field.
       tags:
       - Catalog
@@ -495,6 +501,8 @@ paths:
         example: name,email,id
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: FieldInfo For Table
   /api/schema/{table}/fieldsuggest/{field}:
     get:
       responses:
@@ -535,6 +543,74 @@ paths:
           type: string
 components:
   schemas:
+    FieldSuggestModel: {}
+    SchemaModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            fields:
+              type: array
+              items:
+                type: object
+                properties:
+                  as:
+                    type: string
+                  is_by:
+                    type: boolean
+                  type:
+                    type: string
+                  shortdesc:
+                    type: string
+                  longdesc:
+                    type: string
+                  froms:
+                    type: array
+                    items:
+                      type: string
+                  identities:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - as
+                - is_by
+                - type
+                - shortdesc
+                - longdesc
+                - froms
+                - identities
+      example:
+        data:
+          fields:
+          - as: created_ts
+            is_by: false
+            type: date
+            shortdesc: Created Date
+            longdesc: First time usage for this user
+            froms:
+            - default
+            identities:
+            - min
+          - as: content
+            is_by: false
+            type: string
+            shortdesc: Site Content
+            longdesc: Specific piece of content viewed
+            froms:
+            - default
+            identities:
+            - content
+          - as: location
+            is_by: false
+            type: string
+            shortdesc: Location
+            longdesc: ''
+            froms:
+            - linkedin_data
+            identities:
+            - location
     FieldInfoModel:
       type: object
       properties:
@@ -911,7 +987,6 @@ components:
             ents_absent: 134908
             high_card: false
             approx_cardinality: 1212
-    FieldSuggestModel: {}
     StreamsModel:
       type: object
       properties:
@@ -1057,73 +1132,6 @@ components:
               as: utm_mediums
             - table: user
               as: utm_mediums
-    SchemaModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            fields:
-              type: array
-              items:
-                type: object
-                properties:
-                  as:
-                    type: string
-                  is_by:
-                    type: boolean
-                  type:
-                    type: string
-                  shortdesc:
-                    type: string
-                  longdesc:
-                    type: string
-                  froms:
-                    type: array
-                    items:
-                      type: string
-                  identities:
-                    type: array
-                    items:
-                      type: string
-                required:
-                - as
-                - is_by
-                - type
-                - shortdesc
-                - longdesc
-                - froms
-                - identities
-      example:
-        data:
-          fields:
-          - as: created_ts
-            is_by: false
-            type: date
-            shortdesc: Created Date
-            longdesc: First time usage for this user
-            froms:
-            - default
-            identities:
-            - min
-          - as: content
-            is_by: false
-            type: string
-            shortdesc: Site Content
-            longdesc: Specific piece of content viewed
-            froms:
-            - default
-            identities:
-            - content
-          - as: location
-            is_by: false
-            type: string
-            shortdesc: Location
-            longdesc: ''
-            froms:
-            - linkedin_data
-            identities:
-            - location
   securitySchemes:
     ApiKeyAuth:
       in: header

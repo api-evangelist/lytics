@@ -33,10 +33,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Query List
-      operationId: Query List
+      operationId: QueryList
       description: List of all queries
       tags:
       - Query
+      x-operation-id-source: normalized
+      x-operation-id-original: Query List
     post:
       responses:
         '200':
@@ -58,7 +60,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Query Upsert
-      operationId: Query Upsert
+      operationId: QueryUpsert
       description: 'Uses ALIAS name inside parsed query for ID, and either creates/updates a query.
 
 
@@ -108,6 +110,8 @@ paths:
         example: old
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Query Upsert
   /api/query/{idOrAlias}:
     get:
       responses:
@@ -130,7 +134,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Query Fetch
-      operationId: Query Fetch
+      operationId: QueryFetch
       description: Get single query by *ALIAS OR ID*
       tags:
       - Query
@@ -148,6 +152,8 @@ paths:
         example: web
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Query Fetch
     delete:
       responses:
         '204':
@@ -156,7 +162,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Query Delete
-      operationId: Query Delete
+      operationId: QueryDelete
       description: Delete A query by idOrAlias.
       tags:
       - Query
@@ -174,6 +180,8 @@ paths:
         example: web
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Query Delete
   /api/query/_validate:
     post:
       responses:
@@ -196,7 +204,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Query Validation
-      operationId: Query Validation
+      operationId: QueryValidation
       description: 'Upload a query for syntax validation only.
 
 
@@ -253,6 +261,8 @@ paths:
         example: old
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Query Validation
   /api/query/_test:
     post:
       responses:
@@ -275,7 +285,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Query Test Evaluation
-      operationId: Query Test Evaluation
+      operationId: QueryTestEvaluation
       description: 'Upload a query AND data to see how it will be interpreted.
 
 
@@ -298,31 +308,10 @@ paths:
         ```'
       tags:
       - Query
+      x-operation-id-source: normalized
+      x-operation-id-original: Query Test Evaluation
 components:
   schemas:
-    QueryModel:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            updated:
-              type: string
-            created:
-              type: string
-            text:
-              type: string
-      example:
-        status: success
-        data:
-          id: abcdef123
-          updated: '2014-10-30T21:01:06.493Z'
-          created: '2014-10-30T21:01:06.493Z'
-          text: SELECT ...
     QueryListModel:
       type: object
       properties:
@@ -345,6 +334,29 @@ components:
         status: success
         data:
         - id: abcdef123
+          updated: '2014-10-30T21:01:06.493Z'
+          created: '2014-10-30T21:01:06.493Z'
+          text: SELECT ...
+    QueryModel:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            updated:
+              type: string
+            created:
+              type: string
+            text:
+              type: string
+      example:
+        status: success
+        data:
+          id: abcdef123
           updated: '2014-10-30T21:01:06.493Z'
           created: '2014-10-30T21:01:06.493Z'
           text: SELECT ...

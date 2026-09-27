@@ -31,10 +31,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Retrieve Workflow List
-      operationId: Retrieve Workflow List
+      operationId: RetrieveWorkflowList
       description: ''
       tags:
       - Workflow
+      x-operation-id-source: normalized
+      x-operation-id-original: Retrieve Workflow List
 components:
   schemas:
     WorkflowModel:

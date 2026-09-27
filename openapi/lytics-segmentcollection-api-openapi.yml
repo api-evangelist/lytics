@@ -54,7 +54,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: SegmentCollection Create
-      operationId: SegmentCollection Create
+      operationId: SegmentCollectionCreate
       description: Create a new SegmentCollection from existing segments.
       tags:
       - SegmentCollection
@@ -74,6 +74,8 @@ paths:
           type: boolean
       requestBody:
         $ref: '#/components/requestBodies/SegmentCollection_CreateBody'
+      x-operation-id-source: normalized
+      x-operation-id-original: SegmentCollection Create
   /api/segmentcollection/{id}:
     get:
       responses:
@@ -87,7 +89,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: SegmentCollection Fetch
-      operationId: SegmentCollection Fetch
+      operationId: SegmentCollectionFetch
       description: Fetch a segment collection by **id** or **slug**
       tags:
       - SegmentCollection
@@ -112,6 +114,8 @@ paths:
         example: 'true'
         schema:
           type: boolean
+      x-operation-id-source: normalized
+      x-operation-id-original: SegmentCollection Fetch
     put:
       responses:
         '201':
@@ -124,7 +128,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: SegmentCollection Update
-      operationId: SegmentCollection Update
+      operationId: SegmentCollectionUpdate
       description: Update a SegmentCollection
       tags:
       - SegmentCollection
@@ -151,6 +155,8 @@ paths:
           type: boolean
       requestBody:
         $ref: '#/components/requestBodies/SegmentCollection_CreateBody'
+      x-operation-id-source: normalized
+      x-operation-id-original: SegmentCollection Update
     delete:
       responses:
         '204':
@@ -159,7 +165,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: SegmentCollection Delete
-      operationId: SegmentCollection Delete
+      operationId: SegmentCollectionDelete
       description: Delete a SegmentCollection model.
       tags:
       - SegmentCollection
@@ -177,7 +183,12 @@ paths:
         example: source::target
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: SegmentCollection Delete
 components:
+  schemas:
+    SegmentCollectionListModel: {}
+    SegmentCollectionModel: {}
   requestBodies:
     SegmentCollection_CreateBody:
       content:
@@ -206,9 +217,6 @@ components:
                 order: 0
               - id: 3456abcd
                 order: 1
-  schemas:
-    SegmentCollectionModel: {}
-    SegmentCollectionListModel: {}
   securitySchemes:
     ApiKeyAuth:
       in: header

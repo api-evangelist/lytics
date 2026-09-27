@@ -44,7 +44,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Retrieve a Single Auth
-      operationId: Retrieve a Single Auth
+      operationId: RetrieveASingleAuth
       description: 'This API is fairly special, as only the public portions of the auth model are
 
         returned, not all fields **config**, **oauth2token**, and **oathtoken** fields are
@@ -71,6 +71,8 @@ paths:
         required: false
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Retrieve a Single Auth
     post:
       responses:
         '201':
@@ -93,7 +95,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create Auth
-      operationId: Create Auth
+      operationId: CreateAuth
       description: 'Create an auth, would normally never be used via the api, the web admin
 
         Integrations section manages these.'
@@ -140,6 +142,8 @@ paths:
                 config:
                 - name: apikey
                   value: value_that_will_get_encrypted
+      x-operation-id-source: normalized
+      x-operation-id-original: Create Auth
     put:
       responses:
         '200':
@@ -162,7 +166,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Update Auth
-      operationId: Update Auth
+      operationId: UpdateAuth
       description: ''
       tags:
       - Auth
@@ -185,6 +189,8 @@ paths:
         required: false
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Update Auth
     delete:
       responses:
         '204':
@@ -193,7 +199,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Remove an Auth
-      operationId: Remove an Auth
+      operationId: RemoveAnAuth
       description: 'Deleting an auth is a very special operation. If any work is running (imports, exports),
 
         it will remove the auth from those works and stop them.'
@@ -218,6 +224,8 @@ paths:
         required: false
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Remove an Auth
   /api/auth/createtoken:
     post:
       responses:
@@ -243,7 +251,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Auth Create Token
-      operationId: Auth Create Token
+      operationId: AuthCreateToken
       description: Create Lytics api tokens.
       tags:
       - Auth
@@ -274,8 +282,36 @@ paths:
                 - admin
                 - data
                 name: my-token-for-serivce-x
+      x-operation-id-source: normalized
+      x-operation-id-original: Auth Create Token
 components:
   schemas:
+    AuthModel:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            account_id:
+              type: string
+            id:
+              type: string
+            provider_id:
+              type: string
+            provider_name:
+              type: string
+            user_id:
+              type: string
+      example:
+        status: success
+        data:
+          account_id: 4f7b525bdba058fc096757a6
+          id: 1b53b88a06b418b07d601b6f57b8eb40
+          provider_id: 26cae7718c32180a7a0f8e19d6d40a59
+          provider_name: Facebook
+          user_id: 4222fd7c8db7ebcb042e0547e3b4e128
     AuthApiTokenModel:
       type: object
       properties:
@@ -311,32 +347,6 @@ components:
           provider_name: Lytics
           config:
           - api_key: api_value
-    AuthModel:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: object
-          properties:
-            account_id:
-              type: string
-            id:
-              type: string
-            provider_id:
-              type: string
-            provider_name:
-              type: string
-            user_id:
-              type: string
-      example:
-        status: success
-        data:
-          account_id: 4f7b525bdba058fc096757a6
-          id: 1b53b88a06b418b07d601b6f57b8eb40
-          provider_id: 26cae7718c32180a7a0f8e19d6d40a59
-          provider_name: Facebook
-          user_id: 4222fd7c8db7ebcb042e0547e3b4e128
   securitySchemes:
     ApiKeyAuth:
       in: header

@@ -546,6 +546,58 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.RouteRule:
+      properties:
+        account_id:
+          type: string
+        active:
+          type: boolean
+        aid:
+          type: integer
+        created:
+          type: string
+        expression:
+          description: qlbridge expression
+          type: string
+        id:
+          type: string
+        input:
+          type: string
+        modified:
+          type: string
+        name:
+          type: string
+        output:
+          type: string
+        priority:
+          type: integer
+      type: object
+    models.Column:
+      properties:
+        as:
+          type: string
+        table:
+          type: string
+      type: object
+    models.AnomalyRuleResp:
+      properties:
+        aid:
+          type: integer
+        checks:
+          items:
+            $ref: '#/components/schemas/models.RuleCheckConfigReq'
+          type: array
+        created:
+          type: string
+        id:
+          type: string
+        subject_id:
+          type: string
+        subject_type:
+          type: string
+        updated:
+          type: string
+      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -590,25 +642,6 @@ components:
           format: date-time
           type: string
       type: object
-    models.RuleCheckConfigReq:
-      properties:
-        allowable_violations:
-          type: integer
-        interval:
-          type: string
-        lookback_count:
-          type: integer
-        max_threshold:
-          type: integer
-        metric_type:
-          type: string
-        min_threshold:
-          type: integer
-        type:
-          type: string
-        variance_pct:
-          type: number
-      type: object
     models.DataField:
       properties:
         avg:
@@ -643,89 +676,6 @@ components:
         usage:
           description: The number of times this field has been seen
           type: integer
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.StreamEvent:
-      additionalProperties: true
-      type: object
-    models.AnomalyRuleResp:
-      properties:
-        aid:
-          type: integer
-        checks:
-          items:
-            $ref: '#/components/schemas/models.RuleCheckConfigReq'
-          type: array
-        created:
-          type: string
-        id:
-          type: string
-        subject_id:
-          type: string
-        subject_type:
-          type: string
-        updated:
-          type: string
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.RouteRule:
-      properties:
-        account_id:
-          type: string
-        active:
-          type: boolean
-        aid:
-          type: integer
-        created:
-          type: string
-        expression:
-          description: qlbridge expression
-          type: string
-        id:
-          type: string
-        input:
-          type: string
-        modified:
-          type: string
-        name:
-          type: string
-        output:
-          type: string
-        priority:
-          type: integer
-      type: object
-    models.Column:
-      properties:
-        as:
-          type: string
-        table:
-          type: string
       type: object
     models.StreamMetadata:
       properties:
@@ -787,6 +737,56 @@ components:
         updated:
           format: date-time
           type: string
+      type: object
+    models.RuleCheckConfigReq:
+      properties:
+        allowable_violations:
+          type: integer
+        interval:
+          type: string
+        lookback_count:
+          type: integer
+        max_threshold:
+          type: integer
+        metric_type:
+          type: string
+        min_threshold:
+          type: integer
+        type:
+          type: string
+        variance_pct:
+          type: number
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.StreamEvent:
+      additionalProperties: true
       type: object
   securitySchemes:
     ApiKeyAuth:

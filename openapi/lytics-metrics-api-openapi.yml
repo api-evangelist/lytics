@@ -213,44 +213,14 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.MetricRequest:
+    models.MetricTimeSeriesEntry:
       properties:
-        aggregation:
-          example: sum
+        ts:
+          description: Ts is the bucket timestamp as a string of Unix-epoch milliseconds.
+          example: '1285891200000'
           type: string
-        dimension:
-          example: segment
-          type: string
-        dimension_id:
-          example: abc123
-          type: string
-        dimension_type:
-          example: size
-          type: string
-        end_date:
-          example: now
-          type: string
-        include_empty_rows:
-          type: boolean
-        include_sum_of_buckets:
-          type: boolean
-        interval:
-          example: 1d
-          type: string
-        name:
-          type: string
-        range:
-          example: 7d
-          type: string
-        refresh_cache:
-          type: boolean
-        round_dates:
-          type: boolean
-        smooth:
-          type: boolean
-        start_date:
-          example: now-7d
-          type: string
+        value:
+          type: number
       type: object
     lioerrors.ApiV2ErrorOut:
       properties:
@@ -295,43 +265,6 @@ components:
           description: The time the error occurred
           format: date-time
           type: string
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.MetricTimeSeriesEntry:
-      properties:
-        ts:
-          description: Ts is the bucket timestamp as a string of Unix-epoch milliseconds.
-          example: '1285891200000'
-          type: string
-        value:
-          type: number
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
       type: object
     models.MetricResult:
       properties:
@@ -378,6 +311,73 @@ components:
           items:
             $ref: '#/components/schemas/models.MetricTimeSeriesEntry'
           type: array
+      type: object
+    models.MetricRequest:
+      properties:
+        aggregation:
+          example: sum
+          type: string
+        dimension:
+          example: segment
+          type: string
+        dimension_id:
+          example: abc123
+          type: string
+        dimension_type:
+          example: size
+          type: string
+        end_date:
+          example: now
+          type: string
+        include_empty_rows:
+          type: boolean
+        include_sum_of_buckets:
+          type: boolean
+        interval:
+          example: 1d
+          type: string
+        name:
+          type: string
+        range:
+          example: 7d
+          type: string
+        refresh_cache:
+          type: boolean
+        round_dates:
+          type: boolean
+        smooth:
+          type: boolean
+        start_date:
+          example: now-7d
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
   securitySchemes:
     ApiKeyAuth:

@@ -118,7 +118,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Subscription Upsert
-      operationId: Subscription Upsert
+      operationId: SubscriptionUpsert
       description: 'Upsert a new Subscription. Subscriptions allow you to listen and recieve
 
         notification of events inside of Lytics, most common would be listen
@@ -308,6 +308,8 @@ paths:
                 withbackfill: false
                 description: hello world
                 webhook_url: https://lyticswwwapp.appspot.com/log
+      x-operation-id-source: normalized
+      x-operation-id-original: Subscription Upsert
   /api/subscription/{id}:
     get:
       responses:
@@ -336,7 +338,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Subscription Fetch
-      operationId: Subscription Fetch
+      operationId: SubscriptionFetch
       description: Get a single Subscription Webhook.
       tags:
       - Subscription
@@ -354,6 +356,8 @@ paths:
         example: '1234'
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Subscription Fetch
     delete:
       responses:
         '204':
@@ -362,7 +366,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Subscription Delete
-      operationId: Subscription Delete
+      operationId: SubscriptionDelete
       description: Delete A Subscription.
       tags:
       - Subscription
@@ -380,6 +384,8 @@ paths:
         example: '1234'
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Subscription Delete
 components:
   schemas:
     SubscriptionModel:

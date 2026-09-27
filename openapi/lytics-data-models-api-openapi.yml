@@ -540,6 +540,89 @@ components:
         time:
           type: string
       type: object
+    models.DataModelDeleteStatus:
+      properties:
+        deleted:
+          type: boolean
+        id:
+          type: string
+        reason:
+          type: string
+      type: object
+    models.DataModelLog:
+      properties:
+        id:
+          type: string
+        message:
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        verb:
+          type: string
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.DataModelJoin:
+      properties:
+        foreign_key:
+          type: string
+        foreign_table:
+          type: string
+        primary_key:
+          type: string
+      type: object
+    models.DataModelHealth:
+      properties:
+        details:
+          type: string
+        status:
+          type: string
+      type: object
+    models.DataModelCreateReq:
+      properties:
+        activated_fields:
+          items:
+            type: string
+          type: array
+        connection_id:
+          type: string
+        create_profiles:
+          type: boolean
+        description:
+          type: string
+        joined_to:
+          $ref: '#/components/schemas/models.DataModelJoin'
+        name:
+          type: string
+        primary_keys:
+          items:
+            type: string
+          type: array
+        slug:
+          type: string
+        sql:
+          type: string
+        sql_dialect:
+          type: string
+        status:
+          type: string
+        sync_period:
+          type: number
+      type: object
     models.DataModelUpdateReq:
       properties:
         activated_fields:
@@ -603,31 +686,16 @@ components:
           format: date-time
           type: string
       type: object
-    models.DataModelHealth:
+    models.DataModelSizeResponse:
       properties:
-        details:
+        id:
           type: string
-        status:
+        name:
           type: string
-      type: object
-    models.RuleCheckConfigReq:
-      properties:
-        allowable_violations:
+        record_store_size:
           type: integer
-        interval:
+        slug_name:
           type: string
-        lookback_count:
-          type: integer
-        max_threshold:
-          type: integer
-        metric_type:
-          type: string
-        min_threshold:
-          type: integer
-        type:
-          type: string
-        variance_pct:
-          type: number
       type: object
     models.SyncSchedule:
       properties:
@@ -636,21 +704,6 @@ components:
         prev_sync_time:
           type: string
         sync_period:
-          type: integer
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
           type: integer
       type: object
     models.DataModelResp:
@@ -716,37 +769,37 @@ components:
         updated:
           type: string
       type: object
-    models.DataModelJoin:
+    models.RuleCheckConfigReq:
       properties:
-        foreign_key:
-          type: string
-        foreign_table:
-          type: string
-        primary_key:
-          type: string
-      type: object
-    models.DataModelLog:
-      properties:
-        id:
-          type: string
-        message:
-          type: string
-        timestamp:
-          format: date-time
-          type: string
-        verb:
-          type: string
-      type: object
-    models.DataModelSizeResponse:
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        record_store_size:
+        allowable_violations:
           type: integer
-        slug_name:
+        interval:
           type: string
+        lookback_count:
+          type: integer
+        max_threshold:
+          type: integer
+        metric_type:
+          type: string
+        min_threshold:
+          type: integer
+        type:
+          type: string
+        variance_pct:
+          type: number
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     models.AnomalyRuleResp:
       properties:
@@ -766,59 +819,6 @@ components:
           type: string
         updated:
           type: string
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.DataModelDeleteStatus:
-      properties:
-        deleted:
-          type: boolean
-        id:
-          type: string
-        reason:
-          type: string
-      type: object
-    models.DataModelCreateReq:
-      properties:
-        activated_fields:
-          items:
-            type: string
-          type: array
-        connection_id:
-          type: string
-        create_profiles:
-          type: boolean
-        description:
-          type: string
-        joined_to:
-          $ref: '#/components/schemas/models.DataModelJoin'
-        name:
-          type: string
-        primary_keys:
-          items:
-            type: string
-          type: array
-        slug:
-          type: string
-        sql:
-          type: string
-        sql_dialect:
-          type: string
-        status:
-          type: string
-        sync_period:
-          type: number
       type: object
   securitySchemes:
     ApiKeyAuth:

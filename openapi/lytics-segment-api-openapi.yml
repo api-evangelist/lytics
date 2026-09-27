@@ -116,7 +116,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Segment Create
-      operationId: Segment Create
+      operationId: SegmentCreate
       description: 'Create A segment. See **/api/segment/validate**
 
         method for testing out Segmentation rules.
@@ -381,6 +381,8 @@ paths:
         ```'
       tags:
       - Segment
+      x-operation-id-source: normalized
+      x-operation-id-original: Segment Create
   /api/segment/{id}:
     get:
       responses:
@@ -410,7 +412,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Segment Fetch
-      operationId: Segment Fetch
+      operationId: SegmentFetch
       description: Fetch a segment by **id** or **slug**
       tags:
       - Segment
@@ -428,6 +430,8 @@ paths:
         example: my_segment_slug
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Segment Fetch
     put:
       responses:
         '200':
@@ -456,7 +460,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Segment Update
-      operationId: Segment Update
+      operationId: SegmentUpdate
       description: 'Update A segment.
 
 
@@ -537,6 +541,8 @@ paths:
         example: my_segment_slug
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Segment Update
     delete:
       responses:
         '204':
@@ -545,7 +551,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Segment Delete
-      operationId: Segment Delete
+      operationId: SegmentDelete
       description: Delete A segment.
       tags:
       - Segment
@@ -563,6 +569,8 @@ paths:
         example: my_segment_slug
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Segment Delete
   /api/segment/size:
     post:
       responses:
@@ -796,7 +804,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Segment Batch Delete
-      operationId: Segment Batch Delete
+      operationId: SegmentBatchDelete
       description: 'Delete a Batch of segments
 
 
@@ -910,6 +918,8 @@ paths:
         example: email,user_id,name
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Segment Batch Delete
   /api/segment/{segId}/attribution:
     get:
       responses:
@@ -1083,6 +1093,107 @@ paths:
           type: string
 components:
   schemas:
+    SegmentSizeModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            slug_name:
+              type: string
+            size:
+              type: number
+      example:
+        data:
+          id: ''
+          name: active
+          slug_name: active
+          size: 10402
+    SegmentListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              account_id:
+                type: string
+              author_id:
+                type: string
+              kind:
+                type: string
+              segment_ql:
+                type: string
+              created:
+                type: string
+              updated:
+                type: string
+              description:
+                type: string
+              is_public:
+                type: boolean
+              name:
+                type: string
+              slug_name:
+                type: string
+              tags:
+                type: array
+                items:
+                  type: string
+      example:
+        data:
+        - id: 7a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          author_id: user_12345
+          kind: segment
+          segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
+          is_public: true
+          name: Recent Visits
+          slug_name: recent_visits
+          tags:
+          - email_trigger
+    SegmentSizesModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              slug_name:
+                type: string
+              size:
+                type: number
+              type:
+                type: string
+            required:
+            - id
+            - slug_name
+            - size
+      example:
+        data:
+        - id: 456dert
+          name: Active
+          slug_name: active
+          size: 10402
+        - id: 1234abcd
+          type: custom
+          slug_name: active
+          size: 45236
     SegmentValidateModel:
       type: object
       properties:
@@ -1135,87 +1246,7 @@ components:
           - ts: '1413149713455'
             value: 1005
     SegmentScanModel: {}
-    SegmentSizesModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              slug_name:
-                type: string
-              size:
-                type: number
-              type:
-                type: string
-            required:
-            - id
-            - slug_name
-            - size
-      example:
-        data:
-        - id: 456dert
-          name: Active
-          slug_name: active
-          size: 10402
-        - id: 1234abcd
-          type: custom
-          slug_name: active
-          size: 45236
-    SegmentListModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              account_id:
-                type: string
-              author_id:
-                type: string
-              kind:
-                type: string
-              segment_ql:
-                type: string
-              created:
-                type: string
-              updated:
-                type: string
-              description:
-                type: string
-              is_public:
-                type: boolean
-              name:
-                type: string
-              slug_name:
-                type: string
-              tags:
-                type: array
-                items:
-                  type: string
-      example:
-        data:
-        - id: 7a7f76ff97ad0e3e96c162f74aee8f8f
-          account_id: 4f7b525bdba058fc096757a6
-          author_id: user_12345
-          kind: segment
-          segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
-          created: '2014-08-04T21:18:20.124Z'
-          updated: '2014-08-04T21:18:20.124Z'
-          description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
-          is_public: true
-          name: Recent Visits
-          slug_name: recent_visits
-          tags:
-          - email_trigger
+    SegmentFieldInfoModel: {}
     SegmentModel:
       type: object
       properties:
@@ -1260,27 +1291,6 @@ components:
           slug_name: recent_visits
           tags:
           - email_trigger
-    SegmentSizeModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-            slug_name:
-              type: string
-            size:
-              type: number
-      example:
-        data:
-          id: ''
-          name: active
-          slug_name: active
-          size: 10402
-    SegmentFieldInfoModel: {}
   securitySchemes:
     ApiKeyAuth:
       in: header

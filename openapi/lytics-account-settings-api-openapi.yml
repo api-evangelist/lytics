@@ -41,7 +41,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Retrieve a Single Account Setting
-      operationId: Retrieve a Single Account Setting
+      operationId: RetrieveASingleAccountSetting
       description: Get single Account Setting by slug.
       tags:
       - Account Settings
@@ -59,6 +59,8 @@ paths:
         example: enforce_password_history
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Retrieve a Single Account Setting
     put:
       responses:
         '200':
@@ -88,7 +90,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Account Setting Update
-      operationId: Account Setting Update
+      operationId: AccountSettingUpdate
       description: 'Post update to Account Setting. See list of possible Settings from the List api.
 
 
@@ -126,6 +128,8 @@ paths:
           application/json:
             schema:
               type: number
+      x-operation-id-source: normalized
+      x-operation-id-original: Account Setting Update
     delete:
       responses:
         '204':
@@ -134,7 +138,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Account Setting Delete
-      operationId: Account Setting Delete
+      operationId: AccountSettingDelete
       description: 'Delete a custom account setting. Given a key for a setting, delete the custom-value.
 
 
@@ -166,6 +170,8 @@ paths:
         example: enforce_password_history
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Account Setting Delete
   /api/account/setting:
     get:
       responses:
@@ -226,12 +232,60 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Account Setting List
-      operationId: Account Setting List
+      operationId: AccountSettingList
       description: ''
       tags:
       - Account Settings
+      x-operation-id-source: normalized
+      x-operation-id-original: Account Setting List
 components:
   schemas:
+    AccountSettingModel:
+      type: object
+      properties:
+        can_be_assigned:
+          type: boolean
+        category:
+          type: string
+        field:
+          type: object
+          properties:
+            description:
+              type: string
+            editable:
+              type: boolean
+            label:
+              type: string
+            name:
+              type: string
+            optional:
+              type: boolean
+            sort_order:
+              type: number
+            type:
+              type: string
+            user_config_disabled:
+              type: boolean
+        slug:
+          type: string
+        type:
+          type: string
+        value: {}
+      example:
+        can_be_assigned: true
+        category: Security
+        field:
+          description: Enforce rule preventing re-use of same password.
+          editable: false
+          label: ''
+          name: Enforce Password History
+          optional: false
+          sort_order: 0
+          type: boolean
+          user_config_disabled: false
+        slug: enforce_password_history
+        type: setting
+        value: null
     AccountSettingListModel:
       type: object
       properties:
@@ -322,52 +376,6 @@ components:
           slug: enforce_two_factor_auth
           type: setting
           value: null
-    AccountSettingModel:
-      type: object
-      properties:
-        can_be_assigned:
-          type: boolean
-        category:
-          type: string
-        field:
-          type: object
-          properties:
-            description:
-              type: string
-            editable:
-              type: boolean
-            label:
-              type: string
-            name:
-              type: string
-            optional:
-              type: boolean
-            sort_order:
-              type: number
-            type:
-              type: string
-            user_config_disabled:
-              type: boolean
-        slug:
-          type: string
-        type:
-          type: string
-        value: {}
-      example:
-        can_be_assigned: true
-        category: Security
-        field:
-          description: Enforce rule preventing re-use of same password.
-          editable: false
-          label: ''
-          name: Enforce Password History
-          optional: false
-          sort_order: 0
-          type: boolean
-          user_config_disabled: false
-        slug: enforce_password_history
-        type: setting
-        value: null
   securitySchemes:
     ApiKeyAuth:
       in: header

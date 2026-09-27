@@ -522,6 +522,102 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.Flow:
+      properties:
+        aid:
+          type: integer
+        created:
+          format: date-time
+          type: string
+        description:
+          type: string
+        entry_condition:
+          enum:
+          - in_segment
+          - on_segment_entry
+          type: string
+        entry_segment_id:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        label:
+          type: string
+        modified:
+          format: date-time
+          type: string
+        reentry_allowed:
+          type: boolean
+        reentry_condition:
+          enum:
+          - in_segment
+          - on_segment_entry
+          type: string
+        reentry_delay:
+          description: Nanoseconds to wait before a profile may re-enter the flow.
+          type: integer
+        root_step_id:
+          type: integer
+        state:
+          enum:
+          - draft
+          - running
+          - draining
+          - deleted
+          type: string
+        state_modified_at:
+          format: date-time
+          type: string
+        steps:
+          items:
+            $ref: '#/components/schemas/models.FlowStep'
+          type: array
+        version:
+          type: integer
+      type: object
+    models.Work:
+      properties:
+        account_id:
+          type: string
+        aid:
+          type: integer
+        auth_ids:
+          items:
+            type: string
+          type: array
+        config:
+          type: object
+        created:
+          format: date-time
+          type: string
+        description:
+          type: string
+        expires_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        tag:
+          type: string
+        updated:
+          format: date-time
+          type: string
+        workflow:
+          type: string
+        workflow_id:
+          type: string
+      type: object
+    models.SplitProbKV:
+      properties:
+        next:
+          type: integer
+        prob:
+          type: number
+      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -566,6 +662,19 @@ components:
           format: date-time
           type: string
       type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.ApiResponse:
       properties:
         _meta:
@@ -584,6 +693,41 @@ components:
     models.SplitAffinityKV:
       properties:
         affinity:
+          type: string
+        label:
+          type: string
+        next:
+          type: integer
+        priority:
+          type: integer
+      type: object
+    models.DelayUntil:
+      properties:
+        day_of_week:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          type: integer
+        kind:
+          enum:
+          - day_of_week
+          - time_of_day
+          type: string
+        time_of_day:
+          example: 09:30
+          type: string
+        timezone:
+          example: America/New_York
+          type: string
+      type: object
+    models.SplitConditionKV:
+      properties:
+        conditions:
           type: string
         label:
           type: string
@@ -642,150 +786,6 @@ components:
           type: integer
         work_id:
           type: string
-      type: object
-    models.Work:
-      properties:
-        account_id:
-          type: string
-        aid:
-          type: integer
-        auth_ids:
-          items:
-            type: string
-          type: array
-        config:
-          type: object
-        created:
-          format: date-time
-          type: string
-        description:
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        tag:
-          type: string
-        updated:
-          format: date-time
-          type: string
-        workflow:
-          type: string
-        workflow_id:
-          type: string
-      type: object
-    models.SplitConditionKV:
-      properties:
-        conditions:
-          type: string
-        label:
-          type: string
-        next:
-          type: integer
-        priority:
-          type: integer
-      type: object
-    models.DelayUntil:
-      properties:
-        day_of_week:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          - 6
-          type: integer
-        kind:
-          enum:
-          - day_of_week
-          - time_of_day
-          type: string
-        time_of_day:
-          example: 09:30
-          type: string
-        timezone:
-          example: America/New_York
-          type: string
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.Flow:
-      properties:
-        aid:
-          type: integer
-        created:
-          format: date-time
-          type: string
-        description:
-          type: string
-        entry_condition:
-          enum:
-          - in_segment
-          - on_segment_entry
-          type: string
-        entry_segment_id:
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        id:
-          type: string
-        label:
-          type: string
-        modified:
-          format: date-time
-          type: string
-        reentry_allowed:
-          type: boolean
-        reentry_condition:
-          enum:
-          - in_segment
-          - on_segment_entry
-          type: string
-        reentry_delay:
-          description: Nanoseconds to wait before a profile may re-enter the flow.
-          type: integer
-        root_step_id:
-          type: integer
-        state:
-          enum:
-          - draft
-          - running
-          - draining
-          - deleted
-          type: string
-        state_modified_at:
-          format: date-time
-          type: string
-        steps:
-          items:
-            $ref: '#/components/schemas/models.FlowStep'
-          type: array
-        version:
-          type: integer
-      type: object
-    models.SplitProbKV:
-      properties:
-        next:
-          type: integer
-        prob:
-          type: number
       type: object
   securitySchemes:
     ApiKeyAuth:

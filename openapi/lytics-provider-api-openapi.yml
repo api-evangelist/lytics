@@ -24,10 +24,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Provider List
-      operationId: Provider List
+      operationId: ProviderList
       description: Provider list api
       tags:
       - Provider
+      x-operation-id-source: normalized
+      x-operation-id-original: Provider List
   /api/provider/:provider_slug:
     get:
       responses:
@@ -66,10 +68,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Provider Fetch
-      operationId: Provider Fetch
+      operationId: ProviderFetch
       description: Get single **Provider**
       tags:
       - Provider
+      x-operation-id-source: normalized
+      x-operation-id-original: Provider Fetch
     delete:
       responses:
         '204':
@@ -78,13 +82,14 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Remove a Provider
-      operationId: Remove a Provider
+      operationId: RemoveAProvider
       description: Delete by id/slug
       tags:
       - Provider
+      x-operation-id-source: normalized
+      x-operation-id-original: Remove a Provider
 components:
   schemas:
-    ProviderListModel: {}
     ProviderModel:
       type: object
       properties:
@@ -154,6 +159,7 @@ components:
             scope: email,read_insights,manage_pages,ads_management
             token_endpoint: https://graph.facebook.com/oauth/access_token
           slug: facebook
+    ProviderListModel: {}
   securitySchemes:
     ApiKeyAuth:
       in: header

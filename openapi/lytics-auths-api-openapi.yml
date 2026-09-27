@@ -19840,57 +19840,56 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.AwsKeysPublicPgp:
+    models.SalesforceDataCloudJwt:
       properties:
-        access_key:
+        consumer_key:
+          description: The Consumer Key from your Salesforce External Client App
           type: string
-        pgppublickey:
+        my_domain_url:
+          description: The org My Domain URL the JWT assertion is POSTed to
           type: string
-        secret_key:
+        private_key:
+          description: '#nosec [G117] RSA private key in PEM format'
+          type: string
+        sf_username:
+          description: The Salesforce username of the authorized user
           type: string
       type: object
-    models.Aws_AwsKeys:
+    models.Klaviyo:
       properties:
-        access_key:
-          type: string
-        secret_key:
+        api_key:
           type: string
       type: object
-    models.SilverpopFullAuth:
+    models.ContentstackAuthtoken:
+      properties:
+        authtoken:
+          type: string
+        base_url:
+          type: string
+        region:
+          type: string
+      type: object
+    models.CustomerioWebhooks:
+      type: object
+    models.CriteoApiCredentials:
       properties:
         client_id:
           type: string
         client_secret:
           type: string
-        pod:
-          type: string
-        refresh_token:
-          type: string
-        sftp_password:
-          type: string
-        sftp_user:
-          type: string
       type: object
-    models.Email:
-      type: object
-    models.Bluekai_Userpass:
+    models.InsiderApiKey:
       properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+        apikey:
           type: string
-        host:
+      type: object
+    models.HeaderParamAuth:
+      properties:
+        webhook_request_headers:
+          description: 'Enter headers for the webhook POST request. Add a new line for each header as key:value e.g. `Authorization: some-token`'
           type: string
-        partner_name:
-          description: Partner name that BlueKai recognizes you with.
-          type: string
-        password:
-          type: string
-        port:
-          type: integer
-        site_id:
-          description: Site ID provided by the BlueKai
-          type: integer
-        user:
+        webhook_request_params:
+          description: Enter URL parameters for the webhook POST request. e.g. `param-key1=value1&param-key2=value2`
           type: string
       type: object
     models.SnowflakeDirectGcs:
@@ -19915,67 +19914,34 @@ components:
         warehouse:
           type: string
       type: object
-    models.Brevo:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.AzureStorageConnection:
-      properties:
-        aes_iv:
-          description: Optional - add an AES intialization vector (IV) as a hex string in conjunction with the AES key above
-          type: string
-        aes_key:
-          description: Optional - add an AES key as a hex string to AES-encrypt specified fields in the Azure blob files
-          type: string
-        connection_string:
-          type: string
-        pgppublickey:
-          description: Optional - add a PGP public key to encrypt Azure blob files
-          type: string
-      type: object
-    models.AwsDelegatedPublicPgp:
-      properties:
-        pgppublickey:
-          type: string
-      type: object
-    models.Postup:
+    models.DotmailerApi:
       properties:
         password:
           type: string
         username:
           type: string
       type: object
-    models.MailgunApiKey:
+    models.Brevo:
       properties:
         apikey:
           type: string
-        domain:
+      type: object
+    models.Twitter_oauth1_0a:
+      properties:
+        code:
+          type: string
+        oauth_token:
+          type: string
+        oauth_verifier:
+          type: string
+        scope:
           type: string
       type: object
-    models.Api:
+    models.Pushly:
       properties:
         apikey:
           type: string
-        personalkey:
-          type: string
-      type: object
-    models.SnowflakeDirect:
-      properties:
-        account_name:
-          description: 'Enter your Snowflake account locator, ex. `xy12345.us-east-2.aws`. Be sure to format the locator according to your cloud platform and region, as described here: https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#locator-formats-by-cloud-platform-and-region'
-          type: string
-        database:
-          type: string
-        password:
-          type: string
-        private_key:
-          type: string
-        role:
-          type: string
-        user_name:
-          type: string
-        warehouse:
+        domain_id:
           type: string
       type: object
     models.SalesforceJwt:
@@ -19993,24 +19959,319 @@ components:
           description: The Salesforce username of the authorized user
           type: string
       type: object
+    models.Mediamath_NoAuth:
+      type: object
+    models.Liveramp_Userkey:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        passphrase:
+          type: string
+        port:
+          type: integer
+        privatekey:
+          type: string
+        user:
+          type: string
+      type: object
+    models.GcsJwt:
+      properties:
+        cert_json:
+          type: string
+      type: object
+    models.RedditConversion:
+      properties:
+        access_token:
+          type: string
+      type: object
+    models.Email:
+      type: object
+    models.IcontactApi:
+      properties:
+        api_password:
+          type: string
+        api_username:
+          type: string
+      type: object
+    models.AwsDelegatedPublicPgp:
+      properties:
+        pgppublickey:
+          type: string
+      type: object
+    models.Braze:
+      properties:
+        apikey:
+          type: string
+        instance:
+          description: Select the instance of Braze your account uses. For more on how to find your instance please read our docs about Braze.
+          type: string
+      type: object
+    models.Onesignal:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.FbSystemUser:
+      properties:
+        access_token:
+          type: string
+        ads_account_id:
+          type: string
+      type: object
+    models.LocalyticsKeys:
+      properties:
+        api_key:
+          type: string
+        api_secret:
+          type: string
+      type: object
+    models.Cheetah:
+      properties:
+        consumer_key:
+          type: string
+        consumer_secret:
+          type: string
+        region:
+          type: string
+      type: object
+    models.RedshiftPostgresql:
+      properties:
+        connection_url:
+          type: string
+        password:
+          type: string
+        ssl_mode:
+          type: string
+        user:
+          type: string
+      type: object
+    models.S3:
+      properties:
+        access_key:
+          type: string
+        bucket:
+          type: string
+        secret_key:
+          type: string
+      type: object
+    models.Maropost:
+      properties:
+        account:
+          type: integer
+        apikey:
+          type: string
+      type: object
+    models.MpApiSecret:
+      properties:
+        api_secret:
+          type: string
+      type: object
+    models.LineadsApiSecretkey:
+      properties:
+        access_key:
+          description: '#nosec G117 -- field carries the LINE Ads API Access Key (kid), provided by the customer.'
+          type: string
+        secret_key:
+          description: LINE Ads API Secret Key. Used to HMAC-SHA256 sign each request via JWS.
+          type: string
+      type: object
+    models.AwsDelegated:
+      type: object
+    models.BasicAuth:
+      properties:
+        password:
+          type: string
+        url:
+          description: Specify an arbitrary URL that requires basic authentication to access. This will validate that the credentials provided have correct permissions to access basic authenticated URLs.
+          type: string
+        username:
+          type: string
+      type: object
+    models.ConnectApikey:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.DatabricksDB:
+      properties:
+        host:
+          type: string
+        httppath:
+          type: string
+        port:
+          type: integer
+        token:
+          type: string
+      type: object
+    models.AzuresqlDb:
+      properties:
+        database:
+          type: string
+        password:
+          type: string
+        port:
+          type: string
+        server:
+          type: string
+        user:
+          type: string
+      type: object
+    models.StackdriverJwt:
+      properties:
+        cert_json:
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.SnapchatCapiToken:
+      properties:
+        token:
+          description: 'Paste a long-lived Snapchat Conversions API token. Generate this in Snapchat Ads Manager under Business Details → Conversions API Tokens (requires Organization Admin). Recommended for Conversions API exports: the token does not expire and is not subject to the Marketing API throughput limit.'
+          type: string
+      type: object
+    models.ClearbitLytics:
+      type: object
+    models.AmplitudeApiKey:
+      properties:
+        apikey:
+          type: string
+        apisecret:
+          type: string
+      type: object
+    models.Westfield:
+      properties:
+        api_key:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      type: object
+    models.MarketoClient:
+      properties:
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+        restUrl:
+          type: string
+      type: object
+    models.Liveramp_AwsKeys:
+      properties:
+        access_key:
+          type: string
+        secret_key:
+          type: string
+      type: object
+    models.ContentCookies:
+      properties:
+        cookie:
+          description: Specify a fully formatted cookie (e.g. COOKIE_NAME=COOKIE_VALUE).
+          type: string
+        url:
+          description: Specify an arbitrary URL that requires cookie authentication to access. This will validate that the cookie provided has permissions to access authenticated URLs.
+          type: string
+      type: object
+    models.MarketingcloudV2:
+      properties:
+        account_id:
+          type: string
+        auth_uri:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+      type: object
+    models.UserPassKey:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        passphrase:
+          description: Enter passphrase for the private key if any
+          type: string
+        password:
+          description: Enter password. Please leave this empty if you would want to use private key
+          type: string
+        port:
+          type: integer
+        privatekey:
+          description: Enter private key. Please leave this empty if you would want to use password
+          type: string
+        user:
+          type: string
+      type: object
+    models.UserpassSecret:
+      properties:
+        api_url:
+          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/v1/integration...)
+          type: string
+        integration_id:
+          type: string
+        password:
+          type: string
+        rest_api_url:
+          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/rest/v17...)
+          type: string
+        secret:
+          type: string
+        user:
+          type: string
+      type: object
     models.Clearbit:
       properties:
         apikey:
           type: string
       type: object
-    models.SalesforceSandboxJwt:
+    models.ResponsysSftpWithPgp:
       properties:
-        consumer_key:
-          description: The Consumer Key from your Salesforce External Client App
+        folder:
+          description: Folder path to place files
           type: string
-        my_domain_url:
-          description: The sandbox My Domain URL the JWT assertion is POSTed to
+        host:
           type: string
-        private_key:
-          description: '#nosec [G117] RSA private key in PEM format'
+        pgppassphrase:
           type: string
-        sf_username:
-          description: The Salesforce username of the authorized user
+        pgpprivatekey:
+          type: string
+        port:
+          type: integer
+        privatekey:
+          type: string
+        user:
+          type: string
+      type: object
+    models.CordialUserpass:
+      properties:
+        api_key:
+          type: string
+        folder:
+          description: Folder path to place files. Deafult is named cordial
+          type: string
+        host:
+          type: string
+        password:
+          type: string
+        port:
+          type: integer
+        user:
           type: string
       type: object
     models.IntegrationSecret:
@@ -20021,6 +20282,214 @@ components:
         integration_id:
           type: string
         secret:
+          type: string
+      type: object
+    models.WistiaToken:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.Surveymonkey:
+      properties:
+        access_token:
+          type: string
+      type: object
+    models.MicrosoftCapiToken:
+      properties:
+        token:
+          type: string
+      type: object
+    models.VersiumApikey:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.Aws_S3_Redshift:
+      properties:
+        access_key:
+          type: string
+        connection_url:
+          type: string
+        password:
+          type: string
+        secret_key:
+          type: string
+        ssl_mode:
+          type: string
+        user:
+          type: string
+      type: object
+    models.PubsubJwt:
+      properties:
+        cert_json:
+          type: string
+      type: object
+    models.UserpassPublicPgp:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        passphrase:
+          description: Enter passphrase for the private key if any
+          type: string
+        password:
+          description: Enter password. Please leave this empty if you would want to use private key
+          type: string
+        pgppublickey:
+          type: string
+        port:
+          type: integer
+        privatekey:
+          description: Enter private key. Please leave this empty if you would want to use password
+          type: string
+        user:
+          type: string
+      type: object
+    models.AwsKeysPublicPgp:
+      properties:
+        access_key:
+          type: string
+        pgppublickey:
+          type: string
+        secret_key:
+          type: string
+      type: object
+    models.Liveramp_Userpass:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        password:
+          type: string
+        port:
+          type: integer
+        user:
+          type: string
+      type: object
+    models.AwsKeysPgp:
+      properties:
+        access_key:
+          type: string
+        pgppassphrase:
+          type: string
+        pgpprivatekey:
+          type: string
+        secret_key:
+          type: string
+      type: object
+    models.MixpanelApiSecret:
+      properties:
+        apisecret:
+          type: string
+      type: object
+    models.Selligent_Userpass:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        password:
+          type: string
+        port:
+          type: integer
+        user:
+          type: string
+      type: object
+    models.Leadsquared:
+      properties:
+        accessKey:
+          type: string
+        region:
+          description: chooose which LeadSquared region you created your account on. This determines which API Host we connect with
+          type: string
+        secretKey:
+          type: string
+      type: object
+    models.Messagecentral:
+      properties:
+        apikey:
+          type: string
+        orgid:
+          type: string
+      type: object
+    models.Gigya:
+      properties:
+        api_key:
+          type: string
+        datacenter:
+          type: string
+        secret_key:
+          type: string
+        user_key:
+          description: User & Secret Key pair are located in your Account Settings
+          type: string
+      type: object
+    models.Datax:
+      properties:
+        mdm_id:
+          type: string
+        use_gdpr:
+          type: string
+      type: object
+    models.CustomerioApikey:
+      properties:
+        apikey:
+          type: string
+        site_id:
+          type: string
+      type: object
+    models.Webhook_NoAuth:
+      type: object
+    models.Fullcontact:
+      properties:
+        apikey:
+          type: string
+      type: object
+    models.BcAccessToken:
+      properties:
+        access_token:
+          description: Your access token must have read-access scopes to Customers and Orders for imports and modify scope to Customers and read-access scope to Orders for exports
+          type: string
+        store_hash:
+          description: Enter your unique store hash ID
+          type: string
+      type: object
+    models.Webhook_Oauth2_ClientCredentials:
+      properties:
+        access_token_manager_id:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        scope:
+          type: string
+        token_endpoint:
+          type: string
+        webhook_request_headers:
+          type: string
+        webhook_request_params:
+          type: string
+      type: object
+    models.LyticsLotameS3:
+      type: object
+    models.AlgoliaApiKey:
+      properties:
+        api_key:
+          description: An API key with the search, browse and recommendation ACL permissions
+          type: string
+        application_id:
+          description: Enter your Algolia application ID
+          type: string
+      type: object
+    models.AzureEventHub:
+      properties:
+        connection_string:
           type: string
       type: object
     models.AuthResponse:
@@ -20067,485 +20536,6 @@ components:
           description: The user ID that created or updated the authorization
           type: string
       type: object
-    models.FbSystemUser:
-      properties:
-        access_token:
-          type: string
-        ads_account_id:
-          type: string
-      type: object
-    models.MarketingcloudV2:
-      properties:
-        account_id:
-          type: string
-        auth_uri:
-          type: string
-        client_id:
-          type: string
-        client_secret:
-          type: string
-      type: object
-    models.Liveramp_Userpass:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        password:
-          type: string
-        port:
-          type: integer
-        user:
-          type: string
-      type: object
-    models.Liveramp_Userkey:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        passphrase:
-          type: string
-        port:
-          type: integer
-        privatekey:
-          type: string
-        user:
-          type: string
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.VersiumApikey:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.LineadsApiSecretkey:
-      properties:
-        access_key:
-          description: '#nosec G117 -- field carries the LINE Ads API Access Key (kid), provided by the customer.'
-          type: string
-        secret_key:
-          description: LINE Ads API Secret Key. Used to HMAC-SHA256 sign each request via JWS.
-          type: string
-      type: object
-    models.Zuora:
-      properties:
-        partner:
-          type: string
-        password:
-          type: string
-        username:
-          type: string
-      type: object
-    models.GcsJwt:
-      properties:
-        cert_json:
-          type: string
-      type: object
-    models.S3:
-      properties:
-        access_key:
-          type: string
-        bucket:
-          type: string
-        secret_key:
-          type: string
-      type: object
-    models.SparkpostApiKey:
-      properties:
-        apikey:
-          description: 'You can create an API Key by logging into SparkPost and clicking on Account. Make sure to enable Event Webhooks: Read/Write permission'
-          type: string
-      type: object
-    models.UserPassKey:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        passphrase:
-          description: Enter passphrase for the private key if any
-          type: string
-        password:
-          description: Enter password. Please leave this empty if you would want to use private key
-          type: string
-        port:
-          type: integer
-        privatekey:
-          description: Enter private key. Please leave this empty if you would want to use password
-          type: string
-        user:
-          type: string
-      type: object
-    models.Twitter_oauth1_0a:
-      properties:
-        code:
-          type: string
-        oauth_token:
-          type: string
-        oauth_verifier:
-          type: string
-        scope:
-          type: string
-      type: object
-    models.Googleanalytics_NoAuth:
-      type: object
-    models.Braze:
-      properties:
-        apikey:
-          type: string
-        instance:
-          description: Select the instance of Braze your account uses. For more on how to find your instance please read our docs about Braze.
-          type: string
-      type: object
-    models.RedditConversion:
-      properties:
-        access_token:
-          type: string
-      type: object
-    models.Klaviyo:
-      properties:
-        api_key:
-          type: string
-      type: object
-    models.LyticsAwsSftpAuth:
-      properties:
-        host:
-          type: string
-        passphrase:
-          description: Enter passphrase for the private key if any
-          type: string
-        password:
-          description: Enter desired password. Must be between 8 to 32 characters and include at least one uppercase letter, lowercase letter, number and special character. **NOTE:** Either password or public key must be provided
-          type: string
-        port:
-          type: string
-        privatekey:
-          description: Enter SSH private key. **NOTE:** When using public key, private key must be provided.
-          type: string
-        publickey:
-          description: Enter SSH public key. **NOTE:** Either password or public key must be provided
-          type: string
-        user:
-          description: Enter username. Must be between 3 to 32 characters. Username can have characters a-z, A-Z, 0-9, hyphen(-), underscore(_). It cannot start with hyphen(-)
-          type: string
-      type: object
-    models.BasicAuth:
-      properties:
-        password:
-          type: string
-        url:
-          description: Specify an arbitrary URL that requires basic authentication to access. This will validate that the credentials provided have correct permissions to access basic authenticated URLs.
-          type: string
-        username:
-          type: string
-      type: object
-    models.SalesforceDataCloudJwt:
-      properties:
-        consumer_key:
-          description: The Consumer Key from your Salesforce External Client App
-          type: string
-        my_domain_url:
-          description: The org My Domain URL the JWT assertion is POSTed to
-          type: string
-        private_key:
-          description: '#nosec [G117] RSA private key in PEM format'
-          type: string
-        sf_username:
-          description: The Salesforce username of the authorized user
-          type: string
-      type: object
-    models.WistiaToken:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.Surveymonkey:
-      properties:
-        access_token:
-          type: string
-      type: object
-    models.UserpassPrivatePgp:
-      properties:
-        folder:
-          description: Relative path to the folder containing the csv. Leave blank to retrieve the csv from the home directory.
-          type: string
-        host:
-          type: string
-        passphrase:
-          description: Enter passphrase for the private key if any
-          type: string
-        password:
-          description: Enter password. Please leave this empty if you would want to use private key
-          type: string
-        pgppassphrase:
-          type: string
-        pgpprivatekey:
-          type: string
-        port:
-          type: integer
-        privatekey:
-          description: Enter private key. Please leave this empty if you would want to use password
-          type: string
-        user:
-          type: string
-      type: object
-    models.MixpanelApiSecret:
-      properties:
-        apisecret:
-          type: string
-      type: object
-    models.RetentionscienceKey:
-      properties:
-        api_key:
-          type: string
-      type: object
-    models.Bluekai_Userkey:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        partner_name:
-          description: Partner name that BlueKai recognizes you with.
-          type: string
-        port:
-          type: integer
-        privatekey:
-          type: string
-        site_id:
-          description: Site ID provided by the BlueKai
-          type: integer
-        user:
-          type: string
-      type: object
-    models.MandrillApiKey:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.ContentstackAuthtoken:
-      properties:
-        authtoken:
-          type: string
-        base_url:
-          type: string
-        region:
-          type: string
-      type: object
-    models.Webhook_NoAuth:
-      type: object
-    models.ResponsysSftpWithPgp:
-      properties:
-        folder:
-          description: Folder path to place files
-          type: string
-        host:
-          type: string
-        pgppassphrase:
-          type: string
-        pgpprivatekey:
-          type: string
-        port:
-          type: integer
-        privatekey:
-          type: string
-        user:
-          type: string
-      type: object
-    models.UserpassSecret:
-      properties:
-        api_url:
-          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/v1/integration...)
-          type: string
-        integration_id:
-          type: string
-        password:
-          type: string
-        rest_api_url:
-          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/rest/v17...)
-          type: string
-        secret:
-          type: string
-        user:
-          type: string
-      type: object
-    models.LocalyticsKeys:
-      properties:
-        api_key:
-          type: string
-        api_secret:
-          type: string
-      type: object
-    models.RedshiftPostgresql:
-      properties:
-        connection_url:
-          type: string
-        password:
-          type: string
-        ssl_mode:
-          type: string
-        user:
-          type: string
-      type: object
-    models.AirshipMasterSecret:
-      properties:
-        app_key:
-          type: string
-        master_secret:
-          type: string
-        project_location:
-          type: string
-      type: object
-    models.CordialUserpass:
-      properties:
-        api_key:
-          type: string
-        folder:
-          description: Folder path to place files. Deafult is named cordial
-          type: string
-        host:
-          type: string
-        password:
-          type: string
-        port:
-          type: integer
-        user:
-          type: string
-      type: object
-    models.SnapchatCapiToken:
-      properties:
-        token:
-          description: 'Paste a long-lived Snapchat Conversions API token. Generate this in Snapchat Ads Manager under Business Details → Conversions API Tokens (requires Organization Admin). Recommended for Conversions API exports: the token does not expire and is not subject to the Marketing API throughput limit.'
-          type: string
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.SecretkeyV2:
-      properties:
-        secret_key:
-          type: string
-      type: object
-    models.ClearbitLytics:
-      type: object
-    models.AirshipConnect:
-      properties:
-        access_token:
-          type: string
-        app_key:
-          type: string
-        project_location:
-          type: string
-      type: object
-    models.ThetradedeskApiToken:
-      properties:
-        token:
-          description: Paste a long-lived The Trade Desk API token. Generate this in the TTD platform under your account's API tokens section. Use this when you have a token issued for the Conversion API and do not want to share TTD username/password credentials.
-          type: string
-      type: object
-    models.Messagecentral:
-      properties:
-        apikey:
-          type: string
-        orgid:
-          type: string
-      type: object
-    models.Gigya:
-      properties:
-        api_key:
-          type: string
-        datacenter:
-          type: string
-        secret_key:
-          type: string
-        user_key:
-          description: User & Secret Key pair are located in your Account Settings
-          type: string
-      type: object
-    models.CustomerioApikey:
-      properties:
-        apikey:
-          type: string
-        site_id:
-          type: string
-      type: object
-    models.InsiderApiKey:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.AwsDelegatedPgp:
-      properties:
-        pgppassphrase:
-          type: string
-        pgpprivatekey:
-          type: string
-      type: object
-    models.EpiserverApiKey:
-      properties:
-        client_id:
-          description: Client ID provided by Episerver
-          type: string
-        user_api_key:
-          type: string
-        user_name:
-          description: API User Name
-          type: string
-      type: object
-    models.BluehornetApiKey:
-      properties:
-        api_key:
-          type: string
-        secret:
-          type: string
-      type: object
-    models.DriftAppKey:
-      properties:
-        app_key:
-          type: string
-      type: object
-    models.OptimizelyOdpApiKey:
-      properties:
-        api_key:
-          description: '#nosec G117 -- field holds the ODP API key, not a leaked credential'
-          type: string
-      type: object
-    models.Dv360_Oauth:
-      properties:
-        code:
-          type: string
-        scope:
-          type: string
-      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -20590,64 +20580,42 @@ components:
           format: date-time
           type: string
       type: object
-    models.BlueshiftApiKey:
-      properties:
-        user_api_key:
-          type: string
-      type: object
-    models.SailthruApiKey:
+    models.Api:
       properties:
         apikey:
           type: string
-        apisecret:
+        personalkey:
           type: string
       type: object
-    models.Aws_S3_Redshift:
+    models.AwsKeys:
       properties:
         access_key:
           type: string
-        connection_url:
+        secret_key:
+          type: string
+      type: object
+    models.Thetradedesk_Userpass:
+      properties:
+        partner_id:
+          description: Enter your The Trade Desk Partner ID. This Partner ID is used during experience import and is different than The Trade Desk Advertiser ID
           type: string
         password:
           type: string
         secret_key:
+          description: Enter your The Trade Desk Partner Secret Key
           type: string
-        ssl_mode:
-          type: string
-        user:
+        username:
           type: string
       type: object
-    models.Onesignal:
+    models.Iterable:
       properties:
         apikey:
           type: string
       type: object
-    models.StackdriverJwt:
+    models.AttentiveApiKey:
       properties:
-        cert_json:
-          type: string
-      type: object
-    models.UserpassPublicPgp:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        passphrase:
-          description: Enter passphrase for the private key if any
-          type: string
-        password:
-          description: Enter password. Please leave this empty if you would want to use private key
-          type: string
-        pgppublickey:
-          type: string
-        port:
-          type: integer
-        privatekey:
-          description: Enter private key. Please leave this empty if you would want to use password
-          type: string
-        user:
+        api_key:
+          description: '#nosec G117 -- field holds the Attentive API key, not a leaked credential'
           type: string
       type: object
     models.ShopifyApiToken:
@@ -20658,167 +20626,180 @@ components:
         token:
           type: string
       type: object
-    models.AttentiveApiKey:
+    models.LyticsAwsSftpAuth:
       properties:
-        api_key:
-          description: '#nosec G117 -- field holds the Attentive API key, not a leaked credential'
+        host:
+          type: string
+        passphrase:
+          description: Enter passphrase for the private key if any
+          type: string
+        password:
+          description: Enter desired password. Must be between 8 to 32 characters and include at least one uppercase letter, lowercase letter, number and special character. **NOTE:** Either password or public key must be provided
+          type: string
+        port:
+          type: string
+        privatekey:
+          description: Enter SSH private key. **NOTE:** When using public key, private key must be provided.
+          type: string
+        publickey:
+          description: Enter SSH public key. **NOTE:** Either password or public key must be provided
+          type: string
+        user:
+          description: Enter username. Must be between 3 to 32 characters. Username can have characters a-z, A-Z, 0-9, hyphen(-), underscore(_). It cannot start with hyphen(-)
           type: string
       type: object
-    models.Mediamath_NoAuth:
-      type: object
-    models.AzuresqlDb:
+    models.TriggerUserpass:
       properties:
+        password:
+          type: string
+        rest_api_url:
+          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/rest/v17...)
+          type: string
+        user:
+          type: string
+      type: object
+    models.Postup:
+      properties:
+        password:
+          type: string
+        username:
+          type: string
+      type: object
+    models.SnowflakeDirect:
+      properties:
+        account_name:
+          description: 'Enter your Snowflake account locator, ex. `xy12345.us-east-2.aws`. Be sure to format the locator according to your cloud platform and region, as described here: https://docs.snowflake.com/en/user-guide/admin-account-identifier.html#locator-formats-by-cloud-platform-and-region'
+          type: string
         database:
           type: string
         password:
           type: string
-        port:
+        private_key:
           type: string
-        server:
+        role:
           type: string
-        user:
+        user_name:
+          type: string
+        warehouse:
           type: string
       type: object
-    models.Webhook_Oauth2_ClientCredentials:
+    models.SecretkeyV2:
       properties:
-        access_token_manager_id:
+        secret_key:
           type: string
+      type: object
+    models.SilverpopFullAuth:
+      properties:
         client_id:
           type: string
         client_secret:
           type: string
-        scope:
+        pod:
           type: string
-        token_endpoint:
+        refresh_token:
           type: string
-        webhook_request_headers:
+        sftp_password:
           type: string
-        webhook_request_params:
-          type: string
-      type: object
-    models.InfobipApiKey:
-      properties:
-        apikey:
-          description: '#nosec G117 -- field carries the Infobip API key, provided by the customer.'
-          type: string
-        base_url:
-          description: Per-account host, e.g. xyz123.api.infobip.com
+        sftp_user:
           type: string
       type: object
-    models.ResponsysSftp:
-      properties:
-        folder:
-          description: Folder path to place files
-          type: string
-        host:
-          type: string
-        port:
-          type: integer
-        privatekey:
-          type: string
-        user:
-          type: string
-      type: object
-    models.BcAccessToken:
-      properties:
-        access_token:
-          description: Your access token must have read-access scopes to Customers and Orders for imports and modify scope to Customers and read-access scope to Orders for exports
-          type: string
-        store_hash:
-          description: Enter your unique store hash ID
-          type: string
-      type: object
-    models.Cheetah:
+    models.SalesforceDataCloudSandboxJwt:
       properties:
         consumer_key:
+          description: The Consumer Key from your Salesforce External Client App
           type: string
-        consumer_secret:
+        my_domain_url:
+          description: The sandbox My Domain URL the JWT assertion is POSTed to
           type: string
-        region:
+        private_key:
+          description: '#nosec [G117] RSA private key in PEM format'
+          type: string
+        sf_username:
+          description: The Salesforce username of the authorized user
           type: string
       type: object
-    models.Yesmail:
+    models.OptimizelyOdpApiKey:
       properties:
-        apikey:
-          type: string
-        apiuser:
+        api_key:
+          description: '#nosec G117 -- field holds the ODP API key, not a leaked credential'
           type: string
       type: object
-    models.NewrelicInsightsApikey:
+    models.ThetradedeskApiToken:
+      properties:
+        token:
+          description: Paste a long-lived The Trade Desk API token. Generate this in the TTD platform under your account's API tokens section. Use this when you have a token issued for the Conversion API and do not want to share TTD username/password credentials.
+          type: string
+      type: object
+    models.Cordial:
       properties:
         api_key:
           type: string
       type: object
-    models.Mapp_Userpass:
+    models.ApiResponse:
       properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
           type: string
-        host:
-          type: string
-        password:
-          type: string
-        port:
+        status:
+          description: HTTP Status Code
           type: integer
-        user:
-          type: string
-      type: object
-    models.Maropost:
-      properties:
-        account:
-          type: integer
-        apikey:
-          type: string
-      type: object
-    models.AlgoliaApiKey:
-      properties:
-        api_key:
-          description: An API key with the search, browse and recommendation ACL permissions
-          type: string
-        application_id:
-          description: Enter your Algolia application ID
-          type: string
-      type: object
-    models.MarketoClient:
-      properties:
-        clientId:
-          type: string
-        clientSecret:
-          type: string
-        restUrl:
-          type: string
-      type: object
-    models.Westfield:
-      properties:
-        api_key:
-          type: string
-        client_id:
-          type: string
-        client_secret:
-          type: string
-      type: object
-    models.MpApiSecret:
-      properties:
-        api_secret:
-          type: string
-      type: object
-    models.Selligent_Userpass:
-      properties:
-        folder:
-          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
-          type: string
-        host:
-          type: string
-        password:
-          type: string
-        port:
-          type: integer
-        user:
-          type: string
       type: object
     models.TiktokEventsToken:
       properties:
         token:
+          type: string
+      type: object
+    models.EpiserverApiKey:
+      properties:
+        client_id:
+          description: Client ID provided by Episerver
+          type: string
+        user_api_key:
+          type: string
+        user_name:
+          description: API User Name
+          type: string
+      type: object
+    models.BluehornetApiKey:
+      properties:
+        api_key:
+          type: string
+        secret:
+          type: string
+      type: object
+    models.MailgunApiKey:
+      properties:
+        apikey:
+          type: string
+        domain:
+          type: string
+      type: object
+    models.Apikey:
+      properties:
+        apikey:
+          type: string
+        email:
+          type: string
+        subdomain:
+          description: Get this from Zendesk account UI
+          type: string
+      type: object
+    models.Aws_AwsKeys:
+      properties:
+        access_key:
+          type: string
+        secret_key:
+          type: string
+      type: object
+    models.Sendgrid:
+      properties:
+        apikey:
           type: string
       type: object
     models.ResponsysInteract:
@@ -20831,26 +20812,23 @@ components:
         username:
           type: string
       type: object
-    models.AwsKeys:
+    models.AppsflyerDevkey:
       properties:
-        access_key:
+        app_id:
           type: string
-        secret_key:
+        dev_key:
+          type: string
+        platform:
           type: string
       type: object
-    models.Iterable:
+    models.Zuora:
       properties:
-        apikey:
+        partner:
           type: string
-      type: object
-    models.Liveramp_AwsKeys:
-      properties:
-        access_key:
+        password:
           type: string
-        secret_key:
+        username:
           type: string
-      type: object
-    models.AwsDelegated:
       type: object
     models.AuthRequest:
       properties:
@@ -20881,45 +20859,105 @@ components:
       - config
       - label
       type: object
-    models.AmplitudeApiKey:
+    models.BqJwtImport:
       properties:
-        apikey:
-          type: string
-        apisecret:
+        cert_json:
           type: string
       type: object
-    models.DatabricksDB:
+    models.AwsDelegatedPgp:
       properties:
+        pgppassphrase:
+          type: string
+        pgpprivatekey:
+          type: string
+      type: object
+    models.UserpassPrivatePgp:
+      properties:
+        folder:
+          description: Relative path to the folder containing the csv. Leave blank to retrieve the csv from the home directory.
+          type: string
         host:
           type: string
-        httppath:
+        passphrase:
+          description: Enter passphrase for the private key if any
+          type: string
+        password:
+          description: Enter password. Please leave this empty if you would want to use private key
+          type: string
+        pgppassphrase:
+          type: string
+        pgpprivatekey:
           type: string
         port:
           type: integer
-        token:
+        privatekey:
+          description: Enter private key. Please leave this empty if you would want to use password
+          type: string
+        user:
           type: string
       type: object
-    models.ContentCookies:
+    models.AirshipMasterSecret:
       properties:
-        cookie:
-          description: Specify a fully formatted cookie (e.g. COOKIE_NAME=COOKIE_VALUE).
+        app_key:
           type: string
-        url:
-          description: Specify an arbitrary URL that requires cookie authentication to access. This will validate that the cookie provided has permissions to access authenticated URLs.
+        master_secret:
+          type: string
+        project_location:
           type: string
       type: object
-    models.PinterestCapiToken:
+    models.Mapp_Userpass:
       properties:
-        account_id:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
           type: string
-        token:
+        host:
+          type: string
+        password:
+          type: string
+        port:
+          type: integer
+        user:
           type: string
       type: object
-    models.Datax:
+    models.BlueshiftApiKey:
       properties:
-        mdm_id:
+        user_api_key:
           type: string
-        use_gdpr:
+      type: object
+    models.ResponsysSftp:
+      properties:
+        folder:
+          description: Folder path to place files
+          type: string
+        host:
+          type: string
+        port:
+          type: integer
+        privatekey:
+          type: string
+        user:
+          type: string
+      type: object
+    models.Googleanalytics_NoAuth:
+      type: object
+    models.Bluekai_Userpass:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        partner_name:
+          description: Partner name that BlueKai recognizes you with.
+          type: string
+        password:
+          type: string
+        port:
+          type: integer
+        site_id:
+          description: Site ID provided by the BlueKai
+          type: integer
+        user:
           type: string
       type: object
     models.NetsuiteSuitetalk:
@@ -20935,53 +20973,26 @@ components:
         token_secret:
           type: string
       type: object
-    models.Leadsquared:
-      properties:
-        accessKey:
-          type: string
-        region:
-          description: chooose which LeadSquared region you created your account on. This determines which API Host we connect with
-          type: string
-        secretKey:
-          type: string
-      type: object
-    models.AzureEventHub:
-      properties:
-        connection_string:
-          type: string
-      type: object
-    models.Apikey:
-      properties:
-        apikey:
-          type: string
-        email:
-          type: string
-        subdomain:
-          description: Get this from Zendesk account UI
-          type: string
-      type: object
     models.BqJwt:
       properties:
         cert_json:
           type: string
       type: object
-    models.PubsubJwt:
+    models.PinterestCapiToken:
       properties:
-        cert_json:
+        account_id:
+          type: string
+        token:
           type: string
       type: object
-    models.AwsKeysPgp:
+    models.SailthruApiKey:
       properties:
-        access_key:
+        apikey:
           type: string
-        pgppassphrase:
-          type: string
-        pgpprivatekey:
-          type: string
-        secret_key:
+        apisecret:
           type: string
       type: object
-    models.SalesforceDataCloudSandboxJwt:
+    models.SalesforceSandboxJwt:
       properties:
         consumer_key:
           description: The Consumer Key from your Salesforce External Client App
@@ -20994,75 +21005,6 @@ components:
           type: string
         sf_username:
           description: The Salesforce username of the authorized user
-          type: string
-      type: object
-    models.BqJwtImport:
-      properties:
-        cert_json:
-          type: string
-      type: object
-    models.CriteoApiCredentials:
-      properties:
-        client_id:
-          type: string
-        client_secret:
-          type: string
-      type: object
-    models.Cordial:
-      properties:
-        api_key:
-          type: string
-      type: object
-    models.MicrosoftCapiToken:
-      properties:
-        token:
-          type: string
-      type: object
-    models.Fullcontact:
-      properties:
-        apikey:
-          type: string
-      type: object
-    models.TriggerUserpass:
-      properties:
-        password:
-          type: string
-        rest_api_url:
-          description: The API URL of your Mapp instance (should include everything **up to but not including** /api/rest/v17...)
-          type: string
-        user:
-          type: string
-      type: object
-    models.CustomerioWebhooks:
-      type: object
-    models.HeaderParamAuth:
-      properties:
-        webhook_request_headers:
-          description: 'Enter headers for the webhook POST request. Add a new line for each header as key:value e.g. `Authorization: some-token`'
-          type: string
-        webhook_request_params:
-          description: Enter URL parameters for the webhook POST request. e.g. `param-key1=value1&param-key2=value2`
-          type: string
-      type: object
-    models.IcontactApi:
-      properties:
-        api_password:
-          type: string
-        api_username:
-          type: string
-      type: object
-    models.LyticsLotameS3:
-      type: object
-    models.DotmailerApi:
-      properties:
-        password:
-          type: string
-        username:
-          type: string
-      type: object
-    models.Sendgrid:
-      properties:
-        apikey:
           type: string
       type: object
     models.ContentstackApiKey:
@@ -21078,38 +21020,96 @@ components:
         stack_api_key:
           type: string
       type: object
-    models.Pushly:
+    models.SparkpostApiKey:
+      properties:
+        apikey:
+          description: 'You can create an API Key by logging into SparkPost and clicking on Account. Make sure to enable Event Webhooks: Read/Write permission'
+          type: string
+      type: object
+    models.Yesmail:
       properties:
         apikey:
           type: string
-        domain_id:
+        apiuser:
           type: string
       type: object
-    models.AppsflyerDevkey:
+    models.AzureStorageConnection:
       properties:
-        app_id:
+        aes_iv:
+          description: Optional - add an AES intialization vector (IV) as a hex string in conjunction with the AES key above
           type: string
-        dev_key:
+        aes_key:
+          description: Optional - add an AES key as a hex string to AES-encrypt specified fields in the Azure blob files
           type: string
-        platform:
+        connection_string:
           type: string
-      type: object
-    models.Thetradedesk_Userpass:
-      properties:
-        partner_id:
-          description: Enter your The Trade Desk Partner ID. This Partner ID is used during experience import and is different than The Trade Desk Advertiser ID
-          type: string
-        password:
-          type: string
-        secret_key:
-          description: Enter your The Trade Desk Partner Secret Key
-          type: string
-        username:
+        pgppublickey:
+          description: Optional - add a PGP public key to encrypt Azure blob files
           type: string
       type: object
-    models.ConnectApikey:
+    models.MandrillApiKey:
       properties:
         apikey:
+          type: string
+      type: object
+    models.InfobipApiKey:
+      properties:
+        apikey:
+          description: '#nosec G117 -- field carries the Infobip API key, provided by the customer.'
+          type: string
+        base_url:
+          description: Per-account host, e.g. xyz123.api.infobip.com
+          type: string
+      type: object
+    models.Dv360_Oauth:
+      properties:
+        code:
+          type: string
+        scope:
+          type: string
+      type: object
+    models.RetentionscienceKey:
+      properties:
+        api_key:
+          type: string
+      type: object
+    models.NewrelicInsightsApikey:
+      properties:
+        api_key:
+          type: string
+      type: object
+    models.AirshipConnect:
+      properties:
+        access_token:
+          type: string
+        app_key:
+          type: string
+        project_location:
+          type: string
+      type: object
+    models.DriftAppKey:
+      properties:
+        app_key:
+          type: string
+      type: object
+    models.Bluekai_Userkey:
+      properties:
+        folder:
+          description: Relative path to the folder to place the csv. Leave blank to place the csv in the home directory.
+          type: string
+        host:
+          type: string
+        partner_name:
+          description: Partner name that BlueKai recognizes you with.
+          type: string
+        port:
+          type: integer
+        privatekey:
+          type: string
+        site_id:
+          description: Site ID provided by the BlueKai
+          type: integer
+        user:
           type: string
       type: object
   securitySchemes:

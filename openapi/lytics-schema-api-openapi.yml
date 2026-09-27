@@ -1687,6 +1687,34 @@ components:
           format: date-time
           type: string
       type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.RankList:
+      properties:
+        changes:
+          $ref: '#/components/schemas/v2schemadiff.SchemaChange'
+        created:
+          type: string
+        edit_status:
+          type: string
+        fields:
+          items:
+            type: string
+          type: array
+        modified:
+          type: string
+      type: object
     models.IDConfig:
       properties:
         compact_after_days:
@@ -1706,12 +1734,24 @@ components:
         modified:
           type: string
       type: object
-    models.ExpressionEvalRequest:
-      properties:
-        data:
+    models.SchemaEvalRequest:
+      additionalProperties:
+        items:
           additionalProperties: true
           type: object
-        expression:
+        type: array
+      type: object
+    models.RetentionSettings:
+      properties:
+        capacity:
+          type: integer
+        created:
+          type: string
+        edit_status:
+          type: string
+        keep_days:
+          type: integer
+        modified:
           type: string
       type: object
     models.Field:
@@ -1760,84 +1800,6 @@ components:
         type:
           type: string
       type: object
-    v2schemadiff.Diff:
-      properties:
-        from_val: {}
-        property:
-          description: Property can be field type, mapping expression, etc.
-          type: string
-        to_val: {}
-      type: object
-    models.SchemaEvalRequest:
-      additionalProperties:
-        items:
-          additionalProperties: true
-          type: object
-        type: array
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.RankList:
-      properties:
-        changes:
-          $ref: '#/components/schemas/v2schemadiff.SchemaChange'
-        created:
-          type: string
-        edit_status:
-          type: string
-        fields:
-          items:
-            type: string
-          type: array
-        modified:
-          type: string
-      type: object
-    models.VersionDiff:
-      properties:
-        diff:
-          items:
-            $ref: '#/components/schemas/v2schemadiff.SchemaChange'
-          type: array
-        from:
-          $ref: '#/components/schemas/models.SchemaResponse'
-        to:
-          $ref: '#/components/schemas/models.SchemaResponse'
-      type: object
-    models.RetentionSettings:
-      properties:
-        capacity:
-          type: integer
-        created:
-          type: string
-        edit_status:
-          type: string
-        keep_days:
-          type: integer
-        modified:
-          type: string
-      type: object
-    models.Table:
-      properties:
-        draft_id:
-          type: string
-        draft_version:
-          type: integer
-        live_id:
-          type: string
-        table:
-          type: string
-      type: object
     models.ApiResponse:
       properties:
         _meta:
@@ -1853,6 +1815,17 @@ components:
           description: HTTP Status Code
           type: integer
       type: object
+    models.LQLUploadResponse:
+      properties:
+        fields:
+          items:
+            $ref: '#/components/schemas/models.Field'
+          type: array
+        mappings:
+          items:
+            $ref: '#/components/schemas/models.Mapping'
+          type: array
+      type: object
     models.VersionCommit:
       properties:
         description:
@@ -1861,6 +1834,118 @@ components:
         tag:
           description: Tag for short-hand reference
           type: string
+      type: object
+    v2schemadiff.Diff:
+      properties:
+        from_val: {}
+        property:
+          description: Property can be field type, mapping expression, etc.
+          type: string
+        to_val: {}
+      type: object
+    models.Table:
+      properties:
+        draft_id:
+          type: string
+        draft_version:
+          type: integer
+        live_id:
+          type: string
+        table:
+          type: string
+      type: object
+    models.SchemaValidateResponse:
+      properties:
+        has_unpublished_changes:
+          type: boolean
+        id:
+          description: UUID for this schema version
+          type: string
+        parent_id:
+          type: string
+        table:
+          type: string
+        validation_errors:
+          items:
+            type: string
+          type: array
+        version_number:
+          type: integer
+      type: object
+    models.VersionDiff:
+      properties:
+        diff:
+          items:
+            $ref: '#/components/schemas/v2schemadiff.SchemaChange'
+          type: array
+        from:
+          $ref: '#/components/schemas/models.SchemaResponse'
+        to:
+          $ref: '#/components/schemas/models.SchemaResponse'
+      type: object
+    v2schemadiff.SchemaChange:
+      properties:
+        diff:
+          description: Diff will be empty if verb is "created" or "removed".
+          items:
+            $ref: '#/components/schemas/v2schemadiff.Diff'
+          type: array
+        id:
+          description: "ID will be field name, mapping ID, rank setting\n field, or empty for \"rank\" source type."
+          type: string
+        subject:
+          enum:
+          - mapping
+          - field
+          - rank
+          - rank_setting
+          type: string
+        verb:
+          enum:
+          - created
+          - removed
+          - modified
+          type: string
+      type: object
+    models.Assertions:
+      properties:
+        email:
+          description: Asserts that the field is an email address
+          type: boolean
+        filter:
+          description: '[]string is the type of v2schema.Filter'
+          items:
+            type: string
+          type: array
+        format:
+          description: Asserts the format of string fields. If this is set to any value other than "any", the incoming data will be validated against the specified format for all mappings to this field. If the format does not match, the mapping will ignore the input.
+          enum:
+          - alpha
+          - alphanumeric
+          - uuid
+          - base64
+          - hex
+          - int
+          - any
+          type: string
+        length:
+          properties:
+            max:
+              description: Maximum length of the field
+              type: integer
+            min:
+              description: Minimum length of the field
+              type: integer
+          type: object
+      type: object
+    models.Ranks:
+      properties:
+        id_config:
+          items:
+            $ref: '#/components/schemas/models.IDConfig'
+          type: array
+        id_ranks:
+          $ref: '#/components/schemas/models.RankList'
       type: object
     models.SchemaResponse:
       properties:
@@ -1910,97 +1995,12 @@ components:
         version_number:
           type: integer
       type: object
-    models.SchemaValidateResponse:
+    models.ExpressionEvalRequest:
       properties:
-        has_unpublished_changes:
-          type: boolean
-        id:
-          description: UUID for this schema version
-          type: string
-        parent_id:
-          type: string
-        table:
-          type: string
-        validation_errors:
-          items:
-            type: string
-          type: array
-        version_number:
-          type: integer
-      type: object
-    models.Assertions:
-      properties:
-        email:
-          description: Asserts that the field is an email address
-          type: boolean
-        filter:
-          description: '[]string is the type of v2schema.Filter'
-          items:
-            type: string
-          type: array
-        format:
-          description: Asserts the format of string fields. If this is set to any value other than "any", the incoming data will be validated against the specified format for all mappings to this field. If the format does not match, the mapping will ignore the input.
-          enum:
-          - alpha
-          - alphanumeric
-          - uuid
-          - base64
-          - hex
-          - int
-          - any
-          type: string
-        length:
-          properties:
-            max:
-              description: Maximum length of the field
-              type: integer
-            min:
-              description: Minimum length of the field
-              type: integer
+        data:
+          additionalProperties: true
           type: object
-      type: object
-    models.LQLUploadResponse:
-      properties:
-        fields:
-          items:
-            $ref: '#/components/schemas/models.Field'
-          type: array
-        mappings:
-          items:
-            $ref: '#/components/schemas/models.Mapping'
-          type: array
-      type: object
-    models.Ranks:
-      properties:
-        id_config:
-          items:
-            $ref: '#/components/schemas/models.IDConfig'
-          type: array
-        id_ranks:
-          $ref: '#/components/schemas/models.RankList'
-      type: object
-    v2schemadiff.SchemaChange:
-      properties:
-        diff:
-          description: Diff will be empty if verb is "created" or "removed".
-          items:
-            $ref: '#/components/schemas/v2schemadiff.Diff'
-          type: array
-        id:
-          description: "ID will be field name, mapping ID, rank setting\n field, or empty for \"rank\" source type."
-          type: string
-        subject:
-          enum:
-          - mapping
-          - field
-          - rank
-          - rank_setting
-          type: string
-        verb:
-          enum:
-          - created
-          - removed
-          - modified
+        expression:
           type: string
       type: object
     models.Mapping:

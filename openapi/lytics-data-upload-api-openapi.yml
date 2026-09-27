@@ -298,7 +298,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Data JSON Upload
-      operationId: Data JSON Upload
+      operationId: DataJSONUpload
       description: ''
       tags:
       - Data Upload
@@ -342,9 +342,46 @@ paths:
         example: '"myfile.json"'
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Data JSON Upload
 components:
   schemas:
     BulkJSONUploadModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            message_count:
+              type: number
+            rejected_count:
+              type: number
+            content-type:
+              type: string
+            droperrors:
+              type: boolean
+            dryrun:
+              type: boolean
+            timestamp_field:
+              type: string
+            filename:
+              type: string
+      example:
+        status: 200
+        message: success
+        data:
+          message_count: 2
+          rejected_count: 0
+          content-type: application/json
+          droperrors: false
+          dryrun: false
+          timestamp_field: event_created
+          filename: myfile.json
+    DataUploadModel:
       type: object
       properties:
         status:
@@ -414,41 +451,6 @@ components:
           dryrun: false
           timestamp_field: event_created
           filename: myfile.csv
-    DataUploadModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            message_count:
-              type: number
-            rejected_count:
-              type: number
-            content-type:
-              type: string
-            droperrors:
-              type: boolean
-            dryrun:
-              type: boolean
-            timestamp_field:
-              type: string
-            filename:
-              type: string
-      example:
-        status: 200
-        message: success
-        data:
-          message_count: 2
-          rejected_count: 0
-          content-type: application/json
-          droperrors: false
-          dryrun: false
-          timestamp_field: event_created
-          filename: myfile.json
   securitySchemes:
     ApiKeyAuth:
       in: header

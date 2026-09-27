@@ -50,7 +50,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Work List
-      operationId: Work List
+      operationId: WorkList
       description: Get list of all running integrations (work) for this account.
       tags:
       - Work
@@ -89,6 +89,8 @@ paths:
         schema:
           type: boolean
           default: 'false'
+      x-operation-id-source: normalized
+      x-operation-id-original: Work List
     post:
       responses:
         '201':
@@ -128,7 +130,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Work Create
-      operationId: Work Create
+      operationId: WorkCreate
       description: 'There are a list of available work-types in the workflow api.
 
 
@@ -205,6 +207,8 @@ paths:
                   table: user
                   write_headers: true
                 workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
+      x-operation-id-source: normalized
+      x-operation-id-original: Work Create
   /api/work/{id}:
     get:
       responses:
@@ -245,7 +249,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Work Fetch
-      operationId: Work Fetch
+      operationId: WorkFetch
       description: Get single work resource
       tags:
       - Work
@@ -263,6 +267,8 @@ paths:
         schema:
           type: string
           default: mycoolwork
+      x-operation-id-source: normalized
+      x-operation-id-original: Work Fetch
     delete:
       responses:
         '204':
@@ -271,7 +277,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Work Delete
-      operationId: Work Delete
+      operationId: WorkDelete
       description: ''
       tags:
       - Work
@@ -289,6 +295,8 @@ paths:
         schema:
           type: string
           default: mycoolwork
+      x-operation-id-source: normalized
+      x-operation-id-original: Work Delete
   /api/work/_status:
     get:
       responses:
@@ -329,7 +337,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Retrieve Work Status
-      operationId: Retrieve Work Status
+      operationId: RetrieveWorkStatus
       description: ''
       tags:
       - Work
@@ -368,6 +376,8 @@ paths:
         example: 123abc
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Retrieve Work Status
   /api/work/{id}/{cmd}:
     post:
       responses:
@@ -408,7 +418,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Work Command Post
-      operationId: Work Command Post
+      operationId: WorkCommandPost
       description: Send a work command
       tags:
       - Work
@@ -440,6 +450,8 @@ paths:
         example: 1h
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Work Command Post
   /api/work/_bounceall:
     post:
       responses:
@@ -480,7 +492,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Work Bounce
-      operationId: Work Bounce
+      operationId: WorkBounce
       description: ''
       tags:
       - Work
@@ -512,8 +524,86 @@ paths:
         example: '''pause'''
         schema:
           type: string
+      x-operation-id-source: normalized
+      x-operation-id-original: Work Bounce
 components:
   schemas:
+    WorkListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              account_id:
+                type: string
+              aid:
+                type: number
+              config:
+                type: object
+                properties:
+                  delimiter: {}
+                  email_to:
+                    type: string
+                  fields:
+                    type: array
+                    items: {}
+                  limit: {}
+                  segment_id:
+                    type: string
+                  table:
+                    type: string
+                  write_headers:
+                    type: boolean
+              hidden:
+                type: boolean
+              id:
+                type: string
+              created:
+                type: string
+              updated:
+                type: string
+              runtime:
+                type: string
+              statuscode:
+                type: string
+              deleted:
+                type: boolean
+              tag:
+                type: string
+              user_id:
+                type: string
+              work_state_version:
+                type: number
+              workflow:
+                type: string
+              workflow_id:
+                type: string
+      example:
+        data:
+        - account_id: 4f7b525bdba058fc096757a6
+          aid: 12
+          config:
+            delimiter: null
+            email_to: fake@gmail.com
+            fields: []
+            limit: null
+            segment_id: d5975ab901f7f660845c95ee6aa3cadd
+            table: user
+            write_headers: true
+          hidden: false
+          id: ca756c13469228b723652f1e5168650f
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          runtime: ''
+          statuscode: completed
+          deleted: false
+          tag: ''
+          user_id: 50f4c7c6e327a73ae8000004
+          work_state_version: 0
+          workflow: lytics_simple_csv_export
+          workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
     WorkModel:
       type: object
       properties:
@@ -586,82 +676,6 @@ components:
           created: '2014-08-04T21:18:20.124Z'
           updated: '2014-08-04T21:18:20.124Z'
           runtime: ''
-          deleted: false
-          tag: ''
-          user_id: 50f4c7c6e327a73ae8000004
-          work_state_version: 0
-          workflow: lytics_simple_csv_export
-          workflow_id: 75ce615fdfa048b7a5d5ea41fe7c1260
-    WorkListModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              account_id:
-                type: string
-              aid:
-                type: number
-              config:
-                type: object
-                properties:
-                  delimiter: {}
-                  email_to:
-                    type: string
-                  fields:
-                    type: array
-                    items: {}
-                  limit: {}
-                  segment_id:
-                    type: string
-                  table:
-                    type: string
-                  write_headers:
-                    type: boolean
-              hidden:
-                type: boolean
-              id:
-                type: string
-              created:
-                type: string
-              updated:
-                type: string
-              runtime:
-                type: string
-              statuscode:
-                type: string
-              deleted:
-                type: boolean
-              tag:
-                type: string
-              user_id:
-                type: string
-              work_state_version:
-                type: number
-              workflow:
-                type: string
-              workflow_id:
-                type: string
-      example:
-        data:
-        - account_id: 4f7b525bdba058fc096757a6
-          aid: 12
-          config:
-            delimiter: null
-            email_to: fake@gmail.com
-            fields: []
-            limit: null
-            segment_id: d5975ab901f7f660845c95ee6aa3cadd
-            table: user
-            write_headers: true
-          hidden: false
-          id: ca756c13469228b723652f1e5168650f
-          created: '2014-08-04T21:18:20.124Z'
-          updated: '2014-08-04T21:18:20.124Z'
-          runtime: ''
-          statuscode: completed
           deleted: false
           tag: ''
           user_id: 50f4c7c6e327a73ae8000004

@@ -464,6 +464,32 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.TemplateTestRequest:
+      properties:
+        entity:
+          additionalProperties: true
+          type: object
+        job_config:
+          additionalProperties: true
+          type: object
+        sample_segments:
+          $ref: '#/components/schemas/models.SampleSegmentsInput'
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.SampleSegmentsInput:
       properties:
         as:
@@ -522,21 +548,6 @@ components:
           format: date-time
           type: string
       type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
     models.TemplateMetadata:
       properties:
         author_id:
@@ -565,6 +576,19 @@ components:
         updated:
           type: string
       type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.AdhocTemplateTestRequest:
       properties:
         entity:
@@ -584,30 +608,6 @@ components:
           - jsonnet
           - handlebars
           type: string
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.TemplateTestRequest:
-      properties:
-        entity:
-          additionalProperties: true
-          type: object
-        job_config:
-          additionalProperties: true
-          type: object
-        sample_segments:
-          $ref: '#/components/schemas/models.SampleSegmentsInput'
       type: object
   securitySchemes:
     ApiKeyAuth:

@@ -55,7 +55,7 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: System Events Query
-      operationId: System Events Query
+      operationId: SystemEventsQuery
       description: 'Get list of system events.
 
 
@@ -144,6 +144,8 @@ paths:
         schema:
           type: string
           default: '``'
+      x-operation-id-source: normalized
+      x-operation-id-original: System Events Query
   /api/event/:id:
     get:
       responses:
@@ -175,10 +177,12 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: System Event Fetch
-      operationId: System Event Fetch
+      operationId: SystemEventFetch
       description: Get Single System Event
       tags:
       - System Events
+      x-operation-id-source: normalized
+      x-operation-id-original: System Event Fetch
 components:
   schemas:
     SystemEventsModel:
