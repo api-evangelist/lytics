@@ -500,6 +500,38 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.Report:
+      properties:
+        components:
+          description: List of components that make up the report
+          items:
+            $ref: '#/components/schemas/models.Component'
+          type: array
+        description:
+          description: An optional description of the Report
+          type: string
+        label:
+          description: A label for the Report. This is how the report will be identified in the UI.
+          type: string
+        user_id:
+          description: The user ID that created or updated the report
+          type: string
+      required:
+      - label
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.Component:
       properties:
         config:
@@ -523,6 +555,21 @@ components:
       required:
       - name
       - type
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     lioerrors.ApiV2ErrorOut:
       properties:
@@ -567,53 +614,6 @@ components:
           description: The time the error occurred
           format: date-time
           type: string
-      type: object
-    models.Report:
-      properties:
-        components:
-          description: List of components that make up the report
-          items:
-            $ref: '#/components/schemas/models.Component'
-          type: array
-        description:
-          description: An optional description of the Report
-          type: string
-        label:
-          description: A label for the Report. This is how the report will be identified in the UI.
-          type: string
-        user_id:
-          description: The user ID that created or updated the report
-          type: string
-      required:
-      - label
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
       type: object
   securitySchemes:
     ApiKeyAuth:

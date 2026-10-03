@@ -429,23 +429,28 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.ConnectionScanResp:
+    models.ConnectionConfig:
       properties:
-        columns:
-          items:
-            $ref: '#/components/schemas/models.ResultSetColumn'
-          type: array
-        row_count:
-          type: integer
-        rows: {}
+        bucket:
+          type: string
+        connection_url:
+          type: string
+        database:
+          type: string
+        dataset:
+          type: string
+        file:
+          type: string
+        project:
+          type: string
+        ssl_mode:
+          type: string
       type: object
-    models.ConnectionScanReq:
+    models.ConnectionTableSchemaResp:
       properties:
-        primary_keys:
-          items:
-            type: string
-          type: array
-        query:
+        column_datatype:
+          type: string
+        column_name:
           type: string
       type: object
     models.ConnectionResp:
@@ -485,16 +490,54 @@ components:
         updated_by_user_id:
           type: string
       type: object
-    models.ConnectionUpdateReq:
+    models.ConnectionTableResp:
       properties:
-        auth_ids:
+        error:
+          type: string
+        fully_qualified_name:
+          type: string
+        num_columns:
+          type: integer
+        table_name:
+          type: string
+      type: object
+    models.ConnectionScanResp:
+      properties:
+        columns:
           items:
-            type: string
+            $ref: '#/components/schemas/models.ResultSetColumn'
           type: array
-        description:
+        row_count:
+          type: integer
+        rows: {}
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
           type: string
-        label:
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
           type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     models.ConnectionCreateReq:
       properties:
@@ -515,6 +558,17 @@ components:
         provider_id:
           type: string
         provider_slug:
+          type: string
+      type: object
+    models.ConnectionUpdateReq:
+      properties:
+        auth_ids:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        label:
           type: string
       type: object
     lioerrors.ApiV2ErrorOut:
@@ -561,70 +615,16 @@ components:
           format: date-time
           type: string
       type: object
-    models.ConnectionTableResp:
+    models.ConnectionScanReq:
       properties:
-        error:
-          type: string
-        fully_qualified_name:
-          type: string
-        num_columns:
-          type: integer
-        table_name:
-          type: string
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
+        primary_keys:
           items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+            type: string
           type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ConnectionConfig:
-      properties:
-        bucket:
-          type: string
-        connection_url:
-          type: string
-        database:
-          type: string
-        dataset:
-          type: string
-        file:
-          type: string
-        project:
-          type: string
-        ssl_mode:
+        query:
           type: string
       type: object
     models.ResultSetColumn:
-      properties:
-        column_datatype:
-          type: string
-        column_name:
-          type: string
-      type: object
-    models.ConnectionTableSchemaResp:
       properties:
         column_datatype:
           type: string

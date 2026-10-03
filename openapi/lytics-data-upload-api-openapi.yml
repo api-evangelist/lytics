@@ -346,6 +346,41 @@ paths:
       x-operation-id-original: Data JSON Upload
 components:
   schemas:
+    BulkdCSVUploadModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            message_count:
+              type: number
+            rejected_count:
+              type: number
+            content-type:
+              type: string
+            droperrors:
+              type: boolean
+            dryrun:
+              type: boolean
+            timestamp_field:
+              type: string
+            filename:
+              type: string
+      example:
+        status: 200
+        message: success
+        data:
+          message_count: 2
+          rejected_count: 0
+          content-type: application/json
+          droperrors: false
+          dryrun: false
+          timestamp_field: event_created
+          filename: myfile.csv
     BulkJSONUploadModel:
       type: object
       properties:
@@ -416,41 +451,6 @@ components:
           dryrun: false
           timestamp_field: event_created
           filename: myfile.json
-    BulkdCSVUploadModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            message_count:
-              type: number
-            rejected_count:
-              type: number
-            content-type:
-              type: string
-            droperrors:
-              type: boolean
-            dryrun:
-              type: boolean
-            timestamp_field:
-              type: string
-            filename:
-              type: string
-      example:
-        status: 200
-        message: success
-        data:
-          message_count: 2
-          rejected_count: 0
-          content-type: application/json
-          droperrors: false
-          dryrun: false
-          timestamp_field: event_created
-          filename: myfile.csv
   securitySchemes:
     ApiKeyAuth:
       in: header

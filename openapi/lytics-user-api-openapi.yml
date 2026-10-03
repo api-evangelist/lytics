@@ -627,64 +627,6 @@ paths:
     - url: https://api.lytics.io/v2
 components:
   schemas:
-    UserModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            account_id:
-              type: string
-            aid:
-              type: number
-            created:
-              type: string
-            updated:
-              type: string
-            email:
-              type: string
-            id:
-              type: string
-            name:
-              type: string
-            accounts:
-              type: array
-              items:
-                type: object
-                properties:
-                  aid:
-                    type: number
-                  account_id:
-                    type: string
-                  granted_by:
-                    type: string
-                  roles:
-                    type: array
-                    items:
-                      type: string
-                  created:
-                    type: string
-                  updated:
-                    type: string
-      example:
-        data:
-          account_id: 4f7b175bdba058fc092357a6
-          aid: 122
-          created: '2014-08-04T21:18:20.124Z'
-          updated: '2014-08-04T21:18:20.124Z'
-          email: bill.jenkins@lytics.io
-          id: 120642b03a2d54551e637f56cbf61b73
-          name: Bill Jenkins
-          accounts:
-          - aid: 122
-            account_id: 4f7b175bdba058fc092357a6
-            granted_by: '500418690088145'
-            roles:
-            - api
-            - segments
-            - admin
-            created: '2014-08-04T21:18:20.124Z'
-            updated: '2014-08-04T21:18:20.124Z'
     UserListModel:
       type: object
       properties:
@@ -745,6 +687,71 @@ components:
             - admin
             created: '2014-08-04T21:18:20.124Z'
             updated: '2014-08-04T21:18:20.124Z'
+    UserModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            account_id:
+              type: string
+            aid:
+              type: number
+            created:
+              type: string
+            updated:
+              type: string
+            email:
+              type: string
+            id:
+              type: string
+            name:
+              type: string
+            accounts:
+              type: array
+              items:
+                type: object
+                properties:
+                  aid:
+                    type: number
+                  account_id:
+                    type: string
+                  granted_by:
+                    type: string
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+      example:
+        data:
+          account_id: 4f7b175bdba058fc092357a6
+          aid: 122
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          email: bill.jenkins@lytics.io
+          id: 120642b03a2d54551e637f56cbf61b73
+          name: Bill Jenkins
+          accounts:
+          - aid: 122
+            account_id: 4f7b175bdba058fc092357a6
+            granted_by: '500418690088145'
+            roles:
+            - api
+            - segments
+            - admin
+            created: '2014-08-04T21:18:20.124Z'
+            updated: '2014-08-04T21:18:20.124Z'
+    models.PasswordResetReq:
+      properties:
+        oldpassword:
+          type: string
+        password:
+          type: string
+      type: object
     models.UserAccount:
       properties:
         account_id:
@@ -776,6 +783,19 @@ components:
         updated:
           format: date-time
           type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     models.User:
       properties:
@@ -809,6 +829,21 @@ components:
             - developer_free
             type: string
           type: array
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     models.UserResp:
       properties:
@@ -914,34 +949,6 @@ components:
           format: date-time
           type: string
       type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
     models.RoleReq:
       properties:
         roles:
@@ -964,13 +971,6 @@ components:
             - developer_free
             type: string
           type: array
-      type: object
-    models.PasswordResetReq:
-      properties:
-        oldpassword:
-          type: string
-        password:
-          type: string
       type: object
   securitySchemes:
     ApiKeyAuth:

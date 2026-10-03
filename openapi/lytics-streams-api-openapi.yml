@@ -572,6 +572,117 @@ components:
         priority:
           type: integer
       type: object
+    models.StreamMetadata:
+      properties:
+        account_id:
+          type: string
+        aid:
+          type: integer
+        anomaly_rule:
+          $ref: '#/components/schemas/models.AnomalyRuleResp'
+        avg_event_size:
+          description: Average size of each message in bytes
+          type: integer
+        channel:
+          type: string
+        count:
+          description: Current count of messages this stream has seen
+          type: integer
+        created:
+          format: date-time
+          type: string
+        description:
+          type: string
+        hidden:
+          type: boolean
+        id:
+          type: string
+        internal:
+          type: boolean
+        jobs:
+          description: Job IDs that have contributed data to the stream
+          items:
+            type: string
+          type: array
+        label:
+          type: string
+        last_msg_ts:
+          format: date-time
+          type: string
+        last_received_ts:
+          format: date-time
+          type: string
+        last_update_ts:
+          format: date-time
+          type: string
+        method:
+          type: string
+        name:
+          type: string
+        providers:
+          items:
+            type: string
+          type: array
+        slug:
+          type: string
+        tables:
+          items:
+            type: string
+          type: array
+        updated:
+          format: date-time
+          type: string
+      type: object
+    models.RuleCheckConfigReq:
+      properties:
+        allowable_violations:
+          type: integer
+        interval:
+          type: string
+        lookback_count:
+          type: integer
+        max_threshold:
+          type: integer
+        metric_type:
+          type: string
+        min_threshold:
+          type: integer
+        type:
+          type: string
+        variance_pct:
+          type: number
+      type: object
+    models.StreamEvent:
+      additionalProperties: true
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.Column:
       properties:
         as:
@@ -676,117 +787,6 @@ components:
         usage:
           description: The number of times this field has been seen
           type: integer
-      type: object
-    models.StreamMetadata:
-      properties:
-        account_id:
-          type: string
-        aid:
-          type: integer
-        anomaly_rule:
-          $ref: '#/components/schemas/models.AnomalyRuleResp'
-        avg_event_size:
-          description: Average size of each message in bytes
-          type: integer
-        channel:
-          type: string
-        count:
-          description: Current count of messages this stream has seen
-          type: integer
-        created:
-          format: date-time
-          type: string
-        description:
-          type: string
-        hidden:
-          type: boolean
-        id:
-          type: string
-        internal:
-          type: boolean
-        jobs:
-          description: Job IDs that have contributed data to the stream
-          items:
-            type: string
-          type: array
-        label:
-          type: string
-        last_msg_ts:
-          format: date-time
-          type: string
-        last_received_ts:
-          format: date-time
-          type: string
-        last_update_ts:
-          format: date-time
-          type: string
-        method:
-          type: string
-        name:
-          type: string
-        providers:
-          items:
-            type: string
-          type: array
-        slug:
-          type: string
-        tables:
-          items:
-            type: string
-          type: array
-        updated:
-          format: date-time
-          type: string
-      type: object
-    models.RuleCheckConfigReq:
-      properties:
-        allowable_violations:
-          type: integer
-        interval:
-          type: string
-        lookback_count:
-          type: integer
-        max_threshold:
-          type: integer
-        metric_type:
-          type: string
-        min_threshold:
-          type: integer
-        type:
-          type: string
-        variance_pct:
-          type: number
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.StreamEvent:
-      additionalProperties: true
       type: object
   securitySchemes:
     ApiKeyAuth:

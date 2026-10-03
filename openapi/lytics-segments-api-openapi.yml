@@ -403,6 +403,19 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.Expr:
+      properties:
+        args:
+          items:
+            $ref: '#/components/schemas/models.Expr'
+          type: array
+        ident:
+          type: string
+        op:
+          type: string
+        val:
+          type: string
+      type: object
     models.Segment:
       properties:
         account_id:
@@ -482,6 +495,64 @@ components:
         withs_ql:
           type: string
       type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.SegmentDeleteStatus:
+      properties:
+        deleted:
+          type: boolean
+        id:
+          type: string
+        reason:
+          type: string
+        segments:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+      type: object
+    models.SegmentDeleteResp:
+      properties:
+        deleted:
+          items:
+            type: string
+          type: array
+        not_deleted:
+          items:
+            type: string
+          type: array
+        segments:
+          items:
+            $ref: '#/components/schemas/models.SegmentDeleteStatus'
+          type: array
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -525,77 +596,6 @@ components:
           description: The time the error occurred
           format: date-time
           type: string
-      type: object
-    models.Expr:
-      properties:
-        args:
-          items:
-            $ref: '#/components/schemas/models.Expr'
-          type: array
-        ident:
-          type: string
-        op:
-          type: string
-        val:
-          type: string
-      type: object
-    models.SegmentDeleteResp:
-      properties:
-        deleted:
-          items:
-            type: string
-          type: array
-        not_deleted:
-          items:
-            type: string
-          type: array
-        segments:
-          items:
-            $ref: '#/components/schemas/models.SegmentDeleteStatus'
-          type: array
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.SegmentDeleteStatus:
-      properties:
-        deleted:
-          type: boolean
-        id:
-          type: string
-        reason:
-          type: string
-        segments:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
       type: object
   securitySchemes:
     ApiKeyAuth:

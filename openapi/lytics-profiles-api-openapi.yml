@@ -589,37 +589,35 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.IdentityFragment:
+    models.AttributeResponse:
+      additionalProperties: true
+      type: object
+    models.IdentityResponse:
       properties:
-        conflict:
-          description: If this fragment has any conflicts preventing linking with the current profile.
-          type: boolean
-        conflicts_with:
-          description: Identifier of the conflicted neighbor.
-          type: string
-        created:
-          description: When this fragment was created
-          type: string
+        entity:
+          additionalProperties: true
+          description: Materialized view of a profile, with applicable mappings
+          type: object
+        field_sources:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          description: 'FieldSources lists, per field, the attribute-store sources feeding it
+
+            (Cloud Connect v2 datamodels, Attribute API) that have no schema mapping.
+
+            Only populated when requested via field_sources=true.'
+          type: object
+        fragments:
+          description: Identity fragments that compose the profile
+          items:
+            $ref: '#/components/schemas/models.IdentityFragment'
+          type: array
         keys:
-          description: Identifiers for this fragment.
+          description: Identifiers for this entity.
           items:
             $ref: '#/components/schemas/models.Kv'
-          type: array
-        modified:
-          description: When this fragment was last modified
-          type: string
-        neighbor_limit:
-          description: Whether this fragment approaches overlinking limits
-          type: boolean
-        neighbors:
-          description: Neighbors to this fragment.
-          items:
-            $ref: '#/components/schemas/models.Kv'
-          type: array
-        streams:
-          description: All streams that contribute data to this fragment.
-          items:
-            type: string
           type: array
       type: object
     models.ApiErrorResponse:
@@ -629,6 +627,21 @@ components:
           items:
             $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
           type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
         request_id:
           type: string
         status:
@@ -679,6 +692,39 @@ components:
           format: date-time
           type: string
       type: object
+    models.IdentityFragment:
+      properties:
+        conflict:
+          description: If this fragment has any conflicts preventing linking with the current profile.
+          type: boolean
+        conflicts_with:
+          description: Identifier of the conflicted neighbor.
+          type: string
+        created:
+          description: When this fragment was created
+          type: string
+        keys:
+          description: Identifiers for this fragment.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+        modified:
+          description: When this fragment was last modified
+          type: string
+        neighbor_limit:
+          description: Whether this fragment approaches overlinking limits
+          type: boolean
+        neighbors:
+          description: Neighbors to this fragment.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+        streams:
+          description: All streams that contribute data to this fragment.
+          items:
+            type: string
+          type: array
+      type: object
     models.IdentityDeleteBulkResponse:
       properties:
         errors:
@@ -689,6 +735,13 @@ components:
             type: string
           description: A map of value:request_id for successful submissions
           type: object
+      type: object
+    models.Kv:
+      properties:
+        key:
+          type: string
+        value:
+          type: string
       type: object
     models.IdentityDeleteResponse:
       properties:
@@ -702,59 +755,6 @@ components:
           type: string
         submitted:
           type: string
-      type: object
-    models.Kv:
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.IdentityResponse:
-      properties:
-        entity:
-          additionalProperties: true
-          description: Materialized view of a profile, with applicable mappings
-          type: object
-        field_sources:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          description: 'FieldSources lists, per field, the attribute-store sources feeding it
-
-            (Cloud Connect v2 datamodels, Attribute API) that have no schema mapping.
-
-            Only populated when requested via field_sources=true.'
-          type: object
-        fragments:
-          description: Identity fragments that compose the profile
-          items:
-            $ref: '#/components/schemas/models.IdentityFragment'
-          type: array
-        keys:
-          description: Identifiers for this entity.
-          items:
-            $ref: '#/components/schemas/models.Kv'
-          type: array
-      type: object
-    models.AttributeResponse:
-      additionalProperties: true
       type: object
   securitySchemes:
     ApiKeyAuth:

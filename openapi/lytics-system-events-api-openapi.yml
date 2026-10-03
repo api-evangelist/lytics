@@ -185,6 +185,60 @@ paths:
       x-operation-id-original: System Event Fetch
 components:
   schemas:
+    SystemEventModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            ts:
+              type: string
+            priority:
+              type: number
+            subject_type:
+              type: string
+            subject_id:
+              type: string
+            verb:
+              type: string
+            related:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                  id:
+                    type: string
+            account_id:
+              type: string
+            context:
+              type: object
+              properties:
+                in:
+                  type: string
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          id: c57172d7d22e1c7ac4c80ce713e6e7cb
+          ts: '1465844458666'
+          priority: 2
+          subject_type: entity
+          subject_id: user/email/a.user@gmail.com
+          verb: clustered
+          related:
+          - type: segment
+            id: 791734b084019d99c82a475264464304
+          account_id: 1234abcdefgh
+          context:
+            in: '2016-06-13T18:58:29Z'
+        message: success
+        status: 200
     SystemEventsModel:
       type: object
       properties:
@@ -243,60 +297,6 @@ components:
           verb: created
           account_id: 1234abcdefgh
         - id: c57172d7d22e1c7ac4c80ce713e6e7cb
-          ts: '1465844458666'
-          priority: 2
-          subject_type: entity
-          subject_id: user/email/a.user@gmail.com
-          verb: clustered
-          related:
-          - type: segment
-            id: 791734b084019d99c82a475264464304
-          account_id: 1234abcdefgh
-          context:
-            in: '2016-06-13T18:58:29Z'
-        message: success
-        status: 200
-    SystemEventModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            ts:
-              type: string
-            priority:
-              type: number
-            subject_type:
-              type: string
-            subject_id:
-              type: string
-            verb:
-              type: string
-            related:
-              type: array
-              items:
-                type: object
-                properties:
-                  type:
-                    type: string
-                  id:
-                    type: string
-            account_id:
-              type: string
-            context:
-              type: object
-              properties:
-                in:
-                  type: string
-        message:
-          type: string
-        status:
-          type: number
-      example:
-        data:
-          id: c57172d7d22e1c7ac4c80ce713e6e7cb
           ts: '1465844458666'
           priority: 2
           subject_type: entity

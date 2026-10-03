@@ -544,73 +544,6 @@ paths:
 components:
   schemas:
     FieldSuggestModel: {}
-    SchemaModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            fields:
-              type: array
-              items:
-                type: object
-                properties:
-                  as:
-                    type: string
-                  is_by:
-                    type: boolean
-                  type:
-                    type: string
-                  shortdesc:
-                    type: string
-                  longdesc:
-                    type: string
-                  froms:
-                    type: array
-                    items:
-                      type: string
-                  identities:
-                    type: array
-                    items:
-                      type: string
-                required:
-                - as
-                - is_by
-                - type
-                - shortdesc
-                - longdesc
-                - froms
-                - identities
-      example:
-        data:
-          fields:
-          - as: created_ts
-            is_by: false
-            type: date
-            shortdesc: Created Date
-            longdesc: First time usage for this user
-            froms:
-            - default
-            identities:
-            - min
-          - as: content
-            is_by: false
-            type: string
-            shortdesc: Site Content
-            longdesc: Specific piece of content viewed
-            froms:
-            - default
-            identities:
-            - content
-          - as: location
-            is_by: false
-            type: string
-            shortdesc: Location
-            longdesc: ''
-            froms:
-            - linkedin_data
-            identities:
-            - location
     FieldInfoModel:
       type: object
       properties:
@@ -987,6 +920,73 @@ components:
             ents_absent: 134908
             high_card: false
             approx_cardinality: 1212
+    SchemaModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            fields:
+              type: array
+              items:
+                type: object
+                properties:
+                  as:
+                    type: string
+                  is_by:
+                    type: boolean
+                  type:
+                    type: string
+                  shortdesc:
+                    type: string
+                  longdesc:
+                    type: string
+                  froms:
+                    type: array
+                    items:
+                      type: string
+                  identities:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - as
+                - is_by
+                - type
+                - shortdesc
+                - longdesc
+                - froms
+                - identities
+      example:
+        data:
+          fields:
+          - as: created_ts
+            is_by: false
+            type: date
+            shortdesc: Created Date
+            longdesc: First time usage for this user
+            froms:
+            - default
+            identities:
+            - min
+          - as: content
+            is_by: false
+            type: string
+            shortdesc: Site Content
+            longdesc: Specific piece of content viewed
+            froms:
+            - default
+            identities:
+            - content
+          - as: location
+            is_by: false
+            type: string
+            shortdesc: Location
+            longdesc: ''
+            froms:
+            - linkedin_data
+            identities:
+            - location
     StreamsModel:
       type: object
       properties:

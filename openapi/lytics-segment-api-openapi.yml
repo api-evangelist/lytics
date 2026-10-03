@@ -1113,6 +1113,46 @@ components:
           name: active
           slug_name: active
           size: 10402
+    SegmentAttributionListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              metrics:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ts:
+                      type: string
+                    value:
+                      type: number
+                  required:
+                  - ts
+                  - value
+            required:
+            - id
+            - metrics
+      example:
+        data:
+        - id: '1234'
+          metrics:
+          - ts: '1413149713466'
+            value: 1002
+          - ts: '1413149713455'
+            value: 1005
+        - id: '1111'
+          metrics:
+          - ts: '1413149713466'
+            value: 1002
+          - ts: '1413149713455'
+            value: 1005
+    SegmentScanModel: {}
     SegmentListModel:
       type: object
       properties:
@@ -1162,38 +1202,6 @@ components:
           slug_name: recent_visits
           tags:
           - email_trigger
-    SegmentSizesModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              slug_name:
-                type: string
-              size:
-                type: number
-              type:
-                type: string
-            required:
-            - id
-            - slug_name
-            - size
-      example:
-        data:
-        - id: 456dert
-          name: Active
-          slug_name: active
-          size: 10402
-        - id: 1234abcd
-          type: custom
-          slug_name: active
-          size: 45236
     SegmentValidateModel:
       type: object
       properties:
@@ -1206,47 +1214,6 @@ components:
         status: 200
         message: success
         data: null
-    SegmentAttributionListModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              metrics:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    ts:
-                      type: string
-                    value:
-                      type: number
-                  required:
-                  - ts
-                  - value
-            required:
-            - id
-            - metrics
-      example:
-        data:
-        - id: '1234'
-          metrics:
-          - ts: '1413149713466'
-            value: 1002
-          - ts: '1413149713455'
-            value: 1005
-        - id: '1111'
-          metrics:
-          - ts: '1413149713466'
-            value: 1002
-          - ts: '1413149713455'
-            value: 1005
-    SegmentScanModel: {}
-    SegmentFieldInfoModel: {}
     SegmentModel:
       type: object
       properties:
@@ -1291,6 +1258,39 @@ components:
           slug_name: recent_visits
           tags:
           - email_trigger
+    SegmentFieldInfoModel: {}
+    SegmentSizesModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              slug_name:
+                type: string
+              size:
+                type: number
+              type:
+                type: string
+            required:
+            - id
+            - slug_name
+            - size
+      example:
+        data:
+        - id: 456dert
+          name: Active
+          slug_name: active
+          size: 10402
+        - id: 1234abcd
+          type: custom
+          slug_name: active
+          size: 45236
   securitySchemes:
     ApiKeyAuth:
       in: header

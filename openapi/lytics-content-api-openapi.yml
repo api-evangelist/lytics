@@ -2226,224 +2226,42 @@ paths:
     - url: https://api.lytics.io/v2
 components:
   schemas:
-    ContentTaxonomyModel:
+    ContentMetricsModel:
       type: object
       properties:
         data:
           type: object
           properties:
-            n:
+            total:
               type: number
-            nodes:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  doc_count:
-                    type: number
-                required:
-                - name
-                - doc_count
-            links:
-              type: array
-              items:
-                type: object
-                properties:
-                  source:
-                    type: number
-                  target:
-                    type: number
-                  value:
-                    type: number
-                required:
-                - source
-                - target
-                - value
+            nokeys:
+              type: number
+            nocontent:
+              type: number
+            noclassifiedcontent:
+              type: number
+            noaffinities:
+              type: number
+            errors:
+              type: number
+            success:
+              type: number
         message:
           type: string
         status:
           type: number
       example:
         data:
-          n: 438
-          nodes:
-          - name: marketing technology
-            doc_count: 2
-          - name: AdWords
-            doc_count: 1
-          - name: ad retargeting
-            doc_count: 4
-          - name: analytics
-            doc_count: 2
-          - name: customer service
-            doc_count: 1
-          - name: data visualization
-            doc_count: 2
-          - name: data-first marketing
-            doc_count: 157
-          - name: personalization
-            doc_count: 15
-          links:
-          - source: 66
-            target: 54
-            value: 0.375
-          - source: 66
-            target: 75
-            value: 0.25
-          - source: 66
-            target: 37
-            value: 0.25
+          total: 215590
+          nokeys: 0
+          nocontent: 144430
+          noclassifiedcontent: 53537
+          noaffinities: 0
+          errors: 0
+          success: 17623
         message: success
         status: 200
-    ContentRecommendationModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              url:
-                type: string
-              title:
-                type: string
-              description:
-                type: string
-              topics:
-                type: array
-                items:
-                  type: string
-              topic_relevances:
-                type: object
-                properties:
-                  content marketing:
-                    type: number
-                  customer data platform:
-                    type: number
-                  data science:
-                    type: number
-                  personalization:
-                    type: number
-              primary_image:
-                type: string
-              author:
-                type: string
-              created:
-                type: string
-              id:
-                type: string
-              sitename:
-                type: string
-              stream:
-                type: string
-              path:
-                type: array
-                items:
-                  type: string
-              aspects:
-                type: array
-                items:
-                  type: string
-              language:
-                type: string
-              updated:
-                type: string
-              fetched:
-                type: string
-              meta:
-                type: array
-                items:
-                  type: string
-              confidence:
-                type: number
-              visited:
-                type: boolean
-        message:
-          type: string
-        status:
-          type: number
-      example:
-        data:
-        - url: www.getlytics.com/blog/post/intent_through_content
-          title: Understanding User Intent Through Content
-          description: Customer Intent comes from understanding the connection between engagement and its contexts. Content modeling and affinity graphs makes interpretation of intent a lot easier. Learn how marketers can benefit from this.
-          topics:
-          - customer data platform
-          - data science
-          - content marketing
-          - personalization
-          topic_relevances:
-            content marketing: 1
-            customer data platform: 1
-            data science: 1
-            personalization: 1
-          primary_image: https://www.getlytics.com/img/blog/posts/intent_through_content/intent_through_content-bg.gif
-          author: ''
-          created: '2016-06-08T16:11:45.599594093Z'
-          id: '-3435113786560588929'
-          sitename: Lytics
-          stream: default
-          path:
-          - blog
-          - blog/post
-          - blog/post/intent_through_content
-          aspects:
-          - article
-          language: unknown
-          updated: '2016-06-09T12:49:36.870359765Z'
-          fetched: '2016-06-09T12:49:35.812654441Z'
-          meta:
-          - og:locale/en_us
-          - og:site_name/lytics
-          - og:title/understanding user intent through content
-          - og:type/article
-          - og:url/https://www.getlytics.com/blog/post/intent_through_content
-          confidence: 0.5916079783099615
-          visited: true
-        message: success
-        status: 200
-    ContentTopicRollupModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            account_id:
-              type: string
-            label:
-              type: string
-            created:
-              type: string
-            updated:
-              type: string
-            topics:
-              type: array
-              items:
-                type: object
-                properties:
-                  label:
-                    type: string
-                  value:
-                    type: number
-                required:
-                - label
-                - value
-      example:
-        data:
-          id: 6a7f76ff97ad0e3e96c162f74aee8f8f
-          account_id: 4f7b525bdba058fc096757a6
-          label: Baking rollup
-          created: '2014-08-04T21:18:20.124Z'
-          updated: '2014-08-04T21:18:20.124Z'
-          topics:
-          - label: Recipe
-            value: 0.66
-          - label: baking
-            value: 0.55
+    ContentCrawlModel: {}
     ContentSegmentRecommendationModel:
       type: object
       properties:
@@ -2551,7 +2369,7 @@ components:
           visited: true
         message: success
         status: 200
-    ContentPlotModel:
+    ContentTopicBlocklistModel:
       type: object
       properties:
         status:
@@ -2559,154 +2377,85 @@ components:
         message:
           type: string
         data:
-          type: object
-          properties:
-            segment_id:
-              type: string
-            collections:
-              type: array
-              items:
-                type: object
-                properties:
-                  field:
-                    type: string
-                  name:
-                    type: string
-                  points:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        topic:
-                          type: string
-                        value:
-                          type: number
-                        avg_affinity:
-                          type: number
-                        doc_ct:
-                          type: number
-      example:
-        status: 200
-        message: success
-        data:
-          segment_id: 34a492e518b117228954e0bd8a7cfda7
-          collections:
-          - field: int_score_momentum
-            name: do_more
-            points:
-            - topic: guerrilla marketing
-              value: 41.411764705882
-              avg_affinity: 0.58597826180251
-              doc_ct: 27
-    ContentMetricsModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            total:
-              type: number
-            nokeys:
-              type: number
-            nocontent:
-              type: number
-            noclassifiedcontent:
-              type: number
-            noaffinities:
-              type: number
-            errors:
-              type: number
-            success:
-              type: number
-        message:
-          type: string
-        status:
-          type: number
-      example:
-        data:
-          total: 215590
-          nokeys: 0
-          nocontent: 144430
-          noclassifiedcontent: 53537
-          noaffinities: 0
-          errors: 0
-          success: 17623
-        message: success
-        status: 200
-    TopicCurationModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            author:
-              type: string
-            created:
-              type: string
-            description:
-              type: string
-            fetched:
-              type: string
-            id:
-              type: string
-            meta:
-              type: array
-              items:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
                 type: string
-            primary_image:
-              type: string
-            stream:
-              type: string
-            title:
-              type: string
-            topic_relevances:
-              type: object
-              properties:
-                Recipe:
-                  type: number
-                baking:
-                  type: number
-            topic_rollups:
-              type: object
-              properties:
-                Things:
-                  type: number
-            topics:
-              type: array
-              items:
-                type: string
-            updated:
-              type: string
-            url:
-              type: string
+              doc_count:
+                type: number
+              total:
+                type: number
+              missing:
+                type: number
+              present:
+                type: number
+              avg:
+                type: number
+              tags:
+                type: array
+                items:
+                  type: string
+            required:
+            - label
+            - doc_count
+            - total
+            - missing
+            - present
+            - avg
+            - tags
       example:
         status: 200
         message: success
         data:
-          author: Cookie Monster
-          created: '2016-01-14T08:39:01.354824186-07:00'
-          description: you should definitely make these cookies
-          fetched: '2016-07-19T13:39:20.158747984-04:00'
-          id: '4525087172572165639'
-          meta:
-          - og:locale/en_US
-          primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
-          stream: default
-          title: how to make some cookies
-          topic_relevances:
-            Recipe: 0.64
-            baking: 0.75
-          topic_rollups:
-            Things: 0.75
-          topics:
-          - baking
-          - Recipe
-          updated: '2016-07-19T13:34:18-04:00'
-          url: www.recipes.com/chocolate-chip-cookies
+        - label: Data-First Marketing
+          doc_count: 275
+          total: 380636
+          missing: 216048
+          present: 143710
+          avg: 0.5983867964798089
+          tags:
+          - blacklisted
+        - label: User Data Unification
+          doc_count: 273
+          total: 380636
+          missing: 216048
+          present: 154068
+          avg: 0.6036863622558337
+          tags:
+          - blacklisted
+    ContentTopicClustersModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            clusters:
+              type: array
+              items:
+                type: array
+                items: {}
+            coverage:
+              type: number
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+          clusters:
+          - - Baking
+            - Cakes
+            - Cupakes
+            - Cookies
+          - - Grilling
+            - Beef
+            - Chicken
+            - Steak
+          coverage: 0.2062
+        message: success
+        status: 200
     ContentClassifyModel:
       type: object
       properties:
@@ -2890,6 +2639,46 @@ components:
           version: 4
         message: success
         status: 200
+    ContentTopicRollupModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            account_id:
+              type: string
+            label:
+              type: string
+            created:
+              type: string
+            updated:
+              type: string
+            topics:
+              type: array
+              items:
+                type: object
+                properties:
+                  label:
+                    type: string
+                  value:
+                    type: number
+                required:
+                - label
+                - value
+      example:
+        data:
+          id: 6a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          label: Baking rollup
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          topics:
+          - label: Recipe
+            value: 0.66
+          - label: baking
+            value: 0.55
     ContentTopicRollupSummaryModel:
       type: object
       properties:
@@ -3011,49 +2800,7 @@ components:
           rollups: null
         message: success
         status: 200
-    ContentTopicRollupListModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              account_id:
-                type: string
-              label:
-                type: string
-              created:
-                type: string
-              updated:
-                type: string
-              topics:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    label:
-                      type: string
-                    value:
-                      type: number
-                  required:
-                  - label
-                  - value
-      example:
-        data:
-        - id: 6a7f76ff97ad0e3e96c162f74aee8f8f
-          account_id: 4f7b525bdba058fc096757a6
-          label: Baking rollup
-          created: '2014-08-04T21:18:20.124Z'
-          updated: '2014-08-04T21:18:20.124Z'
-          topics:
-          - label: Recipe
-            value: 0.66
-          - label: baking
-            value: 0.55
-    ContentTopicBlocklistModel:
+    TopicCurationModel:
       type: object
       properties:
         status:
@@ -3061,83 +2808,188 @@ components:
         message:
           type: string
         data:
-          type: array
-          items:
-            type: object
-            properties:
-              label:
+          type: object
+          properties:
+            author:
+              type: string
+            created:
+              type: string
+            description:
+              type: string
+            fetched:
+              type: string
+            id:
+              type: string
+            meta:
+              type: array
+              items:
                 type: string
-              doc_count:
-                type: number
-              total:
-                type: number
-              missing:
-                type: number
-              present:
-                type: number
-              avg:
-                type: number
-              tags:
-                type: array
-                items:
-                  type: string
-            required:
-            - label
-            - doc_count
-            - total
-            - missing
-            - present
-            - avg
-            - tags
+            primary_image:
+              type: string
+            stream:
+              type: string
+            title:
+              type: string
+            topic_relevances:
+              type: object
+              properties:
+                Recipe:
+                  type: number
+                baking:
+                  type: number
+            topic_rollups:
+              type: object
+              properties:
+                Things:
+                  type: number
+            topics:
+              type: array
+              items:
+                type: string
+            updated:
+              type: string
+            url:
+              type: string
       example:
         status: 200
         message: success
         data:
-        - label: Data-First Marketing
-          doc_count: 275
-          total: 380636
-          missing: 216048
-          present: 143710
-          avg: 0.5983867964798089
-          tags:
-          - blacklisted
-        - label: User Data Unification
-          doc_count: 273
-          total: 380636
-          missing: 216048
-          present: 154068
-          avg: 0.6036863622558337
-          tags:
-          - blacklisted
-    ContentTopicClustersModel:
+          author: Cookie Monster
+          created: '2016-01-14T08:39:01.354824186-07:00'
+          description: you should definitely make these cookies
+          fetched: '2016-07-19T13:39:20.158747984-04:00'
+          id: '4525087172572165639'
+          meta:
+          - og:locale/en_US
+          primary_image: http://cookdiary.net/wp-content/uploads/images/Oatmeal-Chocolate-Chip-Cookies_1441.jpg
+          stream: default
+          title: how to make some cookies
+          topic_relevances:
+            Recipe: 0.64
+            baking: 0.75
+          topic_rollups:
+            Things: 0.75
+          topics:
+          - baking
+          - Recipe
+          updated: '2016-07-19T13:34:18-04:00'
+          url: www.recipes.com/chocolate-chip-cookies
+    ContentPlotModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            segment_id:
+              type: string
+            collections:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                  name:
+                    type: string
+                  points:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        topic:
+                          type: string
+                        value:
+                          type: number
+                        avg_affinity:
+                          type: number
+                        doc_ct:
+                          type: number
+      example:
+        status: 200
+        message: success
+        data:
+          segment_id: 34a492e518b117228954e0bd8a7cfda7
+          collections:
+          - field: int_score_momentum
+            name: do_more
+            points:
+            - topic: guerrilla marketing
+              value: 41.411764705882
+              avg_affinity: 0.58597826180251
+              doc_ct: 27
+    ContentTaxonomyModel:
       type: object
       properties:
         data:
           type: object
           properties:
-            clusters:
+            n:
+              type: number
+            nodes:
               type: array
               items:
-                type: array
-                items: {}
-            coverage:
-              type: number
+                type: object
+                properties:
+                  name:
+                    type: string
+                  doc_count:
+                    type: number
+                required:
+                - name
+                - doc_count
+            links:
+              type: array
+              items:
+                type: object
+                properties:
+                  source:
+                    type: number
+                  target:
+                    type: number
+                  value:
+                    type: number
+                required:
+                - source
+                - target
+                - value
         message:
           type: string
         status:
           type: number
       example:
         data:
-          clusters:
-          - - Baking
-            - Cakes
-            - Cupakes
-            - Cookies
-          - - Grilling
-            - Beef
-            - Chicken
-            - Steak
-          coverage: 0.2062
+          n: 438
+          nodes:
+          - name: marketing technology
+            doc_count: 2
+          - name: AdWords
+            doc_count: 1
+          - name: ad retargeting
+            doc_count: 4
+          - name: analytics
+            doc_count: 2
+          - name: customer service
+            doc_count: 1
+          - name: data visualization
+            doc_count: 2
+          - name: data-first marketing
+            doc_count: 157
+          - name: personalization
+            doc_count: 15
+          links:
+          - source: 66
+            target: 54
+            value: 0.375
+          - source: 66
+            target: 75
+            value: 0.25
+          - source: 66
+            target: 37
+            value: 0.25
         message: success
         status: 200
     ContentTopicSummaryModel:
@@ -3212,90 +3064,6 @@ components:
               - running
               - shoes
               id: '3395466611293777389'
-    ContentDocumentModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            total:
-              type: number
-            urls:
-              type: array
-              items:
-                type: object
-                properties:
-                  url:
-                    type: string
-                  title:
-                    type: string
-                  topics:
-                    type: array
-                    items:
-                      type: string
-                  id:
-                    type: string
-      example:
-        status: 200
-        message: success
-        data:
-          total: 1
-          urls:
-          - url: www.our-site.com/product/new-product-xyz
-            title: Blue Running Shoes that make you faster
-            topics:
-            - our-site (company)
-            - running
-            - shoes
-            id: '3395466611293777389'
-    ContentCorpusModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            body:
-              type: array
-              items:
-                type: string
-            source:
-              type: array
-              items:
-                type: string
-            updated:
-              type: array
-              items:
-                type: string
-            url:
-              type: array
-              items:
-                type: string
-            version:
-              type: array
-              items:
-                type: string
-      example:
-        status: 200
-        message: success
-        data:
-          body:
-          - here is some body text
-          source:
-          - upload
-          updated:
-          - 2016-09-13 21:59:38.551972802 -0400 EDT
-          url:
-          - http://www.google.com/
-          version:
-          - '4'
     ContentTopicsModel:
       type: object
       properties:
@@ -3360,13 +3128,308 @@ components:
           avg: 0.9704200631406573
           tags:
           - custom
-    ContentCrawlModel: {}
+    ContentCorpusModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            body:
+              type: array
+              items:
+                type: string
+            source:
+              type: array
+              items:
+                type: string
+            updated:
+              type: array
+              items:
+                type: string
+            url:
+              type: array
+              items:
+                type: string
+            version:
+              type: array
+              items:
+                type: string
+      example:
+        status: 200
+        message: success
+        data:
+          body:
+          - here is some body text
+          source:
+          - upload
+          updated:
+          - 2016-09-13 21:59:38.551972802 -0400 EDT
+          url:
+          - http://www.google.com/
+          version:
+          - '4'
+    ContentTopicRollupListModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              account_id:
+                type: string
+              label:
+                type: string
+              created:
+                type: string
+              updated:
+                type: string
+              topics:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    value:
+                      type: number
+                  required:
+                  - label
+                  - value
+      example:
+        data:
+        - id: 6a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          label: Baking rollup
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          topics:
+          - label: Recipe
+            value: 0.66
+          - label: baking
+            value: 0.55
+    ContentRecommendationModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              topics:
+                type: array
+                items:
+                  type: string
+              topic_relevances:
+                type: object
+                properties:
+                  content marketing:
+                    type: number
+                  customer data platform:
+                    type: number
+                  data science:
+                    type: number
+                  personalization:
+                    type: number
+              primary_image:
+                type: string
+              author:
+                type: string
+              created:
+                type: string
+              id:
+                type: string
+              sitename:
+                type: string
+              stream:
+                type: string
+              path:
+                type: array
+                items:
+                  type: string
+              aspects:
+                type: array
+                items:
+                  type: string
+              language:
+                type: string
+              updated:
+                type: string
+              fetched:
+                type: string
+              meta:
+                type: array
+                items:
+                  type: string
+              confidence:
+                type: number
+              visited:
+                type: boolean
+        message:
+          type: string
+        status:
+          type: number
+      example:
+        data:
+        - url: www.getlytics.com/blog/post/intent_through_content
+          title: Understanding User Intent Through Content
+          description: Customer Intent comes from understanding the connection between engagement and its contexts. Content modeling and affinity graphs makes interpretation of intent a lot easier. Learn how marketers can benefit from this.
+          topics:
+          - customer data platform
+          - data science
+          - content marketing
+          - personalization
+          topic_relevances:
+            content marketing: 1
+            customer data platform: 1
+            data science: 1
+            personalization: 1
+          primary_image: https://www.getlytics.com/img/blog/posts/intent_through_content/intent_through_content-bg.gif
+          author: ''
+          created: '2016-06-08T16:11:45.599594093Z'
+          id: '-3435113786560588929'
+          sitename: Lytics
+          stream: default
+          path:
+          - blog
+          - blog/post
+          - blog/post/intent_through_content
+          aspects:
+          - article
+          language: unknown
+          updated: '2016-06-09T12:49:36.870359765Z'
+          fetched: '2016-06-09T12:49:35.812654441Z'
+          meta:
+          - og:locale/en_us
+          - og:site_name/lytics
+          - og:title/understanding user intent through content
+          - og:type/article
+          - og:url/https://www.getlytics.com/blog/post/intent_through_content
+          confidence: 0.5916079783099615
+          visited: true
+        message: success
+        status: 200
+    ContentDocumentModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            total:
+              type: number
+            urls:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  title:
+                    type: string
+                  topics:
+                    type: array
+                    items:
+                      type: string
+                  id:
+                    type: string
+      example:
+        status: 200
+        message: success
+        data:
+          total: 1
+          urls:
+          - url: www.our-site.com/product/new-product-xyz
+            title: Blue Running Shoes that make you faster
+            topics:
+            - our-site (company)
+            - running
+            - shoes
+            id: '3395466611293777389'
+    models.ContentAlignReq:
+      properties:
+        topics:
+          additionalProperties:
+            type: number
+          type: object
+      type: object
+    models.ContentEnrichResp:
+      properties:
+        inferred_topics:
+          additionalProperties:
+            type: number
+          description: The inferred topics that were captured from the input
+          type: object
+        input:
+          description: The input text or URL that was enriched
+          type: string
+        topics:
+          additionalProperties:
+            type: number
+          description: The topics that were inferred from the input
+          type: object
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.ContentAlignResp:
       properties:
         alignment:
           additionalProperties:
             type: number
           type: object
+      type: object
+    models.ContentOpportunityDimension:
+      properties:
+        label:
+          description: The dimension label
+          type: string
+        subject:
+          description: The entity type the dimension applies to
+          type: string
+        value:
+          description: The aggregated opportunity score for this dimension
+          type: number
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     models.ContentOpportunityTopic:
       properties:
@@ -3386,36 +3449,6 @@ components:
         topic:
           description: The topic name
           type: string
-      type: object
-    models.ContentOpportunityDimension:
-      properties:
-        label:
-          description: The dimension label
-          type: string
-        subject:
-          description: The entity type the dimension applies to
-          type: string
-        value:
-          description: The aggregated opportunity score for this dimension
-          type: number
-      type: object
-    models.ContentAlignReq:
-      properties:
-        topics:
-          additionalProperties:
-            type: number
-          type: object
-      type: object
-    models.ContentClassifyResp:
-      properties:
-        content:
-          additionalProperties: true
-          description: The content that was classified
-          type: object
-        steps:
-          description: The steps that were taken to classify the content
-          items: {}
-          type: array
       type: object
     lioerrors.ApiV2ErrorOut:
       properties:
@@ -3469,49 +3502,16 @@ components:
             $ref: '#/components/schemas/models.ContentOpportunityTopic'
           type: array
       type: object
-    models.ContentEnrichResp:
+    models.ContentClassifyResp:
       properties:
-        inferred_topics:
-          additionalProperties:
-            type: number
-          description: The inferred topics that were captured from the input
-          type: object
-        input:
-          description: The input text or URL that was enriched
-          type: string
-        topics:
-          additionalProperties:
-            type: number
-          description: The topics that were inferred from the input
-          type: object
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
+        content:
           additionalProperties: true
-          description: Response Metadata
+          description: The content that was classified
           type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
+        steps:
+          description: The steps that were taken to classify the content
+          items: {}
+          type: array
       type: object
   securitySchemes:
     ApiKeyAuth:
