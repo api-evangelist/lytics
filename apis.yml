@@ -42,6 +42,9 @@ url: https://raw.githubusercontent.com/api-evangelist/lytics/refs/heads/main/api
 created: '2026-06-13'
 modified: '2026-08-13'
 specificationVersion: '0.23'
+x-docs-platform: readme
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-10-03
 tags:
   - Customer Data Platform
   - CDP
@@ -1874,6 +1877,8 @@ apis:
   humanURL: https://docs.lytics.com/reference
   baseURL: https://api.lytics.io/v2
   tags:
+  - Data Models
+  tags_raw:
   - Data models
   properties:
   - type: OpenAPI
