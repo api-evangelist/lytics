@@ -522,56 +522,29 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.FlowStep:
+    models.SplitConditionKV:
       properties:
-        affinity_config_id:
+        conditions:
           type: string
-        delay:
-          description: Nanoseconds to wait at this step. Mutually exclusive with delay_until.
-          type: integer
-        delay_condition:
-          type: string
-        delay_until:
-          $ref: '#/components/schemas/models.DelayUntil'
-        delay_until_enters:
-          items:
-            type: string
-          type: array
-        id:
-          type: integer
         label:
           type: string
         next:
           type: integer
-        slug:
-          type: string
-        split_affinities:
-          items:
-            $ref: '#/components/schemas/models.SplitAffinityKV'
-          type: array
-        split_conditions:
-          items:
-            $ref: '#/components/schemas/models.SplitConditionKV'
-          type: array
-        split_probabilities:
-          items:
-            $ref: '#/components/schemas/models.SplitProbKV'
-          type: array
-        type_hint:
-          enum:
-          - work_export
-          - delay
-          - conditional
-          - affinity
-          - ab_testing
-          - work_export_exit
-          type: string
-        work_config:
-          type: object
-        work_exit_step_ref:
+        priority:
           type: integer
-        work_id:
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
           type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     models.Flow:
       properties:
@@ -628,69 +601,55 @@ components:
         version:
           type: integer
       type: object
-    models.SplitConditionKV:
+    models.FlowStep:
       properties:
-        conditions:
+        affinity_config_id:
           type: string
+        delay:
+          description: Nanoseconds to wait at this step. Mutually exclusive with delay_until.
+          type: integer
+        delay_condition:
+          type: string
+        delay_until:
+          $ref: '#/components/schemas/models.DelayUntil'
+        delay_until_enters:
+          items:
+            type: string
+          type: array
+        id:
+          type: integer
         label:
           type: string
         next:
           type: integer
-        priority:
-          type: integer
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
+        slug:
           type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.SplitProbKV:
-      properties:
-        next:
-          type: integer
-        prob:
-          type: number
-      type: object
-    models.Work:
-      properties:
-        account_id:
-          type: string
-        aid:
-          type: integer
-        auth_ids:
+        split_affinities:
           items:
-            type: string
+            $ref: '#/components/schemas/models.SplitAffinityKV'
           type: array
-        config:
+        split_conditions:
+          items:
+            $ref: '#/components/schemas/models.SplitConditionKV'
+          type: array
+        split_probabilities:
+          items:
+            $ref: '#/components/schemas/models.SplitProbKV'
+          type: array
+        type_hint:
+          enum:
+          - work_export
+          - delay
+          - conditional
+          - affinity
+          - ab_testing
+          - work_export_exit
+          type: string
+        work_config:
           type: object
-        created:
-          format: date-time
-          type: string
-        description:
-          type: string
-        expires_at:
-          format: date-time
-          type: string
-        id:
-          type: string
-        name:
-          type: string
-        tag:
-          type: string
-        updated:
-          format: date-time
-          type: string
-        workflow:
-          type: string
-        workflow_id:
+        work_exit_step_ref:
+          type: integer
+        work_id:
           type: string
       type: object
     models.ApiResponse:
@@ -707,6 +666,37 @@ components:
         status:
           description: HTTP Status Code
           type: integer
+      type: object
+    models.SplitProbKV:
+      properties:
+        next:
+          type: integer
+        prob:
+          type: number
+      type: object
+    models.DelayUntil:
+      properties:
+        day_of_week:
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          type: integer
+        kind:
+          enum:
+          - day_of_week
+          - time_of_day
+          type: string
+        time_of_day:
+          example: 09:30
+          type: string
+        timezone:
+          example: America/New_York
+          type: string
       type: object
     lioerrors.ApiV2ErrorOut:
       properties:
@@ -752,28 +742,38 @@ components:
           format: date-time
           type: string
       type: object
-    models.DelayUntil:
+    models.Work:
       properties:
-        day_of_week:
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          - 6
+        account_id:
+          type: string
+        aid:
           type: integer
-        kind:
-          enum:
-          - day_of_week
-          - time_of_day
+        auth_ids:
+          items:
+            type: string
+          type: array
+        config:
+          type: object
+        created:
+          format: date-time
           type: string
-        time_of_day:
-          example: 09:30
+        description:
           type: string
-        timezone:
-          example: America/New_York
+        expires_at:
+          format: date-time
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+        tag:
+          type: string
+        updated:
+          format: date-time
+          type: string
+        workflow:
+          type: string
+        workflow_id:
           type: string
       type: object
     models.SplitAffinityKV:

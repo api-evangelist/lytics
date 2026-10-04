@@ -213,6 +213,19 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.MetricRequest:
       properties:
         aggregation:
@@ -251,74 +264,6 @@ components:
         start_date:
           example: now-7d
           type: string
-      type: object
-    models.MetricTimeSeriesEntry:
-      properties:
-        ts:
-          description: Ts is the bucket timestamp as a string of Unix-epoch milliseconds.
-          example: '1285891200000'
-          type: string
-        value:
-          type: number
-      type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.MetricResult:
-      properties:
-        aggregation:
-          type: string
-        create_time:
-          format: date-time
-          type: string
-        dimension:
-          type: string
-        dimension_id:
-          type: string
-        dimension_type:
-          type: string
-        end_date:
-          type: string
-        errors:
-          items:
-            type: string
-          type: array
-        include_empty_rows:
-          type: boolean
-        include_sum_of_buckets:
-          type: boolean
-        interval:
-          type: string
-        is_cached:
-          type: boolean
-        name:
-          type: string
-        range:
-          type: string
-        refresh_cache:
-          type: boolean
-        round_dates:
-          type: boolean
-        smooth:
-          type: boolean
-        start_date:
-          type: string
-        sum:
-          type: number
-        values:
-          items:
-            $ref: '#/components/schemas/models.MetricTimeSeriesEntry'
-          type: array
       type: object
     models.ApiResponse:
       properties:
@@ -378,6 +323,61 @@ components:
           description: The time the error occurred
           format: date-time
           type: string
+      type: object
+    models.MetricResult:
+      properties:
+        aggregation:
+          type: string
+        create_time:
+          format: date-time
+          type: string
+        dimension:
+          type: string
+        dimension_id:
+          type: string
+        dimension_type:
+          type: string
+        end_date:
+          type: string
+        errors:
+          items:
+            type: string
+          type: array
+        include_empty_rows:
+          type: boolean
+        include_sum_of_buckets:
+          type: boolean
+        interval:
+          type: string
+        is_cached:
+          type: boolean
+        name:
+          type: string
+        range:
+          type: string
+        refresh_cache:
+          type: boolean
+        round_dates:
+          type: boolean
+        smooth:
+          type: boolean
+        start_date:
+          type: string
+        sum:
+          type: number
+        values:
+          items:
+            $ref: '#/components/schemas/models.MetricTimeSeriesEntry'
+          type: array
+      type: object
+    models.MetricTimeSeriesEntry:
+      properties:
+        ts:
+          description: Ts is the bucket timestamp as a string of Unix-epoch milliseconds.
+          example: '1285891200000'
+          type: string
+        value:
+          type: number
       type: object
   securitySchemes:
     ApiKeyAuth:

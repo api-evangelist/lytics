@@ -478,6 +478,39 @@ components:
             type: string
           type: array
       type: object
+    models.AdhocTemplateTestRequest:
+      properties:
+        entity:
+          additionalProperties: true
+          type: object
+        job_config:
+          additionalProperties: true
+          type: object
+        sample_segments:
+          $ref: '#/components/schemas/models.SampleSegmentsInput'
+        template_definition:
+          description: Adhoc template definition
+          type: string
+        template_type:
+          description: Adhoc template type
+          enum:
+          - jsonnet
+          - handlebars
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
     models.TemplateMetadata:
       properties:
         author_id:
@@ -506,19 +539,6 @@ components:
         updated:
           type: string
       type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
     models.ApiResponse:
       properties:
         _meta:
@@ -533,37 +553,6 @@ components:
         status:
           description: HTTP Status Code
           type: integer
-      type: object
-    models.AdhocTemplateTestRequest:
-      properties:
-        entity:
-          additionalProperties: true
-          type: object
-        job_config:
-          additionalProperties: true
-          type: object
-        sample_segments:
-          $ref: '#/components/schemas/models.SampleSegmentsInput'
-        template_definition:
-          description: Adhoc template definition
-          type: string
-        template_type:
-          description: Adhoc template type
-          enum:
-          - jsonnet
-          - handlebars
-          type: string
-      type: object
-    models.TemplateTestRequest:
-      properties:
-        entity:
-          additionalProperties: true
-          type: object
-        job_config:
-          additionalProperties: true
-          type: object
-        sample_segments:
-          $ref: '#/components/schemas/models.SampleSegmentsInput'
       type: object
     lioerrors.ApiV2ErrorOut:
       properties:
@@ -608,6 +597,17 @@ components:
           description: The time the error occurred
           format: date-time
           type: string
+      type: object
+    models.TemplateTestRequest:
+      properties:
+        entity:
+          additionalProperties: true
+          type: object
+        job_config:
+          additionalProperties: true
+          type: object
+        sample_segments:
+          $ref: '#/components/schemas/models.SampleSegmentsInput'
       type: object
   securitySchemes:
     ApiKeyAuth:

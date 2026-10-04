@@ -533,6 +533,82 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    models.DataModelJoin:
+      properties:
+        foreign_key:
+          type: string
+        foreign_table:
+          type: string
+        primary_key:
+          type: string
+      type: object
+    models.SyncError:
+      properties:
+        error:
+          type: string
+        time:
+          type: string
+      type: object
+    models.AnomalyRuleResp:
+      properties:
+        aid:
+          type: integer
+        checks:
+          items:
+            $ref: '#/components/schemas/models.RuleCheckConfigReq'
+          type: array
+        created:
+          type: string
+        id:
+          type: string
+        subject_id:
+          type: string
+        subject_type:
+          type: string
+        updated:
+          type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.DataModelUpdateReq:
+      properties:
+        activated_fields:
+          items:
+            type: string
+          type: array
+        create_profiles:
+          type: boolean
+        description:
+          type: string
+        name:
+          type: string
+        sql:
+          type: string
+        status:
+          type: string
+        sync_period:
+          type: integer
+      type: object
+    models.SyncSchedule:
+      properties:
+        next_sync_time:
+          type: string
+        prev_sync_time:
+          type: string
+        sync_period:
+          type: integer
+      type: object
     models.DataModelLog:
       properties:
         id:
@@ -556,31 +632,20 @@ components:
         slug_name:
           type: string
       type: object
-    models.RuleCheckConfigReq:
+    models.ApiResponse:
       properties:
-        allowable_violations:
-          type: integer
-        interval:
-          type: string
-        lookback_count:
-          type: integer
-        max_threshold:
-          type: integer
-        metric_type:
-          type: string
-        min_threshold:
-          type: integer
-        type:
-          type: string
-        variance_pct:
-          type: number
-      type: object
-    models.DataModelHealth:
-      properties:
-        details:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
           type: string
         status:
-          type: string
+          description: HTTP Status Code
+          type: integer
       type: object
     models.DataModelDeleteStatus:
       properties:
@@ -590,6 +655,37 @@ components:
           type: string
         reason:
           type: string
+      type: object
+    models.DataModelCreateReq:
+      properties:
+        activated_fields:
+          items:
+            type: string
+          type: array
+        connection_id:
+          type: string
+        create_profiles:
+          type: boolean
+        description:
+          type: string
+        joined_to:
+          $ref: '#/components/schemas/models.DataModelJoin'
+        name:
+          type: string
+        primary_keys:
+          items:
+            type: string
+          type: array
+        slug:
+          type: string
+        sql:
+          type: string
+        sql_dialect:
+          type: string
+        status:
+          type: string
+        sync_period:
+          type: number
       type: object
     models.DataModelResp:
       properties:
@@ -654,103 +750,6 @@ components:
         updated:
           type: string
       type: object
-    models.ApiErrorResponse:
-      properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.DataModelCreateReq:
-      properties:
-        activated_fields:
-          items:
-            type: string
-          type: array
-        connection_id:
-          type: string
-        create_profiles:
-          type: boolean
-        description:
-          type: string
-        joined_to:
-          $ref: '#/components/schemas/models.DataModelJoin'
-        name:
-          type: string
-        primary_keys:
-          items:
-            type: string
-          type: array
-        slug:
-          type: string
-        sql:
-          type: string
-        sql_dialect:
-          type: string
-        status:
-          type: string
-        sync_period:
-          type: number
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.AnomalyRuleResp:
-      properties:
-        aid:
-          type: integer
-        checks:
-          items:
-            $ref: '#/components/schemas/models.RuleCheckConfigReq'
-          type: array
-        created:
-          type: string
-        id:
-          type: string
-        subject_id:
-          type: string
-        subject_type:
-          type: string
-        updated:
-          type: string
-      type: object
-    models.DataModelUpdateReq:
-      properties:
-        activated_fields:
-          items:
-            type: string
-          type: array
-        create_profiles:
-          type: boolean
-        description:
-          type: string
-        name:
-          type: string
-        sql:
-          type: string
-        status:
-          type: string
-        sync_period:
-          type: integer
-      type: object
     lioerrors.ApiV2ErrorOut:
       properties:
         code:
@@ -795,30 +794,31 @@ components:
           format: date-time
           type: string
       type: object
-    models.DataModelJoin:
+    models.DataModelHealth:
       properties:
-        foreign_key:
+        details:
           type: string
-        foreign_table:
-          type: string
-        primary_key:
+        status:
           type: string
       type: object
-    models.SyncError:
+    models.RuleCheckConfigReq:
       properties:
-        error:
-          type: string
-        time:
-          type: string
-      type: object
-    models.SyncSchedule:
-      properties:
-        next_sync_time:
-          type: string
-        prev_sync_time:
-          type: string
-        sync_period:
+        allowable_violations:
           type: integer
+        interval:
+          type: string
+        lookback_count:
+          type: integer
+        max_threshold:
+          type: integer
+        metric_type:
+          type: string
+        min_threshold:
+          type: integer
+        type:
+          type: string
+        variance_pct:
+          type: number
       type: object
   securitySchemes:
     ApiKeyAuth:

@@ -312,29 +312,6 @@ paths:
       x-operation-id-original: Query Test Evaluation
 components:
   schemas:
-    QueryModel:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            updated:
-              type: string
-            created:
-              type: string
-            text:
-              type: string
-      example:
-        status: success
-        data:
-          id: abcdef123
-          updated: '2014-10-30T21:01:06.493Z'
-          created: '2014-10-30T21:01:06.493Z'
-          text: SELECT ...
     QueryListModel:
       type: object
       properties:
@@ -357,6 +334,29 @@ components:
         status: success
         data:
         - id: abcdef123
+          updated: '2014-10-30T21:01:06.493Z'
+          created: '2014-10-30T21:01:06.493Z'
+          text: SELECT ...
+    QueryModel:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            updated:
+              type: string
+            created:
+              type: string
+            text:
+              type: string
+      example:
+        status: success
+        data:
+          id: abcdef123
           updated: '2014-10-30T21:01:06.493Z'
           created: '2014-10-30T21:01:06.493Z'
           text: SELECT ...

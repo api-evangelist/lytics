@@ -544,6 +544,151 @@ paths:
 components:
   schemas:
     FieldSuggestModel: {}
+    StreamsModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              stream:
+                type: string
+              hidden:
+                type: boolean
+              ct:
+                type: number
+              curct:
+                type: number
+              last_msg_ts:
+                type: string
+              last_update_ts:
+                type: string
+              fields:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    avg:
+                      type: number
+                    card:
+                      type: number
+                    is_array:
+                      type: boolean
+                    name:
+                      type: string
+                    sample:
+                      type: array
+                      items:
+                        type: string
+                    smart:
+                      type: object
+                      properties:
+                        coverage:
+                          type: number
+                        email:
+                          type: number
+                        noun:
+                          type: number
+                        time:
+                          type: number
+                        uid:
+                          type: number
+                        value:
+                          type: number
+                        verb:
+                          type: number
+                        ip:
+                          type: number
+                        phone:
+                          type: number
+                        url:
+                          type: number
+                        analyses:
+                          type: number
+                    sumlen:
+                      type: number
+                    type:
+                      type: string
+                    usage:
+                      type: number
+                    first_seen:
+                      type: string
+                    last_seen:
+                      type: string
+                    hidden:
+                      type: boolean
+                    column:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          table:
+                            type: string
+                          as:
+                            type: string
+                        required:
+                        - table
+                        - as
+      example:
+        data:
+        - stream: events
+          hidden: false
+          ct: 37
+          curct: 0
+          last_msg_ts: '1401216931893'
+          last_update_ts: '1421167622683'
+          fields:
+          - avg: 4
+            card: 22
+            is_array: true
+            name: utm_medium
+            sample:
+            - cpc
+            - adwords
+            - blog
+            - pricing-page
+            - social
+            - integrations-page
+            - email
+            - Integrations-page
+            - docs
+            - search
+            - CPC
+            - twitter
+            - social_organic
+            - card
+            - social_paid
+            - sponsored
+            - mailchimp
+            - facebook
+            - infographic
+            - lytics-reporting
+            - retargeting
+            - referral
+            smart:
+              coverage: 0
+              email: 0
+              noun: 13
+              time: 0
+              uid: 0
+              value: 0
+              verb: 13
+              ip: 0
+              phone: 0
+              url: 0
+              analyses: 315
+            sumlen: 146221
+            type: string
+            usage: 32484
+            first_seen: '2016-06-08T16:11:06Z'
+            last_seen: '2016-06-24T18:00:40.871025224Z'
+            hidden: false
+            column:
+            - table: campaign
+              as: utm_mediums
+            - table: user
+              as: utm_mediums
     FieldInfoModel:
       type: object
       properties:
@@ -987,151 +1132,6 @@ components:
             - linkedin_data
             identities:
             - location
-    StreamsModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              stream:
-                type: string
-              hidden:
-                type: boolean
-              ct:
-                type: number
-              curct:
-                type: number
-              last_msg_ts:
-                type: string
-              last_update_ts:
-                type: string
-              fields:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    avg:
-                      type: number
-                    card:
-                      type: number
-                    is_array:
-                      type: boolean
-                    name:
-                      type: string
-                    sample:
-                      type: array
-                      items:
-                        type: string
-                    smart:
-                      type: object
-                      properties:
-                        coverage:
-                          type: number
-                        email:
-                          type: number
-                        noun:
-                          type: number
-                        time:
-                          type: number
-                        uid:
-                          type: number
-                        value:
-                          type: number
-                        verb:
-                          type: number
-                        ip:
-                          type: number
-                        phone:
-                          type: number
-                        url:
-                          type: number
-                        analyses:
-                          type: number
-                    sumlen:
-                      type: number
-                    type:
-                      type: string
-                    usage:
-                      type: number
-                    first_seen:
-                      type: string
-                    last_seen:
-                      type: string
-                    hidden:
-                      type: boolean
-                    column:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          table:
-                            type: string
-                          as:
-                            type: string
-                        required:
-                        - table
-                        - as
-      example:
-        data:
-        - stream: events
-          hidden: false
-          ct: 37
-          curct: 0
-          last_msg_ts: '1401216931893'
-          last_update_ts: '1421167622683'
-          fields:
-          - avg: 4
-            card: 22
-            is_array: true
-            name: utm_medium
-            sample:
-            - cpc
-            - adwords
-            - blog
-            - pricing-page
-            - social
-            - integrations-page
-            - email
-            - Integrations-page
-            - docs
-            - search
-            - CPC
-            - twitter
-            - social_organic
-            - card
-            - social_paid
-            - sponsored
-            - mailchimp
-            - facebook
-            - infographic
-            - lytics-reporting
-            - retargeting
-            - referral
-            smart:
-              coverage: 0
-              email: 0
-              noun: 13
-              time: 0
-              uid: 0
-              value: 0
-              verb: 13
-              ip: 0
-              phone: 0
-              url: 0
-              analyses: 315
-            sumlen: 146221
-            type: string
-            usage: 32484
-            first_seen: '2016-06-08T16:11:06Z'
-            last_seen: '2016-06-24T18:00:40.871025224Z'
-            hidden: false
-            column:
-            - table: campaign
-              as: utm_mediums
-            - table: user
-              as: utm_mediums
   securitySchemes:
     ApiKeyAuth:
       in: header

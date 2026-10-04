@@ -186,9 +186,6 @@ paths:
       x-operation-id-source: normalized
       x-operation-id-original: SegmentCollection Delete
 components:
-  schemas:
-    SegmentCollectionListModel: {}
-    SegmentCollectionModel: {}
   requestBodies:
     SegmentCollection_CreateBody:
       content:
@@ -217,6 +214,9 @@ components:
                 order: 0
               - id: 3456abcd
                 order: 1
+  schemas:
+    SegmentCollectionListModel: {}
+    SegmentCollectionModel: {}
   securitySchemes:
     ApiKeyAuth:
       in: header

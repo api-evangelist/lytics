@@ -627,6 +627,64 @@ paths:
     - url: https://api.lytics.io/v2
 components:
   schemas:
+    UserModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            account_id:
+              type: string
+            aid:
+              type: number
+            created:
+              type: string
+            updated:
+              type: string
+            email:
+              type: string
+            id:
+              type: string
+            name:
+              type: string
+            accounts:
+              type: array
+              items:
+                type: object
+                properties:
+                  aid:
+                    type: number
+                  account_id:
+                    type: string
+                  granted_by:
+                    type: string
+                  roles:
+                    type: array
+                    items:
+                      type: string
+                  created:
+                    type: string
+                  updated:
+                    type: string
+      example:
+        data:
+          account_id: 4f7b175bdba058fc092357a6
+          aid: 122
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          email: bill.jenkins@lytics.io
+          id: 120642b03a2d54551e637f56cbf61b73
+          name: Bill Jenkins
+          accounts:
+          - aid: 122
+            account_id: 4f7b175bdba058fc092357a6
+            granted_by: '500418690088145'
+            roles:
+            - api
+            - segments
+            - admin
+            created: '2014-08-04T21:18:20.124Z'
+            updated: '2014-08-04T21:18:20.124Z'
     UserListModel:
       type: object
       properties:
@@ -687,71 +745,6 @@ components:
             - admin
             created: '2014-08-04T21:18:20.124Z'
             updated: '2014-08-04T21:18:20.124Z'
-    UserModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            account_id:
-              type: string
-            aid:
-              type: number
-            created:
-              type: string
-            updated:
-              type: string
-            email:
-              type: string
-            id:
-              type: string
-            name:
-              type: string
-            accounts:
-              type: array
-              items:
-                type: object
-                properties:
-                  aid:
-                    type: number
-                  account_id:
-                    type: string
-                  granted_by:
-                    type: string
-                  roles:
-                    type: array
-                    items:
-                      type: string
-                  created:
-                    type: string
-                  updated:
-                    type: string
-      example:
-        data:
-          account_id: 4f7b175bdba058fc092357a6
-          aid: 122
-          created: '2014-08-04T21:18:20.124Z'
-          updated: '2014-08-04T21:18:20.124Z'
-          email: bill.jenkins@lytics.io
-          id: 120642b03a2d54551e637f56cbf61b73
-          name: Bill Jenkins
-          accounts:
-          - aid: 122
-            account_id: 4f7b175bdba058fc092357a6
-            granted_by: '500418690088145'
-            roles:
-            - api
-            - segments
-            - admin
-            created: '2014-08-04T21:18:20.124Z'
-            updated: '2014-08-04T21:18:20.124Z'
-    models.PasswordResetReq:
-      properties:
-        oldpassword:
-          type: string
-        password:
-          type: string
-      type: object
     models.UserAccount:
       properties:
         account_id:
@@ -797,6 +790,29 @@ components:
           description: HTTP Status Code
           type: integer
       type: object
+    models.RoleReq:
+      properties:
+        roles:
+          items:
+            enum:
+            - admin
+            - authed2
+            - content_manager
+            - segment_manager
+            - marketer
+            - data_manager
+            - campaign_manager
+            - observer
+            - data_write
+            - user_search
+            - report_viewer
+            - report_manager
+            - orchestrate
+            - experience_manager
+            - developer_free
+            type: string
+          type: array
+      type: object
     models.User:
       properties:
         auth_type:
@@ -830,6 +846,13 @@ components:
             type: string
           type: array
       type: object
+    models.PasswordResetReq:
+      properties:
+        oldpassword:
+          type: string
+        password:
+          type: string
+      type: object
     models.ApiResponse:
       properties:
         _meta:
@@ -844,6 +867,50 @@ components:
         status:
           description: HTTP Status Code
           type: integer
+      type: object
+    lioerrors.ApiV2ErrorOut:
+      properties:
+        code:
+          description: Lytics Error Code
+          enum:
+          - UNKNOWN-000
+          - BADREQ-001
+          - JOB-BADREQ-002
+          - NOTFOUND-003
+          - JOB-NOTFOUND-004
+          - WF-NOTFOUND-005
+          - AUTH-NOTFOUND-006
+          - AUTHTYPE-NOTFOUND-007
+          - AUTH-BADREQ-008
+          - TABLE-NOTFOUND-009
+          - SCHEMA-NOTFOUND-010
+          - SCHEMAVERSION-NOTFOUND-011
+          - ENTITY-NOTFOUND-012
+          - QUERY-NOTFOUND-013
+          - STREAM-NOTFOUND-014
+          - PROVIDER-BADREQ-015
+          - PROVIDER-NOTFOUND-016
+          - UNAUTHORIZED-017
+          - SCHEMA-INVALID-018
+          - INTERNAL-019
+          - ROUTERULE-NOTFOUND-020
+          - ACCOUNT-NOTFOUND-021
+          - JOB-FAULT-022
+          - USER-NOTFOUND-023
+          - USER-BADREQ-024
+          - JSON-BADREQ-025
+          - FORBIDDEN-026
+          type: string
+        level:
+          description: When the error was generated
+          type: string
+        message:
+          description: A description of the error that occurred
+          type: string
+        timestamp:
+          description: The time the error occurred
+          format: date-time
+          type: string
       type: object
     models.UserResp:
       properties:
@@ -904,73 +971,6 @@ components:
         updated:
           format: date-time
           type: string
-      type: object
-    lioerrors.ApiV2ErrorOut:
-      properties:
-        code:
-          description: Lytics Error Code
-          enum:
-          - UNKNOWN-000
-          - BADREQ-001
-          - JOB-BADREQ-002
-          - NOTFOUND-003
-          - JOB-NOTFOUND-004
-          - WF-NOTFOUND-005
-          - AUTH-NOTFOUND-006
-          - AUTHTYPE-NOTFOUND-007
-          - AUTH-BADREQ-008
-          - TABLE-NOTFOUND-009
-          - SCHEMA-NOTFOUND-010
-          - SCHEMAVERSION-NOTFOUND-011
-          - ENTITY-NOTFOUND-012
-          - QUERY-NOTFOUND-013
-          - STREAM-NOTFOUND-014
-          - PROVIDER-BADREQ-015
-          - PROVIDER-NOTFOUND-016
-          - UNAUTHORIZED-017
-          - SCHEMA-INVALID-018
-          - INTERNAL-019
-          - ROUTERULE-NOTFOUND-020
-          - ACCOUNT-NOTFOUND-021
-          - JOB-FAULT-022
-          - USER-NOTFOUND-023
-          - USER-BADREQ-024
-          - JSON-BADREQ-025
-          - FORBIDDEN-026
-          type: string
-        level:
-          description: When the error was generated
-          type: string
-        message:
-          description: A description of the error that occurred
-          type: string
-        timestamp:
-          description: The time the error occurred
-          format: date-time
-          type: string
-      type: object
-    models.RoleReq:
-      properties:
-        roles:
-          items:
-            enum:
-            - admin
-            - authed2
-            - content_manager
-            - segment_manager
-            - marketer
-            - data_manager
-            - campaign_manager
-            - observer
-            - data_write
-            - user_search
-            - report_viewer
-            - report_manager
-            - orchestrate
-            - experience_manager
-            - developer_free
-            type: string
-          type: array
       type: object
   securitySchemes:
     ApiKeyAuth:

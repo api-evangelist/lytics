@@ -326,103 +326,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.ModelConfig:
-      properties:
-        additional:
-          description: Additional features to include in the model
-          items:
-            type: string
-          type: array
-        auto_tune:
-          description: Automatically search through all data fields in Lytics and build the optimized model of the best fields
-          type: boolean
-        blocked:
-          description: Features to exclude from the model
-          items:
-            type: string
-          type: array
-        build_only:
-          description: Train the model only, do not deploy
-          type: boolean
-        collect:
-          description: Number of samples to collect for training
-          type: integer
-        internal:
-          description: Internal Lytics model; not visible to users
-          type: boolean
-        re_run:
-          description: Re-train the model every week
-          type: boolean
-        use_content:
-          description: Use content affinities as features
-          type: boolean
-        use_scores:
-          description: Use behavioral scores as features
-          type: boolean
-      type: object
-    models.MLSummary:
-      properties:
-        accuracy:
-          description: Measure of 0-10 of how accurate the model is. Interpreted from the R-squared
-          type: integer
-        auc:
-          description: '"Area under curve" (0-1) for the ROC (receiver operating characteristic curve). AUC provides an overall measure of performance across all possible thresholds'
-          type: number
-        audience_similarity:
-          description: Jaccard Index/Similarity for source and target segments for a model
-          type: number
-        error_matrix:
-          $ref: '#/components/schemas/models.ConfusionMatrix'
-        model_health:
-          description: Health of the model; "healthy" or "unhealthy". Unhealthy models are not accurate enough or encountered an error during training
-          type: string
-        mse:
-          description: Mean squared error is the average squared difference between the estimated values and the actual value
-          type: number
-        msgs:
-          description: Messages to help debug and improve the model
-          items:
-            $ref: '#/components/schemas/models.ModelMessage'
-          type: array
-        reach:
-          description: Measure of 0-10 of how many users this model can reach. Interpreted from the False Positive Rate
-          type: integer
-        rsq:
-          description: R-squared is a measure (0-1) of "goodness of fit", i.e. how well the model fits the data
-          type: number
-        source_predictions:
-          additionalProperties:
-            type: integer
-          description: Test dataset predictions for the source audience
-          type: object
-        target_predictions:
-          additionalProperties:
-            type: integer
-          description: Test dataset predictions for the target audience
-          type: object
-        threshold:
-          description: Computed as the optimal threshold to use when creating predictive audiences. The value that optimizes both reach and accuracy simultaneously
-          type: number
-      type: object
-    models.MLSummaryResponse:
-      properties:
-        features:
-          description: All features of final model build with importances and correlations of each
-          items:
-            $ref: '#/components/schemas/models.Feature'
-          type: array
-        id:
-          description: ID of the model
-          type: string
-        name:
-          description: Name of the model
-          type: string
-        state:
-          description: State of the model, "complete", "building", or "invalid"
-          type: string
-        summary:
-          $ref: '#/components/schemas/models.MLSummary'
-      type: object
     models.MLModel:
       properties:
         additional_data:
@@ -484,62 +387,24 @@ components:
             type: string
           type: array
       type: object
-    models.ApiErrorResponse:
+    models.MLSummaryResponse:
       properties:
-        errors:
-          description: Lytics API Errors
+        features:
+          description: All features of final model build with importances and correlations of each
           items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+            $ref: '#/components/schemas/models.Feature'
           type: array
-        request_id:
+        id:
+          description: ID of the model
           type: string
-        status:
-          description: HTTP Status Code
-          type: integer
-      type: object
-    models.ConfusionMatrix:
-      properties:
-        FalseNegative:
-          description: Predicted negative but actual positive
-          type: integer
-        FalsePositive:
-          description: Predicted positive but actual negative
-          type: integer
-        TrueNegative:
-          description: Predicted negative and actual negative
-          type: integer
-        TruePositive:
-          description: Predicted positive and actual positive
-          type: integer
-      type: object
-    models.ModelMessage:
-      properties:
-        severity:
-          description: Severity level of the message; "info", "warn", "error", or "debug"
+        name:
+          description: Name of the model
           type: string
-        tags:
-          description: Tags for the message; "summary", "workflow", "autotune", "collinearity", or "verdict"
-          items:
-            type: string
-          type: array
-        text:
-          description: Model message
+        state:
+          description: State of the model, "complete", "building", or "invalid"
           type: string
-      type: object
-    models.ApiResponse:
-      properties:
-        _meta:
-          additionalProperties: true
-          description: Response Metadata
-          type: object
-        data:
-          description: Response Payload
-          type: object
-        request_id:
-          type: string
-        status:
-          description: HTTP Status Code
-          type: integer
+        summary:
+          $ref: '#/components/schemas/models.MLSummary'
       type: object
     models.Feature:
       properties:
@@ -562,6 +427,126 @@ components:
         type:
           description: Type of the feature; numeric or categorical
           type: string
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
+      type: object
+    models.ModelMessage:
+      properties:
+        severity:
+          description: Severity level of the message; "info", "warn", "error", or "debug"
+          type: string
+        tags:
+          description: Tags for the message; "summary", "workflow", "autotune", "collinearity", or "verdict"
+          items:
+            type: string
+          type: array
+        text:
+          description: Model message
+          type: string
+      type: object
+    models.MLSummary:
+      properties:
+        accuracy:
+          description: Measure of 0-10 of how accurate the model is. Interpreted from the R-squared
+          type: integer
+        auc:
+          description: '"Area under curve" (0-1) for the ROC (receiver operating characteristic curve). AUC provides an overall measure of performance across all possible thresholds'
+          type: number
+        audience_similarity:
+          description: Jaccard Index/Similarity for source and target segments for a model
+          type: number
+        error_matrix:
+          $ref: '#/components/schemas/models.ConfusionMatrix'
+        model_health:
+          description: Health of the model; "healthy" or "unhealthy". Unhealthy models are not accurate enough or encountered an error during training
+          type: string
+        mse:
+          description: Mean squared error is the average squared difference between the estimated values and the actual value
+          type: number
+        msgs:
+          description: Messages to help debug and improve the model
+          items:
+            $ref: '#/components/schemas/models.ModelMessage'
+          type: array
+        reach:
+          description: Measure of 0-10 of how many users this model can reach. Interpreted from the False Positive Rate
+          type: integer
+        rsq:
+          description: R-squared is a measure (0-1) of "goodness of fit", i.e. how well the model fits the data
+          type: number
+        source_predictions:
+          additionalProperties:
+            type: integer
+          description: Test dataset predictions for the source audience
+          type: object
+        target_predictions:
+          additionalProperties:
+            type: integer
+          description: Test dataset predictions for the target audience
+          type: object
+        threshold:
+          description: Computed as the optimal threshold to use when creating predictive audiences. The value that optimizes both reach and accuracy simultaneously
+          type: number
+      type: object
+    models.ModelConfig:
+      properties:
+        additional:
+          description: Additional features to include in the model
+          items:
+            type: string
+          type: array
+        auto_tune:
+          description: Automatically search through all data fields in Lytics and build the optimized model of the best fields
+          type: boolean
+        blocked:
+          description: Features to exclude from the model
+          items:
+            type: string
+          type: array
+        build_only:
+          description: Train the model only, do not deploy
+          type: boolean
+        collect:
+          description: Number of samples to collect for training
+          type: integer
+        internal:
+          description: Internal Lytics model; not visible to users
+          type: boolean
+        re_run:
+          description: Re-train the model every week
+          type: boolean
+        use_content:
+          description: Use content affinities as features
+          type: boolean
+        use_scores:
+          description: Use behavioral scores as features
+          type: boolean
+      type: object
+    models.ApiResponse:
+      properties:
+        _meta:
+          additionalProperties: true
+          description: Response Metadata
+          type: object
+        data:
+          description: Response Payload
+          type: object
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     lioerrors.ApiV2ErrorOut:
       properties:
@@ -618,6 +603,21 @@ components:
         value:
           description: For categorical fields
           type: string
+      type: object
+    models.ConfusionMatrix:
+      properties:
+        FalseNegative:
+          description: Predicted negative but actual positive
+          type: integer
+        FalsePositive:
+          description: Predicted positive but actual negative
+          type: integer
+        TrueNegative:
+          description: Predicted negative and actual negative
+          type: integer
+        TruePositive:
+          description: Predicted positive and actual positive
+          type: integer
       type: object
     models.FieldPrevalence:
       properties:

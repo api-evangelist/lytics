@@ -1093,6 +1093,96 @@ paths:
           type: string
 components:
   schemas:
+    SegmentFieldInfoModel: {}
+    SegmentScanModel: {}
+    SegmentSizesModel:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              slug_name:
+                type: string
+              size:
+                type: number
+              type:
+                type: string
+            required:
+            - id
+            - slug_name
+            - size
+      example:
+        data:
+        - id: 456dert
+          name: Active
+          slug_name: active
+          size: 10402
+        - id: 1234abcd
+          type: custom
+          slug_name: active
+          size: 45236
+    SegmentModel:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            account_id:
+              type: string
+            author_id:
+              type: string
+            kind:
+              type: string
+            segment_ql:
+              type: string
+            created:
+              type: string
+            updated:
+              type: string
+            description:
+              type: string
+            name:
+              type: string
+            slug_name:
+              type: string
+            tags:
+              type: array
+              items:
+                type: string
+      example:
+        data:
+          id: 7a7f76ff97ad0e3e96c162f74aee8f8f
+          account_id: 4f7b525bdba058fc096757a6
+          author_id: 4f7b525bdba058fc096757a6
+          kind: segment
+          segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
+          created: '2014-08-04T21:18:20.124Z'
+          updated: '2014-08-04T21:18:20.124Z'
+          description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
+          name: Recent Visits
+          slug_name: recent_visits
+          tags:
+          - email_trigger
+    SegmentValidateModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data: {}
+      example:
+        status: 200
+        message: success
+        data: null
     SegmentSizeModel:
       type: object
       properties:
@@ -1152,7 +1242,6 @@ components:
             value: 1002
           - ts: '1413149713455'
             value: 1005
-    SegmentScanModel: {}
     SegmentListModel:
       type: object
       properties:
@@ -1202,95 +1291,6 @@ components:
           slug_name: recent_visits
           tags:
           - email_trigger
-    SegmentValidateModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data: {}
-      example:
-        status: 200
-        message: success
-        data: null
-    SegmentModel:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            account_id:
-              type: string
-            author_id:
-              type: string
-            kind:
-              type: string
-            segment_ql:
-              type: string
-            created:
-              type: string
-            updated:
-              type: string
-            description:
-              type: string
-            name:
-              type: string
-            slug_name:
-              type: string
-            tags:
-              type: array
-              items:
-                type: string
-      example:
-        data:
-          id: 7a7f76ff97ad0e3e96c162f74aee8f8f
-          account_id: 4f7b525bdba058fc096757a6
-          author_id: 4f7b525bdba058fc096757a6
-          kind: segment
-          segment_ql: FILTER AND ( visits > 5, last_visit >= "2015-04-01 00:00:00Z", last_visit <  "2015-04-02 00:00:00Z")
-          created: '2014-08-04T21:18:20.124Z'
-          updated: '2014-08-04T21:18:20.124Z'
-          description: Casual users have been active in the last 90 days and show no extreme behavioral patterns.
-          name: Recent Visits
-          slug_name: recent_visits
-          tags:
-          - email_trigger
-    SegmentFieldInfoModel: {}
-    SegmentSizesModel:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              slug_name:
-                type: string
-              size:
-                type: number
-              type:
-                type: string
-            required:
-            - id
-            - slug_name
-            - size
-      example:
-        data:
-        - id: 456dert
-          name: Active
-          slug_name: active
-          size: 10402
-        - id: 1234abcd
-          type: custom
-          slug_name: active
-          size: 45236
   securitySchemes:
     ApiKeyAuth:
       in: header

@@ -493,6 +493,26 @@ paths:
       x-operation-id-original: ProfileDeletion Status
 components:
   schemas:
+    ProfileDeletionModel:
+      type: object
+      properties:
+        status:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            request_id:
+              type: string
+            complete:
+              type: boolean
+      example:
+        status: 200
+        message: delete request received
+        data:
+          request_id: e9d5f2d3d2c7a7d0e801-1526083200
+          complete: false
     PersonalizationModel:
       type: object
       properties:
@@ -534,26 +554,6 @@ components:
           format: json
           name: user
         status: 200
-    ProfileDeletionModel:
-      type: object
-      properties:
-        status:
-          type: number
-        message:
-          type: string
-        data:
-          type: object
-          properties:
-            request_id:
-              type: string
-            complete:
-              type: boolean
-      example:
-        status: 200
-        message: delete request received
-        data:
-          request_id: e9d5f2d3d2c7a7d0e801-1526083200
-          complete: false
   securitySchemes:
     ApiKeyAuth:
       in: header

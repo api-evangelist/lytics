@@ -589,8 +589,29 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    models.AttributeResponse:
-      additionalProperties: true
+    models.IdentityDeleteBulkResponse:
+      properties:
+        errors:
+          description: A map of value:error for unsuccessful submissions
+          type: object
+        successes:
+          additionalProperties:
+            type: string
+          description: A map of value:request_id for successful submissions
+          type: object
+      type: object
+    models.ApiErrorResponse:
+      properties:
+        errors:
+          description: Lytics API Errors
+          items:
+            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
+          type: array
+        request_id:
+          type: string
+        status:
+          description: HTTP Status Code
+          type: integer
       type: object
     models.IdentityResponse:
       properties:
@@ -620,18 +641,38 @@ components:
             $ref: '#/components/schemas/models.Kv'
           type: array
       type: object
-    models.ApiErrorResponse:
+    models.IdentityFragment:
       properties:
-        errors:
-          description: Lytics API Errors
-          items:
-            $ref: '#/components/schemas/lioerrors.ApiV2ErrorOut'
-          type: array
-        request_id:
+        conflict:
+          description: If this fragment has any conflicts preventing linking with the current profile.
+          type: boolean
+        conflicts_with:
+          description: Identifier of the conflicted neighbor.
           type: string
-        status:
-          description: HTTP Status Code
-          type: integer
+        created:
+          description: When this fragment was created
+          type: string
+        keys:
+          description: Identifiers for this fragment.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+        modified:
+          description: When this fragment was last modified
+          type: string
+        neighbor_limit:
+          description: Whether this fragment approaches overlinking limits
+          type: boolean
+        neighbors:
+          description: Neighbors to this fragment.
+          items:
+            $ref: '#/components/schemas/models.Kv'
+          type: array
+        streams:
+          description: All streams that contribute data to this fragment.
+          items:
+            type: string
+          type: array
       type: object
     models.ApiResponse:
       properties:
@@ -692,50 +733,6 @@ components:
           format: date-time
           type: string
       type: object
-    models.IdentityFragment:
-      properties:
-        conflict:
-          description: If this fragment has any conflicts preventing linking with the current profile.
-          type: boolean
-        conflicts_with:
-          description: Identifier of the conflicted neighbor.
-          type: string
-        created:
-          description: When this fragment was created
-          type: string
-        keys:
-          description: Identifiers for this fragment.
-          items:
-            $ref: '#/components/schemas/models.Kv'
-          type: array
-        modified:
-          description: When this fragment was last modified
-          type: string
-        neighbor_limit:
-          description: Whether this fragment approaches overlinking limits
-          type: boolean
-        neighbors:
-          description: Neighbors to this fragment.
-          items:
-            $ref: '#/components/schemas/models.Kv'
-          type: array
-        streams:
-          description: All streams that contribute data to this fragment.
-          items:
-            type: string
-          type: array
-      type: object
-    models.IdentityDeleteBulkResponse:
-      properties:
-        errors:
-          description: A map of value:error for unsuccessful submissions
-          type: object
-        successes:
-          additionalProperties:
-            type: string
-          description: A map of value:request_id for successful submissions
-          type: object
-      type: object
     models.Kv:
       properties:
         key:
@@ -755,6 +752,9 @@ components:
           type: string
         submitted:
           type: string
+      type: object
+    models.AttributeResponse:
+      additionalProperties: true
       type: object
   securitySchemes:
     ApiKeyAuth:
