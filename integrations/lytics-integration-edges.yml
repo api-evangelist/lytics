@@ -1,16 +1,119 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/lytics/integrations
 - https://n8n.io/integrations/lytics/
 - https://composio.dev/toolkits/lytics
 - https://monid.ai/tools/lytics
 checked:
+- https://api.nuget.org/v3
 - https://composio.dev/toolkits/lytics
+- https://crates.io/api/v1
 - https://monid.ai/tools/lytics
 - https://n8n.io/integrations/lytics/
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
 - https://zapier.com/apps/lytics/integrations
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: Go module proxy
+  partner: null
+  partner_match: null
+  type: register
+  direction: provider-built
+  category: official SDK (Go)
+  evidence: https://pkg.go.dev/github.com/lytics/go-lytics
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: Go module proxy (public registry JSON)
+    spec_file: null
+    language: Go
+    packages:
+    - name: github.com/lytics/go-lytics
+      version: v0.0.0-20260429191827-ea477a016a20
+      released: '2026-04-29'
+      released_field: Time
+      lapsed: false
+      page: https://pkg.go.dev/github.com/lytics/go-lytics
+      repo_leg: github-org:lytics
+      publisher_leg: org:lytics
+      matched_by: github-org
+    - name: github.com/lytics/lytics
+      version: v0.0.0-20210403030518-df944c8149d7
+      released: '2021-04-03'
+      released_field: Time
+      lapsed: true
+      page: https://pkg.go.dev/github.com/lytics/lytics
+      repo_leg: github-org:lytics
+      publisher_leg: org:lytics
+      matched_by: github-org
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
+- partner_name: npm registry
+  partner: npm
+  partner_match: register
+  type: register
+  direction: provider-built
+  category: official SDK (JavaScript/TypeScript)
+  evidence: https://www.npmjs.com/package/@lytics/lio-client
+  channel: package-registry
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@lytics/lio-client'
+      version: 0.3.0
+      released: '2026-03-20'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@lytics/lio-client
+      repo_leg: github-org:lytics
+      publisher_leg: org:lytics
+      matched_by: github-org
+    - name: '@lytics/lio-client-contentstack'
+      version: 2.0.0
+      released: '2026-03-20'
+      released_field: modified
+      lapsed: false
+      page: https://www.npmjs.com/package/@lytics/lio-client-contentstack
+      repo_leg: github-org:lytics
+      publisher_leg: org:lytics
+      matched_by: github-org
+    - name: lytics-js
+      version: 0.0.59
+      released: '2024-05-07'
+      released_field: modified
+      lapsed: true
+      page: https://www.npmjs.com/package/lytics-js
+      repo_leg: github-org:lytics
+      publisher_leg: email:lytics.com
+      matched_by: domain
+    - name: react-native-lytics
+      version: 0.0.1
+      released: '2024-02-23'
+      released_field: modified
+      lapsed: true
+      page: https://www.npmjs.com/package/react-native-lytics
+      repo_leg: github-org:lytics
+      publisher_leg: email:lytics.com
+      matched_by: domain
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  detected_by: sweep-official-sdks.py
+  first_seen: '2026-10-18'
 templates: []
